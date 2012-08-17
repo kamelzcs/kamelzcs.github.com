@@ -1,1 +1,0 @@
-** ddrccw's library **
