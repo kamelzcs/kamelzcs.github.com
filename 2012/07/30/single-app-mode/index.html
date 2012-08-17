@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<title>single app mode - ddrccw's library</title>
+	
+	
+	<meta name="author" content="ddrccw" />
+	
+	<meta name="description" content="ddrccw's library single app mode" />
+	
+
+	
+
+	<meta name="robots" content="noodp, nydir" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	
+	<link href="/css/blueprint/screen.css" type="text/css" rel="stylesheet" />
+	<!--[if lt IE 8]> <link href="/css/blueprint/ie.css" type="text/css" rel="stylesheet" /> <![endif]-->	 
+	<link href="/css/railscasts.css" type="text/css" rel="stylesheet" />
+	<link href="/css/site.css" type="text/css" rel="stylesheet" />
+
+	<script type="text/javascript" src="/js/writeCapture-1.0.5-nolib-min.js"></script>
+		<script type="text/javascript" src="/js/jquery.js"></script>
+	<script type="text/javascript" src="/js/site.js"></script>
+	<!--	<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-26827948-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script> -->
+		<script src="https://www.google.com/jsapi" type="text/javascript"></script>
+  <script language="Javascript" type="text/javascript">
+  //<![CDATA[
+google.load("search", "1");
+
+function OnLoad() {
+	// Create a search control
+	var searchControl = new google.search.SearchControl();
+	
+	// Add in a WebSearch
+	var webSearch = new google.search.WebSearch();
+	
+	// Restrict our search to pages from this site
+	webSearch.setSiteRestriction('ddrccw.github.com');
+	
+	// Add the searcher to the SearchControl
+	searchControl.addSearcher(webSearch);
+	
+	// tell the searcher to draw itself and tell it where to attach
+	searchControl.draw(document.getElementById("searchcontrol"));
+	// Add the value of "Search..." to the input field and a class of .empty
+}
+
+google.setOnLoadCallback(function() {
+  $(function() {
+	OnLoad()
+	$(".gsc-input > input").val("Search... powered by Google").addClass("empty");
+	 
+	// When you click on #search
+	$(".gsc-input > input").focus(function(){
+	 
+		// If the value is equal to "Search..."
+		if($(this).val() == "Search... powered by Google") {
+			// remove all the text and the class of .empty
+			$(this).val("").removeClass("empty");;
+		}
+		this.select();
+	});
+	 
+	// When the focus on #search is lost
+	$(".gsc-input > input").blur(function(){
+	 
+		// If the input field is empty
+		if($(this).val() == "") {
+			// Add the text "Search..." and a class of .empty
+			$(this).val("Search... powered by Google").addClass("empty");
+		}
+	});
+
+	$("#comment_heading").click(function()
+	{
+		$(this).next("#disqus_thread").slideToggle(500);
+		if($(this).text() == "Show Comments") {
+			$(this).text("Hide Comments")
+		}else{
+			$(this).text("Show Comments")
+		}
+	});
+		
+  });
+});
+
+
+  //]]>
+  </script>
+
+</head>
+
+<body>
+	<div class="container">
+	<!-- <div class="container showgrid"> -->
+		<div id="header" class="span-24">
+  <div id="menu" class="span-15 last">
+    <ul>
+      <li class="first"><a href="/">Home</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/blog">Blog</a></li>
+      <li><a href="/archives">Archives</a></li>
+      <!--<li><a href="/projects">Projects</a></li>-->
+      <!--<li class="last"><a id="mail" href="mailto:ddrccw@gmail.com">Contact</a></li>-->
+    </ul>
+  </div>
+</div>
+
+		
+		<div id="main" class="span-17">
+			<style type="text/css">
+h3,h4{ 
+	color: #335E8D;
+}			
+h3,h4 {
+	margin-left		: 3px;
+	font-variant	: small-caps;
+	font-weight		: normal;
+	border-bottom : 1px dotted #ccc;	
+}
+</style>
+
+
+
+
+<div class="post" id="main-content">
+	<h1>single app mode</h1>
+	<h4 class="large-bottom">
+		Posted on July 30, 2012
+		 in <a href="/categories/ios">iOS开发</a> 
+
+		<span class="tag-list">
+			
+			<a href="/tags/ios">iOS</a>
+			
+			<a href="/tags/ipcu">IPCU</a>
+			
+		</span>
+	</h4>
+	
+	<div class="content">
+		<p>所谓的single app mode, 就是让iOS设备只运行指定的app，同时让物理的home键失效, 让使用者无法退出相应的app。咋看之下，或许这种模式显得很不符合用户的使用习惯。但具体考虑还是存在适合使用这种mode的情况，如企业用户app，教育类app, 信息展示app或儿童使用的app。</p>
+
+<p><a href="http://www.apple.com/ios/ios6/" title="iOS 6">iOS 6</a>已经准备提供Guided Access，其描述如下：</p>
+
+<blockquote><p>iOS 6 comes with even more features to make it easier for people with vision, hearing, learning, and mobility disabilities to get the most from their iOS devices. Guided Access helps students with disabilities such as autism remain on task and focused on content. It allows a parent, teacher, or administrator to limit an iOS device to one app by disabling the Home button, as well as restrict touch input on certain areas of the screen. VoiceOver, the revolutionary screen reader for blind and low-vision users, is now integrated with Maps, AssistiveTouch, and Zoom. And Apple is working with top manufacturers to introduce Made for iPhone hearing aids that will deliver a power-efficient, high-quality digital audio experience.</p></blockquote>
+
+<p>那么iOS 6之前的版本按理说应该没有提供这种模式，然而去apple体验店看看其ipad上展示产品信息的app，你会纳闷得发现它确实很像前面提到的single app mode，难道其中有什么玄机，带着这个疑问，我开始在网上搜寻答案。</p>
+
+<p>经过一番搜索，在万能的stackover上，确实有达人给出了一些线索。</p>
+
+<h2>1. disable home button</h2>
+
+<p>首先，这里需要了解《应用程序分发和部署问题》中提到的 iphone 配置实用工具（IPCU）以及配置描述文件的概念。</p>
+
+<p>然后，准备好配置文件, 因为在此主要关注如何disable home button，所以暂且取名为<a href="http://stackoverflow.com/questions/5011774/lock-down-iphone-ipod-ipad-so-it-can-only-run-one-app/8994690#8994690">disable_home_button.mobileconfig</a>， 内容如下：</p>
+
+<div class="highlight"><pre><code class="xml"><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="cp">&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;</span>
+<span class="nt">&lt;plist</span> <span class="na">version=</span><span class="s">&quot;1.0&quot;</span><span class="err">]]</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;dict&gt;</span>
+        <span class="nt">&lt;key&gt;</span>PayloadContent<span class="nt">&lt;/key&gt;</span>
+        <span class="nt">&lt;array&gt;</span>
+            <span class="nt">&lt;dict&gt;</span> 
+                <span class="nt">&lt;key&gt;</span>PayloadDescription<span class="nt">&lt;/key&gt;</span>            
+                <span class="nt">&lt;string&gt;</span>Disables home<span class="nt">&lt;/string&gt;</span>
+                <span class="nt">&lt;key&gt;</span>PayloadDisplayName<span class="nt">&lt;/key&gt;</span>
+                <span class="nt">&lt;string&gt;</span>Home Button Lock<span class="nt">&lt;/string&gt;</span>
+                <span class="nt">&lt;key&gt;</span>PayloadIdentifier<span class="nt">&lt;/key&gt;</span>
+                <span class="nt">&lt;string&gt;</span>com.myorg.kiosk<span class="nt">&lt;/string&gt;</span>
+                <span class="nt">&lt;key&gt;</span>PayloadOrganization<span class="nt">&lt;/key&gt;</span>
+                <span class="nt">&lt;string&gt;</span>My Org<span class="nt">&lt;/string&gt;</span>
+                <span class="nt">&lt;key&gt;</span>PayloadType<span class="nt">&lt;/key&gt;</span>  
+                <span class="nt">&lt;string&gt;</span>com.apple.defaults.managed<span class="nt">&lt;/string&gt;</span>
+                <span class="nt">&lt;key&gt;</span>PayloadUUID<span class="nt">&lt;/key&gt;</span>
+                <span class="nt">&lt;string&gt;</span>B2D02E2D-BAC5-431B-8A29-4B91F71C9FC1<span class="nt">&lt;/string&gt;</span>
+                <span class="nt">&lt;key&gt;</span>PayloadVersion<span class="nt">&lt;/key&gt;</span>
+                <span class="nt">&lt;integer&gt;</span>1<span class="nt">&lt;/integer&gt;</span>
+                <span class="nt">&lt;key&gt;</span>PayloadContent<span class="nt">&lt;/key&gt;</span>
+                <span class="nt">&lt;array&gt;</span>
+                    <span class="nt">&lt;dict&gt;</span>                    
+                        <span class="nt">&lt;key&gt;</span>DefaultsDomainName<span class="nt">&lt;/key&gt;</span>
+                        <span class="nt">&lt;string&gt;</span>com.apple.springboard<span class="nt">&lt;/string&gt;</span>
+                        <span class="nt">&lt;key&gt;</span>DefaultsData<span class="nt">&lt;/key&gt;</span>
+                        <span class="nt">&lt;dict&gt;</span>                    
+                            <span class="nt">&lt;key&gt;</span>SBStoreDemoAppLock<span class="nt">&lt;/key&gt;</span>
+                            <span class="nt">&lt;true/&gt;</span>                    
+                        <span class="nt">&lt;/dict&gt;</span>
+                    <span class="nt">&lt;/dict&gt;</span>
+                <span class="nt">&lt;/array&gt;</span>
+            <span class="nt">&lt;/dict&gt;</span>
+        <span class="nt">&lt;/array&gt;</span>
+        <span class="nt">&lt;key&gt;</span>PayloadDescription<span class="nt">&lt;/key&gt;</span>
+        <span class="nt">&lt;string&gt;</span>Disables Home Button<span class="nt">&lt;/string&gt;</span>
+        <span class="nt">&lt;key&gt;</span>PayloadDisplayName<span class="nt">&lt;/key&gt;</span> 
+        <span class="nt">&lt;string&gt;</span>Home Button Lock<span class="nt">&lt;/string&gt;</span>
+        <span class="nt">&lt;key&gt;</span>PayloadIdentifier<span class="nt">&lt;/key&gt;</span>
+        <span class="nt">&lt;string&gt;</span>com.myorg<span class="nt">&lt;/string&gt;</span>    
+        <span class="nt">&lt;key&gt;</span>PayloadOrganization<span class="nt">&lt;/key&gt;</span>
+        <span class="nt">&lt;string&gt;</span>My Org<span class="nt">&lt;/string&gt;</span>
+        <span class="nt">&lt;key&gt;</span>PayloadType<span class="nt">&lt;/key&gt;</span>
+        <span class="nt">&lt;string&gt;</span>Configuration<span class="nt">&lt;/string&gt;</span>
+        <span class="nt">&lt;key&gt;</span>PayloadUUID<span class="nt">&lt;/key&gt;</span>  
+        <span class="nt">&lt;string&gt;</span>614D1FE3-F80D-4643-AF6B-D10C4CC8737A<span class="nt">&lt;/string&gt;</span>
+        <span class="nt">&lt;key&gt;</span>PayloadVersion<span class="nt">&lt;/key&gt;</span>    
+        <span class="nt">&lt;integer&gt;</span>1<span class="nt">&lt;/integer&gt;</span>
+    <span class="nt">&lt;/dict&gt;</span>
+<span class="nt">&lt;/plist&gt;</span>
+</code></pre>
+</div>
+
+
+<p>由于该配置文件中包含有IPCU不能处理的payload项，所以配置文件的部署要通过其他途径，较为可行的是《应用程序分发和部署问题》中提到的 over-the-air 分发profile and configuration。</p>
+
+<p>ps：</p>
+
+<p>1 具体的项目中，为了防止配置项被移除，最好通过加密只允许授权移除。具体的加密相关payload项，参考<a href="http://manuals.info.apple.com/en_US/Enterprise_Deployment_Guide.pdf" title="企业开发部署指南">Enterprise_Deployment_Guide</a></p>
+
+<p>2 移除该配置描述文件，需要通过IPCU，或重启进入General再移除</p>
+
+<p>最后，安装mobileconfig后，需要重新启动设备，在运行相应的app。</p>
+
+<p>注意：上述步骤只是保证了运行一个app后，无法通过home键回到springboard。所以部署时，不要运行不相关的app。一旦运行错了，需要重新启动，进行相关操作。</p>
+
+<h2>2. app crash的处理</h2>
+
+<h3>2.1 可行的方案探讨</h3>
+
+<p>一中提到的方法，只是disable home button，而app crash的情况毕竟在所难免。就算经过一的处理，app crash后仍然能回到springboard。所以为了保证，始终运行一个app，需要寻求一种方案，在app crash之后能重新启动app。其中就需要了解custom url scheme。利用一个restart app来<a href="http://developer.apple.com/library/ios/#documentation/iphone/conceptual/iphoneosprogrammingguide/AdvancedAppTricks/AdvancedAppTricks.html#//apple_ref/doc/uid/TP40007072-CH7-SW50" title="app开发高级技巧">重启</a>crash 的app。</p>
+
+<p><img src="/images/posts/single-app-mode.png" title="crash 处理概图" alt="alt illustration" /></p>
+
+<blockquote><p>Armed with this simple idea, the implementation is straightforward:</p>
+
+<ol>
+<li>Register the “restart” protocol in the Trampoline app.</li>
+<li><p>In the Kiosk app’s crash handler, launch the restarter:</p>
+
+<p> [sharedApp openURL:[NSURL URLWithString:@"restart://"]]</p></li>
+<li><p>In the Trampoline app (e.g. in -viewDidAppear:), relaunch the crashed app:</p>
+
+<p> [sharedApp openURL:[NSURL URLWithString:@"mykioskapp://"]]</p></li>
+</ol>
+</blockquote>
+
+<h3>2.2 crash的捕捉</h3>
+
+<p><strong>//todo</strong></p>
+
+<hr />
+
+<h2>参考文献:</h2>
+
+<p>1) <a href="http://www.apple.com/ios/ios6/" title="iOS 6">iOS 6的介绍</a></p>
+
+<p>2) <a href="http://manuals.info.apple.com/en_US/Enterprise_Deployment_Guide.pdf" title="企业开发部署指南">企业开发部署指南</a></p>
+
+<p>3) <a href="http://developer.apple.com/library/ios/#documentation/iphone/conceptual/iphoneosprogrammingguide/AdvancedAppTricks/AdvancedAppTricks.html#//apple_ref/doc/uid/TP40007072-CH7-SW50" title="app开发高级技巧">app开发高级技巧</a></p>
+
+<p>4) <a href="http://stackoverflow.com/questions/5011774/lock-down-iphone-ipod-ipad-so-it-can-only-run-one-app/8994690#8994690">http://stackoverflow.com/questions/5011774/lock-down-iphone-ipod-ipad-so-it-can-only-run-one-app/8994690#8994690</a></p>
+
+<p>5) <a href="http://zchristopoulos.com/2012/02/how-to-disable-ipad-home-button-kioskstore-demo-mode/">http://zchristopoulos.com/2012/02/how-to-disable-ipad-home-button-kioskstore-demo-mode/</a></p>
+
+<p>6) <a href="https://blog.compeople.eu/apps/?p=275">https://blog.compeople.eu/apps/?p=275</a></p>
+
+	</div>
+
+	<div class="next-prev-nav low-top">
+		
+	
+		
+		
+	
+		
+	
+		<br />
+	</div>
+
+	<hr />
+	<!--<div class="sharing">
+	
+	 
+	
+	
+	
+	
+	
+	
+	 
+</div>
+ -->
+	
+
+<script type="text/javascript">
+      var disqus_shortname = 'ddrccw';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://ddrccw.github.com/2012/07/30/single-app-mode';
+        var disqus_url = 'http://ddrccw.github.com/2012/07/30/single-app-mode';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+	<div>
+		<h2 id='comment_heading'>Hide Comments</h2>
+		<div id="disqus_thread" aria-live="polite"><div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'ddrccw'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+	</div>
+</div>
+
+		</div>
+		
+		
+			<div id="sidebar" class="span-6 push-1 last">
+	<div class="sidebar-module" id='gsearcher'>
+				 
+		<div id="searchcontrol">
+			
+		</div>
+		
+	</div>
+
+	<div class="sidebar-module">
+		<div class="title"><a href='/tags'>Tags</a></div>
+		
+            <span style="font-size: 100%">
+              <a href="/tags/ipcu/" title="1 post">IPCU</a>
+            </span>
+          
+            <span style="font-size: 100%">
+              <a href="/tags/ios/" title="1 post">iOS</a>
+            </span>
+          
+	</div>
+
+	<div class="sidebar-module">
+		<div class="title"><a href='/categories'>Categories</a></div>
+		<a href="/categories/ios"><strong>iOS开发</strong></a> (1)<br />
+	</div>
+	
+	<div class="sidebar-module">
+		<div class="title"><a href='/archives'>Archives</a></div>
+		<a href="/2012/07"><strong>July 2012</strong></a> (1)<br />
+	</div>
+</div>
+
+		
+		
+		<div id="footer" class="span-24"> 
+<span  title="Content licenced under Creative Commons by-nc-sa 3.0">版权所有<a title="Content licenced under Creative Commons by-nc-sa 3.0" href="http://creativecommons.org/licenses/by-nc-sa/3.0/">&copy;</a> 
+	2012-2012 ddrccw。
+</span> 
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="https://github.com/ddrccw">GitHub</a>
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="http://weibo.com/u/1706572835">新浪微博</a>
+ &nbsp;&nbsp;&nbsp;&nbsp; <a href="http://twitter.com/addfgg">Twitter</a>
+&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
+<span>
+	主题由<a title="site's theme made by Bilal Hussain" href="http://bilalh.github.com">Bilal Hussain Hussain</a>提供。
+</span>
+</div>
+
+	</div>
+	
+</body>
+</html>
