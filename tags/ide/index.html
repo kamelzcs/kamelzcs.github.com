@@ -2,12 +2,12 @@
 <html>
 <head>
 	
-	<title>Category: 日常 - ddrccw's library</title>
+	<title>Tag: IDE - ddrccw's library</title>
 	
 	
 	<meta name="author" content="ddrccw" />
 	
-	<meta name="description" content="Category: 日常" />
+	<meta name="description" content="Tag: IDE" />
 	
 
 	
@@ -122,51 +122,31 @@ google.setOnLoadCallback(function() {
 
 		
 		<div id="main" class="span-17">
-			<h1 class="large-bottom">Category: 日常</h1>
+			<h1 class="large-bottom">Tag: IDE</h1>
 <div id="main-content">
 
 
-
 <div class="post-listing">
-	<h2><a href="/2012/02/22/vmware8-install-lion" class="dark-link">Vmware 8安装Lion</a></h2>
+	<h2><a href="/2012/02/23/install-codeblock" class="dark-link">开发利器codeblocks安装</a></h2>
 	<div class="low-top">
-		<span class="low-top ">Posted on  February 22, 2012 in <a href="/categories/">日常</a></span>
+		<span class="low-top ">Posted on  February 23, 2012 in <a href="/categories/cc">c/c++</a></span>
 		<span class="tag-list">
 			
-			<a href="/tags/vmware">VMware</a>
+			<a href="/tags/cc">c/c++</a>
 			
-			<a href="/tags/lion">Lion</a>
+			<a href="/tags/codeblock">codeblock</a>
+			
+			<a href="/tags/ide">IDE</a>
 			
 		</span>
 	</div>
 
 
 	
-	<p>1 前言 苹果系统对Intel的CPU支持较好，以下的安装可能不适用于AMD的CPU（我的电脑是Inspiron 灵越™ 14R锋型版,win7 64位） 2 准备 VMware-workstation-full-8.0.2-591240.exe 虚拟机软件 unlock-all-v102 破解补丁，用于虚拟机安装Mac操作系统 Mac OSX Lion 10.7.3 Retail.dmg 来自海盗湾的种子，下载Mac Lion正式版系统 7-zip 抽取数据用。 ultraISO 将dmg转换成ISO 3 步骤 3.1 安装虚拟机，并打好破解补丁。 虚拟机安装就不多说了，打补丁前，请将以下服务先停止（运行services.msc，在“服务”中操作）。 VMAuthdService 已停止 VMnetDHCP 已停止 VMUSBArbService 已停止 VMwareNAT Service 已停止 VMwareHostd 已停止 打补丁：以系統管理員身份執行 unlock-all-v102\windows里的install.cmd 然后再将先前停止的服务启动。 3.2 提取mac系统文件并转成iso 因为下好的Mac操作系统文件是dmg，需要先用7-zip打开，将Mac OSX Lion 10.7.3 Retail.dmg\InstallMacOSX.pkg\InstallESD.dmg其抽取出来 再利用ultraISO将该文件转换为ISO，菜单栏-》工具-》格式转换...</p>
+	<p>1 介绍 codeblocks是我开发c/c++时喜欢用的一款IDE，相比于vs安装时的庞大，它则小了很多，但它的功能却依然强大。它的调试是可视化的，相信这有助于增强工作效率。另外，我看中的则是它的跨平台性，如果编程得当的话，在window下的项目在linux下依然可用。这够强大吧。 2 安装 for win 2.1 安装mingw 下载安装工具mingw-get-inst-20111118.exe(http://sourceforge.net/projects/mingw/files/)，我选择的是联网安装（可能下的不是稳定版的，而是最新版的）。 装编译器（我选了c，c++，objc）,还有MSYS（cmd终端中也能使用linux的一些命令） 设置环境变量 MINGW_PATH=D:\MinGW #这个只是我的安装目录，还得注意版本号问题 C_INCLUDE_PATH=%MINGW_PATH%\include;%MINGW_PATH%\lib\gcc\mingw32\4.6.2\include CPLUS_INCLUDE_PATH=%C_INCLUDE_PATH% LIBRARY_PATH=%MINGW_PATH%\lib;%MINGW_PATH%\lib\gcc\mingw32\4.6.2 PATH=%MINGW_PATH%\bin;%MINGW_PATH%\libexec\gcc\mingw32\4.6.2;%MINGW_PATH%\msys\1.0\bin;%MINGW_PATH%\msys\1.0\sbin\awk cmd中查看 g++ -v linux各种命令尝试下 2.2 完成codeblocks安装 下载codeblocks-10.05-setup.exe（http://www.codeblocks.org/downloads/26） 安装好后，这时还是没有集成gdb 下载http://qp-gcc.googlecode.com/files/gdb-7.2.7z，将其中的内容解压至/bin 然后，在codeblocks的settings->compiler and debugger->debugger settings，如图 这样设置好后，就可以在codeblocks下调试啦~~~~ 关于集成调试的文章可参考 http://code.google.com/p/qp-gcc/wiki/GDB 3 安装for linux 3.1 xwWidget安装 首先要确定pkg-config和gtk是否安装，以下主要是确认gtk+2.0 pkg-config –modversion gtk+ #(查看1.2.x版本) pkg-config –modversion gtk+-2.0 #(查看 2.x 版本)...</p>
 	
 	
-	<p class><a href="/2012/02/22/vmware8-install-lion">Read more...</a></p>
-</div>
-
-<div class="post-listing">
-	<h2><a href="/2012/02/08/win7x64-fedora16-double-system" class="dark-link">win7x64+fedora16双系统安装</a></h2>
-	<div class="low-top">
-		<span class="low-top ">Posted on  February 08, 2012 in <a href="/categories/">日常</a></span>
-		<span class="tag-list">
-			
-			<a href="/tags/linux">linux</a>
-			
-			<a href="/tags/fedora">fedora</a>
-			
-		</span>
-	</div>
-
-
-	
-	<p>1 前言 win7的安装想必是最简单的，这里也不赘述了。由于是第一次尝试双系统安装，故本文主要记录的是双系统的安装过程。 2 准备 Fedora-16-x86_64-DVD.iso（3.49G），由于机子支持64位，所以就准备安装64位的fedora（dvd版，不是604m的Fedora-16-x86_64-Live-Desktop.iso） 一个u盘（>=4G）或一个足够大的移动硬盘。 本机硬盘要有至少20G的空间装fedora（实际上我分了50G来装） 3 安装 3.1 最简单但也不推荐的方法 首先，使用liveusb-creator把镜像写入U盘。之后还要放iso到存储介质，这里分两种情况。 如果你的u盘足够大，请直接将iso再拷入到u盘。 如果你的u盘不够大，需要在本机的硬盘上或外接的移动硬盘另外分出一块足够大的分区，来放iso。根据网上的资料，都是分区必须为fat32 文件系统，不能为ntfs文件系统（我也是这样照做的，如果有机会我会试下ntfs的可行性），但是win7环境下，似乎处理比较麻烦。我是借助 wince系统来分出一块fat32的分区的。 然后，修改U盘下/syslinux/syslinux.cfg，改成append initrd=initrd.img linux askmethod（这样安装过程就不会需要联网）。 最后，插上u盘，先选择从u盘启动，在接下来的安装界面选择hard drive安装 3.2 直接从u盘安装 需要一个软件easyBCD。 利用虚拟光驱从iso中抽取出isolinux下vmlinuz和initrd.img，将这两个文件和iso共同放在u盘的根目录下。 然后打开EasyBCD，选择 Add New Entry — NeoGrub — Install 再点configure,在弹出来的 menu.lst 里添加： title install fedora 16 #启动项里会多出的一项 kernel (hd1,0)/vmlinuz linux askmethod #不需要联网安装 initrd (hd1,0)/initrd.img...</p>
-	
-	
-	<p class><a href="/2012/02/08/win7x64-fedora16-double-system">Read more...</a></p>
+	<p class><a href="/2012/02/23/install-codeblock">Read more...</a></p>
 </div>
 
 </div>

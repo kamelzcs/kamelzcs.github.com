@@ -4,7 +4,7 @@
 		<link type="application/atom+xml" href="http://ddrccw.github.com/feed" rel="self" />
 		<link type="text" href="http://ddrccw.github.com" rel="alternate" />
 		
-		<updated>2012-08-17T17:18:54+08:00</updated>
+		<updated>2012-08-29T16:40:46+08:00</updated>
 		<id>http://ddrccw.github.com</id>
 		<author><name>ddrccw</name></author>
 		<rights>Copyright (c) 2012 ddrccw</rights>
@@ -16,6 +16,30 @@
 					<updated>2012-07-30T22:18:00+08:00</updated>
 					<id>http://ddrccw.github.com/2012/07/30/single-app-mode/</id>
 					<summary type="html">所谓的single app mode, 就是让iOS设备只运行指定的app，同时让物理的home键失效, 让使用者无法退出相应的app。咋看之下，或许这种模式显得很不符合用户的使用习惯。但具体考虑还是存在适合使用这种mode的情况，如企业用户app，教育类app, 信息展示app或儿童使用的app。 iOS 6已经准备提供Guided Access，其描述如下： iOS 6 comes with even more features to make it easier...</summary>
+			</entry>
+		
+			<entry>
+					<title>开发利器codeblocks安装</title>
+					<link href="http://ddrccw.github.com/2012/02/23/install-codeblock/"/>
+					<updated>2012-02-23T05:18:00+08:00</updated>
+					<id>http://ddrccw.github.com/2012/02/23/install-codeblock/</id>
+					<summary type="html">1 介绍 codeblocks是我开发c/c++时喜欢用的一款IDE，相比于vs安装时的庞大，它则小了很多，但它的功能却依然强大。它的调试是可视化的，相信这有助于增强工作效率。另外，我看中的则是它的跨平台性，如果编程得当的话，在window下的项目在linux下依然可用。这够强大吧。 2 安装 for win 2.1 安装mingw 下载安装工具mingw-get-inst-20111118.exe(http://sourceforge.net/projects/mingw/files/)，我选择的是联网安装（可能下的不是稳定版的，而是最新版的）。 装编译器（我选了c，c++，objc）,还有MSYS（cmd终端中也能使用linux的一些命令） 设置环境变量 MINGW_PATH=D:\MinGW #这个只是我的安装目录，还得注意版本号问题 C_INCLUDE_PATH=%MINGW_PATH%\include;%MINGW_PATH%\lib\gcc\mingw32\4.6.2\include CPLUS_INCLUDE_PATH=%C_INCLUDE_PATH% LIBRARY_PATH=%MINGW_PATH%\lib;%MINGW_PATH%\lib\gcc\mingw32\4.6.2 PATH=%MINGW_PATH%\bin;%MINGW_PATH%\libexec\gcc\mingw32\4.6.2;%MINGW_PATH%\msys\1.0\bin;%MINGW_PATH%\msys\1.0\sbin\awk cmd中查看 g++...</summary>
+			</entry>
+		
+			<entry>
+					<title>Vmware 8安装Lion</title>
+					<link href="http://ddrccw.github.com/2012/02/22/vmware8-install-lion/"/>
+					<updated>2012-02-22T22:18:00+08:00</updated>
+					<id>http://ddrccw.github.com/2012/02/22/vmware8-install-lion/</id>
+					<summary type="html">1 前言 苹果系统对Intel的CPU支持较好，以下的安装可能不适用于AMD的CPU（我的电脑是Inspiron 灵越™ 14R锋型版,win7 64位） 2 准备 VMware-workstation-full-8.0.2-591240.exe 虚拟机软件 unlock-all-v102 破解补丁，用于虚拟机安装Mac操作系统 Mac OSX Lion 10.7.3 Retail.dmg 来自海盗湾的种子，下载Mac Lion正式版系统 7-zip...</summary>
+			</entry>
+		
+			<entry>
+					<title>win7x64+fedora16双系统安装</title>
+					<link href="http://ddrccw.github.com/2012/02/08/win7x64-fedora16-double-system/"/>
+					<updated>2012-02-08T04:18:00+08:00</updated>
+					<id>http://ddrccw.github.com/2012/02/08/win7x64-fedora16-double-system/</id>
+					<summary type="html">1 前言 win7的安装想必是最简单的，这里也不赘述了。由于是第一次尝试双系统安装，故本文主要记录的是双系统的安装过程。 2 准备 Fedora-16-x86_64-DVD.iso（3.49G），由于机子支持64位，所以就准备安装64位的fedora（dvd版，不是604m的Fedora-16-x86_64-Live-Desktop.iso） 一个u盘（>=4G）或一个足够大的移动硬盘。 本机硬盘要有至少20G的空间装fedora（实际上我分了50G来装） 3 安装 3.1 最简单但也不推荐的方法 首先，使用liveusb-creator把镜像写入U盘。之后还要放iso到存储介质，这里分两种情况。 如果你的u盘足够大，请直接将iso再拷入到u盘。 如果你的u盘不够大，需要在本机的硬盘上或外接的移动硬盘另外分出一块足够大的分区，来放iso。根据网上的资料，都是分区必须为fat32 文件系统，不能为ntfs文件系统（我也是这样照做的，如果有机会我会试下ntfs的可行性），但是win7环境下，似乎处理比较麻烦。我是借助 wince系统来分出一块fat32的分区的。 然后，修改U盘下/syslinux/syslinux.cfg，改成append initrd=initrd.img linux...</summary>
 			</entry>
 		
 </feed>

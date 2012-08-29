@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<title>开发利器codeblocks安装 - ddrccw's library</title>
+	
+	
+	<meta name="author" content="ddrccw" />
+	
+	<meta name="description" content="ddrccw's library 开发利器codeblocks安装" />
+	
+
+	
+
+	<meta name="robots" content="noodp, nydir" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	
+	<link href="/css/blueprint/screen.css" type="text/css" rel="stylesheet" />
+	<!--[if lt IE 8]> <link href="/css/blueprint/ie.css" type="text/css" rel="stylesheet" /> <![endif]-->	 
+	<link href="/css/railscasts.css" type="text/css" rel="stylesheet" />
+	<link href="/css/site.css" type="text/css" rel="stylesheet" />
+
+	<script type="text/javascript" src="/js/writeCapture-1.0.5-nolib-min.js"></script>
+		<script type="text/javascript" src="/js/jquery.js"></script>
+	<script type="text/javascript" src="/js/site.js"></script>
+	<!--	<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-26827948-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script> -->
+		<script src="https://www.google.com/jsapi" type="text/javascript"></script>
+  <script language="Javascript" type="text/javascript">
+  //<![CDATA[
+google.load("search", "1");
+
+function OnLoad() {
+	// Create a search control
+	var searchControl = new google.search.SearchControl();
+	
+	// Add in a WebSearch
+	var webSearch = new google.search.WebSearch();
+	
+	// Restrict our search to pages from this site
+	webSearch.setSiteRestriction('ddrccw.github.com');
+	
+	// Add the searcher to the SearchControl
+	searchControl.addSearcher(webSearch);
+	
+	// tell the searcher to draw itself and tell it where to attach
+	searchControl.draw(document.getElementById("searchcontrol"));
+	// Add the value of "Search..." to the input field and a class of .empty
+}
+
+google.setOnLoadCallback(function() {
+  $(function() {
+	OnLoad()
+	$(".gsc-input > input").val("Search... powered by Google").addClass("empty");
+	 
+	// When you click on #search
+	$(".gsc-input > input").focus(function(){
+	 
+		// If the value is equal to "Search..."
+		if($(this).val() == "Search... powered by Google") {
+			// remove all the text and the class of .empty
+			$(this).val("").removeClass("empty");;
+		}
+		this.select();
+	});
+	 
+	// When the focus on #search is lost
+	$(".gsc-input > input").blur(function(){
+	 
+		// If the input field is empty
+		if($(this).val() == "") {
+			// Add the text "Search..." and a class of .empty
+			$(this).val("Search... powered by Google").addClass("empty");
+		}
+	});
+
+	$("#comment_heading").click(function()
+	{
+		$(this).next("#disqus_thread").slideToggle(500);
+		if($(this).text() == "Show Comments") {
+			$(this).text("Hide Comments")
+		}else{
+			$(this).text("Show Comments")
+		}
+	});
+		
+  });
+});
+
+
+  //]]>
+  </script>
+
+</head>
+
+<body>
+	<div class="container">
+	<!-- <div class="container showgrid"> -->
+		<div id="header" class="span-24">
+  <div id="menu" class="span-15 last">
+    <ul>
+      <li class="first"><a href="/">Home</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/blog">Blog</a></li>
+      <li><a href="/archives">Archives</a></li>
+      <!--<li><a href="/projects">Projects</a></li>-->
+      <!--<li class="last"><a id="mail" href="mailto:ddrccw@gmail.com">Contact</a></li>-->
+    </ul>
+  </div>
+</div>
+
+		
+		<div id="main" class="span-17">
+			<style type="text/css">
+h3,h4{ 
+	color: #335E8D;
+}			
+h3,h4 {
+	margin-left		: 3px;
+	font-variant	: small-caps;
+	font-weight		: normal;
+	border-bottom : 1px dotted #ccc;	
+}
+</style>
+
+
+
+
+<div class="post" id="main-content">
+	<h1>开发利器codeblocks安装</h1>
+	<h4 class="large-bottom">
+		Posted on February 23, 2012
+		 in <a href="/categories/cc">c/c++</a> 
+
+		<span class="tag-list">
+			
+			<a href="/tags/cc">c/c++</a>
+			
+			<a href="/tags/codeblock">codeblock</a>
+			
+			<a href="/tags/ide">IDE</a>
+			
+		</span>
+	</h4>
+	
+	<div class="content">
+		<h2>1 介绍</h2>
+
+<p>codeblocks是我开发c/c++时喜欢用的一款IDE，相比于vs安装时的庞大，它则小了很多，但它的功能却依然强大。它的调试是可视化的，相信这有助于增强工作效率。另外，我看中的则是它的跨平台性，如果编程得当的话，在window下的项目在linux下依然可用。这够强大吧。</p>
+
+<h2>2 安装 for win</h2>
+
+<h3>2.1 安装mingw</h3>
+
+<p>下载安装工具mingw-get-inst-20111118.exe(http://sourceforge.net/projects/mingw/files/)，我选择的是联网安装（可能下的不是稳定版的，而是最新版的）。</p>
+
+<p>装编译器（我选了c，c++，objc）,还有MSYS（cmd终端中也能使用linux的一些命令）</p>
+
+<p>设置环境变量</p>
+
+<div class="highlight"><pre><code class="bash"><span class="nv">MINGW_PATH</span><span class="o">=</span>D:<span class="se">\M</span>inGW   <span class="c">#这个只是我的安装目录，还得注意版本号问题</span>
+<span class="nv">C_INCLUDE_PATH</span><span class="o">=</span>%MINGW_PATH%<span class="se">\i</span>nclude;%MINGW_PATH%<span class="se">\l</span>ib<span class="se">\g</span>cc<span class="se">\m</span>ingw32<span class="se">\4</span>.6.2<span class="se">\i</span>nclude
+<span class="nv">CPLUS_INCLUDE_PATH</span><span class="o">=</span>%C_INCLUDE_PATH%
+<span class="nv">LIBRARY_PATH</span><span class="o">=</span>%MINGW_PATH%<span class="se">\l</span>ib;%MINGW_PATH%<span class="se">\l</span>ib<span class="se">\g</span>cc<span class="se">\m</span>ingw32<span class="se">\4</span>.6.2
+<span class="nv">PATH</span><span class="o">=</span>%MINGW_PATH%<span class="se">\b</span>in;%MINGW_PATH%<span class="se">\l</span>ibexec<span class="se">\g</span>cc<span class="se">\m</span>ingw32<span class="se">\4</span>.6.2;%MINGW_PATH%<span class="se">\m</span>sys<span class="se">\1</span>.0<span class="se">\b</span>in;%MINGW_PATH%<span class="se">\m</span>sys<span class="se">\1</span>.0<span class="se">\s</span>bin<span class="se">\a</span>wk
+</code></pre>
+</div>
+
+
+<p>cmd中查看</p>
+
+<p>g++ -v</p>
+
+<p>linux各种命令尝试下</p>
+
+<h3>2.2 完成codeblocks安装</h3>
+
+<p>下载codeblocks-10.05-setup.exe（http://www.codeblocks.org/downloads/26）</p>
+
+<p>安装好后，这时还是没有集成gdb</p>
+
+<p>下载http://qp-gcc.googlecode.com/files/gdb-7.2.7z，将其中的内容解压至<mingw-dir>/bin</p>
+
+<p>然后，在codeblocks的settings->compiler and debugger->debugger settings，如图</p>
+
+<p><img src="/images/posts/install-codeblocks.jpeg" title="setting" alt="alt setting" /></p>
+
+<p>这样设置好后，就可以在codeblocks下调试啦~~~~</p>
+
+<p>关于集成调试的文章可参考</p>
+
+<blockquote><p>http://code.google.com/p/qp-gcc/wiki/GDB</p></blockquote>
+
+<h2>3 安装for linux</h2>
+
+<h3>3.1 xwWidget安装</h3>
+
+<p>首先要确定pkg-config和gtk是否安装，以下主要是确认gtk+2.0</p>
+
+<div class="highlight"><pre><code class="bash">pkg-config –modversion gtk+      <span class="c">#(查看1.2.x版本)</span>
+pkg-config –modversion gtk+-2.0  <span class="c">#(查看 2.x 版本)</span>
+pkg-config –list-all |grep gtk   <span class="c">#(查看是否安装了gtk)</span>
+</code></pre>
+</div>
+
+
+<p>或</p>
+
+<div class="highlight"><pre><code class="bash">ls /usr/lib/libwx_gtk*   <span class="c">#to verify the presence</span>
+</code></pre>
+</div>
+
+
+<p>如果不存在，我的操作是：</p>
+
+<div class="highlight"><pre><code class="bash">yum install gtk+extra-devel     <span class="c">#&lt;根据yum list gtk+*结果，32位i386或可能i686，64位x86_64&gt;</span>
+yum install gtk+extra           <span class="c">#&lt;根据yum list gtk+*结果，32位i386或可能i686，64位x86_64&gt;</span>
+</code></pre>
+</div>
+
+
+<p>后者可能不需要（有待验证，下次如果再装时再确认，毕竟我是喜欢装的东西越少越好）。
+而其中的一系列包中gtk2-devel这个可能是关键，以后也可以试下<code>yum install gtk2-devel</code>
+或<code>yum install gtk+extra-devel.i686</code></p>
+
+<p>然后就是xwWidget安装了，<a href="http://wiki.codeblocks.org/index.php?title=Installing_Code::Blocks_from_source_on_Linux#Library_wxGTK_installation" title="codeblocks">具体参考</a></p>
+
+<blockquote><h4>Building wxWidgets</h4>
+
+<p>Here we will create a separate build directory instead of building from the src directory, so that we can easily rebuild with different options (unicode / ansi, monolithic / many libs, etc).
+The documentation says the default is for gtk2 to use unicode and wx > 2.5 to build as a monolithic library. This doesn’t appear to be the case, so these flags are passed to configure:</p>
+
+<blockquote><p> <code>mkdir build_gtk2_shared_monolithic_unicode</code></p>
+
+<p> <code>cd build_gtk2_shared_monolithic_unicode</code></p>
+
+<p> <code>../configure --prefix=/opt/wx/2.8 \</code></p>
+
+<p> <code>      --enable-xrc \</code></p>
+
+<p> <code>      --enable-monolithic \</code></p>
+
+<p> <code>      --enable-unicode</code></p>
+
+<p> <code>make</code></p>
+
+<p> <code>su</code></p>
+
+<p> <code>make install</code></p>
+
+<p> <code>exit</code></p></blockquote>
+
+<p>Add /opt/wx/2.8/bin to the PATH (if your shell is bash then edit /etc/profile or ~/.bash_profile) (On Suse 10.1 edit /etc/profile.local, it will only be available after a new login). An example PATH:</p>
+
+<p>  <code>export PATH=/usr/bin:/opt/wx/2.8/bin:$PATH</code></p>
+
+<p>Add /opt/wx/2.8/lib to /etc/ld.so.conf (nano /etc/ld.so.conf), then run:</p>
+
+<p>  <code>ldconfig</code>
+  <code>source /etc/profile</code></p>
+
+<p>That’s it. Now the linker will look in /opt/wx/2.8/lib for wx libraries and you will have a monolithic shared library unicode build.
+To check that things are working, type:</p>
+
+<p>  <code>wx-config --prefix</code></p>
+
+<p>which should give you /opt/wx/2.8</p>
+
+<p>  <code>wx-config --libs</code></p>
+
+<p>which should have at least:</p>
+
+<p>  <code>-L/opt/wx/2.8/lib -lwx_gtk2-2.8</code></p>
+
+<p>but can contain other flags as well.</p>
+
+<p>  <code>which wx-config</code></p>
+
+<p>should return /opt/wx/2.8/bin/wx-config</p></blockquote>
+
+<h3>3.2 安装codeblocks</h3>
+
+<p>下载10.05源码或svn源码，解压至目录下
+<code>./bootstrap</code>
+注：</p>
+
+<p>若报错 aclocal:configure.in:61: warning: macro `AM_OPTIONS_WXCONFIG’ not found in library
+执行</p>
+
+<div class="highlight"><pre><code class="bash"><span class="nb">export </span><span class="nv">ACLOCAL_FLAGS</span><span class="o">=</span>”-I <span class="sb">`</span>wx-config –prefix<span class="sb">`</span>/share/aclocal”
+</code></pre>
+</div>
+
+
+<p>或</p>
+
+<div class="highlight"><pre><code class="bash"><span class="nb">echo</span> <span class="sb">`</span>wx-config –prefix<span class="sb">`</span>/share/aclocal &gt;&gt; /usr/share/aclocal/dirlist
+</code></pre>
+</div>
+
+
+<p>最后</p>
+
+<div class="highlight"><pre><code class="bash">./configure –prefix<span class="o">=</span>&lt;dir&gt;
+make
+make install
+</code></pre>
+</div>
+
+
+<p>这样就安装完了。</p>
+
+<h3>3.3 配置codeblocks</h3>
+
+<p>配置文件在~/.codeblocks/ 下，将自己原先设置好的配置替换之。其中关于程序运行和调试的终端的说明(codeblocks默认的终端是xterm)如下:</p>
+
+<ol>
+<li><p>使用默认xterm
+如果你想使用默认的Xterm控制台，而系统没有安装可以在控制台输入</p>
+
+<p><code>yum install xterm</code></p></li>
+<li><p>使用gnome-terminal
+如果你想用系统终端，启动codeblocks，点击菜单栏 Settings ==> Environment settings
+把下面的“Terminal to launch console programs”的内容改成：</p>
+
+<p><code>gnome-terminal -t $TITLE -x</code></p>
+
+<p>就可以啦。</p></li>
+</ol>
+
+
+	</div>
+	
+	<div class="next-prev-nav low-top">
+		
+		-----------------------------------
+		<b>本文内容遵从<a title="Content licenced under Creative Commons by-nc-sa 3.0" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.zh">CC版权协议</a>转载请注明出自<a href="http://ddrccw.github.com">ddrccw</a></b>
+		-----------------------------------
+		<hr/>
+		
+		
+		
+			&laquo;&nbsp;<a href="/2012/07/30/single-app-mode" rel="next" title="single app mode">single app mode</a>
+		
+	
+		
+			
+				|
+			
+		
+		
+	
+		
+			<a href="/2012/02/22/vmware8-install-lion" rel="previous" title="Vmware 8安装Lion">Vmware 8安装Lion</a>&nbsp;&raquo;
+		
+	
+		<br />
+	</div>
+
+	<hr />
+	<!--<div class="sharing">
+	
+	 
+	
+	
+	
+	
+	
+	
+	 
+</div>
+ -->
+	
+
+<script type="text/javascript">
+      var disqus_shortname = 'ddrccw';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://ddrccw.github.com/2012/02/23/install-codeblock';
+        var disqus_url = 'http://ddrccw.github.com/2012/02/23/install-codeblock';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+	<div>
+		<h2 id='comment_heading'>Hide Comments</h2>
+		<div id="disqus_thread" aria-live="polite"><div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'ddrccw'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+	</div>
+</div>
+
+		</div>
+		
+		
+			<div id="sidebar" class="span-6 push-1 last">
+	<div class="sidebar-module" id='gsearcher'>
+				 
+		<div id="searchcontrol">
+			
+		</div>
+		
+	</div>
+
+	<div class="sidebar-module">
+		<div class="title"><a href='/tags'>Tags</a></div>
+		
+            <span style="font-size: 100%">
+              <a href="/tags/ide/" title="1 post">IDE</a>
+            </span>
+          
+            <span style="font-size: 100%">
+              <a href="/tags/ipcu/" title="1 post">IPCU</a>
+            </span>
+          
+            <span style="font-size: 100%">
+              <a href="/tags/lion/" title="1 post">Lion</a>
+            </span>
+          
+            <span style="font-size: 100%">
+              <a href="/tags/vmware/" title="1 post">VMware</a>
+            </span>
+          
+            <span style="font-size: 100%">
+              <a href="/tags/cc/" title="1 post">c/c++</a>
+            </span>
+          
+            <span style="font-size: 100%">
+              <a href="/tags/codeblock/" title="1 post">codeblock</a>
+            </span>
+          
+            <span style="font-size: 100%">
+              <a href="/tags/fedora/" title="1 post">fedora</a>
+            </span>
+          
+            <span style="font-size: 100%">
+              <a href="/tags/ios/" title="1 post">iOS</a>
+            </span>
+          
+            <span style="font-size: 100%">
+              <a href="/tags/linux/" title="1 post">linux</a>
+            </span>
+          
+	</div>
+
+	<div class="sidebar-module">
+		<div class="title"><a href='/categories'>Categories</a></div>
+		<a href="/categories/"><strong>日常</strong></a> (2)<br /><a href="/categories/cc"><strong>c/c++</strong></a> (1)<br /><a href="/categories/ios"><strong>iOS开发</strong></a> (1)<br />
+	</div>
+	
+	<div class="sidebar-module">
+		<div class="title"><a href='/archives'>Archives</a></div>
+		<a href="/2012/07"><strong>July 2012</strong></a> (1)<br /><a href="/2012/02"><strong>February 2012</strong></a> (3)<br />
+	</div>
+</div>
+
+		
+		
+		<div id="footer" class="span-24"> 
+<span  title="Content licenced under Creative Commons by-nc-sa 3.0">版权所有<a title="Content licenced under Creative Commons by-nc-sa 3.0" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.zh">&copy;</a> 
+	2012-2012 ddrccw。
+</span> 
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="https://github.com/ddrccw">GitHub</a>
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="http://weibo.com/u/1706572835">新浪微博</a>
+ &nbsp;&nbsp;&nbsp;&nbsp; <a href="http://twitter.com/addfgg">Twitter</a>
+&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
+<span>
+	主题由<a title="site's theme made by Bilal Hussain" href="http://bilalh.github.com">Bilal Hussain Hussain</a>提供。
+</span>
+</div>
+
+	</div>
+	
+</body>
+</html>

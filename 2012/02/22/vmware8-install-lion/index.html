@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<title>Vmware 8安装Lion - ddrccw's library</title>
+	
+	
+	<meta name="author" content="ddrccw" />
+	
+	<meta name="description" content="ddrccw's library Vmware 8安装Lion" />
+	
+
+	
+
+	<meta name="robots" content="noodp, nydir" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	
+	<link href="/css/blueprint/screen.css" type="text/css" rel="stylesheet" />
+	<!--[if lt IE 8]> <link href="/css/blueprint/ie.css" type="text/css" rel="stylesheet" /> <![endif]-->	 
+	<link href="/css/railscasts.css" type="text/css" rel="stylesheet" />
+	<link href="/css/site.css" type="text/css" rel="stylesheet" />
+
+	<script type="text/javascript" src="/js/writeCapture-1.0.5-nolib-min.js"></script>
+		<script type="text/javascript" src="/js/jquery.js"></script>
+	<script type="text/javascript" src="/js/site.js"></script>
+	<!--	<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-26827948-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script> -->
+		<script src="https://www.google.com/jsapi" type="text/javascript"></script>
+  <script language="Javascript" type="text/javascript">
+  //<![CDATA[
+google.load("search", "1");
+
+function OnLoad() {
+	// Create a search control
+	var searchControl = new google.search.SearchControl();
+	
+	// Add in a WebSearch
+	var webSearch = new google.search.WebSearch();
+	
+	// Restrict our search to pages from this site
+	webSearch.setSiteRestriction('ddrccw.github.com');
+	
+	// Add the searcher to the SearchControl
+	searchControl.addSearcher(webSearch);
+	
+	// tell the searcher to draw itself and tell it where to attach
+	searchControl.draw(document.getElementById("searchcontrol"));
+	// Add the value of "Search..." to the input field and a class of .empty
+}
+
+google.setOnLoadCallback(function() {
+  $(function() {
+	OnLoad()
+	$(".gsc-input > input").val("Search... powered by Google").addClass("empty");
+	 
+	// When you click on #search
+	$(".gsc-input > input").focus(function(){
+	 
+		// If the value is equal to "Search..."
+		if($(this).val() == "Search... powered by Google") {
+			// remove all the text and the class of .empty
+			$(this).val("").removeClass("empty");;
+		}
+		this.select();
+	});
+	 
+	// When the focus on #search is lost
+	$(".gsc-input > input").blur(function(){
+	 
+		// If the input field is empty
+		if($(this).val() == "") {
+			// Add the text "Search..." and a class of .empty
+			$(this).val("Search... powered by Google").addClass("empty");
+		}
+	});
+
+	$("#comment_heading").click(function()
+	{
+		$(this).next("#disqus_thread").slideToggle(500);
+		if($(this).text() == "Show Comments") {
+			$(this).text("Hide Comments")
+		}else{
+			$(this).text("Show Comments")
+		}
+	});
+		
+  });
+});
+
+
+  //]]>
+  </script>
+
+</head>
+
+<body>
+	<div class="container">
+	<!-- <div class="container showgrid"> -->
+		<div id="header" class="span-24">
+  <div id="menu" class="span-15 last">
+    <ul>
+      <li class="first"><a href="/">Home</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/blog">Blog</a></li>
+      <li><a href="/archives">Archives</a></li>
+      <!--<li><a href="/projects">Projects</a></li>-->
+      <!--<li class="last"><a id="mail" href="mailto:ddrccw@gmail.com">Contact</a></li>-->
+    </ul>
+  </div>
+</div>
+
+		
+		<div id="main" class="span-17">
+			<style type="text/css">
+h3,h4{ 
+	color: #335E8D;
+}			
+h3,h4 {
+	margin-left		: 3px;
+	font-variant	: small-caps;
+	font-weight		: normal;
+	border-bottom : 1px dotted #ccc;	
+}
+</style>
+
+
+
+
+<div class="post" id="main-content">
+	<h1>Vmware 8安装Lion</h1>
+	<h4 class="large-bottom">
+		Posted on February 22, 2012
+		 in <a href="/categories/">日常</a> 
+
+		<span class="tag-list">
+			
+			<a href="/tags/vmware">VMware</a>
+			
+			<a href="/tags/lion">Lion</a>
+			
+		</span>
+	</h4>
+	
+	<div class="content">
+		<h2>1 前言</h2>
+
+<p>苹果系统对Intel的CPU支持较好，以下的安装可能不适用于AMD的CPU（我的电脑是Inspiron 灵越™ 14R锋型版,win7 64位）</p>
+
+<h2>2 准备</h2>
+
+<ul>
+<li>VMware-workstation-full-8.0.2-591240.exe      虚拟机软件</li>
+<li><a href="http://pan.baidu.com/share/link?shareid=6830&amp;uk=1678482707">unlock-all-v102</a>  破解补丁，用于虚拟机安装Mac操作系统</li>
+<li><a href="http://pan.baidu.com/share/link?shareid=6831&amp;uk=1678482707">Mac OSX Lion 10.7.3 Retail.dmg</a> 来自海盗湾的种子，下载Mac Lion正式版系统</li>
+<li>7-zip  抽取数据用。</li>
+<li>ultraISO 将dmg转换成ISO</li>
+</ul>
+
+
+<h2>3 步骤</h2>
+
+<h3>3.1 安装虚拟机，并打好破解补丁。</h3>
+
+<p>虚拟机安装就不多说了，打补丁前，请将以下服务先停止（运行services.msc，在“服务”中操作）。</p>
+
+<ul>
+<li>VMAuthdService           已停止</li>
+<li>VMnetDHCP                已停止</li>
+<li>VMUSBArbService          已停止</li>
+<li>VMwareNAT Service        已停止</li>
+<li>VMwareHostd              已停止</li>
+</ul>
+
+
+<p>打补丁：以系統管理員身份執行 unlock-all-v102\windows里的install.cmd
+然后再将先前停止的服务启动。</p>
+
+<h3>3.2 提取mac系统文件并转成iso</h3>
+
+<p>因为下好的Mac操作系统文件是dmg，需要先用7-zip打开，将Mac OSX Lion 10.7.3 Retail.dmg\InstallMacOSX.pkg\InstallESD.dmg其抽取出来</p>
+
+<p><img src="/images/posts/vmware8-install-lion/3.2-1.jpeg" title="抽取dmg" alt="alt 系统文件转换iso" /></p>
+
+<p>再利用ultraISO将该文件转换为ISO，菜单栏-》工具-》格式转换</p>
+
+<p><img src="/images/posts/vmware8-install-lion/3.2-2.jpeg" title="dmg格式转换" alt="alt 系统文件转换iso" /></p>
+
+<h2>3.3 安装mac lion系统</h2>
+
+<h3>3.3.1 创建虚拟机</h3>
+
+<ol>
+<li><p>选择自定义创建</p>
+
+<p> <img src="/images/posts/vmware8-install-lion/3.3.1-1.1.png" title="选择自定义创建1" alt="alt 选择自定义创建" />
+ <img src="/images/posts/vmware8-install-lion/3.3.1-1.2.png" title="选择自定义创建2" alt="alt 选择自定义创建" /></p></li>
+<li><p>设置好cpu，内存（>2G），网络，I/O控制器，磁盘（SCSI）用默认的，磁盘空间至少要20G</p>
+
+<p> <img src="/images/posts/vmware8-install-lion/3.3.1-2.png" title="基本设置" alt="alt 基本设置" /></p></li>
+<li><p>创建完虚拟机后，需要对其进行设置</p>
+
+<p> <img src="/images/posts/vmware8-install-lion/3.3.1-3.png" title="其他设置" alt="alt 其他设置" /></p>
+
+<ul>
+<li>要移除软盘驱动器，否则安装时会出问题。</li>
+<li>设置CD/DVD→高級设置→SCSI 0:2</li>
+<li>设置显卡→3D图形加速</li>
+</ul>
+</li>
+</ol>
+
+
+<h3>3.3.2 安装mac lion虚拟机</h3>
+
+<ol>
+<li><p>准备安装</p>
+
+<p> <img src="/images/posts/vmware8-install-lion/3.3.2-0.jpeg" title="准备安装" alt="alt 准备安装" /></p></li>
+<li><p>设置完语言后，格式化磁盘，并分区。</p>
+
+<p> <img src="/images/posts/vmware8-install-lion/3.3.2-1.1.jpeg" title="格式化分区" alt="alt 格式化分区" /></p>
+
+<p> <img src="/images/posts/vmware8-install-lion/3.3.2-1.2.jpeg" title="格式化分区" alt="alt 格式化分区" /></p></li>
+<li><p>开始安装</p>
+
+<p> <img src="/images/posts/vmware8-install-lion/3.3.2-2.1.jpeg" title="安装" alt="alt 安装" /></p>
+
+<p> <img src="/images/posts/vmware8-install-lion/3.3.2-2.2.jpeg" title="安装" alt="alt 安装" /></p>
+
+<p> <img src="/images/posts/vmware8-install-lion/3.3.2-2.3.jpeg" title="安装" alt="alt 安装" /></p>
+
+<p> <img src="/images/posts/vmware8-install-lion/3.3.2-2.4.jpeg" title="安装" alt="alt 安装" /></p>
+
+<p> <img src="/images/posts/vmware8-install-lion/3.3.2-2.5.jpeg" title="安装" alt="alt 安装" /></p></li>
+<li><p>建立好自己的账号，登陆后就可以开始体验了。</p>
+
+<p> <img src="/images/posts/vmware8-install-lion/3.3.2-3.jpeg" title="体验" alt="alt 体验" /></p></li>
+</ol>
+
+
+<h2>3.3.3  安装VMware Tools，是为了能够调整分辨率</h2>
+
+<pre><code>安裝VMware Tools，需要加载unlock-all-v102\tools\darwin.iso鏡像文件。
+</code></pre>
+
+<p><img src="/images/posts/vmware8-install-lion/3.3.3-1.jpeg" title="其他" alt="alt 其他" />
+<img src="/images/posts/vmware8-install-lion/3.3.3-2.jpeg" title="其他" alt="alt 其他" /></p>
+
+<pre><code>这样Mac系统就安装完了，好好玩吧^_^~~~~~~
+</code></pre>
+
+	</div>
+	
+	<div class="next-prev-nav low-top">
+		
+		-----------------------------------
+		<b>本文内容遵从<a title="Content licenced under Creative Commons by-nc-sa 3.0" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.zh">CC版权协议</a>转载请注明出自<a href="http://ddrccw.github.com">ddrccw</a></b>
+		-----------------------------------
+		<hr/>
+		
+		
+		
+			&laquo;&nbsp;<a href="/2012/02/23/install-codeblock" rel="next" title="开发利器codeblocks安装">开发利器codeblocks安装</a>
+		
+	
+		
+			
+				|
+			
+		
+		
+	
+		
+			<a href="/2012/02/08/win7x64-fedora16-double-system" rel="previous" title="win7x64+fedora16双系统安装">win7x64+fedora16双系统安装</a>&nbsp;&raquo;
+		
+	
+		<br />
+	</div>
+
+	<hr />
+	<!--<div class="sharing">
+	
+	 
+	
+	
+	
+	
+	
+	
+	 
+</div>
+ -->
+	
+
+<script type="text/javascript">
+      var disqus_shortname = 'ddrccw';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://ddrccw.github.com/2012/02/22/vmware8-install-lion';
+        var disqus_url = 'http://ddrccw.github.com/2012/02/22/vmware8-install-lion';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+	<div>
+		<h2 id='comment_heading'>Hide Comments</h2>
+		<div id="disqus_thread" aria-live="polite"><div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'ddrccw'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+	</div>
+</div>
+
+		</div>
+		
+		
+			<div id="sidebar" class="span-6 push-1 last">
+	<div class="sidebar-module" id='gsearcher'>
+				 
+		<div id="searchcontrol">
+			
+		</div>
+		
+	</div>
+
+	<div class="sidebar-module">
+		<div class="title"><a href='/tags'>Tags</a></div>
+		
+            <span style="font-size: 100%">
+              <a href="/tags/ide/" title="1 post">IDE</a>
+            </span>
+          
+            <span style="font-size: 100%">
+              <a href="/tags/ipcu/" title="1 post">IPCU</a>
+            </span>
+          
+            <span style="font-size: 100%">
+              <a href="/tags/lion/" title="1 post">Lion</a>
+            </span>
+          
+            <span style="font-size: 100%">
+              <a href="/tags/vmware/" title="1 post">VMware</a>
+            </span>
+          
+            <span style="font-size: 100%">
+              <a href="/tags/cc/" title="1 post">c/c++</a>
+            </span>
+          
+            <span style="font-size: 100%">
+              <a href="/tags/codeblock/" title="1 post">codeblock</a>
+            </span>
+          
+            <span style="font-size: 100%">
+              <a href="/tags/fedora/" title="1 post">fedora</a>
+            </span>
+          
+            <span style="font-size: 100%">
+              <a href="/tags/ios/" title="1 post">iOS</a>
+            </span>
+          
+            <span style="font-size: 100%">
+              <a href="/tags/linux/" title="1 post">linux</a>
+            </span>
+          
+	</div>
+
+	<div class="sidebar-module">
+		<div class="title"><a href='/categories'>Categories</a></div>
+		<a href="/categories/"><strong>日常</strong></a> (2)<br /><a href="/categories/cc"><strong>c/c++</strong></a> (1)<br /><a href="/categories/ios"><strong>iOS开发</strong></a> (1)<br />
+	</div>
+	
+	<div class="sidebar-module">
+		<div class="title"><a href='/archives'>Archives</a></div>
+		<a href="/2012/07"><strong>July 2012</strong></a> (1)<br /><a href="/2012/02"><strong>February 2012</strong></a> (3)<br />
+	</div>
+</div>
+
+		
+		
+		<div id="footer" class="span-24"> 
+<span  title="Content licenced under Creative Commons by-nc-sa 3.0">版权所有<a title="Content licenced under Creative Commons by-nc-sa 3.0" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.zh">&copy;</a> 
+	2012-2012 ddrccw。
+</span> 
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="https://github.com/ddrccw">GitHub</a>
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="http://weibo.com/u/1706572835">新浪微博</a>
+ &nbsp;&nbsp;&nbsp;&nbsp; <a href="http://twitter.com/addfgg">Twitter</a>
+&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
+<span>
+	主题由<a title="site's theme made by Bilal Hussain" href="http://bilalh.github.com">Bilal Hussain Hussain</a>提供。
+</span>
+</div>
+
+	</div>
+	
+</body>
+</html>

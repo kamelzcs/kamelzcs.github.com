@@ -2,12 +2,12 @@
 <html>
 <head>
 	
-	<title>Category: 日常 - ddrccw's library</title>
+	<title>Tag: Lion - ddrccw's library</title>
 	
 	
 	<meta name="author" content="ddrccw" />
 	
-	<meta name="description" content="Category: 日常" />
+	<meta name="description" content="Tag: Lion" />
 	
 
 	
@@ -122,9 +122,8 @@ google.setOnLoadCallback(function() {
 
 		
 		<div id="main" class="span-17">
-			<h1 class="large-bottom">Category: 日常</h1>
+			<h1 class="large-bottom">Tag: Lion</h1>
 <div id="main-content">
-
 
 
 <div class="post-listing">
@@ -146,27 +145,6 @@ google.setOnLoadCallback(function() {
 	
 	
 	<p class><a href="/2012/02/22/vmware8-install-lion">Read more...</a></p>
-</div>
-
-<div class="post-listing">
-	<h2><a href="/2012/02/08/win7x64-fedora16-double-system" class="dark-link">win7x64+fedora16双系统安装</a></h2>
-	<div class="low-top">
-		<span class="low-top ">Posted on  February 08, 2012 in <a href="/categories/">日常</a></span>
-		<span class="tag-list">
-			
-			<a href="/tags/linux">linux</a>
-			
-			<a href="/tags/fedora">fedora</a>
-			
-		</span>
-	</div>
-
-
-	
-	<p>1 前言 win7的安装想必是最简单的，这里也不赘述了。由于是第一次尝试双系统安装，故本文主要记录的是双系统的安装过程。 2 准备 Fedora-16-x86_64-DVD.iso（3.49G），由于机子支持64位，所以就准备安装64位的fedora（dvd版，不是604m的Fedora-16-x86_64-Live-Desktop.iso） 一个u盘（>=4G）或一个足够大的移动硬盘。 本机硬盘要有至少20G的空间装fedora（实际上我分了50G来装） 3 安装 3.1 最简单但也不推荐的方法 首先，使用liveusb-creator把镜像写入U盘。之后还要放iso到存储介质，这里分两种情况。 如果你的u盘足够大，请直接将iso再拷入到u盘。 如果你的u盘不够大，需要在本机的硬盘上或外接的移动硬盘另外分出一块足够大的分区，来放iso。根据网上的资料，都是分区必须为fat32 文件系统，不能为ntfs文件系统（我也是这样照做的，如果有机会我会试下ntfs的可行性），但是win7环境下，似乎处理比较麻烦。我是借助 wince系统来分出一块fat32的分区的。 然后，修改U盘下/syslinux/syslinux.cfg，改成append initrd=initrd.img linux askmethod（这样安装过程就不会需要联网）。 最后，插上u盘，先选择从u盘启动，在接下来的安装界面选择hard drive安装 3.2 直接从u盘安装 需要一个软件easyBCD。 利用虚拟光驱从iso中抽取出isolinux下vmlinuz和initrd.img，将这两个文件和iso共同放在u盘的根目录下。 然后打开EasyBCD，选择 Add New Entry — NeoGrub — Install 再点configure,在弹出来的 menu.lst 里添加： title install fedora 16 #启动项里会多出的一项 kernel (hd1,0)/vmlinuz linux askmethod #不需要联网安装 initrd (hd1,0)/initrd.img...</p>
-	
-	
-	<p class><a href="/2012/02/08/win7x64-fedora16-double-system">Read more...</a></p>
 </div>
 
 </div>

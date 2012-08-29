@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<title>win7x64+fedora16双系统安装 - ddrccw's library</title>
+	
+	
+	<meta name="author" content="ddrccw" />
+	
+	<meta name="description" content="ddrccw's library win7x64+fedora16双系统安装" />
+	
+
+	
+
+	<meta name="robots" content="noodp, nydir" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	
+	<link href="/css/blueprint/screen.css" type="text/css" rel="stylesheet" />
+	<!--[if lt IE 8]> <link href="/css/blueprint/ie.css" type="text/css" rel="stylesheet" /> <![endif]-->	 
+	<link href="/css/railscasts.css" type="text/css" rel="stylesheet" />
+	<link href="/css/site.css" type="text/css" rel="stylesheet" />
+
+	<script type="text/javascript" src="/js/writeCapture-1.0.5-nolib-min.js"></script>
+		<script type="text/javascript" src="/js/jquery.js"></script>
+	<script type="text/javascript" src="/js/site.js"></script>
+	<!--	<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-26827948-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script> -->
+		<script src="https://www.google.com/jsapi" type="text/javascript"></script>
+  <script language="Javascript" type="text/javascript">
+  //<![CDATA[
+google.load("search", "1");
+
+function OnLoad() {
+	// Create a search control
+	var searchControl = new google.search.SearchControl();
+	
+	// Add in a WebSearch
+	var webSearch = new google.search.WebSearch();
+	
+	// Restrict our search to pages from this site
+	webSearch.setSiteRestriction('ddrccw.github.com');
+	
+	// Add the searcher to the SearchControl
+	searchControl.addSearcher(webSearch);
+	
+	// tell the searcher to draw itself and tell it where to attach
+	searchControl.draw(document.getElementById("searchcontrol"));
+	// Add the value of "Search..." to the input field and a class of .empty
+}
+
+google.setOnLoadCallback(function() {
+  $(function() {
+	OnLoad()
+	$(".gsc-input > input").val("Search... powered by Google").addClass("empty");
+	 
+	// When you click on #search
+	$(".gsc-input > input").focus(function(){
+	 
+		// If the value is equal to "Search..."
+		if($(this).val() == "Search... powered by Google") {
+			// remove all the text and the class of .empty
+			$(this).val("").removeClass("empty");;
+		}
+		this.select();
+	});
+	 
+	// When the focus on #search is lost
+	$(".gsc-input > input").blur(function(){
+	 
+		// If the input field is empty
+		if($(this).val() == "") {
+			// Add the text "Search..." and a class of .empty
+			$(this).val("Search... powered by Google").addClass("empty");
+		}
+	});
+
+	$("#comment_heading").click(function()
+	{
+		$(this).next("#disqus_thread").slideToggle(500);
+		if($(this).text() == "Show Comments") {
+			$(this).text("Hide Comments")
+		}else{
+			$(this).text("Show Comments")
+		}
+	});
+		
+  });
+});
+
+
+  //]]>
+  </script>
+
+</head>
+
+<body>
+	<div class="container">
+	<!-- <div class="container showgrid"> -->
+		<div id="header" class="span-24">
+  <div id="menu" class="span-15 last">
+    <ul>
+      <li class="first"><a href="/">Home</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/blog">Blog</a></li>
+      <li><a href="/archives">Archives</a></li>
+      <!--<li><a href="/projects">Projects</a></li>-->
+      <!--<li class="last"><a id="mail" href="mailto:ddrccw@gmail.com">Contact</a></li>-->
+    </ul>
+  </div>
+</div>
+
+		
+		<div id="main" class="span-17">
+			<style type="text/css">
+h3,h4{ 
+	color: #335E8D;
+}			
+h3,h4 {
+	margin-left		: 3px;
+	font-variant	: small-caps;
+	font-weight		: normal;
+	border-bottom : 1px dotted #ccc;	
+}
+</style>
+
+
+
+
+<div class="post" id="main-content">
+	<h1>win7x64+fedora16双系统安装</h1>
+	<h4 class="large-bottom">
+		Posted on February 08, 2012
+		 in <a href="/categories/">日常</a> 
+
+		<span class="tag-list">
+			
+			<a href="/tags/linux">linux</a>
+			
+			<a href="/tags/fedora">fedora</a>
+			
+		</span>
+	</h4>
+	
+	<div class="content">
+		<h2>1 前言</h2>
+
+<p>win7的安装想必是最简单的，这里也不赘述了。由于是第一次尝试双系统安装，故本文主要记录的是双系统的安装过程。</p>
+
+<h2>2 准备</h2>
+
+<ul>
+<li>Fedora-16-x86_64-DVD.iso（3.49G），由于机子支持64位，所以就准备安装64位的fedora（dvd版，不是604m的Fedora-16-x86_64-Live-Desktop.iso）</li>
+<li>一个u盘（>=4G）或一个足够大的移动硬盘。</li>
+<li>本机硬盘要有至少20G的空间装fedora（实际上我分了50G来装）</li>
+</ul>
+
+
+<h2>3 安装</h2>
+
+<h3>3.1 最简单但也不推荐的方法</h3>
+
+<p>首先，使用liveusb-creator把镜像写入U盘。之后还要放iso到存储介质，这里分两种情况。</p>
+
+<ol>
+<li>如果你的u盘足够大，请直接将iso再拷入到u盘。</li>
+<li>如果你的u盘不够大，需要在本机的硬盘上或外接的移动硬盘另外分出一块足够大的分区，来放iso。根据网上的资料，都是分区必须为fat32 文件系统，不能为ntfs文件系统（我也是这样照做的，如果有机会我会试下ntfs的可行性），但是win7环境下，似乎处理比较麻烦。我是借助 wince系统来分出一块fat32的分区的。</li>
+</ol>
+
+
+<p>然后，修改U盘下/syslinux/syslinux.cfg，改成append initrd=initrd.img linux askmethod（这样安装过程就不会需要联网）。</p>
+
+<p>最后，插上u盘，先选择从u盘启动，在接下来的安装界面选择hard drive安装</p>
+
+<h3>3.2  直接从u盘安装</h3>
+
+<p>需要一个软件easyBCD。</p>
+
+<p>利用虚拟光驱从iso中抽取出isolinux下vmlinuz和initrd.img，将这两个文件和iso共同放在u盘的根目录下。</p>
+
+<p>然后打开EasyBCD，选择 Add New Entry — NeoGrub — Install</p>
+
+<p><img src="/images/posts/win7x64-fedora16-double-system/3.2-1.png" title="easyBCD" alt="alt easyBCD" /></p>
+
+<p>再点configure,在弹出来的 menu.lst  里添加：</p>
+
+<div class="highlight"><pre><code class="bash">title install fedora 16                      <span class="c">#启动项里会多出的一项</span>
+kernel <span class="o">(</span>hd1,0<span class="o">)</span>/vmlinuz linux askmethod       <span class="c">#不需要联网安装</span>
+initrd <span class="o">(</span>hd1,0<span class="o">)</span>/initrd.img
+</code></pre>
+</div>
+
+
+<p>注：硬盘的表示法说明如下</p>
+
+<blockquote><p>IDE接口中的整块硬盘在Linux系统中可以表示为/dev/hd[a-z]，比如/dev/hda，/dev/hdb … … ，也可以表示为hd[0-n] ，其中n是一个正整数，比如hd0,hd1,hd2 … …</p>
+
+<p>硬盘的分区也有两种表示方法，一种是/dev/hd[a-z]X，这个a-z表示a、b、c……z ，X是一个从1开始的正整数；比如/dev/hda1，/dev/hda2 …. /dev/hda6，/dev/hda7 … … 值得注意的是/dev/hd[a-z]X，如果X的值是1到4,表示硬盘的主分区（包含扩展分区）；逻辑分区从是从5开始的，比如/dev/hda5肯定 是逻辑分区了。同理，还有另外一种表示方法 (hd[0-n],y)【y>=0】。</p>
+
+<p>http://www.linuxsir.org/main/node/127?q=node/127#1</p></blockquote>
+
+<p>这里附上另外两种写法，不知是否与前者等价，以后有机会测试一下</p>
+
+<div class="highlight"><pre><code class="bash">title install fedora 16
+kernel <span class="o">(</span>sd1,0<span class="o">)</span>/vmlinuz linux askmethod
+initrd <span class="o">(</span>sd1,0<span class="o">)</span>/initrd.img
+</code></pre>
+</div>
+
+
+<p>或</p>
+
+<div class="highlight"><pre><code class="bash">title fedora 16
+root <span class="o">(</span>hd0,0<span class="o">)</span>
+kernel /vmlinuz <span class="nv">repo</span><span class="o">=</span>hd:/dev/sdb:/
+initrd /initrd.img
+boot
+</code></pre>
+</div>
+
+
+<p>其实上面的这些几行都可以待到从usb引导后到grub的终端中再写。</p>
+
+<p>成功从usb引导后，会来看到以下几个界面。</p>
+
+<p><img src="/images/posts/win7x64-fedora16-double-system/3.2-2.png" title="usb引导" alt="alt usb引导" />
+<img src="/images/posts/win7x64-fedora16-double-system/3.2-3.png" title="usb引导" alt="alt usb引导" /></p>
+
+<p>注意要在接下来的界面，选择好iso所在的磁盘分区（要结合自己的情况哦）。</p>
+
+<p><img src="/images/posts/win7x64-fedora16-double-system/3.2-4.png" title="usb引导" alt="alt usb引导" /></p>
+
+<p>做好上述这些，从u盘引导安装基本差不多了，剩下的就是fedora的安装了。</p>
+
+<p>我选择的是自定义分区，需要给bios boot 分2m的空间，/boot 分了256m（应该够用了，据说是只要1-2百兆就可以了），swap分了4G（因为我的内存是这么大），/home分了10G（这个看你需求），剩下的都给了/目录。</p>
+
+<p>注意在选择引导区的时候要选择/boot，不要选默认的。</p>
+
+<p>安装结束后，启动项里还不会有fedora，还需要借助easyBCD，制作好一个启动项，如下</p>
+
+<p><img src="/images/posts/win7x64-fedora16-double-system/3.2-5.png" title="bootstrap" alt="alt bootstrap" /></p>
+
+	</div>
+	
+	<div class="next-prev-nav low-top">
+		
+		-----------------------------------
+		<b>本文内容遵从<a title="Content licenced under Creative Commons by-nc-sa 3.0" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.zh">CC版权协议</a>转载请注明出自<a href="http://ddrccw.github.com">ddrccw</a></b>
+		-----------------------------------
+		<hr/>
+		
+		
+		
+			&laquo;&nbsp;<a href="/2012/02/22/vmware8-install-lion" rel="next" title="Vmware 8安装Lion">Vmware 8安装Lion</a>
+		
+	
+		
+			
+		
+		
+	
+		
+	
+		<br />
+	</div>
+
+	<hr />
+	<!--<div class="sharing">
+	
+	 
+	
+	
+	
+	
+	
+	
+	 
+</div>
+ -->
+	
+
+<script type="text/javascript">
+      var disqus_shortname = 'ddrccw';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://ddrccw.github.com/2012/02/08/win7x64-fedora16-double-system';
+        var disqus_url = 'http://ddrccw.github.com/2012/02/08/win7x64-fedora16-double-system';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+	<div>
+		<h2 id='comment_heading'>Hide Comments</h2>
+		<div id="disqus_thread" aria-live="polite"><div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'ddrccw'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+	</div>
+</div>
+
+		</div>
+		
+		
+			<div id="sidebar" class="span-6 push-1 last">
+	<div class="sidebar-module" id='gsearcher'>
+				 
+		<div id="searchcontrol">
+			
+		</div>
+		
+	</div>
+
+	<div class="sidebar-module">
+		<div class="title"><a href='/tags'>Tags</a></div>
+		
+            <span style="font-size: 100%">
+              <a href="/tags/ide/" title="1 post">IDE</a>
+            </span>
+          
+            <span style="font-size: 100%">
+              <a href="/tags/ipcu/" title="1 post">IPCU</a>
+            </span>
+          
+            <span style="font-size: 100%">
+              <a href="/tags/lion/" title="1 post">Lion</a>
+            </span>
+          
+            <span style="font-size: 100%">
+              <a href="/tags/vmware/" title="1 post">VMware</a>
+            </span>
+          
+            <span style="font-size: 100%">
+              <a href="/tags/cc/" title="1 post">c/c++</a>
+            </span>
+          
+            <span style="font-size: 100%">
+              <a href="/tags/codeblock/" title="1 post">codeblock</a>
+            </span>
+          
+            <span style="font-size: 100%">
+              <a href="/tags/fedora/" title="1 post">fedora</a>
+            </span>
+          
+            <span style="font-size: 100%">
+              <a href="/tags/ios/" title="1 post">iOS</a>
+            </span>
+          
+            <span style="font-size: 100%">
+              <a href="/tags/linux/" title="1 post">linux</a>
+            </span>
+          
+	</div>
+
+	<div class="sidebar-module">
+		<div class="title"><a href='/categories'>Categories</a></div>
+		<a href="/categories/"><strong>日常</strong></a> (2)<br /><a href="/categories/cc"><strong>c/c++</strong></a> (1)<br /><a href="/categories/ios"><strong>iOS开发</strong></a> (1)<br />
+	</div>
+	
+	<div class="sidebar-module">
+		<div class="title"><a href='/archives'>Archives</a></div>
+		<a href="/2012/07"><strong>July 2012</strong></a> (1)<br /><a href="/2012/02"><strong>February 2012</strong></a> (3)<br />
+	</div>
+</div>
+
+		
+		
+		<div id="footer" class="span-24"> 
+<span  title="Content licenced under Creative Commons by-nc-sa 3.0">版权所有<a title="Content licenced under Creative Commons by-nc-sa 3.0" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.zh">&copy;</a> 
+	2012-2012 ddrccw。
+</span> 
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="https://github.com/ddrccw">GitHub</a>
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="http://weibo.com/u/1706572835">新浪微博</a>
+ &nbsp;&nbsp;&nbsp;&nbsp; <a href="http://twitter.com/addfgg">Twitter</a>
+&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
+<span>
+	主题由<a title="site's theme made by Bilal Hussain" href="http://bilalh.github.com">Bilal Hussain Hussain</a>提供。
+</span>
+</div>
+
+	</div>
+	
+</body>
+</html>
