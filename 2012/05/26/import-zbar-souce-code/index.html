@@ -2,12 +2,12 @@
 <html>
 <head>
 	
-	<title>win7x64+fedora16双系统安装 - ddrccw's library</title>
+	<title>利用源码的方式导入ZBar作为第三方library - ddrccw's library</title>
 	
 	
 	<meta name="author" content="ddrccw" />
 	
-	<meta name="description" content="ddrccw's library win7x64+fedora16双系统安装" />
+	<meta name="description" content="ddrccw's library 利用源码的方式导入ZBar作为第三方library" />
 	
 
 	
@@ -138,117 +138,115 @@ h3,h4 {
 
 
 <div class="post" id="main-content">
-	<h1>win7x64+fedora16双系统安装</h1>
+	<h1>利用源码的方式导入ZBar作为第三方library</h1>
 	<h4 class="large-bottom">
-		Posted on February 08, 2012
-		 in <a href="/categories/">日常</a> 
+		Posted on May 26, 2012
+		 in <a href="/categories/ios">iOS开发</a> 
 
 		<span class="tag-list">
 			
-			<a href="/tags/linux">linux</a>
+			<a href="/tags/ios">iOS</a>
 			
-			<a href="/tags/fedora">fedora</a>
+			<a href="/tags/zbar">ZBar</a>
 			
 		</span>
 	</h4>
 	
 	<div class="content">
-		<h2>1 前言</h2>
+		<h2>背景</h2>
 
-<p>win7的安装想必是最简单的，这里也不赘述了。由于是第一次尝试双系统安装，故本文主要记录的是双系统的安装过程。</p>
+<p>项目中需要扫描的功能，网上搜索了一番，发现<a href="http://zbar.sourceforge.net" title="zbar">zbar</a>和<a href="http://code.google.com/p/zxing/">zxing</a>的使用比较普遍。但由于zxing的obj-c自带的封装只支持qrcode, 而项目中会需要扫描多种一维码和二维码。所以最终选择了<a href="http://zbar.sourceforge.net" title="zbar">zbar</a>。</p>
 
-<h2>2 准备</h2>
+<p>文中阐述引用的<a href="http://zbar.sourceforge.net" title="zbar">zbar</a>原生的代码是<a href="http://zbar.sourceforge.net" title="zbar">zbar</a>1.2.2，实验的ios版本为5</p>
+
+<h2>目的</h2>
+
+<p>由于<a href="http://zbar.sourceforge.net" title="zbar">zbar</a>使用 GNU LGPL 2.1协议，提供的sdk相关文档只是介绍了通过静态库的方式来添加进现有的项目。为了能针对相应的实际情况，更好的了解和学习zbar源码，故尝试了如下方法，保证成功引入项目的同时，又能方便查看其源码。</p>
+
+<h2>开始导入zbar</h2>
+
+<h3>1 准备</h3>
+
+<p>下载<a href="http://sourceforge.net/projects/zbar/files/zbar/0.10/zbar-0.10.tar.bz2/download">源码包</a>,将相关的代码文件导入到Xcode项目中。</p>
 
 <ul>
-<li>Fedora-16-x86_64-DVD.iso（3.49G），由于机子支持64位，所以就准备安装64位的fedora（dvd版，不是604m的Fedora-16-x86_64-Live-Desktop.iso）</li>
-<li>一个u盘（>=4G）或一个足够大的移动硬盘。</li>
-<li>本机硬盘要有至少20G的空间装fedora（实际上我分了50G来装）</li>
+<li>zbar 相关的c api           ./zbar</li>
+<li>zbar 相关的c/c++ header    ./include</li>
+<li>zbar iphone的obj-c code and related header  ./iphone</li>
 </ul>
 
 
-<h2>3 安装</h2>
+<h3>2 在Xcode项目中的步骤</h3>
 
-<h3>3.1 最简单但也不推荐的方法</h3>
+<p><strong>1. 在Header Search Paths中添加包含zbar源码和头文件的路径</strong></p>
 
-<p>首先，使用liveusb-creator把镜像写入U盘。之后还要放iso到存储介质，这里分两种情况。</p>
+<p><strong>2. 在Build setting中添加user-defined setting，如下图：</strong></p>
+
+<p><img src="/images/posts/import-zbar-source-code/2.2.jpeg" title="user-defined-setting" alt="alt user-defined-setting" /></p>
+
+<blockquote><p><strong><em>EXCLUDED_SOURCE_FILE_NAMESany</em></strong></p>
+
+<p>iOS simulator sdk
+   <code>ZBarReaderViewImpl_Capture.m ZBarCaptureReader.m</code></p>
+
+<p>any iOS sdk
+   <code>ZBarReaderViewImpl_Simulator.m</code></p>
+
+<p>GCC_MODEL_TUNING <code>G5</code></p>
+
+<p>PREBINDING <code>NO</code></p>
+
+<p>USE_HEADERMAP <code>NO</code></p></blockquote>
+
+<p><strong>3. 添加zbar依赖的类库</strong></p>
+
+<ul>
+<li> AVFoundation.framework (weak)</li>
+<li> CoreMedia.framework (weak)</li>
+<li> CoreVideo.framework (weak)</li>
+<li> QuartzCore.framework</li>
+<li> libiconv.dylib</li>
+</ul>
+
+
+<p><strong>4. 在prefix.pch 中添加相应的头文件</strong></p>
+
+<div class="highlight"><pre><code class="objc"><span class="cp">#import &lt;CoreGraphics/CoreGraphics.h&gt;</span>
+<span class="cp">#import &lt;QuartzCore/QuartzCore.h&gt;</span>
+<span class="cp">#import &lt;AVFoundation/AVFoundation.h&gt;</span>
+<span class="cp">#import &lt;CoreMedia/CoreMedia.h&gt;</span>
+<span class="cp">#import &lt;CoreVideo/CoreVideo.h&gt;</span>
+<span class="cp">#import &quot;ZBarSDK.h&quot;       </span><span class="c1">//zbar sdk required</span>
+</code></pre>
+</div>
+
+
+<p><strong>5. 确定哪些是要编译的源码</strong></p>
 
 <ol>
-<li>如果你的u盘足够大，请直接将iso再拷入到u盘。</li>
-<li>如果你的u盘不够大，需要在本机的硬盘上或外接的移动硬盘另外分出一块足够大的分区，来放iso。根据网上的资料，都是分区必须为fat32 文件系统，不能为ntfs文件系统（我也是这样照做的，如果有机会我会试下ntfs的可行性），但是win7环境下，似乎处理比较麻烦。我是借助 wince系统来分出一块fat32的分区的。</li>
+<li><p>明确需要编译的源码</p>
+
+<p> <img src="/images/posts/import-zbar-source-code/2.5.jpeg" title="required-compile" alt="alt required-compile" /></p></li>
+<li><p>明确不需要编译的</p>
+
+<ul>
+<li>./zbar/window</li>
+<li>./zbar/window.c</li>
+<li>./zbar/video</li>
+<li>./zbar/video.c</li>
+<li>./zbar/processor</li>
+<li>./zbar/processor.c</li>
+<li>./zbar/jpeg.c</li>
+<li>./zbar/svg.c</li>
+<li>./zbar/pdf417.c</li>
+</ul>
+</li>
 </ol>
 
 
-<p>然后，修改U盘下/syslinux/syslinux.cfg，改成append initrd=initrd.img linux askmethod（这样安装过程就不会需要联网）。</p>
+<p><strong><em>ps:</em></strong></p>
 
-<p>最后，插上u盘，先选择从u盘启动，在接下来的安装界面选择hard drive安装</p>
-
-<h3>3.2  直接从u盘安装</h3>
-
-<p>需要一个软件easyBCD。</p>
-
-<p>利用虚拟光驱从iso中抽取出isolinux下vmlinuz和initrd.img，将这两个文件和iso共同放在u盘的根目录下。</p>
-
-<p>然后打开EasyBCD，选择 Add New Entry — NeoGrub — Install</p>
-
-<p><img src="/images/posts/win7x64-fedora16-double-system/3.2-1.png" title="easyBCD" alt="alt easyBCD" /></p>
-
-<p>再点configure,在弹出来的 menu.lst  里添加：</p>
-
-<div class="highlight"><pre><code class="bash">title install fedora 16                      <span class="c">#启动项里会多出的一项</span>
-kernel <span class="o">(</span>hd1,0<span class="o">)</span>/vmlinuz linux askmethod       <span class="c">#不需要联网安装</span>
-initrd <span class="o">(</span>hd1,0<span class="o">)</span>/initrd.img
-</code></pre>
-</div>
-
-
-<p>注：硬盘的表示法说明如下</p>
-
-<blockquote><p>IDE接口中的整块硬盘在Linux系统中可以表示为/dev/hd[a-z]，比如/dev/hda，/dev/hdb … … ，也可以表示为hd[0-n] ，其中n是一个正整数，比如hd0,hd1,hd2 … …</p>
-
-<p>硬盘的分区也有两种表示方法，一种是/dev/hd[a-z]X，这个a-z表示a、b、c……z ，X是一个从1开始的正整数；比如/dev/hda1，/dev/hda2 …. /dev/hda6，/dev/hda7 … … 值得注意的是/dev/hd[a-z]X，如果X的值是1到4,表示硬盘的主分区（包含扩展分区）；逻辑分区从是从5开始的，比如/dev/hda5肯定 是逻辑分区了。同理，还有另外一种表示方法 (hd[0-n],y)【y>=0】。</p>
-
-<p>http://www.linuxsir.org/main/node/127?q=node/127#1</p></blockquote>
-
-<p>这里附上另外两种写法，不知是否与前者等价，以后有机会测试一下</p>
-
-<div class="highlight"><pre><code class="bash">title install fedora 16
-kernel <span class="o">(</span>sd1,0<span class="o">)</span>/vmlinuz linux askmethod
-initrd <span class="o">(</span>sd1,0<span class="o">)</span>/initrd.img
-</code></pre>
-</div>
-
-
-<p>或</p>
-
-<div class="highlight"><pre><code class="bash">title fedora 16
-root <span class="o">(</span>hd0,0<span class="o">)</span>
-kernel /vmlinuz <span class="nv">repo</span><span class="o">=</span>hd:/dev/sdb:/
-initrd /initrd.img
-boot
-</code></pre>
-</div>
-
-
-<p>其实上面的这些几行都可以待到从usb引导后到grub的终端中再写。</p>
-
-<p>成功从usb引导后，会来看到以下几个界面。</p>
-
-<p><img src="/images/posts/win7x64-fedora16-double-system/3.2-2.png" title="usb引导" alt="alt usb引导" />
-<img src="/images/posts/win7x64-fedora16-double-system/3.2-3.png" title="usb引导" alt="alt usb引导" /></p>
-
-<p>注意要在接下来的界面，选择好iso所在的磁盘分区（要结合自己的情况哦）。</p>
-
-<p><img src="/images/posts/win7x64-fedora16-double-system/3.2-4.png" title="usb引导" alt="alt usb引导" /></p>
-
-<p>做好上述这些，从u盘引导安装基本差不多了，剩下的就是fedora的安装了。</p>
-
-<p>我选择的是自定义分区，需要给bios boot 分2m的空间，/boot 分了256m（应该够用了，据说是只要1-2百兆就可以了），swap分了4G（因为我的内存是这么大），/home分了10G（这个看你需求），剩下的都给了/目录。</p>
-
-<p>注意在选择引导区的时候要选择/boot，不要选默认的。</p>
-
-<p>安装结束后，启动项里还不会有fedora，还需要借助easyBCD，制作好一个启动项，如下</p>
-
-<p><img src="/images/posts/win7x64-fedora16-double-system/3.2-5.png" title="bootstrap" alt="alt bootstrap" /></p>
+<p>建议产品环境还是通过上述方法先利用源码编译一个静态库，再结合相关的项目使用</p>
 
 	</div>
 	
@@ -261,14 +259,18 @@ boot
 		
 		
 		
-			&laquo;&nbsp;<a href="/2012/02/22/vmware8-install-lion" rel="next" title="Vmware 8安装Lion">Vmware 8安装Lion</a>
+			&laquo;&nbsp;<a href="/2012/07/30/single-app-mode" rel="next" title="single app mode">single app mode</a>
 		
 	
 		
 			
+				|
+			
 		
 		
 	
+		
+			<a href="/2012/02/23/install-codeblock" rel="previous" title="开发利器codeblocks安装">开发利器codeblocks安装</a>&nbsp;&raquo;
 		
 	
 		<br />
@@ -294,8 +296,8 @@ boot
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://ddrccw.github.com/2012/02/08/win7x64-fedora16-double-system';
-        var disqus_url = 'http://ddrccw.github.com/2012/02/08/win7x64-fedora16-double-system';
+        var disqus_identifier = 'http://ddrccw.github.com/2012/05/26/import-zbar-souce-code';
+        var disqus_url = 'http://ddrccw.github.com/2012/05/26/import-zbar-souce-code';
         var disqus_script = 'embed.js';
       
     (function () {

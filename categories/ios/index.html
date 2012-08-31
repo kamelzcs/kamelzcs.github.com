@@ -148,6 +148,27 @@ google.setOnLoadCallback(function() {
 	<p class><a href="/2012/07/30/single-app-mode">Read more...</a></p>
 </div>
 
+<div class="post-listing">
+	<h2><a href="/2012/05/26/import-zbar-souce-code" class="dark-link">利用源码的方式导入ZBar作为第三方library</a></h2>
+	<div class="low-top">
+		<span class="low-top ">Posted on  May 26, 2012 in <a href="/categories/ios">iOS开发</a></span>
+		<span class="tag-list">
+			
+			<a href="/tags/ios">iOS</a>
+			
+			<a href="/tags/zbar">ZBar</a>
+			
+		</span>
+	</div>
+
+
+	
+	<p>背景 项目中需要扫描的功能，网上搜索了一番，发现zbar和zxing的使用比较普遍。但由于zxing的obj-c自带的封装只支持qrcode, 而项目中会需要扫描多种一维码和二维码。所以最终选择了zbar。 文中阐述引用的zbar原生的代码是zbar1.2.2，实验的ios版本为5 目的 由于zbar使用 GNU LGPL 2.1协议，提供的sdk相关文档只是介绍了通过静态库的方式来添加进现有的项目。为了能针对相应的实际情况，更好的了解和学习zbar源码，故尝试了如下方法，保证成功引入项目的同时，又能方便查看其源码。 开始导入zbar 1 准备 下载源码包,将相关的代码文件导入到Xcode项目中。 zbar 相关的c api ./zbar zbar 相关的c/c++ header ./include zbar iphone的obj-c code and related header ./iphone 2 在Xcode项目中的步骤 1. 在Header Search Paths中添加包含zbar源码和头文件的路径 2. 在Build setting中添加user-defined setting，如下图： EXCLUDED_SOURCE_FILE_NAMESany iOS simulator sdk ZBarReaderViewImpl_Capture.m ZBarCaptureReader.m any iOS sdk ZBarReaderViewImpl_Simulator.m GCC_MODEL_TUNING G5...</p>
+	
+	
+	<p class><a href="/2012/05/26/import-zbar-souce-code">Read more...</a></p>
+</div>
+
 </div>
 
 
@@ -166,39 +187,43 @@ google.setOnLoadCallback(function() {
 	<div class="sidebar-module">
 		<div class="title"><a href='/tags'>Tags</a></div>
 		
-            <span style="font-size: 100%">
+            <span style="font-size: 75%">
               <a href="/tags/ide/" title="1 post">IDE</a>
             </span>
           
-            <span style="font-size: 100%">
+            <span style="font-size: 75%">
               <a href="/tags/ipcu/" title="1 post">IPCU</a>
             </span>
           
-            <span style="font-size: 100%">
+            <span style="font-size: 75%">
               <a href="/tags/lion/" title="1 post">Lion</a>
             </span>
           
-            <span style="font-size: 100%">
+            <span style="font-size: 75%">
               <a href="/tags/vmware/" title="1 post">VMware</a>
             </span>
           
-            <span style="font-size: 100%">
+            <span style="font-size: 75%">
+              <a href="/tags/zbar/" title="1 post">ZBar</a>
+            </span>
+          
+            <span style="font-size: 75%">
               <a href="/tags/cc/" title="1 post">c/c++</a>
             </span>
           
-            <span style="font-size: 100%">
+            <span style="font-size: 75%">
               <a href="/tags/codeblock/" title="1 post">codeblock</a>
             </span>
           
-            <span style="font-size: 100%">
+            <span style="font-size: 75%">
               <a href="/tags/fedora/" title="1 post">fedora</a>
             </span>
           
-            <span style="font-size: 100%">
-              <a href="/tags/ios/" title="1 post">iOS</a>
+            <span style="font-size: 280%">
+              <a href="/tags/ios/" title="2 posts">iOS</a>
             </span>
           
-            <span style="font-size: 100%">
+            <span style="font-size: 75%">
               <a href="/tags/linux/" title="1 post">linux</a>
             </span>
           
@@ -206,12 +231,12 @@ google.setOnLoadCallback(function() {
 
 	<div class="sidebar-module">
 		<div class="title"><a href='/categories'>Categories</a></div>
-		<a href="/categories/"><strong>日常</strong></a> (2)<br /><a href="/categories/cc"><strong>c/c++</strong></a> (1)<br /><a href="/categories/ios"><strong>iOS开发</strong></a> (1)<br />
+		<a href="/categories/"><strong>日常</strong></a> (2)<br /><a href="/categories/cc"><strong>c/c++</strong></a> (1)<br /><a href="/categories/ios"><strong>iOS开发</strong></a> (2)<br />
 	</div>
 	
 	<div class="sidebar-module">
 		<div class="title"><a href='/archives'>Archives</a></div>
-		<a href="/2012/07"><strong>July 2012</strong></a> (1)<br /><a href="/2012/02"><strong>February 2012</strong></a> (3)<br />
+		<a href="/2012/07"><strong>July 2012</strong></a> (1)<br /><a href="/2012/05"><strong>May 2012</strong></a> (1)<br /><a href="/2012/02"><strong>February 2012</strong></a> (3)<br />
 	</div>
 </div>
 

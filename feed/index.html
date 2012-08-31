@@ -4,7 +4,7 @@
 		<link type="application/atom+xml" href="http://ddrccw.github.com/feed" rel="self" />
 		<link type="text" href="http://ddrccw.github.com" rel="alternate" />
 		
-		<updated>2012-08-30T10:26:31+08:00</updated>
+		<updated>2012-08-31T18:58:59+08:00</updated>
 		<id>http://ddrccw.github.com</id>
 		<author><name>ddrccw</name></author>
 		<rights>Copyright (c) 2012 ddrccw</rights>
@@ -16,6 +16,14 @@
 					<updated>2012-07-30T22:18:00+08:00</updated>
 					<id>http://ddrccw.github.com/2012/07/30/single-app-mode/</id>
 					<summary type="html">所谓的single app mode, 就是让iOS设备只运行指定的app，同时让物理的home键失效, 让使用者无法退出相应的app。咋看之下，或许这种模式显得很不符合用户的使用习惯。但具体考虑还是存在适合使用这种mode的情况，如企业用户app，教育类app, 信息展示app或儿童使用的app。 iOS 6已经准备提供Guided Access，其描述如下： iOS 6 comes with even more features to make it easier...</summary>
+			</entry>
+		
+			<entry>
+					<title>利用源码的方式导入ZBar作为第三方library</title>
+					<link href="http://ddrccw.github.com/2012/05/26/import-zbar-souce-code/"/>
+					<updated>2012-05-26T02:18:00+08:00</updated>
+					<id>http://ddrccw.github.com/2012/05/26/import-zbar-souce-code/</id>
+					<summary type="html">背景 项目中需要扫描的功能，网上搜索了一番，发现zbar和zxing的使用比较普遍。但由于zxing的obj-c自带的封装只支持qrcode, 而项目中会需要扫描多种一维码和二维码。所以最终选择了zbar。 文中阐述引用的zbar原生的代码是zbar1.2.2，实验的ios版本为5 目的 由于zbar使用 GNU LGPL 2.1协议，提供的sdk相关文档只是介绍了通过静态库的方式来添加进现有的项目。为了能针对相应的实际情况，更好的了解和学习zbar源码，故尝试了如下方法，保证成功引入项目的同时，又能方便查看其源码。 开始导入zbar 1 准备 下载源码包,将相关的代码文件导入到Xcode项目中。 zbar 相关的c api ./zbar zbar 相关的c/c++ header...</summary>
 			</entry>
 		
 			<entry>
