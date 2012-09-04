@@ -23,10 +23,10 @@
 	<script type="text/javascript" src="/js/writeCapture-1.0.5-nolib-min.js"></script>
 		<script type="text/javascript" src="/js/jquery.js"></script>
 	<script type="text/javascript" src="/js/site.js"></script>
-	<!--	<script type="text/javascript">
+	<script type="text/javascript">
 
   var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-26827948-1']);
+  _gaq.push(['_setAccount', 'UA-34556823-1']);
   _gaq.push(['_trackPageview']);
 
   (function() {
@@ -35,8 +35,8 @@
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
 
-</script> -->
-		<script src="https://www.google.com/jsapi" type="text/javascript"></script>
+</script>
+	<script src="https://www.google.com/jsapi" type="text/javascript"></script>
   <script language="Javascript" type="text/javascript">
   //<![CDATA[
 google.load("search", "1");
@@ -144,7 +144,7 @@ google.setOnLoadCallback(function() {
 
 
 	
-	<p>1 介绍 codeblocks是我开发c/c++时喜欢用的一款IDE，相比于vs安装时的庞大，它则小了很多，但它的功能却依然强大。它的调试是可视化的，相信这有助于增强工作效率。另外，我看中的则是它的跨平台性，如果编程得当的话，在window下的项目在linux下依然可用。这够强大吧。 2 安装 for win 2.1 安装mingw 下载安装工具mingw-get-inst-20111118.exe(http://sourceforge.net/projects/mingw/files/)，我选择的是联网安装（可能下的不是稳定版的，而是最新版的）。 装编译器（我选了c，c++，objc）,还有MSYS（cmd终端中也能使用linux的一些命令） 设置环境变量 MINGW_PATH=D:\MinGW #这个只是我的安装目录，还得注意版本号问题 C_INCLUDE_PATH=%MINGW_PATH%\include;%MINGW_PATH%\lib\gcc\mingw32\4.6.2\include CPLUS_INCLUDE_PATH=%C_INCLUDE_PATH% LIBRARY_PATH=%MINGW_PATH%\lib;%MINGW_PATH%\lib\gcc\mingw32\4.6.2 PATH=%MINGW_PATH%\bin;%MINGW_PATH%\libexec\gcc\mingw32\4.6.2;%MINGW_PATH%\msys\1.0\bin;%MINGW_PATH%\msys\1.0\sbin\awk cmd中查看 g++ -v linux各种命令尝试下 2.2 完成codeblocks安装 下载codeblocks-10.05-setup.exe（http://www.codeblocks.org/downloads/26） 安装好后，这时还是没有集成gdb 下载http://qp-gcc.googlecode.com/files/gdb-7.2.7z，将其中的内容解压至/bin 然后，在codeblocks的settings->compiler and debugger->debugger settings，如图 这样设置好后，就可以在codeblocks下调试啦~~~~ 关于集成调试的文章可参考 http://code.google.com/p/qp-gcc/wiki/GDB 3 安装for linux 3.1 xwWidget安装 首先要确定pkg-config和gtk是否安装，以下主要是确认gtk+2.0 pkg-config –modversion gtk+ #(查看1.2.x版本) pkg-config –modversion gtk+-2.0 #(查看 2.x 版本)...</p>
+	<p>开发利器codeblocks安装</p>
 	
 	
 	<p class><a href="/2012/02/23/install-codeblock">Read more...</a></p>

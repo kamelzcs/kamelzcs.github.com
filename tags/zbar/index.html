@@ -23,10 +23,10 @@
 	<script type="text/javascript" src="/js/writeCapture-1.0.5-nolib-min.js"></script>
 		<script type="text/javascript" src="/js/jquery.js"></script>
 	<script type="text/javascript" src="/js/site.js"></script>
-	<!--	<script type="text/javascript">
+	<script type="text/javascript">
 
   var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-26827948-1']);
+  _gaq.push(['_setAccount', 'UA-34556823-1']);
   _gaq.push(['_trackPageview']);
 
   (function() {
@@ -35,8 +35,8 @@
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
 
-</script> -->
-		<script src="https://www.google.com/jsapi" type="text/javascript"></script>
+</script>
+	<script src="https://www.google.com/jsapi" type="text/javascript"></script>
   <script language="Javascript" type="text/javascript">
   //<![CDATA[
 google.load("search", "1");
@@ -141,7 +141,7 @@ google.setOnLoadCallback(function() {
 
 
 	
-	<p>背景 项目中需要扫描的功能，网上搜索了一番，发现zbar和zxing的使用比较普遍。但由于zxing的obj-c自带的封装只支持qrcode, 而项目中会需要扫描多种一维码和二维码。所以最终选择了zbar。 文中阐述引用的zbar原生的代码是zbar1.2.2，实验的ios版本为5 目的 由于zbar使用 GNU LGPL 2.1协议，提供的sdk相关文档只是介绍了通过静态库的方式来添加进现有的项目。为了能针对相应的实际情况，更好的了解和学习zbar源码，故尝试了如下方法，保证成功引入项目的同时，又能方便查看其源码。 开始导入zbar 1 准备 下载源码包,将相关的代码文件导入到Xcode项目中。 zbar 相关的c api ./zbar zbar 相关的c/c++ header ./include zbar iphone的obj-c code and related header ./iphone 2 在Xcode项目中的步骤 1. 在Header Search Paths中添加包含zbar源码和头文件的路径 2. 在Build setting中添加user-defined setting，如下图： EXCLUDED_SOURCE_FILE_NAMESany iOS simulator sdk ZBarReaderViewImpl_Capture.m ZBarCaptureReader.m any iOS sdk ZBarReaderViewImpl_Simulator.m GCC_MODEL_TUNING G5...</p>
+	<p>利用源码的方式导入ZBar作为第三方library</p>
 	
 	
 	<p class><a href="/2012/05/26/import-zbar-souce-code">Read more...</a></p>
