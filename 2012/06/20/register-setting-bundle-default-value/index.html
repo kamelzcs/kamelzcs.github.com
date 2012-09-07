@@ -2,16 +2,16 @@
 <html>
 <head>
 	
-	<title>win7x64+fedora16双系统安装 - ddrccw's library</title>
+	<title>获取Settings bundle中预定义的默认值 - ddrccw's library</title>
 	
 	
 	<meta name="author" content="ddrccw" />
 	
-	<meta name="description" content="win7x64+fedora16双系统安装" />
+	<meta name="description" content="ddrccw's library 获取Settings bundle中预定义的默认值" />
 	
 
 	
-	<meta name="keywords" content="linux fedora win7 双系统" />	
+	<meta name="keywords" content="iOS Settings.bundle" />	
 	
 
 	<meta name="robots" content="noodp, nydir" />
@@ -140,121 +140,83 @@ h3,h4 {
 
 
 <div class="post" id="main-content">
-	<h1>win7x64+fedora16双系统安装</h1>
+	<h1>获取Settings bundle中预定义的默认值</h1>
 	<h4 class="large-bottom">
-		Posted on February 08, 2012
-		 in <a href="/categories/">日常</a> 
+		Posted on June 20, 2012
+		 in <a href="/categories/ios">iOS开发</a> 
 
 		<span class="tag-list">
 			
-			<a href="/tags/linux">linux</a>
+			<a href="/tags/ios">iOS</a>
 			
-			<a href="/tags/fedora">fedora</a>
-			
-			<a href="/tags/win7">win7</a>
-			
-			<a href="/tags/">双系统</a>
+			<a href="/tags/settings-bundle">Settings.bundle</a>
 			
 		</span>
 	</h4>
 	
 	<div class="content">
-		<h2>1 前言</h2>
+		<h2>1 背景</h2>
 
-<p>win7的安装想必是最简单的，这里也不赘述了。由于是第一次尝试双系统安装，故本文主要记录的是双系统的安装过程。</p>
+<p>所谓的Settings Bundle就是把一个名为Settings.bundle的文件放置于你的app的根目录下。该文件可以被系统的Settings.app所用，来配置你自己的app的一些设置。
+具体介绍参考<a href="http://developer.apple.com/library/ios/#DOCUMENTATION/Cocoa/Conceptual/UserDefaults/Preferences/Preferences.html#//apple_ref/doc/uid/10000059i-CH6-SW5">Implementing an iOS Settings Bundle</a></p>
 
-<h2>2 准备</h2>
+<h2>2 问题描述</h2>
 
-<ul>
-<li>Fedora-16-x86_64-DVD.iso（3.49G），由于机子支持64位，所以就准备安装64位的fedora（dvd版，不是604m的Fedora-16-x86_64-Live-Desktop.iso）</li>
-<li>一个u盘（>=4G）或一个足够大的移动硬盘。</li>
-<li>本机硬盘要有至少20G的空间装fedora（实际上我分了50G来装）</li>
-</ul>
+<p>理想情况下，我们希望app安装完好，然后直接进入能载入一些相关配置，如果有默认配置值，则直接加以应用。
+然而开发过程中，在xcode中设置setting bundle里一些配置项的默认值后，运行app，通过<code>[[NSUserDefaults standardUserDefaults] objectForKey:@"demokey"]</code>的方法（注：在setting.app中设置的值是可以通过该方法获取的），却获取不了先前预定义的默认值。虽然在setting.app中可以看到设置的默认值。</p>
 
+<h2>3 解决方法</h2>
 
-<h2>3 安装</h2>
+<p>经过一番查询，可以得出结论目前ios sdk (&lt;= 5.1.1)未提供直接获取默认值的方法，需要自己实现。如下：</p>
 
-<h3>3.1 最简单但也不推荐的方法</h3>
+<div class="highlight"><pre><code class="objc"><span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">registerDefaultsFromSettingsBundle</span> <span class="p">{</span>
+    <span class="p">[[</span><span class="n">NSUserDefaults</span> <span class="n">standardUserDefaults</span><span class="p">]</span> <span class="nl">registerDefaults:</span><span class="p">[</span><span class="n">self</span> <span class="nl">defaultsFromPlistNamed:</span><span class="s">@&quot;Root&quot;</span><span class="p">]];</span>
+<span class="p">}</span>
 
-<p>首先，使用liveusb-creator把镜像写入U盘。之后还要放iso到存储介质，这里分两种情况。</p>
+<span class="o">-</span> <span class="p">(</span><span class="n">NSDictionary</span> <span class="o">*</span><span class="p">)</span><span class="nl">defaultsFromPlistNamed:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="n">plistName</span> <span class="p">{</span>
+    <span class="n">NSString</span> <span class="o">*</span><span class="n">settingsBundle</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSBundle</span> <span class="n">mainBundle</span><span class="p">]</span> <span class="nl">pathForResource:</span><span class="s">@&quot;Settings&quot;</span> <span class="nl">ofType:</span><span class="s">@&quot;bundle&quot;</span><span class="p">];</span>
+    <span class="n">NSAssert</span><span class="p">(</span><span class="n">settingsBundle</span><span class="p">,</span> <span class="s">@&quot;Could not find Settings.bundle while loading defaults.&quot;</span><span class="p">);</span>
 
-<ol>
-<li>如果你的u盘足够大，请直接将iso再拷入到u盘。</li>
-<li>如果你的u盘不够大，需要在本机的硬盘上或外接的移动硬盘另外分出一块足够大的分区，来放iso。根据网上的资料，都是分区必须为fat32 文件系统，不能为ntfs文件系统（我也是这样照做的，如果有机会我会试下ntfs的可行性），但是win7环境下，似乎处理比较麻烦。我是借助 wince系统来分出一块fat32的分区的。</li>
-</ol>
+    <span class="n">NSString</span> <span class="o">*</span><span class="n">plistFullName</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSString</span> <span class="nl">stringWithFormat:</span><span class="s">@&quot;%@.plist&quot;</span><span class="p">,</span> <span class="n">plistName</span><span class="p">];</span>
 
+    <span class="n">NSDictionary</span> <span class="o">*</span><span class="n">settings</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSDictionary</span> <span class="nl">dictionaryWithContentsOfFile:</span><span class="p">[</span><span class="n">settingsBundle</span> <span class="nl">stringByAppendingPathComponent:</span><span class="n">plistFullName</span><span class="p">]];</span>
+    <span class="n">NSAssert1</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">@&quot;Could not load plist &#39;%@&#39; while loading defaults.&quot;</span><span class="p">,</span> <span class="n">plistFullName</span><span class="p">);</span>
 
-<p>然后，修改U盘下/syslinux/syslinux.cfg，改成append initrd=initrd.img linux askmethod（这样安装过程就不会需要联网）。</p>
+    <span class="n">NSArray</span> <span class="o">*</span><span class="n">preferences</span> <span class="o">=</span> <span class="p">[</span><span class="n">settings</span> <span class="nl">objectForKey:</span><span class="s">@&quot;PreferenceSpecifiers&quot;</span><span class="p">];</span>
+    <span class="n">NSAssert1</span><span class="p">(</span><span class="n">preferences</span><span class="p">,</span> <span class="s">@&quot;Could not find preferences entry in plist &#39;%@&#39; while loading defaults.&quot;</span><span class="p">,</span> <span class="n">plistFullName</span><span class="p">);</span>
 
-<p>最后，插上u盘，先选择从u盘启动，在接下来的安装界面选择hard drive安装</p>
+    <span class="n">NSMutableDictionary</span> <span class="o">*</span><span class="n">defaults</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSMutableDictionary</span> <span class="n">dictionary</span><span class="p">];</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">NSDictionary</span> <span class="o">*</span><span class="n">prefSpecification</span> <span class="k">in</span> <span class="n">preferences</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">NSString</span> <span class="o">*</span><span class="n">key</span> <span class="o">=</span> <span class="p">[</span><span class="n">prefSpecification</span> <span class="nl">objectForKey:</span><span class="s">@&quot;Key&quot;</span><span class="p">];</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">key</span><span class="p">){</span>
+            <span class="kt">id</span> <span class="n">value</span> <span class="o">=</span> <span class="p">[</span><span class="n">prefSpecification</span> <span class="nl">objectForKey:</span><span class="s">@&quot;DefaultValue&quot;</span><span class="p">];</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+                <span class="p">[</span><span class="n">defaults</span> <span class="nl">setObject:</span><span class="n">value</span> <span class="nl">forKey:</span><span class="n">key</span><span class="p">];</span>
+            <span class="p">}</span> 
+        <span class="p">}</span>
 
-<h3>3.2  直接从u盘安装</h3>
+        <span class="n">NSString</span> <span class="o">*</span><span class="n">type</span> <span class="o">=</span> <span class="p">[</span><span class="n">prefSpecification</span> <span class="nl">objectForKey:</span><span class="s">@&quot;Type&quot;</span><span class="p">];</span>
+        <span class="k">if</span> <span class="p">([</span><span class="n">type</span> <span class="nl">isEqualToString:</span><span class="s">@&quot;PSChildPaneSpecifier&quot;</span><span class="p">])</span> <span class="p">{</span>
+            <span class="n">NSString</span> <span class="o">*</span><span class="n">file</span> <span class="o">=</span> <span class="p">[</span><span class="n">prefSpecification</span> <span class="nl">objectForKey:</span><span class="s">@&quot;File&quot;</span><span class="p">];</span>
+            <span class="n">NSAssert1</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s">@&quot;Unable to get child plist name from plist &#39;%@&#39;&quot;</span><span class="p">,</span> <span class="n">plistFullName</span><span class="p">);</span>
+            <span class="p">[</span><span class="n">defaults</span> <span class="nl">addEntriesFromDictionary:</span><span class="p">[</span><span class="n">self</span> <span class="nl">defaultsFromPlistNamed:</span><span class="n">file</span><span class="p">]];</span>
+        <span class="p">}</span>
 
-<p>需要一个软件easyBCD。</p>
+    <span class="p">}</span>
 
-<p>利用虚拟光驱从iso中抽取出isolinux下vmlinuz和initrd.img，将这两个文件和iso共同放在u盘的根目录下。</p>
-
-<p>然后打开EasyBCD，选择 Add New Entry — NeoGrub — Install</p>
-
-<p><img src="/images/posts/win7x64-fedora16-double-system/3.2-1.png" title="easyBCD" alt="alt easyBCD" /></p>
-
-<p>再点configure,在弹出来的 menu.lst  里添加：</p>
-
-<div class="highlight"><pre><code class="bash">title install fedora 16                      <span class="c">#启动项里会多出的一项</span>
-kernel <span class="o">(</span>hd1,0<span class="o">)</span>/vmlinuz linux askmethod       <span class="c">#不需要联网安装</span>
-initrd <span class="o">(</span>hd1,0<span class="o">)</span>/initrd.img
+    <span class="k">return</span> <span class="n">defaults</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre>
 </div>
 
 
-<p>注：硬盘的表示法说明如下</p>
+<p><strong>说明</strong></p>
 
-<blockquote><p>IDE接口中的整块硬盘在Linux系统中可以表示为/dev/hd[a-z]，比如/dev/hda，/dev/hdb … … ，也可以表示为hd[0-n] ，其中n是一个正整数，比如hd0,hd1,hd2 … …</p>
-
-<p>硬盘的分区也有两种表示方法，一种是/dev/hd[a-z]X，这个a-z表示a、b、c……z ，X是一个从1开始的正整数；比如/dev/hda1，/dev/hda2 …. /dev/hda6，/dev/hda7 … … 值得注意的是/dev/hd[a-z]X，如果X的值是1到4,表示硬盘的主分区（包含扩展分区）；逻辑分区从是从5开始的，比如/dev/hda5肯定 是逻辑分区了。同理，还有另外一种表示方法 (hd[0-n],y)【y>=0】。</p>
-
-<p>http://www.linuxsir.org/main/node/127?q=node/127#1</p></blockquote>
-
-<p>这里附上另外两种写法，不知是否与前者等价，以后有机会测试一下</p>
-
-<div class="highlight"><pre><code class="bash">title install fedora 16
-kernel <span class="o">(</span>sd1,0<span class="o">)</span>/vmlinuz linux askmethod
-initrd <span class="o">(</span>sd1,0<span class="o">)</span>/initrd.img
-</code></pre>
-</div>
-
-
-<p>或</p>
-
-<div class="highlight"><pre><code class="bash">title fedora 16
-root <span class="o">(</span>hd0,0<span class="o">)</span>
-kernel /vmlinuz <span class="nv">repo</span><span class="o">=</span>hd:/dev/sdb:/
-initrd /initrd.img
-boot
-</code></pre>
-</div>
-
-
-<p>其实上面的这些几行都可以待到从usb引导后到grub的终端中再写。</p>
-
-<p>成功从usb引导后，会来看到以下几个界面。</p>
-
-<p><img src="/images/posts/win7x64-fedora16-double-system/3.2-2.png" title="usb引导" alt="alt usb引导" />
-<img src="/images/posts/win7x64-fedora16-double-system/3.2-3.png" title="usb引导" alt="alt usb引导" /></p>
-
-<p>注意要在接下来的界面，选择好iso所在的磁盘分区（要结合自己的情况哦）。</p>
-
-<p><img src="/images/posts/win7x64-fedora16-double-system/3.2-4.png" title="usb引导" alt="alt usb引导" /></p>
-
-<p>做好上述这些，从u盘引导安装基本差不多了，剩下的就是fedora的安装了。</p>
-
-<p>我选择的是自定义分区，需要给bios boot 分2m的空间，/boot 分了256m（应该够用了，据说是只要1-2百兆就可以了），swap分了4G（因为我的内存是这么大），/home分了10G（这个看你需求），剩下的都给了/目录。</p>
-
-<p>注意在选择引导区的时候要选择/boot，不要选默认的。</p>
-
-<p>安装结束后，启动项里还不会有fedora，还需要借助easyBCD，制作好一个启动项，如下</p>
-
-<p><img src="/images/posts/win7x64-fedora16-double-system/3.2-5.png" title="bootstrap" alt="alt bootstrap" /></p>
+<p>上述方法支持从setting bundle中获取配置的默认值，并且setting bundle在setting.app的main panel中可以包含多个child panel。
+只需要在
+<code>- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</code>
+中调用一次,随后就可以直接利用NSUserDefaults获取默认值。
+相关讨论具体参看<a href="http://stackoverflow.com/questions/510216/can-you-make-the-settings-in-settings-bundle-default-even-if-you-dont-open-the">stackoverflow</a></p>
 
 	</div>
 	
@@ -267,14 +229,18 @@ boot
 		
 		
 		
-			&laquo;&nbsp;<a href="/2012/02/22/vmware8-install-lion" rel="next" title="Vmware 8安装Lion">Vmware 8安装Lion</a>
+			&laquo;&nbsp;<a href="/2012/07/30/single-app-mode" rel="next" title="single app mode">single app mode</a>
 		
 	
 		
 			
+				|
+			
 		
 		
 	
+		
+			<a href="/2012/05/26/import-zbar-souce-code" rel="previous" title="利用源码的方式导入ZBar作为第三方library">利用源码的方式导入ZBar作为第三方library</a>&nbsp;&raquo;
 		
 	
 		<br />
@@ -300,8 +266,8 @@ boot
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://ddrccw.github.com/2012/02/08/win7x64-fedora16-double-system';
-        var disqus_url = 'http://ddrccw.github.com/2012/02/08/win7x64-fedora16-double-system';
+        var disqus_identifier = 'http://ddrccw.github.com/2012/06/20/register-setting-bundle-default-value';
+        var disqus_url = 'http://ddrccw.github.com/2012/06/20/register-setting-bundle-default-value';
         var disqus_script = 'embed.js';
       
     (function () {

@@ -4,7 +4,7 @@
 		<link type="application/atom+xml" href="http://ddrccw.github.com/feed" rel="self" />
 		<link type="text" href="http://ddrccw.github.com" rel="alternate" />
 		
-		<updated>2012-09-04T19:09:15+08:00</updated>
+		<updated>2012-09-07T17:03:08+08:00</updated>
 		<id>http://ddrccw.github.com</id>
 		<author><name>ddrccw</name></author>
 		<rights>Copyright (c) 2012 ddrccw</rights>
@@ -16,6 +16,14 @@
 					<updated>2012-07-30T22:18:00+08:00</updated>
 					<id>http://ddrccw.github.com/2012/07/30/single-app-mode/</id>
 					<summary type="html">所谓的single app mode, 就是让iOS设备只运行指定的app，同时让物理的home键失效, 让使用者无法退出相应的app。咋看之下，或许这种模式显得很不符合用户的使用习惯。但具体考虑还是存在适合使用这种mode的情况，如企业用户app，教育类app, 信息展示app或儿童使用的app。 iOS 6已经准备提供Guided Access，其描述如下： iOS 6 comes with even more features to make it easier...</summary>
+			</entry>
+		
+			<entry>
+					<title>获取Settings bundle中预定义的默认值</title>
+					<link href="http://ddrccw.github.com/2012/06/20/register-setting-bundle-default-value/"/>
+					<updated>2012-06-20T23:18:00+08:00</updated>
+					<id>http://ddrccw.github.com/2012/06/20/register-setting-bundle-default-value/</id>
+					<summary type="html">1 背景 所谓的Settings Bundle就是把一个名为Settings.bundle的文件放置于你的app的根目录下。该文件可以被系统的Settings.app所用，来配置你自己的app的一些设置。 具体介绍参考Implementing an iOS Settings Bundle 2 问题描述 理想情况下，我们希望app安装完好，然后直接进入能载入一些相关配置，如果有默认配置值，则直接加以应用。 然而开发过程中，在xcode中设置setting bundle里一些配置项的默认值后，运行app，通过[[NSUserDefaults standardUserDefaults] objectForKey:@"demokey"]的方法（注：在setting.app中设置的值是可以通过该方法获取的），却获取不了先前预定义的默认值。虽然在setting.app中可以看到设置的默认值。 3 解决方法 经过一番查询，可以得出结论目前ios sdk...</summary>
 			</entry>
 		
 			<entry>

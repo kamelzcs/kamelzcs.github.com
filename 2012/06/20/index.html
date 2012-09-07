@@ -2,12 +2,12 @@
 <html>
 <head>
 	
-	<title>Tag: ZBar - ddrccw's library</title>
+	<title>Archives for June 20, 2012 - ddrccw's library</title>
 	
 	
 	<meta name="author" content="ddrccw" />
 	
-	<meta name="description" content="Tag: ZBar" />
+	<meta name="description" content="ddrccw's library Archives for June 20, 2012" />
 	
 
 	
@@ -122,31 +122,32 @@ google.setOnLoadCallback(function() {
 
 		
 		<div id="main" class="span-17">
-			<h1 class="large-bottom">Tag: ZBar</h1>
+			<h1>Archives for June 20, 2012</h1>
+
 <div id="main-content">
-
-
+	   
+	
 <div class="post-listing">
-	<h2><a href="/2012/05/26/import-zbar-souce-code" class="dark-link">利用源码的方式导入ZBar作为第三方library</a></h2>
+	<h2><a href="/2012/06/20/register-setting-bundle-default-value" class="dark-link">获取Settings bundle中预定义的默认值</a></h2>
 	<div class="low-top">
-		<span class="low-top ">Posted on  May 26, 2012 in <a href="/categories/ios">iOS开发</a></span>
+		<span class="low-top ">Posted on  June 20, 2012 in <a href="/categories/ios">iOS开发</a></span>
 		<span class="tag-list">
 			
 			<a href="/tags/ios">iOS</a>
 			
-			<a href="/tags/zbar">ZBar</a>
+			<a href="/tags/settings-bundle">Settings.bundle</a>
 			
 		</span>
 	</div>
 
 
 	
-	<p>利用源码的方式导入ZBar作为第三方library</p>
+	<p>1 背景 所谓的Settings Bundle就是把一个名为Settings.bundle的文件放置于你的app的根目录下。该文件可以被系统的Settings.app所用，来配置你自己的app的一些设置。 具体介绍参考Implementing an iOS Settings Bundle 2 问题描述 理想情况下，我们希望app安装完好，然后直接进入能载入一些相关配置，如果有默认配置值，则直接加以应用。 然而开发过程中，在xcode中设置setting bundle里一些配置项的默认值后，运行app，通过[[NSUserDefaults standardUserDefaults] objectForKey:@"demokey"]的方法（注：在setting.app中设置的值是可以通过该方法获取的），却获取不了先前预定义的默认值。虽然在setting.app中可以看到设置的默认值。 3 解决方法 经过一番查询，可以得出结论目前ios sdk (&lt;= 5.1.1)未提供直接获取默认值的方法，需要自己实现。如下： - (void)registerDefaultsFromSettingsBundle { [[NSUserDefaults standardUserDefaults] registerDefaults:[self defaultsFromPlistNamed:@&quot;Root&quot;]]; } - (NSDictionary *)defaultsFromPlistNamed:(NSString *)plistName { NSString *settingsBundle = [[NSBundle mainBundle] pathForResource:@&quot;Settings&quot; ofType:@&quot;bundle&quot;]; NSAssert(settingsBundle, @&quot;Could not find Settings.bundle while loading defaults.&quot;);...</p>
 	
 	
-	<p class><a href="/2012/05/26/import-zbar-souce-code">Read more...</a></p>
+	<p class><a href="/2012/06/20/register-setting-bundle-default-value">Read more...</a></p>
 </div>
-
+	
 </div>
 
 
