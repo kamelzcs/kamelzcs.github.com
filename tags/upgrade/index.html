@@ -2,12 +2,12 @@
 <html>
 <head>
 	
-	<title>Tag: win7 - ddrccw's library</title>
+	<title>Tag: upgrade - ddrccw's library</title>
 	
 	
 	<meta name="author" content="ddrccw" />
 	
-	<meta name="description" content="Tag: win7" />
+	<meta name="description" content="Tag: upgrade" />
 	
 
 	
@@ -122,33 +122,31 @@ google.setOnLoadCallback(function() {
 
 		
 		<div id="main" class="span-17">
-			<h1 class="large-bottom">Tag: win7</h1>
+			<h1 class="large-bottom">Tag: upgrade</h1>
 <div id="main-content">
 
 
 <div class="post-listing">
-	<h2><a href="/2012/02/08/win7x64-fedora16-double-system" class="dark-link">win7x64+fedora16双系统安装</a></h2>
+	<h2><a href="/2012/12/03/upgrade-to-ios6" class="dark-link">升级app到ios6</a></h2>
 	<div class="low-top">
-		<span class="low-top ">Posted on  February 08, 2012 in <a href="/categories/">日常</a></span>
+		<span class="low-top ">Posted on  December 03, 2012 in <a href="/categories/ios">ios开发</a></span>
 		<span class="tag-list">
 			
-			<a href="/tags/linux">linux</a>
+			<a href="/tags/ios6">ios6</a>
 			
-			<a href="/tags/fedora">fedora</a>
+			<a href="/tags/upgrade">upgrade</a>
 			
-			<a href="/tags/win7">win7</a>
-			
-			<a href="/tags/">双系统</a>
+			<a href="/tags/uinavigationbar">UINavigationBar</a>
 			
 		</span>
 	</div>
 
 
 	
-	<p>win7x64+fedora16双系统安装</p>
+	<p>前言 手头上的项目开发时原本跑的板子是ipad2（ipad5.1.1），但考虑到客户那边到时会购买新的ipad，势必要让现阶段的代码能够在ios6上运行，故花了点时间做了一下适配工作。已下讨论到的问题仅在我的适配过程中遇到，并不涵盖升级app到ios6的全部问题。 正题 旋转 参考RN-iOSSDK-6_0，在&lt;ios6的版本中，UIViewController类中提供shouldAutorotateToInterfaceOrientation:的方法告诉系统实现的VC支持什么方向的旋转。但在ios6中，旋转支持的判断则不会涉及到开发过程中的每个VC，责任更多的推到了上游。 一方面，系统会从app提供的info.plist文件和app的delegate类的application:supportedInterfaceOrientationsForWindow:方法中获取旋转支持的信息。当然，后者优先级大于前者。 另一方面，系统会从root或top-most full-screen的VC的supportedInterfaceOrientationsForWindow:和 shouldAutorotate 方法获取旋转支持的信息。所谓root，就是一定要在app delegate类中设置rootViewController。top-most full-screen则很有迷惑性，你可能会想当然的以为是自己在屏幕上看到的app当前全屏状态的那个VC。其实不然，如果你用了UINavigationController或其他类似的容器类时，那些容器类才是真正的top-most full-screen的VC。 实际适配过程中，一是我的UINavigationController本身也是位于其他自定义的容器类A中，二是实际主要展示的界面内容却又是在UINavigationController的子VC中。所以为了让app支持旋转，我需要让系统知道UINavigationController的子VC旋转支持的方向。有了思路，剩下的就好办。分别实现容器类A，UINavigationController类，显示内容的VC类的supportedInterfaceOrientationsForWindow: 和 shouldAutorotate 方法。虽然系统只会问容器类A，但我只要从容器类A一级一级往下询问即可。 注：UINavigationController需要子类化或一个Category类才能重写那两个方法。 导航条自定义背景 由于项目设计需要，同一个navigationController的不同层次的导航条背景有些许不同，并且设计师提供的只是一小段图片（需要将图片平铺）。 切换背景倒是没什么问题，无非是在viewWillAppear中，利用self.navigationController.navigationBar（不是[UINavigationBar appearance]）的setBackgroundImage:forBarMetrics:方法更改。 但是关键的是在平铺图片的时候出了点麻烦。。。ios5中没有任何问题，在demo程序中如图1， 然而在ios6中出现了诡异的问题，导航条背景出错了，如图2， 刚开始还以为是代码错了，后来经过多番排查测试，才发现问题出在图片上。一般来说设计师出的图如果不是透明的，会在保存png图片时把透明度一项去除掉，这样的图相比使用了alpha通道的图会小不少。ios6估计底层改了一些代码，由于给的图比较小，又没有alpha通道，导致出现了图2的情况。 解决方法：给图片添加上alpha通道或把可以平铺的图片尺寸加大即可。 ps： 起初，还怀疑是代码问题，顺便试了一下[UINavigationBar appearance]的setBackgroundImage:forBarMetrics:方法，该方法是修改全局的导航条背景，并且需要在viewDidLoad之前使用,而在viewDidLoad中使用时，不影响当前的导航条。 handle low memory warning &lt;iOS6 当内存不够时，系统会先调用didReceiveMemoryWarning，其中调用super的该方法会让系统根据当前view的情况（比如是否在屏幕上），决定释放VC的view。如果要释放view，便会依次调用viewWillUnload和viewDidUnload。一般来说，可以在viewWillUnload和viewDidUnload中释放与view相关的对象（这些对象往往可以在viewDidLoad中重新构建）。而因为在vc的view仍在屏幕上时，仍可能接收low memory warning，所以不在didReceiveMemoryWarning释放view相关的对象，但可以释放一些不重要的数据结构。 >=iOS6 当内存不够时，系统将只会调用didReceiveMemoryWarning。根据文档 The memory used by a view to draw itself onscreen is...</p>
 	
 	
-	<p class><a href="/2012/02/08/win7x64-fedora16-double-system">Read more...</a></p>
+	<p class><a href="/2012/12/03/upgrade-to-ios6">Read more...</a></p>
 </div>
 
 </div>

@@ -2,16 +2,16 @@
 <html>
 <head>
 	
-	<title>在github上用jekyll搭建个人blog - ddrccw's library</title>
+	<title>升级app到ios6 - ddrccw's library</title>
 	
 	
 	<meta name="author" content="ddrccw" />
 	
-	<meta name="description" content="Blogging with jekyll" />
+	<meta name="description" content="ddrccw's library 升级app到ios6" />
 	
 
 	
-	<meta name="keywords" content="github jekyll blog" />	
+	<meta name="keywords" content="upgrade ios6 rotation 旋转 UINavigationBar" />	
 	
 
 	<meta name="robots" content="noodp, nydir" />
@@ -140,18 +140,18 @@ h3,h4 {
 
 
 <div class="post" id="main-content">
-	<h1>在github上用jekyll搭建个人blog</h1>
+	<h1>升级app到ios6</h1>
 	<h4 class="large-bottom">
-		Posted on August 14, 2012
-		 in <a href="/categories/">日常</a> 
+		Posted on December 03, 2012
+		 in <a href="/categories/ios">ios开发</a> 
 
 		<span class="tag-list">
 			
-			<a href="/tags/github">github</a>
+			<a href="/tags/ios6">ios6</a>
 			
-			<a href="/tags/github-pages">github-pages</a>
+			<a href="/tags/upgrade">upgrade</a>
 			
-			<a href="/tags/jekyll">jekyll</a>
+			<a href="/tags/uinavigationbar">UINavigationBar</a>
 			
 		</span>
 	</h4>
@@ -159,178 +159,95 @@ h3,h4 {
 	<div class="content">
 		<h2>前言</h2>
 
-<p>说起写个人blog，如果是在学生时代，我肯定会觉得不可思议，理由很简单--我很懒的动笔。但让我燃起写blog的决心，却还得从工作后开始说起。平常工作中，我难免会遇到各种各样的问题。有了问题，自然需要放狗搜索，一篇一篇的翻看过去。如果是过去，我如果看到好文会保存文章链接到书签，有时往往一个问题的解决会让我收集好多个书签，于是随着时间的延长，我的浏览器书签栏也越来越臃肿。更可恶的是，有时一个同样问题的解决，由于我个人理解的不够深入或记忆不足等原因，最终导致我又得打开一个个书签去看。这样与其浪费找同样问题的时间，还不如花点时间记点笔记整理一下思路来加深理解。由此权衡利弊，我不得不开始blog，理由同样很简单--想偷懒。</p>
-
-<p>之前的一段时间，我曾用wordpress+nginx+mysql分别在win和linux下搭过一个blog。但自从我开始在mac下从事ios开发并接触了git期间，我偶然了解到大名鼎鼎的github可以针对个人或组织用jekll免费搭建站点。于是，我怀着好奇心，做了一番研究和尝试之后，最终我果断选择了jekyll。它吸引我的一个重要原因就是，让我能花更多的时间用来写文字，而只需要一些终端命令就能通过简洁的markdown语法实现很好的排版并合成页面。</p>
+<p>手头上的项目开发时原本跑的板子是ipad2（ipad5.1.1），但考虑到客户那边到时会购买新的ipad，势必要让现阶段的代码能够在ios6上运行，故花了点时间做了一下适配工作。已下讨论到的问题仅在我的适配过程中遇到，并不涵盖升级app到ios6的全部问题。</p>
 
 <h2>正题</h2>
 
-<p>前面废话了一堆，现在开始动手搭blog。以下的步骤可能不太详细，但相信大体的流程还是清晰的。</p>
+<h3>旋转</h3>
 
-<h3>1 申请一个github账户</h3>
+<p>参考<a href="https://developer.apple.com/library/ios/#releasenotes/General/RN-iOSSDK-6_0/_index.html" title="RN-iOSSDK-6_0">RN-iOSSDK-6_0</a>，在&lt;ios6的版本中，UIViewController类中提供<code>shouldAutorotateToInterfaceOrientation:</code>的方法告诉系统实现的VC支持什么方向的旋转。但在ios6中，旋转支持的判断则不会涉及到开发过程中的每个VC，责任更多的推到了上游。</p>
 
-<p>这个应该不用解释了，有了账户就能建立两种page</p>
+<p>一方面，系统会从app提供的info.plist文件和app的delegate类的<code>application:supportedInterfaceOrientationsForWindow:</code>方法中获取旋转支持的信息。当然，后者优先级大于前者。</p>
 
-<ol>
-<li>user/organization page      <code>--用于个人和组织的主页</code></li>
-<li>project page                <code>--用于自己账户下对应项目的主页</code></li>
-</ol>
+<p>另一方面，系统会从<strong>root</strong>或<strong>top-most full-screen</strong>的VC的<code>supportedInterfaceOrientationsForWindow:</code>和 <code>shouldAutorotate</code> 方法获取旋转支持的信息。所谓<strong>root</strong>，就是一定要在app delegate类中设置rootViewController。<strong>top-most full-screen</strong>则很有迷惑性，你可能会想当然的以为是自己在屏幕上看到的app当前全屏状态的那个VC。其实不然，如果你用了UINavigationController或其他类似的容器类时，那些容器类才是真正的<strong>top-most full-screen</strong>的VC。</p>
 
+<p>实际适配过程中，一是我的UINavigationController本身也是位于其他自定义的容器类A中，二是实际主要展示的界面内容却又是在UINavigationController的子VC中。所以为了让app支持旋转，我需要让系统知道UINavigationController的子VC旋转支持的方向。有了思路，剩下的就好办。分别实现容器类A，UINavigationController类，显示内容的VC类的<code>supportedInterfaceOrientationsForWindow:</code> 和 <code>shouldAutorotate</code> 方法。虽然系统只会问容器类A，但我只要从容器类A一级一级往下询问即可。</p>
 
-<p>因为是个人blog，所以我选择1.
-另外为了方便管理仓库，我使用ssh的方式来建立自己的电脑和github的连接，这样也省的每次更新的时候要输账户和密码。具体参考<a href="https://help.github.com/articles/generating-ssh-keys">https://help.github.com/articles/generating-ssh-keys</a></p>
+<p>注：UINavigationController需要子类化或一个Category类才能重写那两个方法。</p>
 
-<h3>2 基础篇</h3>
+<h3>导航条自定义背景</h3>
 
-<h4>2.1 rubyGem for installing jekyll</h4>
+<p>由于项目设计需要，同一个navigationController的不同层次的导航条背景有些许不同，并且设计师提供的只是一小段图片（需要将图片平铺）。</p>
 
-<p>谷歌了解了一下，Jekyll是一个简单的使用Ruby的文章内容生成器。看来要使用jekll之前还得先搞定ruby= =|||</p>
+<p>切换背景倒是没什么问题，无非是在viewWillAppear中，利用self.navigationController.navigationBar（不是[UINavigationBar appearance]）的<code>setBackgroundImage:forBarMetrics:</code>方法更改。</p>
 
-<p>由于我没接触过ruby，所以我在这里花点篇幅来介绍下如何安装ruby。</p>
+<p>但是关键的是在平铺图片的时候出了点麻烦。。。ios5中没有任何问题，在demo程序中如图1，</p>
 
-<p>1) mac环境：</p>
+<p><img src="/images/posts/upgrade-to-ios6/2.1.png" title="正常情况" alt="alt normal" /></p>
 
-<p>mac下ruby版本太低，要先升级。需要安装rvm。但是还要先解决curl证书问题。</p>
+<p>然而在ios6中出现了诡异的问题，导航条背景出错了，如图2，</p>
 
-<p>a 获取curl证书</p>
+<p><img src="/images/posts/upgrade-to-ios6/2.2.png" title="诡异情况" alt="alt weird" /></p>
 
-<div class="highlight"><pre><code class="bash">curl http://curl.haxx.se/ca/cacert.pem&gt;cacert.pem
+<p>刚开始还以为是代码错了，后来经过多番排查测试，才发现问题出在图片上。一般来说设计师出的图如果不是透明的，会在保存png图片时把透明度一项去除掉，这样的图相比使用了alpha通道的图会小不少。ios6估计底层改了一些代码，由于给的图比较小，又没有alpha通道，导致出现了图2的情况。</p>
+
+<p>解决方法：给图片添加上alpha通道或把可以平铺的图片尺寸加大即可。</p>
+
+<p>ps：
+起初，还怀疑是代码问题，顺便试了一下[UINavigationBar appearance]的<code>setBackgroundImage:forBarMetrics:</code>方法，该方法是修改全局的导航条背景，并且需要在viewDidLoad之前使用,而在viewDidLoad中使用时，不影响当前的导航条。</p>
+
+<h3>handle low memory warning</h3>
+
+<p>&lt;iOS6</p>
+
+<p>当内存不够时，系统会先调用didReceiveMemoryWarning，其中调用super的该方法会让系统根据当前view的情况（比如是否在屏幕上），决定释放VC的view。如果要释放view，便会依次调用viewWillUnload和viewDidUnload。一般来说，可以在viewWillUnload和viewDidUnload中释放与view相关的对象（这些对象往往可以在viewDidLoad中重新构建）。而因为在vc的view仍在屏幕上时，仍可能接收low memory warning，所以不在didReceiveMemoryWarning释放view相关的对象，但可以释放一些不重要的数据结构。</p>
+
+<p>>=iOS6</p>
+
+<p>当内存不够时，系统将只会调用didReceiveMemoryWarning。根据<a href="http://developer.apple.com/library/ios/#featuredarticles/ViewControllerPGforiPhoneOS/ViewLoadingandUnloading/ViewLoadingandUnloading.html#//apple_ref/doc/uid/TP40007457-CH10-SW1" title="view controller programming guide for iOS">文档</a></p>
+
+<blockquote><p>The memory used by a view to draw itself onscreen is potentially quite large. However, the system automatically releases these expensive resources when the view is not attached to a window. The remaining memory used by most views is small enough that it is not worth it for the system to automatically purge and recreate the view hierarchy.</p></blockquote>
+
+<p>view相关对象的内存管理似乎交给了系统，而didReceiveMemoryWarning依然重点关注释放那些不重要的数据结构。当然，想要显式释放view相关对象也是可以的，请参考</p>
+
+<div class="highlight"><pre><code class="objc"><span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">didReceiveMemoryWarning</span>
+<span class="p">{</span>
+    <span class="p">[</span><span class="n">super</span> <span class="n">didReceiveMemoryWarning</span><span class="p">];</span>
+    <span class="c1">// Add code to clean up any of your own resources that are no longer necessary.</span>
+    <span class="k">if</span> <span class="p">([</span><span class="n">self</span><span class="p">.</span><span class="n">view</span> <span class="n">window</span><span class="p">]</span> <span class="o">==</span> <span class="nb">nil</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// Add code to preserve data stored in the views that might be</span>
+        <span class="c1">// needed later.</span>
+ 
+        <span class="c1">// Add code to clean up other strong references to the view in</span>
+        <span class="c1">// the view hierarchy.</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">view</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">otherView</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>  <span class="c1">//add by me</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </code></pre>
 </div>
 
 
-<p>b 设置相关的环境变量</p>
+<p>适配过程，只要参考上面的说明更改即可。我的app内存要求不高，所以暂时不采用显式管理的方法。</p>
 
-<div class="highlight"><pre><code class="bash"><span class="nb">export </span><span class="nv">CURL_CA_BUNDLE</span><span class="o">=</span>~/.ssh/cacert.pem
-</code></pre>
-</div>
+<h2>总结</h2>
 
+<p>总的来说，目前还算比较顺利的升级了app。另外，photoshop知识有待加强，有空需要补一补>_&lt;</p>
 
-<p>c 安装rvm并设置环境变量</p>
+<h2>参考资料</h2>
 
-<div class="highlight"><pre><code class="bash">curl -L get.rvm.io | bash -s stable <span class="o">[[</span> -s <span class="s2">&quot;/Users/&lt;username&gt;/.rvm/scripts/rvm&quot;</span> <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="nb">source</span> <span class="s2">&quot;/Users/  &lt;username&gt;/.rvm/scripts/rvm&quot;</span>    <span class="c">#注意&lt;username&gt;替换成你自己的</span>
-</code></pre>
-</div>
+<p>1） <a href="https://developer.apple.com/library/ios/#releasenotes/General/RN-iOSSDK-6_0/_index.html" title="RN-iOSSDK-6_0">RN-iOSSDK-6_0</a></p>
 
+<p>2） <a href="http://stackoverflow.com/questions/8257556/ios-5-curious-about-uiappearance/">http://stackoverflow.com/questions/8257556/ios-5-curious-about-uiappearance/</a></p>
 
-<p>d 安装ruby</p>
+<p>3） <a href="http://pan.baidu.com/share/link?shareid=154803&amp;uk=1678482707/" title="navi-demo">navi-demo</a></p>
 
-<blockquote><ol>
-<li>Open Terminal</li>
-<li>sudo rvm install 1.9.3</li>
-<li>Now that Ruby is installed you can type the following command to use the     newer version of Ruby: rvm use 1.9.3</li>
-<li>To verify type: ruby -v</li>
-<li>To make 1.9.3 the default: rvm --default 1.9.3</li>
-</ol>
-</blockquote>
+<p>4） WWDC 2012 Session 236 - The Evolution of View Controllers on iOS</p>
 
-<p>e 安装jekyll</p>
+<p>5） <a href="http://stackoverflow.com/questions/4354332/didreceivememorywarning-and-viewdidunload">http://stackoverflow.com/questions/4354332/didreceivememorywarning-and-viewdidunload</a></p>
 
-<p>有了ruby，安装jekyll水到渠成。</p>
-
-<div class="highlight"><pre><code class="bash">sudo gem install jekyll
-</code></pre>
-</div>
-
-
-<h4>2.2 jekyll推荐工具</h4>
-
-<p><strong> 2.2.1 安装rdiscount来解析markdown语言 </strong></p>
-
-<p>虽然jekyll默认用maruku来解析markdown语言,但都说用c语言实现的rdiscount解析器的速度更快，所以我也直接选择rdiscount。</p>
-
-<div class="highlight"><pre><code class="bash">sudo gem install rdiscount
-</code></pre>
-</div>
-
-
-<p><strong> 2.2.2 pygments--支持语法高亮，要装python </strong></p>
-
-<p>身为挨踢攻城狮的blog，难免要贴一些代码。jekyll虽然原生不支持高亮代码，但支持通过插件工具来高亮代码。<a href="http://pygments.org" title="pygments">pygments</a>就是一个比较流行的插件工具，它支持的语言种类相当丰富。</p>
-
-<p>mac上它可以通过Macports和Homebrew,我习惯使用前者。</p>
-
-<div class="highlight"><pre><code class="bash">sudo port install python25 py25-pygments
-sudo ln -s &lt;py25-pygments&gt; &lt;pygments&gt;  <span class="c">#非必须：因为jekyll只能识别pygments这个名称，但是port下来的可执行文件的名称可能并不是pygments，所以我在这里创建符号链接</span>
-</code></pre>
-</div>
-
-
-<h4>2.3 Last But Not The Least</h4>
-
-<p>有了前面的基础，可以说离成功建站只有一步之遥。有技术的web开发人士大可直接自己开发，但是我等菜鸟还是可以先clone借鉴一下别人的站点风格+.+。。。</p>
-
-<p>下面以我自己的为例，纯属参考。</p>
-
-<p>首先，可以在<code>https://github.com/mojombo/jekyll/wiki/Sites</code>找找看有没有自己喜欢的站点。</p>
-
-<p>我的站点风格来自<code>http://bilalh.github.com</code></p>
-
-<p><strong> 2.3.1 代码借鉴 </strong></p>
-
-<ol>
-<li><code>git clone https://github.com/Bilalh/bilalh.github.com.git</code></li>
-<li><p>安装必要的插件工具</p>
-
-<p> <code>sudo gem install nokogiri sass growl</code></p></li>
-<li><p>按需更改</p>
-
-<ul>
-<li><p>与原作者相关的所有信息</p>
-
-<p>  404.html、default.html等页面,当然主要是模板页。</p></li>
-<li><p>页面布局，相关代码</p>
-
-<p>  原作者的blog内容比较多，有些页面我用不到就直接删了；还有原作者写了一些jekll插件，要使用它的就必须在_config.yml中将safe设置为false，因为github不支持自定义插件。</p></li>
-<li><p>google analytics 和 disqus</p>
-
-<p>  前者用来分析站点的相关信息，和seo有关，要埋上一些代码。后者是第三方的评论系统，在官网注册个账户，同样在网站里埋上一些代码即可。</p></li>
-</ul>
-</li>
-</ol>
-
-
-<p><strong> 2.3.2 发布自己的blog </strong></p>
-
-<ol>
-<li>在自己的github上建个项目，并clone到本地。</li>
-<li>按照Bilalh的blog的设计思想，就是开个source分支来写blog的页面代码，再生成静态页面到master，最终push到github。稍等一会儿就可以通过github访问自己blog啦~~</li>
-</ol>
-
-
-<h3>3 使用篇</h3>
-
-<p>本人能力有限，在此贴出一些有用的站点，权当借鉴参考~~</p>
-
-<p>1 可以了解jeklly的配置、目录结构意义等。</p>
-
-<p><a href="https://github.com/mojombo/jekyll">https://github.com/mojombo/jekyll</a></p>
-
-<p>2 想自己写插件，还是乖乖学ruby好了。</p>
-
-<p><a href="http://www.ruby-lang.org/en/">http://www.ruby-lang.org/en/</a></p>
-
-<p>3 简洁明了的markdown标记语言。</p>
-
-<p><a href="http://daringfireball.net/projects/markdown/">http://daringfireball.net/projects/markdown/</a></p>
-
-<p>3 推荐写作工具</p>
-
-<p><a href="http://mouapp.com">mou</a>：一个所见即所得的markdown编辑器。</p>
-
-<p><a href="http://bywordapp.com">byword</a>：markdown编辑器，提供一个简洁的全屏幕打字界面，可以更加专注文字创作。</p>
-
-<h2>后序</h2>
-
-<p>终于成功地在github上搭起了blog，剩下的就需要自己坚持不懈地努力blog啦~~加油>_&lt;</p>
-
-<h2>参考文献</h2>
-
-<p>1） <a href="https://help.github.com/categories/20/articles" title="github pages help">github pages help</a></p>
-
-<p>2） <a href="http://stackoverflow.com/questions/6414232/curl-certificate-error-when-using-rvm-to-install-ruby-1-9-2">http://stackoverflow.com/questions/6414232/curl-certificate-error-when-using-rvm-to-install-ruby-1-9-2</a></p>
-
-<p>3） <a href="http://brandonbohling.com/2011/08/27/Installing-Jekyll-on-Mac/">http://brandonbohling.com/2011/08/27/Installing-Jekyll-on-Mac/</a></p>
+<p>6） <a href="http://stackoverflow.com/questions/5069978/didreceivememorywarning-viewdidunload-and-dealloc">http://stackoverflow.com/questions/5069978/didreceivememorywarning-viewdidunload-and-dealloc</a></p>
 
 	</div>
 	
@@ -343,18 +260,12 @@ sudo ln -s &lt;py25-pygments&gt; &lt;pygments&gt;  <span class="c">#非必须：
 		
 		
 		
-			&laquo;&nbsp;<a href="/2012/10/09/apple-products-comparison" rel="next" title="apple products comparison">apple products comparison</a>
-		
 	
-		
-			
-				|
-			
 		
 		
 	
 		
-			<a href="/2012/07/30/single-app-mode" rel="previous" title="single app mode">single app mode</a>&nbsp;&raquo;
+			<a href="/2012/11/26/learn-from-google-objective-c-style-guide" rel="previous" title="Google Objective-C Style Guide学习笔记">Google Objective-C Style Guide学习笔记</a>&nbsp;&raquo;
 		
 	
 		<br />
@@ -380,8 +291,8 @@ sudo ln -s &lt;py25-pygments&gt; &lt;pygments&gt;  <span class="c">#非必须：
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://ddrccw.github.com/2012/08/14/blogging-with-jekyll';
-        var disqus_url = 'http://ddrccw.github.com/2012/08/14/blogging-with-jekyll';
+        var disqus_identifier = 'http://ddrccw.github.com/2012/12/03/upgrade-to-ios6';
+        var disqus_url = 'http://ddrccw.github.com/2012/12/03/upgrade-to-ios6';
         var disqus_script = 'embed.js';
       
     (function () {
