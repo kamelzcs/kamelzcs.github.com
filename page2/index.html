@@ -2,12 +2,12 @@
 <html>
 <head>
 	
-	<title>ddrccw's library</title>
+	<title>Blog - ddrccw's library</title>
 	
 	
 	<meta name="author" content="ddrccw" />
 	
-	<meta name="description" content="ddrccw's library " />
+	<meta name="description" content="ddrccw's library Blog" />
 	
 
 	
@@ -114,241 +114,280 @@ google.setOnLoadCallback(function() {
       <li><a href="/about">About</a></li>
       <li><a href="/blog">Blog</a></li>
       <li><a href="/archives">Archives</a></li>
-      <!--<li><a href="/projects">Projects</a></li>-->
+      <li><a href="/projects">Projects</a></li>
       <!--<li class="last"><a id="mail" href="mailto:ddrccw@gmail.com">Contact</a></li>-->
     </ul>
   </div>
 </div>
 
 		
-		<div id="main" class="span-24">
-			<h1 class="h1-5">ddrccw's library</h1>
+		<div id="main" class="span-17">
+			<h1 class="neg-bottom">Blog<a href="/feed" class="small quiet rss"><img src="/images/rss.png" alt="RSS" width=32 height=32 /></a>
+</h1>
+<span class="low-top quiet large-bottom"><a href="/archives" class="small quiet">Archives</a></span>
 
-<!--
-<p class="large-para">This site contains the various programs and scripts I have created, along with a blog.</p>
-
-<div class="prepend-2 append-2 home span-8">
-On the project page find the <a href='/projects'>open source project</a> that I have created.
-</div>
-
-<div class="prepend-2 append-2 span-8 last">
-There also a <a href="/blog">blog</a> with an <a href='/feed'>RSS</a> feed that contains updates about my projects and also contains posts to do with technology.	  
-</div>
-
-<div class="span-24">
-	<h2>Latest Projects</h2>
-
+<div id="main-content">
 	
 	
-</div>
--->
+<div class="post-listing">
+	<h2><a href="/2012/06/20/register-setting-bundle-default-value" class="dark-link">获取Settings bundle中预定义的默认值</a></h2>
+	<div class="low-top">
+		<span class="low-top ">Posted on  June 20, 2012 in <a href="/categories/ios">iOS开发</a></span>
+		<span class="tag-list">
+			
+			<a href="/tags/ios">iOS</a>
+			
+			<a href="/tags/settings-bundle">Settings.bundle</a>
+			
+		</span>
+	</div>
 
-<div class="span-24">
-	<h2 class>最近的文章</h2>
 
 	
-	 <!--single page only has 4 articles-->
+	<p>1 背景 所谓的Settings Bundle就是把一个名为Settings.bundle的文件放置于你的app的根目录下。该文件可以被系统的Settings.app所用，来配置你自己的app的一些设置。 具体介绍参考Implementing an iOS Settings Bundle 2 问题描述 理想情况下，我们希望app安装完好，然后直接进入能载入一些相关配置，如果有默认配置值，则直接加以应用。 然而开发过程中，在xcode中设置setting bundle里一些配置项的默认值后，运行app，通过[[NSUserDefaults standardUserDefaults] objectForKey:@"demokey"]的方法（注：在setting.app中设置的值是可以通过该方法获取的），却获取不了先前预定义的默认值。虽然在setting.app中可以看到设置的默认值。 3 解决方法 经过一番查询，可以得出结论目前ios sdk (&lt;= 5.1.1)未提供直接获取默认值的方法，需要自己实现。如下： - (void)registerDefaultsFromSettingsBundle { [[NSUserDefaults standardUserDefaults] registerDefaults:[self defaultsFromPlistNamed:@&quot;Root&quot;]]; } - (NSDictionary *)defaultsFromPlistNamed:(NSString *)plistName { NSString *settingsBundle = [[NSBundle mainBundle] pathForResource:@&quot;Settings&quot; ofType:@&quot;bundle&quot;]; NSAssert(settingsBundle, @&quot;Could not find Settings.bundle while loading defaults.&quot;);...</p>
 	
-<div class="post-listing">
-  <div class="inner">
-    <span class="title">
-    <span class="date">2012-12-03</span>
-    <a href="/2012/12/03/upgrade-to-ios6">
-      升级app到ios6
-    </a>
-    </span>
-    <span class="tag-list">
-      
-      <a href="/tags/ios6">ios6</a>
-      
-      <a href="/tags/upgrade">upgrade</a>
-      
-      <a href="/tags/uinavigationbar">UINavigationBar</a>
-      
-    </span>
-  </div>
+	
+	<p class><a href="/2012/06/20/register-setting-bundle-default-value">Read more...</a></p>
 </div>
 
 <div class="post-listing">
-  <div class="inner">
-    <span class="title">
-    <span class="date">2012-11-26</span>
-    <a href="/2012/11/26/learn-from-google-objective-c-style-guide">
-      Google Objective-C Style Guide学习笔记
-    </a>
-    </span>
-    <span class="tag-list">
-      
-      <a href="/tags/objective-c">Objective-c</a>
-      
-      <a href="/tags/ios">iOS</a>
-      
-      <a href="/tags/google">Google</a>
-      
-      <a href="/tags/code-style">code-style</a>
-      
-    </span>
-  </div>
+	<h2><a href="/2012/05/26/import-zbar-souce-code" class="dark-link">利用源码的方式导入ZBar作为第三方library</a></h2>
+	<div class="low-top">
+		<span class="low-top ">Posted on  May 26, 2012 in <a href="/categories/ios">iOS开发</a></span>
+		<span class="tag-list">
+			
+			<a href="/tags/ios">iOS</a>
+			
+			<a href="/tags/zbar">ZBar</a>
+			
+		</span>
+	</div>
+
+
+	
+	<p>利用源码的方式导入ZBar作为第三方library</p>
+	
+	
+	<p class><a href="/2012/05/26/import-zbar-souce-code">Read more...</a></p>
 </div>
 
 <div class="post-listing">
-  <div class="inner">
-    <span class="title">
-    <span class="date">2012-10-09</span>
-    <a href="/2012/10/09/apple-products-comparison">
-      apple products comparison
-    </a>
-    </span>
-    <span class="tag-list">
-      
-      <a href="/tags/ipad">iPad</a>
-      
-      <a href="/tags/iphone">iPhone</a>
-      
-      <a href="/tags/itouch">iTouch</a>
-      
-    </span>
-  </div>
+	<h2><a href="/2012/02/23/install-codeblock" class="dark-link">开发利器codeblocks安装</a></h2>
+	<div class="low-top">
+		<span class="low-top ">Posted on  February 23, 2012 in <a href="/categories/cc">c/c++</a></span>
+		<span class="tag-list">
+			
+			<a href="/tags/cc">c/c++</a>
+			
+			<a href="/tags/codeblock">codeblock</a>
+			
+			<a href="/tags/ide">IDE</a>
+			
+		</span>
+	</div>
+
+
+	
+	<p>开发利器codeblocks安装</p>
+	
+	
+	<p class><a href="/2012/02/23/install-codeblock">Read more...</a></p>
 </div>
 
 <div class="post-listing">
-  <div class="inner">
-    <span class="title">
-    <span class="date">2012-08-14</span>
-    <a href="/2012/08/14/blogging-with-jekyll">
-      在github上用jekyll搭建个人blog
-    </a>
-    </span>
-    <span class="tag-list">
-      
-      <a href="/tags/github">github</a>
-      
-      <a href="/tags/github-pages">github-pages</a>
-      
-      <a href="/tags/jekyll">jekyll</a>
-      
-    </span>
-  </div>
+	<h2><a href="/2012/02/22/vmware8-install-lion" class="dark-link">Vmware 8安装Lion</a></h2>
+	<div class="low-top">
+		<span class="low-top ">Posted on  February 22, 2012 in <a href="/categories/">日常</a></span>
+		<span class="tag-list">
+			
+			<a href="/tags/vmware">VMware</a>
+			
+			<a href="/tags/lion">Lion</a>
+			
+		</span>
+	</div>
+
+
+	
+	<p>Vmware 8安装Lion</p>
+	
+	
+	<p class><a href="/2012/02/22/vmware8-install-lion">Read more...</a></p>
 </div>
 
 <div class="post-listing">
-  <div class="inner">
-    <span class="title">
-    <span class="date">2012-07-30</span>
-    <a href="/2012/07/30/single-app-mode">
-      single app mode
-    </a>
-    </span>
-    <span class="tag-list">
-      
-      <a href="/tags/ios">iOS</a>
-      
-      <a href="/tags/ipcu">IPCU</a>
-      
-    </span>
-  </div>
+	<h2><a href="/2012/02/08/win7x64-fedora16-double-system" class="dark-link">win7x64+fedora16双系统安装</a></h2>
+	<div class="low-top">
+		<span class="low-top ">Posted on  February 08, 2012 in <a href="/categories/">日常</a></span>
+		<span class="tag-list">
+			
+			<a href="/tags/linux">linux</a>
+			
+			<a href="/tags/fedora">fedora</a>
+			
+			<a href="/tags/win7">win7</a>
+			
+			<a href="/tags/">双系统</a>
+			
+		</span>
+	</div>
+
+
+	
+	<p>win7x64+fedora16双系统安装</p>
+	
+	
+	<p class><a href="/2012/02/08/win7x64-fedora16-double-system">Read more...</a></p>
+</div>
+<div></div>
+	
+	<div class="next-prev-nav low-top push-6">
+		
+			&laquo;&nbsp;<a href=" /blog " 
+			rel="next" title="Previous Page">Previous Page</a>
+		
+
+		
+			|&nbsp;
+		
+		<a href="/archives" title="Archives">Archives</a>
+		
+		
+		
+		
+		<br />
+	</div>  
 </div>
 
-<div class="post-listing">
-  <div class="inner">
-    <span class="title">
-    <span class="date">2012-06-20</span>
-    <a href="/2012/06/20/register-setting-bundle-default-value">
-      获取Settings bundle中预定义的默认值
-    </a>
-    </span>
-    <span class="tag-list">
-      
-      <a href="/tags/ios">iOS</a>
-      
-      <a href="/tags/settings-bundle">Settings.bundle</a>
-      
-    </span>
-  </div>
-</div>
-
-<div class="post-listing">
-  <div class="inner">
-    <span class="title">
-    <span class="date">2012-05-26</span>
-    <a href="/2012/05/26/import-zbar-souce-code">
-      利用源码的方式导入ZBar作为第三方library
-    </a>
-    </span>
-    <span class="tag-list">
-      
-      <a href="/tags/ios">iOS</a>
-      
-      <a href="/tags/zbar">ZBar</a>
-      
-    </span>
-  </div>
-</div>
-
-<div class="post-listing">
-  <div class="inner">
-    <span class="title">
-    <span class="date">2012-02-23</span>
-    <a href="/2012/02/23/install-codeblock">
-      开发利器codeblocks安装
-    </a>
-    </span>
-    <span class="tag-list">
-      
-      <a href="/tags/cc">c/c++</a>
-      
-      <a href="/tags/codeblock">codeblock</a>
-      
-      <a href="/tags/ide">IDE</a>
-      
-    </span>
-  </div>
-</div>
-
-<div class="post-listing">
-  <div class="inner">
-    <span class="title">
-    <span class="date">2012-02-22</span>
-    <a href="/2012/02/22/vmware8-install-lion">
-      Vmware 8安装Lion
-    </a>
-    </span>
-    <span class="tag-list">
-      
-      <a href="/tags/vmware">VMware</a>
-      
-      <a href="/tags/lion">Lion</a>
-      
-    </span>
-  </div>
-</div>
-
-<div class="post-listing">
-  <div class="inner">
-    <span class="title">
-    <span class="date">2012-02-08</span>
-    <a href="/2012/02/08/win7x64-fedora16-double-system">
-      win7x64+fedora16双系统安装
-    </a>
-    </span>
-    <span class="tag-list">
-      
-      <a href="/tags/linux">linux</a>
-      
-      <a href="/tags/fedora">fedora</a>
-      
-      <a href="/tags/win7">win7</a>
-      
-      <a href="/tags/">双系统</a>
-      
-    </span>
-  </div>
-</div>
-
-</div>	
 
 		</div>
 		
+		
+			<div id="sidebar" class="span-6 push-1 last">
+	<div class="sidebar-module" id='gsearcher'>
+				 
+		<div id="searchcontrol">
+			
+		</div>
+		
+	</div>
+
+	<div class="sidebar-module">
+		<div class="title"><a href='/tags'>Tags</a></div>
+		
+            <span style="font-size: 75%">
+              <a href="/tags/google/" title="1 post">Google</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/ide/" title="1 post">IDE</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/ipcu/" title="1 post">IPCU</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/lion/" title="1 post">Lion</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/objective-c/" title="1 post">Objective-c</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/settings-bundle/" title="1 post">Settings.bundle</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/uinavigationbar/" title="1 post">UINavigationBar</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/vmware/" title="1 post">VMware</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/zbar/" title="1 post">ZBar</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/cc/" title="1 post">c/c++</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/code-style/" title="1 post">code-style</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/codeblock/" title="1 post">codeblock</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/fedora/" title="1 post">fedora</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/github/" title="1 post">github</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/github-pages/" title="1 post">github-pages</a>
+            </span>
+          
+            <span style="font-size: 280%">
+              <a href="/tags/ios/" title="4 posts">iOS</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/ipad/" title="1 post">iPad</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/iphone/" title="1 post">iPhone</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/itouch/" title="1 post">iTouch</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/ios6/" title="1 post">ios6</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/jekyll/" title="1 post">jekyll</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/linux/" title="1 post">linux</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/upgrade/" title="1 post">upgrade</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/win7/" title="1 post">win7</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags//" title="1 post">双系统</a>
+            </span>
+          
+	</div>
+
+	<div class="sidebar-module">
+		<div class="title"><a href='/categories'>Categories</a></div>
+		<a href="/categories/"><strong>日常</strong></a> (4)<br /><a href="/categories/cc"><strong>c/c++</strong></a> (1)<br /><a href="/categories/ios"><strong>iOS开发</strong></a> (5)<br />
+	</div>
+	
+	<div class="sidebar-module">
+		<div class="title"><a href='/archives'>Archives</a></div>
+		<a href="/2012/12"><strong>December 2012</strong></a> (1)<br /><a href="/2012/11"><strong>November 2012</strong></a> (1)<br /><a href="/2012/10"><strong>October 2012</strong></a> (1)<br /><a href="/2012/08"><strong>August 2012</strong></a> (1)<br /><a href="/2012/07"><strong>July 2012</strong></a> (1)<br /><a href="/2012/06"><strong>June 2012</strong></a> (1)<br /><a href="/2012/05"><strong>May 2012</strong></a> (1)<br /><a href="/2012/02"><strong>February 2012</strong></a> (3)<br />
+	</div>
+</div>
+
 		
 		
 		<div id="footer" class="span-24"> 
