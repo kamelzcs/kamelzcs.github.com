@@ -2,43 +2,43 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
         <loc>http://ddrccw.github.com/2012/02/08/win7x64-fedora16-double-system</loc>
-        <lastmod>2012-09-04T19:07:46+08:00</lastmod>
+        <lastmod>2012-12-14T16:04:41+08:00</lastmod>
     </url>
     <url>
         <loc>http://ddrccw.github.com/2012/02/22/vmware8-install-lion</loc>
-        <lastmod>2012-09-04T19:07:46+08:00</lastmod>
+        <lastmod>2012-12-14T16:04:41+08:00</lastmod>
     </url>
     <url>
         <loc>http://ddrccw.github.com/2012/02/23/install-codeblock</loc>
-        <lastmod>2012-09-04T19:07:46+08:00</lastmod>
+        <lastmod>2012-12-14T16:04:41+08:00</lastmod>
     </url>
     <url>
         <loc>http://ddrccw.github.com/2012/05/26/import-zbar-souce-code</loc>
-        <lastmod>2012-09-04T19:07:46+08:00</lastmod>
+        <lastmod>2012-12-14T16:04:41+08:00</lastmod>
     </url>
     <url>
         <loc>http://ddrccw.github.com/2012/06/20/register-setting-bundle-default-value</loc>
-        <lastmod>2012-09-07T16:53:29+08:00</lastmod>
+        <lastmod>2012-12-14T16:04:41+08:00</lastmod>
     </url>
     <url>
         <loc>http://ddrccw.github.com/2012/07/30/single-app-mode</loc>
-        <lastmod>2012-11-06T21:12:48+08:00</lastmod>
+        <lastmod>2012-12-14T16:04:41+08:00</lastmod>
     </url>
     <url>
         <loc>http://ddrccw.github.com/2012/08/14/blogging-with-jekyll</loc>
-        <lastmod>2012-12-11T22:02:37+08:00</lastmod>
+        <lastmod>2012-12-14T16:04:41+08:00</lastmod>
     </url>
     <url>
         <loc>http://ddrccw.github.com/2012/10/09/apple-products-comparison</loc>
-        <lastmod>2012-12-11T22:03:25+08:00</lastmod>
+        <lastmod>2012-12-14T16:04:41+08:00</lastmod>
     </url>
     <url>
         <loc>http://ddrccw.github.com/2012/11/26/learn-from-google-objective-c-style-guide</loc>
-        <lastmod>2012-12-11T21:51:10+08:00</lastmod>
+        <lastmod>2012-12-14T16:04:41+08:00</lastmod>
     </url>
     <url>
         <loc>http://ddrccw.github.com/2012/12/03/upgrade-to-ios6</loc>
-        <lastmod>2012-12-11T21:50:48+08:00</lastmod>
+        <lastmod>2012-12-14T16:04:41+08:00</lastmod>
     </url>
     <url>
         <loc>http://ddrccw.github.com/about/</loc>
@@ -46,22 +46,26 @@
     </url>
     <url>
         <loc>http://ddrccw.github.com/archives/</loc>
-        <lastmod>2012-12-11T22:03:25+08:00</lastmod>
+        <lastmod>2012-12-14T16:04:41+08:00</lastmod>
     </url>
     <url>
         <loc>http://ddrccw.github.com/blog.html</loc>
-        <lastmod>2012-12-11T22:57:33+08:00</lastmod>
+        <lastmod>2012-12-11T23:31:02+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://ddrccw.github.com/css/site.css</loc>
+        <lastmod>2012-12-14T16:04:41+08:00</lastmod>
     </url>
     <url>
         <loc>http://ddrccw.github.com/feed/atom/</loc>
-        <lastmod>2012-12-11T22:03:25+08:00</lastmod>
+        <lastmod>2012-12-14T16:04:41+08:00</lastmod>
     </url>
     <url>
         <loc>http://ddrccw.github.com/feed/</loc>
-        <lastmod>2012-12-11T22:03:25+08:00</lastmod>
+        <lastmod>2012-12-14T16:04:41+08:00</lastmod>
     </url>
     <url>
         <loc>http://ddrccw.github.com/</loc>
-        <lastmod>2012-12-11T22:40:34+08:00</lastmod>
+        <lastmod>2012-12-14T16:04:41+08:00</lastmod>
     </url>
 </urlset>
