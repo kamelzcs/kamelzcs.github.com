@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<title>iOS开发过程中常见的debug技巧 - ddrccw's library</title>
+	
+	
+	<meta name="author" content="ddrccw" />
+	
+	<meta name="description" content="Xcode debug issues" />
+	
+
+	
+	<meta name="keywords" content="iOS debug gdb lldb Xcode" />	
+	
+
+	<meta name="robots" content="noodp, nydir" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	
+	<link href="/css/blueprint/screen.css" type="text/css" rel="stylesheet" />
+	<!--[if lt IE 8]> <link href="/css/blueprint/ie.css" type="text/css" rel="stylesheet" /> <![endif]-->	 
+	<link href="/css/railscasts.css" type="text/css" rel="stylesheet" />
+	<link href="/css/site.css" type="text/css" rel="stylesheet" />
+
+	<script type="text/javascript" src="/js/writeCapture-1.0.5-nolib-min.js"></script>
+		<script type="text/javascript" src="/js/jquery.js"></script>
+	<script type="text/javascript" src="/js/site.js"></script>
+	<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-34556823-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+	<script src="https://www.google.com/jsapi" type="text/javascript"></script>
+  <script language="Javascript" type="text/javascript">
+  //<![CDATA[
+google.load("search", "1");
+
+function OnLoad() {
+	// Create a search control
+	var searchControl = new google.search.SearchControl();
+	
+	// Add in a WebSearch
+	var webSearch = new google.search.WebSearch();
+	
+	// Restrict our search to pages from this site
+	webSearch.setSiteRestriction('ddrccw.github.com');
+	
+	// Add the searcher to the SearchControl
+	searchControl.addSearcher(webSearch);
+	
+	// tell the searcher to draw itself and tell it where to attach
+	searchControl.draw(document.getElementById("searchcontrol"));
+	// Add the value of "Search..." to the input field and a class of .empty
+}
+
+google.setOnLoadCallback(function() {
+  $(function() {
+	OnLoad()
+	$(".gsc-input > input").val("Search... powered by Google").addClass("empty");
+	 
+	// When you click on #search
+	$(".gsc-input > input").focus(function(){
+	 
+		// If the value is equal to "Search..."
+		if($(this).val() == "Search... powered by Google") {
+			// remove all the text and the class of .empty
+			$(this).val("").removeClass("empty");;
+		}
+		this.select();
+	});
+	 
+	// When the focus on #search is lost
+	$(".gsc-input > input").blur(function(){
+	 
+		// If the input field is empty
+		if($(this).val() == "") {
+			// Add the text "Search..." and a class of .empty
+			$(this).val("Search... powered by Google").addClass("empty");
+		}
+	});
+
+	$("#comment_heading").click(function()
+	{
+		$(this).next("#disqus_thread").slideToggle(500);
+		if($(this).text() == "Show Comments") {
+			$(this).text("Hide Comments")
+		}else{
+			$(this).text("Show Comments")
+		}
+	});
+		
+  });
+});
+
+
+  //]]>
+  </script>
+
+</head>
+
+<body>
+	<div class="container">
+	<!-- <div class="container showgrid"> -->
+		<div id="header" class="span-24">
+  <div id="menu" class="span-15 last">
+    <ul>
+      <li class="first"><a href="/">Home</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/blog">Blog</a></li>
+      <li><a href="/archives">Archives</a></li>
+      <li><a href="/projects">Projects</a></li>
+      <!--<li class="last"><a id="mail" href="mailto:ddrccw@gmail.com">Contact</a></li>-->
+    </ul>
+  </div>
+</div>
+
+		
+		<div id="main" class="span-17">
+			<style type="text/css">
+h3,h4{ 
+	color: #335E8D;
+}			
+h3,h4 {
+	margin-left		: 3px;
+	font-variant	: small-caps;
+	font-weight		: normal;
+	border-bottom : 1px dotted #ccc;	
+}
+</style>
+
+
+
+
+<div class="post" id="main-content">
+	<h1>iOS开发过程中常见的debug技巧</h1>
+	<h4 class="large-bottom">
+		Posted on September 05, 2012
+		 in <a href="/categories/ios-dev">iOS-dev</a> 
+
+		<span class="tag-list">
+			
+			<a href="/tags/ios">iOS</a>
+			
+			<a href="/tags/debug">debug</a>
+			
+			<a href="/tags/gdb">gdb</a>
+			
+			<a href="/tags/lldb">lldb</a>
+			
+			<a href="/tags/xcode">Xcode</a>
+			
+		</span>
+	</h4>
+	
+	<div class="content">
+		<h2>前言</h2>
+
+<p>记得刚学ios那会儿，我还不会用debug工具。编程时，最痛苦的莫过于程序莫名其妙的在main函数crash，其中，SIGABRT、EXC_BAD_ACCESS、Assertion failure等情况居多。虽然也看了一些资料，但是一直也没怎么系统的整理过相关知识，故特此整理一下。</p>
+
+<h2>正文</h2>
+
+<p>虽然有高手可以纯粹用<a href="http://www.mikeash.com/pyblog/friday-qa-2011-06-17-gdb-tips-and-tricks.html" title="gdb">gdb</a>直接调试，但我等菜鸟还是利用一下Xcode的提供的图形界面，保证一下工作效率:P</p>
+
+<h3>1 异常捕捉</h3>
+
+<p>想必这也是最最基本的步骤，在Xcode导航栏找到断点导航栏，如图添加Exception breakpoint</p>
+
+<p><img src="/images/posts/xcode-debug-issue/1.1.jpeg" title="exception" alt="alt exception" /></p>
+
+<p>如果想有针对性的步骤异常，比如Objective-C exception，可以如图添加symbolic breakpoint</p>
+
+<p><img src="/images/posts/xcode-debug-issue/1.2.jpeg" title="symbolic" alt="alt symbolic" /></p>
+
+<p>有了上述的操作，大部分的crash都会定位到相应的代码位置。</p>
+
+<h3>2 巧用寄存器参数</h3>
+
+<p>在汇编语言中，<a href="!http://en.wikipedia.org/wiki/Function_prologue">Function prologue</a>会准备好函数要用到的栈和寄存器，而寄存器中包含有传递给函数的参数信息。我们可以利用这部分信息进一步诊断异常。</p>
+
+<p>到目前为止，由于iOS 模拟器是以i386（32位）模式运行在os x系统上，而iOS设备是基于arm结构的处理器，
+参考<a href="http://developer.apple.com/library/ios/#technotes/tn2239/_index.html">官方文档</a>和<a href="http://www.clarkcox.com/blog/2009/02/04/inspecting-obj-c-parameters-in-gdb/">这篇文章</a>，我们可以在gdb或lldb中print一些信息</p>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th>                </th>
+<th> arm </th>
+<th> i386 (before prolog)   </th>
+<th> i386 (after prolog) </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td> previous frame </td>
+<td> po $lr </td>
+<td> - </td>
+<td> po *(id*)($ebp) </td>
+</tr>
+<tr>
+<td></td>
+<td> return address / receiver </td>
+<td> po $r0 </td>
+<td> po *(id*)($esp) </td>
+<td> po *(id*)($ebp + 4) </td>
+</tr>
+<tr>
+<td></td>
+<td> 1st parameter / SEL  </td>
+<td> p (SEL)$r1 </td>
+<td> p *(SEL*)($esp + 4) </td>
+<td> p *(SEL*)($ebp + 8) </td>
+</tr>
+<tr>
+<td></td>
+<td> 2nd parameter  </td>
+<td> po $r2 </td>
+<td> po *(id*)($esp + 8) </td>
+<td> po *(id*)($ebp + 12) </td>
+</tr>
+<tr>
+<td></td>
+<td> 3rd parameter  </td>
+<td> po $r3 </td>
+<td> po *(id*)($esp + 12) </td>
+<td> po *(id*)($ebp + 16) </td>
+</tr>
+<tr>
+<td></td>
+<td> ... and so on  </td>
+<td> po *(id*)($sp + 4n) n>=0 </td>
+<td> po *(id*)($esp + 4n) n>=4 </td>
+<td> po *(id*)($ebp + 4n) n>=5 </td>
+</tr>
+</tbody>
+</table>
+
+
+<p>另外，函数返回的结果也会保留在寄存器中，在arm和i386中分别对应($r0)和（$eax）。</p>
+
+<p>上述的寄存器（$r0或$eax）中，可能的情况（仅涉及我遇到过的情况）是</p>
+
+<ul>
+<li><p>一个NSException</p>
+
+<p>  在gdb或lldb中，尝试一下<code>po [$reg]</code> 或访问相关属性 <code>po [$reg class]</code> 、<code>po [$reg name]</code>、 <code>po [$reg reason]</code></p></li>
+<li><p>一些状况的描述</p>
+
+<p>  以我在给项目添加GHUnit做单元测试的过程中遇到的问题为例，当我自以为已经成功引入GHUnit，尝试运行相应的Target时，Xcode直接在main.m中报错</p>
+
+<p>  <code>Assertion failure in int UIApplicationMain(int, char **, NSString *, NSString *)(), /SourceCache/UIKit_Sim/UIKit-1912.3/UIApplication.m:1601</code></p>
+
+<p>  咋看之下，确实没啥头绪，只知道这里有问题，当我在终端输入
+<code>po $eax</code>后，便显示出详细的原因:</p>
+
+<p>  <code>(unsigned int) $2 = 109471968 Unable to instantiate the UIApplication delegate instance. No class named GHUnitIOSAppDelegate is loaded.</code></p>
+
+<p>  通过这个提示，我才想起来忘记添加编译链接需要的-ObjC -all_load</p></li>
+</ul>
+
+
+<h3>3 系统环境变量使用</h3>
+
+<h4>1） BSD提供的debug辅助功能</h4>
+
+<p>比较常用的是MallocStackLogging</p>
+
+<blockquote><p>Record backtraces for each memory block to assist memory debugging tools; if the block is allocated and then immediately freed, both entries are removed from the log, which helps reduce the size of the log</p></blockquote>
+
+<p>它主要提供的是memory allocator的相关信息，你也可以<code>man malloc</code>查看其他环境变量的应用。</p>
+
+<h4>2） obj-c Foundation提供的debug辅助功能</h4>
+
+<p>比较常用的是NSZombieEnabled，设为YES，则可以很容易debug给一个已经释放的对象发送消息有关的问题。
+原理嘛，就是让deallocated的对象并没有真正的被deallocated，从而让系统能够检测到zombie对象，而执行断点指令。</p>
+
+<p>适用条件：</p>
+
+<blockquote><p>NSZombieEnabled also affects Core Foundation objects as well as Objective-C objects. However, you'll only be notified when you access a zombie Core Foundation object from Objective-C, not when you access it via a CF API.</p></blockquote>
+
+<h4>3）实践应用</h4>
+
+<p>Xcode中，如图1，在xcode菜单栏->product->edit scheme，可以添加相应的环境变量</p>
+
+<p><img src="/images/posts/xcode-debug-issue/3.1.jpeg" title="env" alt="alt env" /></p>
+
+<p>或如图2，也可以在Diagnostics中直接勾选相应的选项</p>
+
+<p><img src="/images/posts/xcode-debug-issue/3.2.jpeg" title="Diagnostics" alt="alt Diagnostics" /></p>
+
+<p>实际开发过程中，EXC_BAD_ACCESS，objc_msgSend相关的crash往往和retain、release不当有关，可以利用上述的两个环境变量检测问题。例如下述代码</p>
+
+<div class="highlight"><pre><code class="objc"><span class="n">NSObject</span> <span class="o">*</span><span class="n">o</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSObject</span> <span class="n">new</span><span class="p">];</span>  
+<span class="n">NSMutableArray</span> <span class="o">*</span><span class="n">test</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSMutableArray</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithCapacity:</span><span class="mi">1</span><span class="p">];</span>
+<span class="p">[</span><span class="n">test</span> <span class="n">release</span><span class="p">];</span>
+<span class="p">[</span><span class="n">test</span> <span class="nl">addObject:</span><span class="n">o</span><span class="p">];</span>
+<span class="p">[</span><span class="n">o</span> <span class="n">release</span><span class="p">];</span>
+</code></pre>
+</div>
+
+
+<p>开启NSZombieEnabled，可以获得信息：</p>
+
+<p><code>2012-09-04 17:21:55.925 test[1705:11303] *** -[__NSArrayM addObject:]: message sent to deallocated instance 0x741fc40</code></p>
+
+<p>开启MallocStackLogging，在gdb（不是lldb）终端输入</p>
+
+<p><code>shell malloc_history 1786 0x741fc40  --1786 "app_pid"; 0x741fc40 "deallocated instance"</code></p>
+
+<p>就可以获得一份有关malloc的详细信息。</p>
+
+<h3>4 进阶操作</h3>
+
+<p>看了前面提到某高手<a href="http://www.mikeash.com/pyblog/friday-qa-2011-06-17-gdb-tips-and-tricks.html" title="gdb">gdb</a>调试过程，你应该也了解了gdb的强大，想熟练使用gdb的相关命令，请参看：</p>
+
+<p><a href="http://sourceware.org/gdb/download/onlinedocs/gdb/index.html">http://sourceware.org/gdb/download/onlinedocs/gdb/index.html</a></p>
+
+<p>另外，Xcode默认使用lldb也很强大，这里也提供一个gdb和lldb的命令对照表</p>
+
+<p><a href="http://lldb.llvm.org/lldb-gdb.html">http://lldb.llvm.org/lldb-gdb.html</a></p>
+
+<p>最后，apple提供的测试工具也给我们能够可视化调试提供了不少便利</p>
+
+<p><a href="http://developer.apple.com/library/ios/#DOCUMENTATION/DeveloperTools/Conceptual/InstrumentsUserGuide/Introduction/Introduction.html">http://developer.apple.com/library/ios/#DOCUMENTATION/DeveloperTools/Conceptual/InstrumentsUserGuide/Introduction/Introduction.html</a></p>
+
+<h2>总结</h2>
+
+<p>要真真正正的做好debug的方方面面也不是一件容易的活儿。虽然可能%20的手段，足以应付你的编程任务（至少对我来说是这样的），但是剩下的%80了解一下也无妨，肯定是有所裨益的 ^_^</p>
+
+<h2>参考资料</h2>
+
+<p>1） <a href="http://developer.apple.com/library/ios/#technotes/tn2239/_index.html">iOS Debugging Magic</a></p>
+
+<p>2） <a href="http://cocoadev.com/wiki/NSZombie">http://cocoadev.com/wiki/NSZombie</a></p>
+
+<p>3） <a href="http://sealiesoftware.com/blog/archive/2008/09/22/objc_explain_So_you_crashed_in_objc_msgSend.html">objc_explain_So_you_crashed_in_objc_msgSend</a></p>
+
+<p>4） <a href="http://www.clarkcox.com/blog/2009/02/04/inspecting-obj-c-parameters-in-gdb/">http://www.clarkcox.com/blog/2009/02/04/inspecting-obj-c-parameters-in-gdb/</a></p>
+
+<p>5） <a href="http://www.raywenderlich.com/10209/my-app-crashed-now-what-part-1">http://www.raywenderlich.com/10209/my-app-crashed-now-what-part-1</a></p>
+
+	</div>
+	
+	<div class="next-prev-nav low-top">
+		
+		-----------------------------------
+		<b>本文内容遵从<a title="Content licenced under Creative Commons by-nc-sa 3.0" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.zh">CC版权协议</a>转载请注明出自<a href="http://ddrccw.github.com">ddrccw</a></b>
+		-----------------------------------
+		<hr/>
+		
+		
+		
+			&laquo;&nbsp;<a href="/2012/10/09/apple-products-comparison" rel="next" title="apple products comparison">apple products comparison</a>
+		
+	
+		
+			
+				|
+			
+		
+		
+	
+		
+			<a href="/2012/08/14/blogging-with-jekyll" rel="previous" title="在github上用jekyll搭建个人blog">在github上用jekyll搭建个人blog</a>&nbsp;&raquo;
+		
+	
+		<br />
+	</div>
+
+	<hr />
+	<!--<div class="sharing">
+	
+	 
+	
+	
+	
+	
+	
+	
+	 
+</div>
+ -->
+	
+
+<script type="text/javascript">
+      var disqus_shortname = 'ddrccw';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://ddrccw.github.com/2012/09/05/xcode-debug-issues';
+        var disqus_url = 'http://ddrccw.github.com/2012/09/05/xcode-debug-issues';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+	<div>
+		<h2 id='comment_heading'>Hide Comments</h2>
+		<div id="disqus_thread" aria-live="polite"><div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'ddrccw'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+	</div>
+</div>
+
+		</div>
+		
+		
+			<div id="sidebar" class="span-6 push-1 last">
+	<div class="sidebar-module" id='gsearcher'>
+				 
+		<div id="searchcontrol">
+			
+		</div>
+		
+	</div>
+
+	<div class="sidebar-module">
+		<div class="title"><a href='/tags'>Tags</a></div>
+		
+            <span style="font-size: 75%">
+              <a href="/tags/google/" title="1 post">Google</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/ide/" title="1 post">IDE</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/ipcu/" title="1 post">IPCU</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/lion/" title="1 post">Lion</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/objective-c/" title="1 post">Objective-c</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/settings-bundle/" title="1 post">Settings.bundle</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/uinavigationbar/" title="1 post">UINavigationBar</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/vmware/" title="1 post">VMware</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/xcode/" title="1 post">Xcode</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/zbar/" title="1 post">ZBar</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/c/" title="1 post">c</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/c++/" title="1 post">c++</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/code-style/" title="1 post">code-style</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/codeblock/" title="1 post">codeblock</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/debug/" title="1 post">debug</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/dual-system/" title="1 post">dual-system</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/fedora/" title="1 post">fedora</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/gdb/" title="1 post">gdb</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/github/" title="1 post">github</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/github-pages/" title="1 post">github-pages</a>
+            </span>
+          
+            <span style="font-size: 280%">
+              <a href="/tags/ios/" title="5 posts">iOS</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/ipad/" title="1 post">iPad</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/iphone/" title="1 post">iPhone</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/itouch/" title="1 post">iTouch</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/ios6/" title="1 post">ios6</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/jekyll/" title="1 post">jekyll</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/linux/" title="1 post">linux</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/lldb/" title="1 post">lldb</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/upgrade/" title="1 post">upgrade</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/win7/" title="1 post">win7</a>
+            </span>
+          
+	</div>
+
+	<div class="sidebar-module">
+		<div class="title"><a href='/categories'>Categories</a></div>
+		<a href="/categories/usage"><strong>Usage</strong></a> (4)<br /><a href="/categories/c,c++"><strong>c,c++</strong></a> (1)<br /><a href="/categories/ios-dev"><strong>iOS-dev</strong></a> (6)<br />
+	</div>
+	
+	<div class="sidebar-module">
+		<div class="title"><a href='/archives'>Archives</a></div>
+		<a href="/2012/12"><strong>December 2012</strong></a> (1)<br /><a href="/2012/11"><strong>November 2012</strong></a> (1)<br /><a href="/2012/10"><strong>October 2012</strong></a> (1)<br /><a href="/2012/09"><strong>September 2012</strong></a> (1)<br /><a href="/2012/08"><strong>August 2012</strong></a> (1)<br /><a href="/2012/07"><strong>July 2012</strong></a> (1)<br /><a href="/2012/06"><strong>June 2012</strong></a> (1)<br /><a href="/2012/05"><strong>May 2012</strong></a> (1)<br /><a href="/2012/02"><strong>February 2012</strong></a> (3)<br />
+	</div>
+</div>
+
+		
+		
+		<div id="footer" class="span-24"> 
+<span  title="Content licenced under Creative Commons by-nc-sa 3.0">版权所有<a title="Content licenced under Creative Commons by-nc-sa 3.0" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.zh">&copy;</a> 
+	2012-2012 ddrccw。
+</span> 
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="https://github.com/ddrccw">GitHub</a>
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="http://weibo.com/u/1706572835">新浪微博</a>
+ &nbsp;&nbsp;&nbsp;&nbsp; <a href="http://twitter.com/addfgg">Twitter</a>
+&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
+<span>
+	主题由<a title="site's theme made by Bilal Hussain" href="http://bilalh.github.com">Bilal Hussain Hussain</a>提供。
+</span>
+</div>
+
+	</div>
+	
+</body>
+</html>

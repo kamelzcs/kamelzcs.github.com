@@ -4,7 +4,7 @@
 		<link type="application/atom+xml" href="http://ddrccw.github.com/feed" rel="self" />
 		<link type="text" href="http://ddrccw.github.com" rel="alternate" />
 		
-		<updated>2012-12-14T16:49:38+08:00</updated>
+		<updated>2012-12-17T14:29:55+08:00</updated>
 		<id>http://ddrccw.github.com</id>
 		<author><name>ddrccw</name></author>
 		<rights>Copyright (c) 2012 ddrccw</rights>
@@ -32,6 +32,14 @@
 					<updated>2012-10-09T02:18:00+08:00</updated>
 					<id>http://ddrccw.github.com/2012/10/09/apple-products-comparison/</id>
 					<summary type="html">不知不觉，我也差不多搞了半年左右的iOS开发了。虽然大多数接触的是软件层面上的事,apple本身的产品确实也用着比较爽，但每每有人问起apple产品具体的硬件特点，我却真的答不出个所以然。。。囧rz。尽管硬件看似与软件开发没啥关系，但细细一想，硬件也算平台的一个卖点。一方面，硬件的推广势必增加潜在的软件用户，另一方面，硬件自身的提升与改变必然也会影响软件的性能和开发。也正因此，我决定要花点时间来对apple的移动端产品做个了解。以下的数据资料主要是从苹果官网和维基百科上扒下来的，不全，但也应该能够有个大概的了解。 颜色只标示了比较重要的变化：字体颜色表示与前代相比有变化，背景颜色间隔变化 iphone 详见：http://en.wikipedia.org/wiki/Iphone iphone 3GS iphone 4 iPhone 4s iphone 5 上市时间 2009.7.19 2010.7.24 2011.10.14 2012.9.21 处理器 ARM Cortex-A8...</summary>
+			</entry>
+		
+			<entry>
+					<title>iOS开发过程中常见的debug技巧</title>
+					<link href="http://ddrccw.github.com/2012/09/05/xcode-debug-issues/"/>
+					<updated>2012-09-05T00:21:55+08:00</updated>
+					<id>http://ddrccw.github.com/2012/09/05/xcode-debug-issues/</id>
+					<summary type="html">前言 记得刚学ios那会儿，我还不会用debug工具。编程时，最痛苦的莫过于程序莫名其妙的在main函数crash，其中，SIGABRT、EXC_BAD_ACCESS、Assertion failure等情况居多。虽然也看了一些资料，但是一直也没怎么系统的整理过相关知识，故特此整理一下。 正文 虽然有高手可以纯粹用gdb直接调试，但我等菜鸟还是利用一下Xcode的提供的图形界面，保证一下工作效率:P 1 异常捕捉 想必这也是最最基本的步骤，在Xcode导航栏找到断点导航栏，如图添加Exception breakpoint 如果想有针对性的步骤异常，比如Objective-C exception，可以如图添加symbolic breakpoint 有了上述的操作，大部分的crash都会定位到相应的代码位置。 2 巧用寄存器参数 在汇编语言中，Function prologue会准备好函数要用到的栈和寄存器，而寄存器中包含有传递给函数的参数信息。我们可以利用这部分信息进一步诊断异常。 到目前为止，由于iOS 模拟器是以i386（32位）模式运行在os x系统上，而iOS设备是基于arm结构的处理器，...</summary>
 			</entry>
 		
 			<entry>
