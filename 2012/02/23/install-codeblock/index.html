@@ -178,8 +178,7 @@ h3,h4 {
 <span class="nv">CPLUS_INCLUDE_PATH</span><span class="o">=</span>%C_INCLUDE_PATH%
 <span class="nv">LIBRARY_PATH</span><span class="o">=</span>%MINGW_PATH%<span class="se">\l</span>ib;%MINGW_PATH%<span class="se">\l</span>ib<span class="se">\g</span>cc<span class="se">\m</span>ingw32<span class="se">\4</span>.6.2
 <span class="nv">PATH</span><span class="o">=</span>%MINGW_PATH%<span class="se">\b</span>in;%MINGW_PATH%<span class="se">\l</span>ibexec<span class="se">\g</span>cc<span class="se">\m</span>ingw32<span class="se">\4</span>.6.2;%MINGW_PATH%<span class="se">\m</span>sys<span class="se">\1</span>.0<span class="se">\b</span>in;%MINGW_PATH%<span class="se">\m</span>sys<span class="se">\1</span>.0<span class="se">\s</span>bin<span class="se">\a</span>wk
-</code></pre>
-</div>
+</code></pre></div>
 
 
 <p>cmd中查看</p>
@@ -215,23 +214,20 @@ h3,h4 {
 <div class="highlight"><pre><code class="bash">pkg-config –modversion gtk+      <span class="c">#(查看1.2.x版本)</span>
 pkg-config –modversion gtk+-2.0  <span class="c">#(查看 2.x 版本)</span>
 pkg-config –list-all |grep gtk   <span class="c">#(查看是否安装了gtk)</span>
-</code></pre>
-</div>
+</code></pre></div>
 
 
 <p>或</p>
 
 <div class="highlight"><pre><code class="bash">ls /usr/lib/libwx_gtk*   <span class="c">#to verify the presence</span>
-</code></pre>
-</div>
+</code></pre></div>
 
 
 <p>如果不存在，我的操作是：</p>
 
 <div class="highlight"><pre><code class="bash">yum install gtk+extra-devel     <span class="c">#&lt;根据yum list gtk+*结果，32位i386或可能i686，64位x86_64&gt;</span>
 yum install gtk+extra           <span class="c">#&lt;根据yum list gtk+*结果，32位i386或可能i686，64位x86_64&gt;</span>
-</code></pre>
-</div>
+</code></pre></div>
 
 
 <p>后者可能不需要（有待验证，下次如果再装时再确认，毕竟我是喜欢装的东西越少越好）。
@@ -303,15 +299,13 @@ To check that things are working, type:</p>
 执行</p>
 
 <div class="highlight"><pre><code class="bash"><span class="nb">export </span><span class="nv">ACLOCAL_FLAGS</span><span class="o">=</span>”-I <span class="sb">`</span>wx-config –prefix<span class="sb">`</span>/share/aclocal”
-</code></pre>
-</div>
+</code></pre></div>
 
 
 <p>或</p>
 
 <div class="highlight"><pre><code class="bash"><span class="nb">echo</span> <span class="sb">`</span>wx-config –prefix<span class="sb">`</span>/share/aclocal &gt;&gt; /usr/share/aclocal/dirlist
-</code></pre>
-</div>
+</code></pre></div>
 
 
 <p>最后</p>
@@ -319,8 +313,7 @@ To check that things are working, type:</p>
 <div class="highlight"><pre><code class="bash">./configure –prefix<span class="o">=</span>&lt;dir&gt;
 make
 make install
-</code></pre>
-</div>
+</code></pre></div>
 
 
 <p>这样就安装完了。</p>
@@ -392,8 +385,8 @@ make install
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://ddrccw.github.com/2012/02/23/install-codeblock';
-        var disqus_url = 'http://ddrccw.github.com/2012/02/23/install-codeblock';
+        var disqus_identifier = 'http://kamelzcs.github.com/2012/02/23/install-codeblock';
+        var disqus_url = 'http://kamelzcs.github.com/2012/02/23/install-codeblock';
         var disqus_script = 'embed.js';
       
     (function () {
@@ -563,7 +556,7 @@ make install
 
 	<div class="sidebar-module">
 		<div class="title"><a href='/categories'>Categories</a></div>
-		<a href="/categories/usage"><strong>Usage</strong></a> (4)<br /><a href="/categories/c,c++"><strong>c,c++</strong></a> (1)<br /><a href="/categories/ios-dev"><strong>iOS-dev</strong></a> (6)<br />
+		<a href="/categories/ios-dev"><strong>iOS-dev</strong></a> (6)<br /><a href="/categories/c,c++"><strong>c,c++</strong></a> (1)<br /><a href="/categories/usage"><strong>Usage</strong></a> (4)<br />
 	</div>
 	
 	<div class="sidebar-module">

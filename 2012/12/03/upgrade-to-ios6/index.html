@@ -210,7 +210,7 @@ h3,h4 {
 
 <p>view相关对象的内存管理似乎交给了系统，而didReceiveMemoryWarning依然重点关注释放那些不重要的数据结构。当然，想要显式释放view相关对象也是可以的，请参考</p>
 
-<div class="highlight"><pre><code class="objc"><span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">didReceiveMemoryWarning</span>
+<div class="highlight"><pre><code class="objc"><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">didReceiveMemoryWarning</span>
 <span class="p">{</span>
     <span class="p">[</span><span class="n">super</span> <span class="n">didReceiveMemoryWarning</span><span class="p">];</span>
     <span class="c1">// Add code to clean up any of your own resources that are no longer necessary.</span>
@@ -225,8 +225,7 @@ h3,h4 {
         <span class="n">self</span><span class="p">.</span><span class="n">otherView</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>  <span class="c1">//add by me</span>
     <span class="p">}</span>
 <span class="p">}</span>
-</code></pre>
-</div>
+</code></pre></div>
 
 
 <p>适配过程，只要参考上面的说明更改即可。我的app内存要求不高，所以暂时不采用显式管理的方法。</p>
@@ -291,8 +290,8 @@ h3,h4 {
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://ddrccw.github.com/2012/12/03/upgrade-to-ios6';
-        var disqus_url = 'http://ddrccw.github.com/2012/12/03/upgrade-to-ios6';
+        var disqus_identifier = 'http://kamelzcs.github.com/2012/12/03/upgrade-to-ios6';
+        var disqus_url = 'http://kamelzcs.github.com/2012/12/03/upgrade-to-ios6';
         var disqus_script = 'embed.js';
       
     (function () {
@@ -462,7 +461,7 @@ h3,h4 {
 
 	<div class="sidebar-module">
 		<div class="title"><a href='/categories'>Categories</a></div>
-		<a href="/categories/usage"><strong>Usage</strong></a> (4)<br /><a href="/categories/c,c++"><strong>c,c++</strong></a> (1)<br /><a href="/categories/ios-dev"><strong>iOS-dev</strong></a> (6)<br />
+		<a href="/categories/ios-dev"><strong>iOS-dev</strong></a> (6)<br /><a href="/categories/c,c++"><strong>c,c++</strong></a> (1)<br /><a href="/categories/usage"><strong>Usage</strong></a> (4)<br />
 	</div>
 	
 	<div class="sidebar-module">

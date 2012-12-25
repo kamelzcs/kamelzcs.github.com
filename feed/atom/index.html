@@ -1,100 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 		<title type="text" xml:lang="en">ddrccw's library</title>
-		<link type="application/atom+xml" href="http://ddrccw.github.com/feed" rel="self" />
-		<link type="text" href="http://ddrccw.github.com" rel="alternate" />
+		<link type="application/atom+xml" href="http://kamelzcs.github.com/feed" rel="self" />
+		<link type="text" href="http://kamelzcs.github.com" rel="alternate" />
 		
-		<updated>2012-12-17T14:31:44+08:00</updated>
-		<id>http://ddrccw.github.com</id>
+		<updated>2012-12-25T15:31:37+08:00</updated>
+		<id>http://kamelzcs.github.com</id>
 		<author><name>ddrccw</name></author>
 		<rights>Copyright (c) 2012 ddrccw</rights>
 		
 		
 			<entry>
 					<title>升级app到ios6</title>
-					<link href="http://ddrccw.github.com/2012/12/03/upgrade-to-ios6/"/>
+					<link href="http://kamelzcs.github.com/2012/12/03/upgrade-to-ios6/"/>
 					<updated>2012-12-03T06:45:29+08:00</updated>
-					<id>http://ddrccw.github.com/2012/12/03/upgrade-to-ios6/</id>
+					<id>http://kamelzcs.github.com/2012/12/03/upgrade-to-ios6/</id>
 					<summary type="html">前言 手头上的项目开发时原本跑的板子是ipad2（ipad5.1.1），但考虑到客户那边到时会购买新的ipad，势必要让现阶段的代码能够在ios6上运行，故花了点时间做了一下适配工作。已下讨论到的问题仅在我的适配过程中遇到，并不涵盖升级app到ios6的全部问题。 正题 旋转 参考RN-iOSSDK-6_0，在&lt;ios6的版本中，UIViewController类中提供shouldAutorotateToInterfaceOrientation:的方法告诉系统实现的VC支持什么方向的旋转。但在ios6中，旋转支持的判断则不会涉及到开发过程中的每个VC，责任更多的推到了上游。 一方面，系统会从app提供的info.plist文件和app的delegate类的application:supportedInterfaceOrientationsForWindow:方法中获取旋转支持的信息。当然，后者优先级大于前者。 另一方面，系统会从root或top-most full-screen的VC的supportedInterfaceOrientationsForWindow:和 shouldAutorotate 方法获取旋转支持的信息。所谓root，就是一定要在app delegate类中设置rootViewController。top-most full-screen则很有迷惑性，你可能会想当然的以为是自己在屏幕上看到的app当前全屏状态的那个VC。其实不然，如果你用了UINavigationController或其他类似的容器类时，那些容器类才是真正的top-most full-screen的VC。 实际适配过程中，一是我的UINavigationController本身也是位于其他自定义的容器类A中，二是实际主要展示的界面内容却又是在UINavigationController的子VC中。所以为了让app支持旋转，我需要让系统知道UINavigationController的子VC旋转支持的方向。有了思路，剩下的就好办。分别实现容器类A，UINavigationController类，显示内容的VC类的supportedInterfaceOrientationsForWindow: 和 shouldAutorotate 方法。虽然系统只会问容器类A，但我只要从容器类A一级一级往下询问即可。 注：UINavigationController需要子类化或一个Category类才能重写那两个方法。 导航条自定义背景 由于项目设计需要，同一个navigationController的不同层次的导航条背景有些许不同，并且设计师提供的只是一小段图片（需要将图片平铺）。...</summary>
 			</entry>
 		
 			<entry>
 					<title>Google Objective-C Style Guide学习笔记</title>
-					<link href="http://ddrccw.github.com/2012/11/26/learn-from-google-objective-c-style-guide/"/>
+					<link href="http://kamelzcs.github.com/2012/11/26/learn-from-google-objective-c-style-guide/"/>
 					<updated>2012-11-26T03:10:53+08:00</updated>
-					<id>http://ddrccw.github.com/2012/11/26/learn-from-google-objective-c-style-guide/</id>
+					<id>http://kamelzcs.github.com/2012/11/26/learn-from-google-objective-c-style-guide/</id>
 					<summary type="html">前言 之前拜读了《clean code》一书，在它的前言里看到了这样一句经典的话： The only valid measurement of code quality: WTF/min 译：衡量代码质量的唯一有效标准：WTF/min 当时顿时就笑喷了，但静下心来一想，虽然可能有些夸张，但是也确实有道理。回想以前接手过的历史遗留代码，有看过比较厉害的前辈，纵然不使用注释，但代码看起来却也让人十分清爽。有的同一个项目但是因为有多人开发，代码风格迥异。更有甚者，即便是同一个人写的几段代码，竟然也能变异出几种风格，看的我甚是蛋疼。。。 虽然说像geek一样编码，可能是一件十分cool的事，但落实到现实团队合作中，我觉得还是要统一风格才好。毕竟，一个良好的code style也是一个程序员的基本功吧。至少，我不想让下一任接我活的兄弟因此而"记恨于我" ^_^ ~~ 正题 某天刷weibo发现程序员的那些事推荐《google code...</summary>
 			</entry>
 		
 			<entry>
 					<title>apple products comparison</title>
-					<link href="http://ddrccw.github.com/2012/10/09/apple-products-comparison/"/>
+					<link href="http://kamelzcs.github.com/2012/10/09/apple-products-comparison/"/>
 					<updated>2012-10-09T02:18:00+08:00</updated>
-					<id>http://ddrccw.github.com/2012/10/09/apple-products-comparison/</id>
+					<id>http://kamelzcs.github.com/2012/10/09/apple-products-comparison/</id>
 					<summary type="html">不知不觉，我也差不多搞了半年左右的iOS开发了。虽然大多数接触的是软件层面上的事,apple本身的产品确实也用着比较爽，但每每有人问起apple产品具体的硬件特点，我却真的答不出个所以然。。。囧rz。尽管硬件看似与软件开发没啥关系，但细细一想，硬件也算平台的一个卖点。一方面，硬件的推广势必增加潜在的软件用户，另一方面，硬件自身的提升与改变必然也会影响软件的性能和开发。也正因此，我决定要花点时间来对apple的移动端产品做个了解。以下的数据资料主要是从苹果官网和维基百科上扒下来的，不全，但也应该能够有个大概的了解。 颜色只标示了比较重要的变化：字体颜色表示与前代相比有变化，背景颜色间隔变化 iphone 详见：http://en.wikipedia.org/wiki/Iphone iphone 3GS iphone 4 iPhone 4s iphone 5 上市时间 2009.7.19 2010.7.24 2011.10.14 2012.9.21 处理器 ARM Cortex-A8...</summary>
 			</entry>
 		
 			<entry>
 					<title>iOS开发过程中常见的debug技巧</title>
-					<link href="http://ddrccw.github.com/2012/09/05/xcode-debug-issues/"/>
+					<link href="http://kamelzcs.github.com/2012/09/05/xcode-debug-issues/"/>
 					<updated>2012-09-05T00:21:55+08:00</updated>
-					<id>http://ddrccw.github.com/2012/09/05/xcode-debug-issues/</id>
+					<id>http://kamelzcs.github.com/2012/09/05/xcode-debug-issues/</id>
 					<summary type="html">前言 记得刚学ios那会儿，我还不会用debug工具。编程时，最痛苦的莫过于程序莫名其妙的在main函数crash，其中，SIGABRT、EXC_BAD_ACCESS、Assertion failure等情况居多。虽然也看了一些资料，但是一直也没怎么系统的整理过相关知识，故特此整理一下。 正文 虽然有高手可以纯粹用gdb直接调试，但我等菜鸟还是利用一下Xcode的提供的图形界面，保证一下工作效率:P 1 异常捕捉 想必这也是最最基本的步骤，在Xcode导航栏找到断点导航栏，如图添加Exception breakpoint 如果想有针对性的步骤异常，比如Objective-C exception，可以如图添加symbolic breakpoint 有了上述的操作，大部分的crash都会定位到相应的代码位置。 2 巧用寄存器参数 在汇编语言中，Function prologue会准备好函数要用到的栈和寄存器，而寄存器中包含有传递给函数的参数信息。我们可以利用这部分信息进一步诊断异常。 到目前为止，由于iOS 模拟器是以i386（32位）模式运行在os x系统上，而iOS设备是基于arm结构的处理器，...</summary>
 			</entry>
 		
 			<entry>
 					<title>在github上用jekyll搭建个人blog</title>
-					<link href="http://ddrccw.github.com/2012/08/14/blogging-with-jekyll/"/>
+					<link href="http://kamelzcs.github.com/2012/08/14/blogging-with-jekyll/"/>
 					<updated>2012-08-14T05:37:13+08:00</updated>
-					<id>http://ddrccw.github.com/2012/08/14/blogging-with-jekyll/</id>
+					<id>http://kamelzcs.github.com/2012/08/14/blogging-with-jekyll/</id>
 					<summary type="html">前言 说起写个人blog，如果是在学生时代，我肯定会觉得不可思议，理由很简单--我很懒的动笔。但让我燃起写blog的决心，却还得从工作后开始说起。平常工作中，我难免会遇到各种各样的问题。有了问题，自然需要放狗搜索，一篇一篇的翻看过去。如果是过去，我如果看到好文会保存文章链接到书签，有时往往一个问题的解决会让我收集好多个书签，于是随着时间的延长，我的浏览器书签栏也越来越臃肿。更可恶的是，有时一个同样问题的解决，由于我个人理解的不够深入或记忆不足等原因，最终导致我又得打开一个个书签去看。这样与其浪费找同样问题的时间，还不如花点时间记点笔记整理一下思路来加深理解。由此权衡利弊，我不得不开始blog，理由同样很简单--想偷懒。 之前的一段时间，我曾用wordpress+nginx+mysql分别在win和linux下搭过一个blog。但自从我开始在mac下从事ios开发并接触了git期间，我偶然了解到大名鼎鼎的github可以针对个人或组织用jekll免费搭建站点。于是，我怀着好奇心，做了一番研究和尝试之后，最终我果断选择了jekyll。它吸引我的一个重要原因就是，让我能花更多的时间用来写文字，而只需要一些终端命令就能通过简洁的markdown语法实现很好的排版并合成页面。 正题 前面废话了一堆，现在开始动手搭blog。以下的步骤可能不太详细，但相信大体的流程还是清晰的。 1 申请一个github账户 这个应该不用解释了，有了账户就能建立两种page user/organization page --用于个人和组织的主页 project page --用于自己账户下对应项目的主页 因为是个人blog，所以我选择1. 另外为了方便管理仓库，我使用ssh的方式来建立自己的电脑和github的连接，这样也省的每次更新的时候要输账户和密码。具体参考https://help.github.com/articles/generating-ssh-keys 2 基础篇 2.1 rubyGem...</summary>
 			</entry>
 		
 			<entry>
 					<title>single app mode</title>
-					<link href="http://ddrccw.github.com/2012/07/30/single-app-mode/"/>
+					<link href="http://kamelzcs.github.com/2012/07/30/single-app-mode/"/>
 					<updated>2012-07-30T22:18:00+08:00</updated>
-					<id>http://ddrccw.github.com/2012/07/30/single-app-mode/</id>
+					<id>http://kamelzcs.github.com/2012/07/30/single-app-mode/</id>
 					<summary type="html">所谓的single app mode, 就是让iOS设备只运行指定的app，同时让物理的home键失效, 让使用者无法退出相应的app。咋看之下，或许这种模式显得很不符合用户的使用习惯。但具体考虑还是存在适合使用这种mode的情况，如企业用户app，教育类app, 信息展示app或儿童使用的app。 iOS 6已经准备提供Guided Access，其描述如下： iOS 6 comes with even more features to make it easier...</summary>
 			</entry>
 		
 			<entry>
 					<title>获取Settings bundle中预定义的默认值</title>
-					<link href="http://ddrccw.github.com/2012/06/20/register-setting-bundle-default-value/"/>
+					<link href="http://kamelzcs.github.com/2012/06/20/register-setting-bundle-default-value/"/>
 					<updated>2012-06-20T23:18:00+08:00</updated>
-					<id>http://ddrccw.github.com/2012/06/20/register-setting-bundle-default-value/</id>
+					<id>http://kamelzcs.github.com/2012/06/20/register-setting-bundle-default-value/</id>
 					<summary type="html">1 背景 所谓的Settings Bundle就是把一个名为Settings.bundle的文件放置于你的app的根目录下。该文件可以被系统的Settings.app所用，来配置你自己的app的一些设置。 具体介绍参考Implementing an iOS Settings Bundle 2 问题描述 理想情况下，我们希望app安装完好，然后直接进入能载入一些相关配置，如果有默认配置值，则直接加以应用。 然而开发过程中，在xcode中设置setting bundle里一些配置项的默认值后，运行app，通过[[NSUserDefaults standardUserDefaults] objectForKey:@"demokey"]的方法（注：在setting.app中设置的值是可以通过该方法获取的），却获取不了先前预定义的默认值。虽然在setting.app中可以看到设置的默认值。 3 解决方法 经过一番查询，可以得出结论目前ios sdk...</summary>
 			</entry>
 		
 			<entry>
 					<title>利用源码的方式导入ZBar作为第三方library</title>
-					<link href="http://ddrccw.github.com/2012/05/26/import-zbar-souce-code/"/>
+					<link href="http://kamelzcs.github.com/2012/05/26/import-zbar-souce-code/"/>
 					<updated>2012-05-26T02:18:00+08:00</updated>
-					<id>http://ddrccw.github.com/2012/05/26/import-zbar-souce-code/</id>
+					<id>http://kamelzcs.github.com/2012/05/26/import-zbar-souce-code/</id>
 					<summary type="html">背景 项目中需要扫描的功能，网上搜索了一番，发现zbar和zxing的使用比较普遍。但由于zxing的obj-c自带的封装只支持qrcode, 而项目中会需要扫描多种一维码和二维码。所以最终选择了zbar。 文中阐述引用的zbar原生的代码是zbar1.2.2，实验的ios版本为5 目的 由于zbar使用 GNU LGPL 2.1协议，提供的sdk相关文档只是介绍了通过静态库的方式来添加进现有的项目。为了能针对相应的实际情况，更好的了解和学习zbar源码，故尝试了如下方法，保证成功引入项目的同时，又能方便查看其源码。 开始导入zbar 1 准备 下载源码包,将相关的代码文件导入到Xcode项目中。 zbar 相关的c api ./zbar zbar 相关的c/c++ header...</summary>
 			</entry>
 		
 			<entry>
 					<title>开发利器codeblocks安装</title>
-					<link href="http://ddrccw.github.com/2012/02/23/install-codeblock/"/>
+					<link href="http://kamelzcs.github.com/2012/02/23/install-codeblock/"/>
 					<updated>2012-02-23T05:18:00+08:00</updated>
-					<id>http://ddrccw.github.com/2012/02/23/install-codeblock/</id>
+					<id>http://kamelzcs.github.com/2012/02/23/install-codeblock/</id>
 					<summary type="html">1 介绍 codeblocks是我开发c/c++时喜欢用的一款IDE，相比于vs安装时的庞大，它则小了很多，但它的功能却依然强大。它的调试是可视化的，相信这有助于增强工作效率。另外，我看中的则是它的跨平台性，如果编程得当的话，在window下的项目在linux下依然可用。这够强大吧。 2 安装 for win 2.1 安装mingw 下载安装工具mingw-get-inst-20111118.exe(http://sourceforge.net/projects/mingw/files/)，我选择的是联网安装（可能下的不是稳定版的，而是最新版的）。 装编译器（我选了c，c++，objc）,还有MSYS（cmd终端中也能使用linux的一些命令） 设置环境变量 MINGW_PATH=D:\MinGW #这个只是我的安装目录，还得注意版本号问题 C_INCLUDE_PATH=%MINGW_PATH%\include;%MINGW_PATH%\lib\gcc\mingw32\4.6.2\include CPLUS_INCLUDE_PATH=%C_INCLUDE_PATH% LIBRARY_PATH=%MINGW_PATH%\lib;%MINGW_PATH%\lib\gcc\mingw32\4.6.2 PATH=%MINGW_PATH%\bin;%MINGW_PATH%\libexec\gcc\mingw32\4.6.2;%MINGW_PATH%\msys\1.0\bin;%MINGW_PATH%\msys\1.0\sbin\awk cmd中查看 g++...</summary>
 			</entry>
 		
 			<entry>
 					<title>Vmware 8安装Lion</title>
-					<link href="http://ddrccw.github.com/2012/02/22/vmware8-install-lion/"/>
+					<link href="http://kamelzcs.github.com/2012/02/22/vmware8-install-lion/"/>
 					<updated>2012-02-22T22:18:00+08:00</updated>
-					<id>http://ddrccw.github.com/2012/02/22/vmware8-install-lion/</id>
+					<id>http://kamelzcs.github.com/2012/02/22/vmware8-install-lion/</id>
 					<summary type="html">1 前言 苹果系统对Intel的CPU支持较好，以下的安装可能不适用于AMD的CPU（我的电脑是Inspiron 灵越™ 14R锋型版,win7 64位） 2 准备 VMware-workstation-full-8.0.2-591240.exe 虚拟机软件 unlock-all-v102 破解补丁，用于虚拟机安装Mac操作系统 Mac OSX Lion 10.7.3 Retail.dmg 来自海盗湾的种子，下载Mac Lion正式版系统 7-zip...</summary>
 			</entry>
 		
 			<entry>
 					<title>win7x64+fedora16双系统安装</title>
-					<link href="http://ddrccw.github.com/2012/02/08/win7x64-fedora16-double-system/"/>
+					<link href="http://kamelzcs.github.com/2012/02/08/win7x64-fedora16-double-system/"/>
 					<updated>2012-02-08T04:18:00+08:00</updated>
-					<id>http://ddrccw.github.com/2012/02/08/win7x64-fedora16-double-system/</id>
+					<id>http://kamelzcs.github.com/2012/02/08/win7x64-fedora16-double-system/</id>
 					<summary type="html">1 前言 win7的安装想必是最简单的，这里也不赘述了。由于是第一次尝试双系统安装，故本文主要记录的是双系统的安装过程。 2 准备 Fedora-16-x86_64-DVD.iso（3.49G），由于机子支持64位，所以就准备安装64位的fedora（dvd版，不是604m的Fedora-16-x86_64-Live-Desktop.iso） 一个u盘（>=4G）或一个足够大的移动硬盘。 本机硬盘要有至少20G的空间装fedora（实际上我分了50G来装） 3 安装 3.1 最简单但也不推荐的方法 首先，使用liveusb-creator把镜像写入U盘。之后还要放iso到存储介质，这里分两种情况。 如果你的u盘足够大，请直接将iso再拷入到u盘。 如果你的u盘不够大，需要在本机的硬盘上或外接的移动硬盘另外分出一块足够大的分区，来放iso。根据网上的资料，都是分区必须为fat32 文件系统，不能为ntfs文件系统（我也是这样照做的，如果有机会我会试下ntfs的可行性），但是win7环境下，似乎处理比较麻烦。我是借助 wince系统来分出一块fat32的分区的。 然后，修改U盘下/syslinux/syslinux.cfg，改成append initrd=initrd.img linux...</summary>
 			</entry>
 		

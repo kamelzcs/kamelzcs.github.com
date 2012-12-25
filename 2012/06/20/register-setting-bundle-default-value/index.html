@@ -169,11 +169,11 @@ h3,h4 {
 
 <p>经过一番查询，可以得出结论目前ios sdk (&lt;= 5.1.1)未提供直接获取默认值的方法，需要自己实现。如下：</p>
 
-<div class="highlight"><pre><code class="objc"><span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">registerDefaultsFromSettingsBundle</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="objc"><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">registerDefaultsFromSettingsBundle</span> <span class="p">{</span>
     <span class="p">[[</span><span class="n">NSUserDefaults</span> <span class="n">standardUserDefaults</span><span class="p">]</span> <span class="nl">registerDefaults:</span><span class="p">[</span><span class="n">self</span> <span class="nl">defaultsFromPlistNamed:</span><span class="s">@&quot;Root&quot;</span><span class="p">]];</span>
 <span class="p">}</span>
 
-<span class="o">-</span> <span class="p">(</span><span class="n">NSDictionary</span> <span class="o">*</span><span class="p">)</span><span class="nl">defaultsFromPlistNamed:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="n">plistName</span> <span class="p">{</span>
+<span class="k">-</span> <span class="p">(</span><span class="n">NSDictionary</span> <span class="o">*</span><span class="p">)</span><span class="nf">defaultsFromPlistNamed:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">plistName</span> <span class="p">{</span>
     <span class="n">NSString</span> <span class="o">*</span><span class="n">settingsBundle</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSBundle</span> <span class="n">mainBundle</span><span class="p">]</span> <span class="nl">pathForResource:</span><span class="s">@&quot;Settings&quot;</span> <span class="nl">ofType:</span><span class="s">@&quot;bundle&quot;</span><span class="p">];</span>
     <span class="n">NSAssert</span><span class="p">(</span><span class="n">settingsBundle</span><span class="p">,</span> <span class="s">@&quot;Could not find Settings.bundle while loading defaults.&quot;</span><span class="p">);</span>
 
@@ -206,8 +206,7 @@ h3,h4 {
 
     <span class="k">return</span> <span class="n">defaults</span><span class="p">;</span>
 <span class="p">}</span>
-</code></pre>
-</div>
+</code></pre></div>
 
 
 <p><strong>说明</strong></p>
@@ -266,8 +265,8 @@ h3,h4 {
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://ddrccw.github.com/2012/06/20/register-setting-bundle-default-value';
-        var disqus_url = 'http://ddrccw.github.com/2012/06/20/register-setting-bundle-default-value';
+        var disqus_identifier = 'http://kamelzcs.github.com/2012/06/20/register-setting-bundle-default-value';
+        var disqus_url = 'http://kamelzcs.github.com/2012/06/20/register-setting-bundle-default-value';
         var disqus_script = 'embed.js';
       
     (function () {
@@ -437,7 +436,7 @@ h3,h4 {
 
 	<div class="sidebar-module">
 		<div class="title"><a href='/categories'>Categories</a></div>
-		<a href="/categories/usage"><strong>Usage</strong></a> (4)<br /><a href="/categories/c,c++"><strong>c,c++</strong></a> (1)<br /><a href="/categories/ios-dev"><strong>iOS-dev</strong></a> (6)<br />
+		<a href="/categories/ios-dev"><strong>iOS-dev</strong></a> (6)<br /><a href="/categories/c,c++"><strong>c,c++</strong></a> (1)<br /><a href="/categories/usage"><strong>Usage</strong></a> (4)<br />
 	</div>
 	
 	<div class="sidebar-module">

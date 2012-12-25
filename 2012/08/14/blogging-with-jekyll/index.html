@@ -195,22 +195,19 @@ h3,h4 {
 <p>a 获取curl证书</p>
 
 <div class="highlight"><pre><code class="bash">curl http://curl.haxx.se/ca/cacert.pem&gt;cacert.pem
-</code></pre>
-</div>
+</code></pre></div>
 
 
 <p>b 设置相关的环境变量</p>
 
 <div class="highlight"><pre><code class="bash"><span class="nb">export </span><span class="nv">CURL_CA_BUNDLE</span><span class="o">=</span>~/.ssh/cacert.pem
-</code></pre>
-</div>
+</code></pre></div>
 
 
 <p>c 安装rvm并设置环境变量</p>
 
 <div class="highlight"><pre><code class="bash">curl -L get.rvm.io | bash -s stable <span class="o">[[</span> -s <span class="s2">&quot;/Users/&lt;username&gt;/.rvm/scripts/rvm&quot;</span> <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="nb">source</span> <span class="s2">&quot;/Users/  &lt;username&gt;/.rvm/scripts/rvm&quot;</span>    <span class="c">#注意&lt;username&gt;替换成你自己的</span>
-</code></pre>
-</div>
+</code></pre></div>
 
 
 <p>d 安装ruby</p>
@@ -229,8 +226,7 @@ h3,h4 {
 <p>有了ruby，安装jekyll水到渠成。</p>
 
 <div class="highlight"><pre><code class="bash">sudo gem install jekyll
-</code></pre>
-</div>
+</code></pre></div>
 
 
 <h4>2.2 jekyll推荐工具</h4>
@@ -240,8 +236,7 @@ h3,h4 {
 <p>虽然jekyll默认用maruku来解析markdown语言,但都说用c语言实现的rdiscount解析器的速度更快，所以我也直接选择rdiscount。</p>
 
 <div class="highlight"><pre><code class="bash">sudo gem install rdiscount
-</code></pre>
-</div>
+</code></pre></div>
 
 
 <p><strong> 2.2.2 pygments--支持语法高亮，要装python </strong></p>
@@ -252,8 +247,7 @@ h3,h4 {
 
 <div class="highlight"><pre><code class="bash">sudo port install python25 py25-pygments
 sudo ln -s &lt;py25-pygments&gt; &lt;pygments&gt;  <span class="c">#非必须：因为jekyll只能识别pygments这个名称，但是port下来的可执行文件的名称可能并不是pygments，所以我在这里创建符号链接</span>
-</code></pre>
-</div>
+</code></pre></div>
 
 
 <h4>2.3 Last But Not The Least</h4>
@@ -380,8 +374,8 @@ sudo ln -s &lt;py25-pygments&gt; &lt;pygments&gt;  <span class="c">#非必须：
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://ddrccw.github.com/2012/08/14/blogging-with-jekyll';
-        var disqus_url = 'http://ddrccw.github.com/2012/08/14/blogging-with-jekyll';
+        var disqus_identifier = 'http://kamelzcs.github.com/2012/08/14/blogging-with-jekyll';
+        var disqus_url = 'http://kamelzcs.github.com/2012/08/14/blogging-with-jekyll';
         var disqus_script = 'embed.js';
       
     (function () {
@@ -551,7 +545,7 @@ sudo ln -s &lt;py25-pygments&gt; &lt;pygments&gt;  <span class="c">#非必须：
 
 	<div class="sidebar-module">
 		<div class="title"><a href='/categories'>Categories</a></div>
-		<a href="/categories/usage"><strong>Usage</strong></a> (4)<br /><a href="/categories/c,c++"><strong>c,c++</strong></a> (1)<br /><a href="/categories/ios-dev"><strong>iOS-dev</strong></a> (6)<br />
+		<a href="/categories/ios-dev"><strong>iOS-dev</strong></a> (6)<br /><a href="/categories/c,c++"><strong>c,c++</strong></a> (1)<br /><a href="/categories/usage"><strong>Usage</strong></a> (4)<br />
 	</div>
 	
 	<div class="sidebar-module">
