@@ -1,4 +1,4 @@
-##ddrccw's library##
+##kamelzcs's library##
 
 ###Prerequisites###
 
@@ -46,7 +46,7 @@
 
 ***ps:***
 
-1. source分支的更新，直接在source分支下`git push origin HEAD`或`rake update`
+1. source分支的更新，直接在source分支下 rake commitSource
 
 2. master的更新，在source分支下rake ssend
     
@@ -57,4 +57,4 @@
 
 
 
-copy right @ ddrccw  |  主题由[Bilal Syed Hussain](http://bilalh.github.com)提供
+copy right @ kamelzcs  |  主题由[Bilal Syed Hussain](http://bilalh.github.com)提供,由[ddrccw](http://ddrccw.github.com)修改
