@@ -35,7 +35,10 @@ task :local => :build do
 		APPLESCRIPT 
 	]
 end
-
+desc:"Commit the changes of the source branch to the site"
+task :commitSource do
+puts %x[git add .; git commit -am "`date +%F_%H-%M_%s`";git push origin HEAD] 
+end
 desc:"Commit the changes to the site."
 task :commit => :build do
 	puts %x[rsync -q -acvrz --exclude .git --delete _site/ _compiled/]
