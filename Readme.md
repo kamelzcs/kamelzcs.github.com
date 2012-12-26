@@ -8,16 +8,16 @@
 	
 ###Install###
 
-1. `git clone https://github.com/ddrccw/ddrccw.github.com.git ddrccw`
+1. `git clone https://github.com/kamelzcs/kamelzcs.github.com.git kamelzcs`
 
-	ddrccw 为blog根目录，可随意更改名称
+	kamelzcs 为blog根目录，可随意更改名称
 
-2. `cd ddrccw`
+2. `cd kamelzcs`
 3. `mkdir _cache`
 
 	_cache       //如果你有自己的开源项目，参考_config.yml里的写法，会自动将项目的README.md download放置其中，最终build出一个适合本站主题的README页面
 
-4. `git clone https://github.com/ddrccw/ddrccw.github.com.git _compiled`
+4. `git clone https://github.com/kamelzcs/kamelzcs.github.com.git _compiled`
 
 	_compiled    //当jekyll生成html到_site后，同步到该目录，再推送至github下的个人blog，名字对应于Rakefile中的命名
 
