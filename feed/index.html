@@ -4,11 +4,19 @@
 		<link type="application/atom+xml" href="http://kamelzcs.github.com/feed" rel="self" />
 		<link type="text" href="http://kamelzcs.github.com" rel="alternate" />
 		
-		<updated>2012-12-26T17:24:17+08:00</updated>
+		<updated>2012-12-26T22:16:00+08:00</updated>
 		<id>http://kamelzcs.github.com</id>
 		<author><name>ddrccw</name></author>
 		<rights>Copyright (c) 2012 ddrccw</rights>
 		
+		
+			<entry>
+					<title>test</title>
+					<link href="http://kamelzcs.github.com/2012/12/27/test/"/>
+					<updated>2012-12-27T06:10:29+08:00</updated>
+					<id>http://kamelzcs.github.com/2012/12/27/test/</id>
+					<summary type="html">前言 手头上的项目开发时原本跑的板子是ipad2（ipad5.1.1），但考虑到客户那边到时会购买新的ipad，势必要让现阶段的代码能够在ios6上运行，故花了点时间做了一下适配工作。已下讨论到的问题仅在我的适配过程中遇到，并不涵盖升级app到ios6的全部问题。 正题 旋转 参考RN-iOSSDK-6_0，在&lt;ios6的版本中，UIViewController类中提供shouldAutorotateToInterfaceOrientation:的方法告诉系统实现的VC支持什么方向的旋转。但在ios6中，旋转支持的判断则不会涉及到开发过程中的每个VC，责任更多的推到了上游。 一方面，系统会从app提供的info.plist文件和app的delegate类的application:supportedInterfaceOrientationsForWindow:方法中获取旋转支持的信息。当然，后者优先级大于前者。 另一方面，系统会从root或top-most full-screen的VC的supportedInterfaceOrientationsForWindow:和 shouldAutorotate 方法获取旋转支持的信息。所谓root，就是一定要在app delegate类中设置rootViewController。top-most full-screen则很有迷惑性，你可能会想当然的以为是自己在屏幕上看到的app当前全屏状态的那个VC。其实不然，如果你用了UINavigationController或其他类似的容器类时，那些容器类才是真正的top-most full-screen的VC。 实际适配过程中，一是我的UINavigationController本身也是位于其他自定义的容器类A中，二是实际主要展示的界面内容却又是在UINavigationController的子VC中。所以为了让app支持旋转，我需要让系统知道UINavigationController的子VC旋转支持的方向。有了思路，剩下的就好办。分别实现容器类A，UINavigationController类，显示内容的VC类的supportedInterfaceOrientationsForWindow: 和 shouldAutorotate 方法。虽然系统只会问容器类A，但我只要从容器类A一级一级往下询问即可。 注：UINavigationController需要子类化或一个Category类才能重写那两个方法。 导航条自定义背景 由于项目设计需要，同一个navigationController的不同层次的导航条背景有些许不同，并且设计师提供的只是一小段图片（需要将图片平铺）。...</summary>
+			</entry>
 		
 			<entry>
 					<title>升级app到ios6</title>
