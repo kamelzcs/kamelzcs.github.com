@@ -7,8 +7,8 @@ category: Usage
 tags:
  - github
  - github-pages
- - jekyll
-keywords: github jekyll blog
+ - JEKYLL
+keywords: github JEKYLL blog
 description: Blogging with jekyll
 ---
 
