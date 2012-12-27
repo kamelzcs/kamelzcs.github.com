@@ -17,7 +17,7 @@ end
 
 desc:"Refreshes the web page in Firefox"
 task :local => :build do
-	puts %x[rsync -q -acvrz	 --delete _site/]
+    #	puts %x[rsync -q -acvrz	 --delete _site/]
 	# %x[osascript -e 'open location "http://localhost/"']
 	%x[
 		# Check if Firefox is running, if so refresh
@@ -102,7 +102,7 @@ task :new do
 		f.puts ""
 		f.puts ""
 	end
-
+=begin
 	%x[
 		osascript << EOF
 			tell application "Mou"
@@ -114,7 +114,8 @@ task :new do
 			end tell
 		EOF
 	]
-	#`mate #{path}`
+=end
+	`mate #{path}`
 	exit
 end
 
