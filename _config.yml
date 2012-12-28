@@ -20,7 +20,7 @@ paginate_files:
 
 
 permalink: /:year/:month/:day/:title
-exclude:   ["Rakefile", "CNAME", "ddrccw.tmproj"]
+exclude:   ["Rakefile", "CNAME", "kamelzcs.tmproj"]
 title:     kamelzcs's library
 url:       http://kamelzcs.github.com
 

@@ -18,7 +18,7 @@ description: 使用模板的方法
 
 ## 2 安装 ##
 
-基本参照<http://ddrccw.github.com/2012/08/14/blogging-with-jekyll/>即可。
+基本参照<http://kamelzcs.github.com/2012/08/14/blogging-with-jekyll/>即可。
 说明几个需要注意的问题：
 
 1. 建立 username.github.com 这样的repo，这样就可以直接使用这个域名访问网站.
