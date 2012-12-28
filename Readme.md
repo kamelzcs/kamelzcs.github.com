@@ -57,4 +57,4 @@
 
 
 
-copy right @ kamelzcs  |  主题由[Bilal Syed Hussain](http://bilalh.github.com)提供,由[ddrccw](http://ddrccw.github.com)修改
+copy right @ kamelzcs  |  主题由[Bilal Syed Hussain](http://bilalh.github.com)提供,由[kamelzcs](http://kamelzcs.github.com)修改
