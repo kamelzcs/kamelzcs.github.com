@@ -46,9 +46,9 @@ recent_post_listing_limit: 10        #single page only has 10 articles
 
 projects:
 
-    CCChainedMenu: &CCChainedMenu
-        title:        CCChainedMenu
+    Cbc: &Cbc
+        title:        Cbc
         category:     study
         languages:    [Objective C]
         description:  >
-            尝试运用CAAnimation, 效果类似UCWeb iPad端右下角的小菜单。
+            尝。
