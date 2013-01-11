@@ -6,8 +6,9 @@ plugins:     ./_plugins
 author:   kamel
 lsi:      false
 safe:     false
-markdown: rdiscount
+#markdown: rdiscount
 #markdown: maruku
+markdown: kramdown
 pygments: true
 
 github_user:  kamelzcs
