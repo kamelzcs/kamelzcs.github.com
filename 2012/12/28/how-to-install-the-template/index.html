@@ -187,44 +187,39 @@ h3,h4 {
 	</h4>
 	
 	<div class="content">
-		<h2>1 介绍</h2>
+		<h2 id="section">1 介绍</h2>
 
 <p>在github上搭建一个中小型网站，可以充分利用github提供的托管功能，并且不用担心代码丢失的问题，是一件很惬意的事情。</p>
 
-<h2>2 安装</h2>
+<h2 id="section-1">2 安装</h2>
 
 <p>基本参照<a href="http://kamelzcs.github.com/2012/08/14/blogging-with-jekyll/">http://kamelzcs.github.com/2012/08/14/blogging-with-jekyll/</a>即可。
 说明几个需要注意的问题：</p>
 
 <ol>
-<li>建立 username.github.com 这样的repo，这样就可以直接使用这个域名访问网站.</li>
-<li>_compiled主要用来中转,将_site拷贝过来之后，然后将目录切换到 _compiled，因为 _compiled 克隆的时候用的是master，所以自动切换到了master分支，然后提交到master分支。这里有个疑问,_compiled既然克隆出来的时候是在master分支，为什么在source分支下又可以看到这个文件夹，暂时不清楚。</li>
-<li>git会自动确定切换分支时哪些文件该出现，哪些不应该出现。</li>
+  <li>建立 username.github.com 这样的repo，这样就可以直接使用这个域名访问网站.</li>
+  <li>_compiled主要用来中转,将_site拷贝过来之后，然后将目录切换到 _compiled，因为 _compiled 克隆的时候用的是master，所以自动切换到了master分支，然后提交到master分支。这里有个疑问,_compiled既然克隆出来的时候是在master分支，为什么在source分支下又可以看到这个文件夹，暂时不清楚。</li>
+  <li>git会自动确定切换分支时哪些文件该出现，哪些不应该出现。</li>
 </ol>
 
+<script type="math/tex; mode=display">% <![CDATA[
 
-<p>$$
 \begin{align*}
-  &amp; \phi(x,y) = \phi \left(\sum<em>{i=1}<sup>n</sup> x_ie_i, \sum</em>{j=1}<sup>n</sup> y_je_j \right)
-  = \sum<em>{i=1}<sup>n</sup> \sum</em>{j=1}<sup>n</sup> x_i y_j \phi(e_i, e_j) = \
-  &amp; (x_1, \ldots, x_n) \left( \begin{array}{ccc}</p>
+  & \phi(x,y) = \phi \left(\sum_{i=1}^n x_ie_i, \sum_{j=1}^n y_je_j \right)
+  = \sum_{i=1}^n \sum_{j=1}^n x_i y_j \phi(e_i, e_j) = \\
+  & (x_1, \ldots, x_n) \left( \begin{array}{ccc}
+      \phi(e_1, e_1) & \cdots & \phi(e_1, e_n) \\
+      \vdots & \ddots & \vdots \\
+      \phi(e_n, e_1) & \cdots & \phi(e_n, e_n)
+    \end{array} \right)
+  \left( \begin{array}{c}
+      y_1 \\
+      \vdots \\
+      y_n
+    \end{array} \right)
+\end{align*}
+ %]]></script>
 
-<pre><code>  \phi(e_1, e_1) &amp; \cdots &amp; \phi(e_1, e_n) \\
-  \vdots &amp; \ddots &amp; \vdots \\
-  \phi(e_n, e_1) &amp; \cdots &amp; \phi(e_n, e_n)
-\end{array} \right)
-</code></pre>
-
-<p>  \left( \begin{array}{c}</p>
-
-<pre><code>  y_1 \\
-  \vdots \\
-  y_n
-\end{array} \right)
-</code></pre>
-
-<p>\end{align*}
-$$</p>
 
 	</div>
 	
