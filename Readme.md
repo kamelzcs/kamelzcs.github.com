@@ -2,9 +2,10 @@
 
 ###Prerequisites###
 
-* Ruby (only tested with 1.9)及相关组件
+* Ruby (only tested with 1.9)及相关组件(gem 1.9)
 
-	gem install nokogiri sass growl
+	gem install nokogiri sass growl sass jekyll jekyll-pagination front-compiler
+	sudo update-alternatives --config ruby (switch default lib)
 	
 ###Install###
 
