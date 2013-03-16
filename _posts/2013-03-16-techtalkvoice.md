@@ -1,6 +1,6 @@
 ---
 layout: post
-title: techTalkVoice
+title: 语音技术沙龙
 date: 2013-03-16 20:18:21
 isOriginal: true
 category: 技术报告 
