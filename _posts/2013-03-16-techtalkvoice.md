@@ -3,10 +3,11 @@ layout: post
 title: 语音技术沙龙
 date: 2013-03-16 20:18:21
 isOriginal: true
-category: 技术报告 
+category: 语音 
 tags:
  - 语音
  - 趋势
+ - 大规模机器学习
 keywords: 语音 技术 趋势 
 description: 语音处理趋势 
 ---
