@@ -2,70 +2,58 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
         <loc>http://kamelzcs.github.com/2012/12/28/how-to-install-the-template</loc>
-        <lastmod>2013-04-24T21:19:05+08:00</lastmod>
+        <lastmod>2013-10-28T18:47:11+09:00</lastmod>
     </url>
     <url>
         <loc>http://kamelzcs.github.com/2013/01/02/review-2012</loc>
-        <lastmod>2013-04-24T21:19:05+08:00</lastmod>
+        <lastmod>2013-10-28T16:14:01+09:00</lastmod>
     </url>
     <url>
         <loc>http://kamelzcs.github.com/2013/02/12/chinesenewyear</loc>
-        <lastmod>2013-04-24T21:19:05+08:00</lastmod>
+        <lastmod>2013-10-28T16:14:01+09:00</lastmod>
     </url>
     <url>
-        <loc>http://kamelzcs.github.com/2013/02/12/backhome</loc>
-        <lastmod>2013-04-24T21:19:05+08:00</lastmod>
+        <loc>http://kamelzcs.github.com/2013/02/13/backhome</loc>
+        <lastmod>2013-10-28T16:14:01+09:00</lastmod>
     </url>
     <url>
         <loc>http://kamelzcs.github.com/2013/03/12/lifeinpeking</loc>
-        <lastmod>2013-04-24T21:19:05+08:00</lastmod>
+        <lastmod>2013-10-28T16:14:01+09:00</lastmod>
     </url>
     <url>
         <loc>http://kamelzcs.github.com/2013/03/17/techtalkvoice</loc>
-        <lastmod>2013-04-24T21:19:05+08:00</lastmod>
+        <lastmod>2013-10-28T16:14:01+09:00</lastmod>
     </url>
     <url>
         <loc>http://kamelzcs.github.com/2013/03/17/talkinjapaneseforeignaffair</loc>
-        <lastmod>2013-04-25T18:38:49+08:00</lastmod>
+        <lastmod>2013-10-28T16:14:01+09:00</lastmod>
     </url>
     <url>
-        <loc>http://kamelzcs.github.com/2013/06/15/lifeinpastsevenyears</loc>
-        <lastmod>2013-06-17T23:53:02+08:00</lastmod>
+        <loc>http://kamelzcs.github.com/archives/archives/</loc>
+        <lastmod>2013-10-28T18:47:11+09:00</lastmod>
     </url>
     <url>
-        <loc>http://kamelzcs.github.com/2013/06/30/banhui</loc>
-        <lastmod>2013-06-30T10:50:37+08:00</lastmod>
+        <loc>http://kamelzcs.github.com/feed/atom/feed/atom/</loc>
+        <lastmod>2013-10-28T18:47:11+09:00</lastmod>
     </url>
     <url>
-        <loc>http://kamelzcs.github.com/2013/07/20/yaozhui</loc>
-        <lastmod>2013-07-19T23:43:10+08:00</lastmod>
+        <loc>http://kamelzcs.github.com/feed/feed/</loc>
+        <lastmod>2013-10-28T18:47:11+09:00</lastmod>
     </url>
     <url>
-        <loc>http://kamelzcs.github.com/css/site.css</loc>
-        <lastmod>2013-04-24T21:19:05+08:00</lastmod>
-    </url>
-    <url>
-        <loc>http://kamelzcs.github.com/archives/</loc>
-        <lastmod>2013-07-19T23:43:10+08:00</lastmod>
+        <loc>http://kamelzcs.github.com/about/about/</loc>
+        <lastmod>2013-10-28T16:14:01+09:00</lastmod>
     </url>
     <url>
         <loc>http://kamelzcs.github.com/</loc>
-        <lastmod>2013-07-19T23:43:10+08:00</lastmod>
-    </url>
-    <url>
-        <loc>http://kamelzcs.github.com/about/</loc>
-        <lastmod>2013-04-24T21:19:05+08:00</lastmod>
-    </url>
-    <url>
-        <loc>http://kamelzcs.github.com/feed/atom/</loc>
-        <lastmod>2013-07-19T23:43:10+08:00</lastmod>
-    </url>
-    <url>
-        <loc>http://kamelzcs.github.com/feed/</loc>
-        <lastmod>2013-07-19T23:43:10+08:00</lastmod>
+        <lastmod>2013-10-28T18:47:11+09:00</lastmod>
     </url>
     <url>
         <loc>http://kamelzcs.github.com/blog.html</loc>
-        <lastmod>2013-04-24T21:19:05+08:00</lastmod>
+        <lastmod>2013-10-28T16:14:01+09:00</lastmod>
+    </url>
+    <url>
+        <loc>http://kamelzcs.github.com/css/css/site.css</loc>
+        <lastmod>2013-10-28T16:14:01+09:00</lastmod>
     </url>
 </urlset>

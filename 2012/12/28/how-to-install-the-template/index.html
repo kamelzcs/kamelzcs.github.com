@@ -199,7 +199,9 @@ h3,h4 {
 <ol>
   <li>建立 username.github.com 这样的repo，这样就可以直接使用这个域名访问网站.</li>
   <li>_compiled主要用来中转,将_site拷贝过来之后，然后将目录切换到 _compiled，因为 _compiled 克隆的时候用的是master，所以自动切换到了master分支，然后提交到master分支。这里有个疑问,_compiled既然克隆出来的时候是在master分支，为什么在source分支下又可以看到这个文件夹，暂时不清楚。</li>
-  <li>git会自动确定切换分支时哪些文件该出现，哪些不应该出现。</li>
+  <li>git会自动确定切换分支时哪些文件该出现，哪些不应该出现。
+2013年10月28日 更新：
+jekyll升级到1.2.1 以后，jekyll-pagination会导致jekyll在 build的时候失败，只能将pagination.rb手动更新为最新的代码,同时__plugin文件夹中不能使用中文。</li>
 </ol>
 
 
@@ -323,15 +325,11 @@ h3,h4 {
             </span>
           
             <span style="font-size: 75%">
-              <a href="/tags/方法论/" title="1 post">方法论</a>
-            </span>
-          
-            <span style="font-size: 75%">
               <a href="/tags/日本/" title="1 post">日本</a>
             </span>
           
             <span style="font-size: 280%">
-              <a href="/tags/生活/" title="3 posts">生活</a>
+              <a href="/tags/生活/" title="2 posts">生活</a>
             </span>
           
             <span style="font-size: 75%">
@@ -350,12 +348,12 @@ h3,h4 {
 
 	<div class="sidebar-module">
 		<div class="title"><a href='/categories'>Categories</a></div>
-		<a href="/categories/生活"><strong>生活</strong></a> (4)<br /><a href="/categories/jekyll"><strong>jekyll</strong></a> (1)<br /><a href="/categories/语音"><strong>语音</strong></a> (1)<br /><a href="/categories/讲座"><strong>讲座</strong></a> (1)<br /><a href="/categories/感悟"><strong>感悟</strong></a> (1)<br />
+		<a href="/categories/生活"><strong>生活</strong></a> (4)<br /><a href="/categories/jekyll"><strong>jekyll</strong></a> (1)<br /><a href="/categories/语音"><strong>语音</strong></a> (1)<br /><a href="/categories/讲座"><strong>讲座</strong></a> (1)<br />
 	</div>
 	
 	<div class="sidebar-module">
 		<div class="title"><a href='/archives'>Archives</a></div>
-		<a href="/2013/06"><strong>June 2013</strong></a> (1)<br /><a href="/2013/03"><strong>March 2013</strong></a> (3)<br /><a href="/2013/02"><strong>February 2013</strong></a> (2)<br /><a href="/2013/01"><strong>January 2013</strong></a> (1)<br /><a href="/2012/12"><strong>December 2012</strong></a> (1)<br />
+		<a href="/2013/03"><strong>March 2013</strong></a> (3)<br /><a href="/2013/02"><strong>February 2013</strong></a> (2)<br /><a href="/2013/01"><strong>January 2013</strong></a> (1)<br /><a href="/2012/12"><strong>December 2012</strong></a> (1)<br />
 	</div>
 </div>
 
