@@ -1,17 +1,15 @@
-task :default => :local
+task :default => :localtest
 
 desc:"jekyll local test, kill jekyll and rake (state=T)"
-task :kill do
-	`ps aux | grep -E "[j]ekyll|[r]ake" | tr -s ' ' | cut -d " " -f 2,8 | awk '{if($2=="T") system("kill -9 "$1)}'`
-end
-
 desc:"local server test"
-task :localtest => :kill do
-	system("jekyll --server")   #not inclue blog.html
+task :kill do
+        `ps aux | grep -E "[j]ekyll|[r]ake" | tr -s ' ' | cut -d " " -f 2,8 | awk '{if($2=="T") system("kill -9 "$1)}'`
 end
-
+task :localtest => :kill do
+        system("jekyll serve")   #not inclue blog.html
+end
 task :build do
-	system("jekyll")
+	system("jekyll build")
 	`mv _site/blog.html _site/blog/index.html`  #for the sake of the limitation of jekyll-pagenation
 end
 
