@@ -2,16 +2,16 @@
 <html>
 <head>
 	
-	<title>回乡路上 - kamelzcs's library</title>
+	<title>Storing Data in App Engine - kamelzcs's library</title>
 	
 	
 	<meta name="author" content="kamelzcs" />
 	
-	<meta name="description" content="回乡路上" />
+	<meta name="description" content="learning summarize in storing data in app engine" />
 	
 
 	
-	<meta name="keywords" content="回家 诗歌" />	
+	<meta name="keywords" content="Database App-engine" />	
 	
 
 	<meta name="robots" content="noodp, nydir" />
@@ -170,37 +170,146 @@ h3,h4 {
 
 
 <div class="post" id="main-content">
-	<h1>回乡路上</h1>
+	<h1>Storing Data in App Engine</h1>
 	<h4 class="large-bottom">
-		Posted on February 13, 2013
-		 in <a href="/categories/生活">生活</a> 
+		Posted on November 05, 2013
+		 in <a href="/categories/technique">technique</a> 
 
 		<span class="tag-list">
 			
-			<a href="/tags/诗歌">诗歌</a>
+			<a href="/tags/technique">technique</a>
+			
+			<a href="/tags/database">Database</a>
+			
+			<a href="/tags/app-engine">App Engine</a>
 			
 		</span>
 	</h4>
 	
 	<div class="content">
-		<p>我远远的观望者别人的生活，<br />
-自己却仿佛没有生活过一样。<br />
-列车无时无刻不在翻山越岭，<br />
-自己却不知道下一站在何方。<br />
-那曾经熟悉的面孔依旧，<br />
-自己却面目全非。<br />
-那曾有的欢歌笑语已经远去，<br />
-如今却只能兀自发呆。<br />
-出发了太久，<br />
-竟模糊了当初梦想的模样。<br />
-但是我并不愿意妥协，<br />
-我想去远方，<br />
-用脚步丈量高山，<br />
-用双手拥抱大川。<br />
-山川就在那里，<br />
-远方也在那里，<br />
-出发了不要问路在哪，<br />
-一直向前是唯一的方法。  </p>
+		<h3 id="storing-data">Storing Data</h3>
+
+<p>The app engine provides several ways to store data for the application:</p>
+
+<ol>
+  <li>App Engine Datastore: A schemaless object datastore with automatic caching, query engine, and atomic transactions.</li>
+  <li>Google Cloud SQL: A relationship SQL based on the MySQL database.</li>
+  <li>Google Cloud Storage: size can be up to terabytes.</li>
+</ol>
+
+<h3 id="python-datastore-api">Python Datastore API</h3>
+
+<p>An entity has one or more properties. Each entity is identified by its kind, which categorizes the entity for the purpose of queries, and a key that uniquely identifies it within its kind.</p>
+
+<div class="highlight"><pre><code class="objc"><span class="n">import</span> <span class="n">datetime</span>
+<span class="n">from</span> <span class="n">google</span><span class="p">.</span><span class="n">appengine</span><span class="p">.</span><span class="n">ext</span> <span class="n">import</span> <span class="n">db</span>
+<span class="n">from</span> <span class="n">google</span><span class="p">.</span><span class="n">appengine</span><span class="p">.</span><span class="n">api</span> <span class="n">import</span> <span class="n">users</span>
+
+
+<span class="n">class</span> <span class="n">Employee</span><span class="p">(</span><span class="n">db</span><span class="p">.</span><span class="n">Model</span><span class="p">)</span><span class="o">:</span>
+  <span class="n">name</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="n">StringProperty</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="n">True</span><span class="p">)</span>
+  <span class="n">role</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="n">StringProperty</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="n">True</span><span class="p">,</span>
+                           <span class="n">choices</span><span class="o">=</span><span class="n">set</span><span class="p">([</span><span class="s">&quot;executive&quot;</span><span class="p">,</span> <span class="s">&quot;manager&quot;</span><span class="p">,</span> <span class="s">&quot;producer&quot;</span><span class="p">]))</span>
+  <span class="n">hire_date</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="n">DateProperty</span><span class="p">()</span>
+  <span class="n">new_hire_training_completed</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="n">BooleanProperty</span><span class="p">(</span><span class="n">indexed</span><span class="o">=</span><span class="n">False</span><span class="p">)</span>
+  <span class="n">email</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="n">StringProperty</span><span class="p">()</span>
+
+
+<span class="n">e</span> <span class="o">=</span> <span class="n">Employee</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;John&quot;</span><span class="p">,</span>
+             <span class="n">role</span><span class="o">=</span><span class="s">&quot;manager&quot;</span><span class="p">,</span>
+             <span class="n">email</span><span class="o">=</span><span class="n">users</span><span class="p">.</span><span class="n">get_current_user</span><span class="p">().</span><span class="n">email</span><span class="p">())</span>
+<span class="n">e</span><span class="p">.</span><span class="n">hire_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">.</span><span class="n">now</span><span class="p">().</span><span class="n">date</span><span class="p">()</span>
+<span class="n">e</span><span class="p">.</span><span class="n">put</span><span class="p">()</span>
+</code></pre></div>
+
+<p>Query Examples:</p>
+
+<div class="highlight"><pre><code class="objc"><span class="n">training_registration_list</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;Alfred.Smith@example.com&quot;</span><span class="p">,</span>
+                              <span class="s">&quot;jharrison@example.com&quot;</span><span class="p">,</span>
+                              <span class="s">&quot;budnelson@example.com&quot;</span><span class="p">]</span>
+<span class="n">employees_trained</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="n">GqlQuery</span><span class="p">(</span><span class="s">&quot;SELECT * FROM Employee WHERE email IN :1&quot;</span><span class="p">,</span>
+                                <span class="n">training_registration_list</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">e</span> <span class="k">in</span> <span class="n">employees_trained</span><span class="o">:</span>
+  <span class="n">e</span><span class="p">.</span><span class="n">new_hire_training_completed</span> <span class="o">=</span> <span class="n">True</span>
+  <span class="n">db</span><span class="p">.</span><span class="n">put</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="comparison-with-traditional-databases">Comparison with traditional databases</h3>
+
+<p>It differs from them in the way it describes relationships between data objects. Entities of the same kind can have different properties, and different entities can have properties with the same name but different value types.</p>
+
+<h3 id="entities">Entities</h3>
+
+<p>Objects in the Datastore are entities.</p>
+
+<h4 id="kindskeys-and-identifiers">Kinds,keys, and identifiers</h4>
+
+<p>Each entity is a particular kinds, which categorizes the entity for the purpose of queries. In addition, each entity has its own key, which uniquely identifies it. The key consists of the following components:</p>
+
+<ol>
+  <li>The entity’s kind</li>
+  <li>identifier, which can be either
+    <ul>
+      <li>a key name string</li>
+      <li>an integer ID</li>
+    </ul>
+  </li>
+  <li>An optional ancestor path locating the entity within the Datastore hierarchy</li>
+</ol>
+
+<h4 id="ancestor-paths">Ancestor paths</h4>
+
+<p>Entities in the Datastore form a hierarchically structured space similar to the directory structure of a file system.</p>
+
+<blockquote>
+
+  <pre><code>[Person:GreatGrandpa, Person:Grandpa, Person:Dad, Person:Me]
+</code></pre>
+</blockquote>
+
+<h3 id="queries-and-indexes">Queries and indexes</h3>
+
+<p>A typical query includes the following:</p>
+
+<ul>
+  <li>An entity kind to which the query applies</li>
+  <li>Zero or more filters based on the entities’ property values, keys, and ancestors</li>
+  <li>Zero or more sort orders to sequence the results</li>
+</ul>
+
+<p>App Engine predefines a simple index on each property of an entity. An App Engine application can define further custom indexes in an index configuration file named index.yaml.</p>
+
+<h3 id="transactions">Transactions</h3>
+
+<p>Every attempt to insert, update, or delete an entity takes place in the context of a transaction. A single transaction can include any number of such operations. To maintain the consistency of the data, the transaction ensures that all of the operations it contains are applied to the Datastore as a unit or, if any of the operations fails, that none of them are applied.</p>
+
+<p>You can perform multiple actions on an entity within a single transaction.</p>
+
+<h4 id="transactions-and-entity-groups">Transactions and entity groups</h4>
+
+<p>Only ancestor queries are allowed within a transaction: that is, each transactional query must be limited to a single entity group. The transaction itself can apply to multiple entities, which can belong either to a single entity group or (in the case of a cross-group transaction) to as many as five different entity groups.</p>
+
+<h4 id="cross-group-transactions">Cross-group transactions</h4>
+
+<p>The transaction can be applied across a maximum of five entity groups, and will succeed as long as no concurrent transaction touches any of the entity groups to which it applies.</p>
+
+<p>As in a single-group transaction, you cannot perform a non-ancestor query in an XG transaction. You can, however, perform ancestor queries on separate entity groups.</p>
+
+<h3 id="datastore-writes-and-data-visibility">Datastore writes and data visibility</h3>
+
+<p>Data is written to the Datastore in two phases:</p>
+
+<ol>
+  <li>In the Commit phase, the entity data is recorded in a log.</li>
+  <li>The Apply phase consists of two actions performed in parallel:
+    <ul>
+      <li>The entity data is written.</li>
+      <li>The index rows for the entity are written. (Note that this can take longer than writing the data itself.)</li>
+    </ul>
+  </li>
+</ol>
+
+<p>The write operation returns immediately after the Commit phase and the Apply phase then takes place asynchronously.</p>
 
 
 	</div>
@@ -214,18 +323,12 @@ h3,h4 {
 		
 		
 		
-			&laquo;&nbsp;<a href="/2013/03/12/lifeinpeking" rel="next" title="初体验">初体验</a>
-		
 	
-		
-			
-				|
-			
 		
 		
 	
 		
-			<a href="/2013/02/12/chinesenewyear" rel="previous" title="春节">春节</a>&nbsp;&raquo;
+			<a href="/2013/10/29/jinja2" rel="previous" title="Jinja2">Jinja2</a>&nbsp;&raquo;
 		
 	
 		<br />
@@ -251,8 +354,8 @@ h3,h4 {
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://kamelzcs.github.com/2013/02/13/backhome';
-        var disqus_url = 'http://kamelzcs.github.com/2013/02/13/backhome';
+        var disqus_identifier = 'http://kamelzcs.github.com/2013/11/05/storingdatainappengine';
+        var disqus_url = 'http://kamelzcs.github.com/2013/11/05/storingdatainappengine';
         var disqus_script = 'embed.js';
       
     (function () {
