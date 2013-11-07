@@ -201,37 +201,37 @@ h3,h4 {
 
 <p>An entity has one or more properties. Each entity is identified by its kind, which categorizes the entity for the purpose of queries, and a key that uniquely identifies it within its kind.</p>
 
-<div class="highlight"><pre><code class="objc"><span class="n">import</span> <span class="n">datetime</span>
-<span class="n">from</span> <span class="n">google</span><span class="p">.</span><span class="n">appengine</span><span class="p">.</span><span class="n">ext</span> <span class="n">import</span> <span class="n">db</span>
-<span class="n">from</span> <span class="n">google</span><span class="p">.</span><span class="n">appengine</span><span class="p">.</span><span class="n">api</span> <span class="n">import</span> <span class="n">users</span>
+<div class="highlight"><pre><code class="python"><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">google.appengine.ext</span> <span class="kn">import</span> <span class="n">db</span>
+<span class="kn">from</span> <span class="nn">google.appengine.api</span> <span class="kn">import</span> <span class="n">users</span>
 
 
-<span class="n">class</span> <span class="n">Employee</span><span class="p">(</span><span class="n">db</span><span class="p">.</span><span class="n">Model</span><span class="p">)</span><span class="o">:</span>
-  <span class="n">name</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="n">StringProperty</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="n">True</span><span class="p">)</span>
-  <span class="n">role</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="n">StringProperty</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="n">True</span><span class="p">,</span>
-                           <span class="n">choices</span><span class="o">=</span><span class="n">set</span><span class="p">([</span><span class="s">&quot;executive&quot;</span><span class="p">,</span> <span class="s">&quot;manager&quot;</span><span class="p">,</span> <span class="s">&quot;producer&quot;</span><span class="p">]))</span>
-  <span class="n">hire_date</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="n">DateProperty</span><span class="p">()</span>
-  <span class="n">new_hire_training_completed</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="n">BooleanProperty</span><span class="p">(</span><span class="n">indexed</span><span class="o">=</span><span class="n">False</span><span class="p">)</span>
-  <span class="n">email</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="n">StringProperty</span><span class="p">()</span>
+<span class="k">class</span> <span class="nc">Employee</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+  <span class="n">name</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">StringProperty</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+  <span class="n">role</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">StringProperty</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                           <span class="n">choices</span><span class="o">=</span><span class="nb">set</span><span class="p">([</span><span class="s">&quot;executive&quot;</span><span class="p">,</span> <span class="s">&quot;manager&quot;</span><span class="p">,</span> <span class="s">&quot;producer&quot;</span><span class="p">]))</span>
+  <span class="n">hire_date</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">DateProperty</span><span class="p">()</span>
+  <span class="n">new_hire_training_completed</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">BooleanProperty</span><span class="p">(</span><span class="n">indexed</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+  <span class="n">email</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">StringProperty</span><span class="p">()</span>
 
 
 <span class="n">e</span> <span class="o">=</span> <span class="n">Employee</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;John&quot;</span><span class="p">,</span>
              <span class="n">role</span><span class="o">=</span><span class="s">&quot;manager&quot;</span><span class="p">,</span>
-             <span class="n">email</span><span class="o">=</span><span class="n">users</span><span class="p">.</span><span class="n">get_current_user</span><span class="p">().</span><span class="n">email</span><span class="p">())</span>
-<span class="n">e</span><span class="p">.</span><span class="n">hire_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">.</span><span class="n">now</span><span class="p">().</span><span class="n">date</span><span class="p">()</span>
-<span class="n">e</span><span class="p">.</span><span class="n">put</span><span class="p">()</span>
+             <span class="n">email</span><span class="o">=</span><span class="n">users</span><span class="o">.</span><span class="n">get_current_user</span><span class="p">()</span><span class="o">.</span><span class="n">email</span><span class="p">())</span>
+<span class="n">e</span><span class="o">.</span><span class="n">hire_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
+<span class="n">e</span><span class="o">.</span><span class="n">put</span><span class="p">()</span>
 </code></pre></div>
 
 <p>Query Examples:</p>
 
-<div class="highlight"><pre><code class="objc"><span class="n">training_registration_list</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;Alfred.Smith@example.com&quot;</span><span class="p">,</span>
+<div class="highlight"><pre><code class="python"><span class="n">training_registration_list</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;Alfred.Smith@example.com&quot;</span><span class="p">,</span>
                               <span class="s">&quot;jharrison@example.com&quot;</span><span class="p">,</span>
                               <span class="s">&quot;budnelson@example.com&quot;</span><span class="p">]</span>
-<span class="n">employees_trained</span> <span class="o">=</span> <span class="n">db</span><span class="p">.</span><span class="n">GqlQuery</span><span class="p">(</span><span class="s">&quot;SELECT * FROM Employee WHERE email IN :1&quot;</span><span class="p">,</span>
+<span class="n">employees_trained</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">GqlQuery</span><span class="p">(</span><span class="s">&quot;SELECT * FROM Employee WHERE email IN :1&quot;</span><span class="p">,</span>
                                 <span class="n">training_registration_list</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">e</span> <span class="k">in</span> <span class="n">employees_trained</span><span class="o">:</span>
-  <span class="n">e</span><span class="p">.</span><span class="n">new_hire_training_completed</span> <span class="o">=</span> <span class="n">True</span>
-  <span class="n">db</span><span class="p">.</span><span class="n">put</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">employees_trained</span><span class="p">:</span>
+  <span class="n">e</span><span class="o">.</span><span class="n">new_hire_training_completed</span> <span class="o">=</span> <span class="bp">True</span>
+  <span class="n">db</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 </code></pre></div>
 
 <h3 id="comparison-with-traditional-databases">Comparison with traditional databases</h3>
@@ -407,8 +407,8 @@ h3,h4 {
 	<div class="sidebar-module">
 		<div class="title"><a href='/tags'>Tags</a></div>
 		
-            <span style="font-size: 177%">
-              <a href="/tags/app-engine/" title="2 posts">App Engine</a>
+            <span style="font-size: 280%">
+              <a href="/tags/app-engine/" title="3 posts">App Engine</a>
             </span>
           
             <span style="font-size: 75%">
@@ -420,6 +420,10 @@ h3,h4 {
             </span>
           
             <span style="font-size: 75%">
+              <a href="/tags/datastore/" title="1 post">Datastore</a>
+            </span>
+          
+            <span style="font-size: 75%">
               <a href="/tags/git/" title="1 post">Git</a>
             </span>
           
@@ -427,8 +431,8 @@ h3,h4 {
               <a href="/tags/jinja2/" title="1 post">Jinja2</a>
             </span>
           
-            <span style="font-size: 75%">
-              <a href="/tags/technique/" title="1 post">Technique</a>
+            <span style="font-size: 177%">
+              <a href="/tags/technique/" title="2 posts">Technique</a>
             </span>
           
             <span style="font-size: 177%">
@@ -495,12 +499,12 @@ h3,h4 {
 
 	<div class="sidebar-module">
 		<div class="title"><a href='/categories'>Categories</a></div>
-		<a href="/categories/生活"><strong>生活</strong></a> (4)<br /><a href="/categories/technique"><strong>technique</strong></a> (3)<br /><a href="/categories/jekyll"><strong>jekyll</strong></a> (1)<br /><a href="/categories/语音"><strong>语音</strong></a> (1)<br /><a href="/categories/讲座"><strong>讲座</strong></a> (1)<br /><a href="/categories/technology"><strong>technology</strong></a> (2)<br />
+		<a href="/categories/生活"><strong>生活</strong></a> (4)<br /><a href="/categories/technique"><strong>technique</strong></a> (4)<br /><a href="/categories/jekyll"><strong>jekyll</strong></a> (1)<br /><a href="/categories/语音"><strong>语音</strong></a> (1)<br /><a href="/categories/讲座"><strong>讲座</strong></a> (1)<br /><a href="/categories/technology"><strong>technology</strong></a> (2)<br />
 	</div>
 	
 	<div class="sidebar-module">
 		<div class="title"><a href='/archives'>Archives</a></div>
-		<a href="/2013/11"><strong>November 2013</strong></a> (3)<br /><a href="/2013/10"><strong>October 2013</strong></a> (2)<br /><a href="/2013/03"><strong>March 2013</strong></a> (3)<br /><a href="/2013/02"><strong>February 2013</strong></a> (2)<br /><a href="/2013/01"><strong>January 2013</strong></a> (1)<br /><a href="/2012/12"><strong>December 2012</strong></a> (1)<br />
+		<a href="/2013/11"><strong>November 2013</strong></a> (4)<br /><a href="/2013/10"><strong>October 2013</strong></a> (2)<br /><a href="/2013/03"><strong>March 2013</strong></a> (3)<br /><a href="/2013/02"><strong>February 2013</strong></a> (2)<br /><a href="/2013/01"><strong>January 2013</strong></a> (1)<br /><a href="/2012/12"><strong>December 2012</strong></a> (1)<br />
 	</div>
 </div>
 

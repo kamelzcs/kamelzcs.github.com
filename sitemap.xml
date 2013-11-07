@@ -38,7 +38,7 @@
     </url>
     <url>
         <loc>http://kamelzcs.github.com/2013/11/05/storingdatainappengine</loc>
-        <lastmod>2013-11-06T11:09:16+09:00</lastmod>
+        <lastmod>2013-11-07T19:11:13+09:00</lastmod>
     </url>
     <url>
         <loc>http://kamelzcs.github.com/2013/11/07/life-of-a-datastore-write</loc>
@@ -49,16 +49,20 @@
         <lastmod>2013-11-06T18:49:12+09:00</lastmod>
     </url>
     <url>
+        <loc>http://kamelzcs.github.com/2013/11/08/modeling-entity-relationships</loc>
+        <lastmod>2013-11-07T19:32:15+09:00</lastmod>
+    </url>
+    <url>
         <loc>http://kamelzcs.github.com/archives/archives/</loc>
-        <lastmod>2013-11-06T18:49:12+09:00</lastmod>
+        <lastmod>2013-11-07T19:32:15+09:00</lastmod>
     </url>
     <url>
         <loc>http://kamelzcs.github.com/feed/atom/feed/atom/</loc>
-        <lastmod>2013-11-06T18:49:12+09:00</lastmod>
+        <lastmod>2013-11-07T19:32:15+09:00</lastmod>
     </url>
     <url>
         <loc>http://kamelzcs.github.com/feed/feed/</loc>
-        <lastmod>2013-11-06T18:49:12+09:00</lastmod>
+        <lastmod>2013-11-07T19:32:15+09:00</lastmod>
     </url>
     <url>
         <loc>http://kamelzcs.github.com/about/about/</loc>
@@ -66,7 +70,7 @@
     </url>
     <url>
         <loc>http://kamelzcs.github.com/</loc>
-        <lastmod>2013-11-06T18:49:12+09:00</lastmod>
+        <lastmod>2013-11-07T19:32:15+09:00</lastmod>
     </url>
     <url>
         <loc>http://kamelzcs.github.com/blog.html</loc>
