@@ -23,7 +23,7 @@ The app engine provides several ways to store data for the application:
 
 An entity has one or more properties. Each entity is identified by its kind, which categorizes the entity for the purpose of queries, and a key that uniquely identifies it within its kind.
 
-{% highlight objc %}
+{% highlight python %}
 
 import datetime
 from google.appengine.ext import db
@@ -49,7 +49,7 @@ e.put()
 
 Query Examples:
 
-{% highlight objc %}
+{% highlight python %}
 
 training_registration_list = ["Alfred.Smith@example.com",
                               "jharrison@example.com",
