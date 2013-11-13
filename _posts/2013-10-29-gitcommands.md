@@ -49,7 +49,7 @@ description:
 
     list the more infomation of the remote
 
-* git push origin <local-branch-name>:<remote-branch-name>
+* git push origin local-branch-name:remote-branch-name
 
     push to specilized banch 
     
@@ -68,4 +68,8 @@ description:
 * git rebase 
 
     take all the changes that were commited on one branch and replay on another one.
+
+* git diff branch branch
+    
+    compare the difference between two branches
 
