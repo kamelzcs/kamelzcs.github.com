@@ -204,7 +204,7 @@ h3,h4 {
     <p>remove files</p>
   </li>
   <li>
-    <p>git log p -2</p>
+    <p>git log -p -2</p>
 
     <p>show the changing between the past two submitions</p>
   </li>
@@ -219,7 +219,7 @@ h3,h4 {
     <p>unstage files</p>
   </li>
   <li>
-    <p>git checkout – </p>
+    <p>git checkout &lt;file&gt;- </p>
 
     <p>unmodifying a modified file, revert it back to what it looked like when last committed.</p>
   </li>
@@ -257,11 +257,59 @@ h3,h4 {
     <p>git rebase </p>
 
     <p>take all the changes that were commited on one branch and replay on another one.</p>
+
+    <ul>
+      <li>
+        <p>git rebase -i &lt;the SHA-1 of unchanged commit&gt;</p>
+
+        <p>merge multiple commits
+ pick = use the commit
+ squash = use commit, but merge into previous commit</p>
+      </li>
+    </ul>
   </li>
   <li>
-    <p>git diff branch branch</p>
+    <p>git diff &lt;branch&gt; &lt;branch&gt;</p>
 
     <p>compare the difference between two branches</p>
+  </li>
+  <li>
+    <p>git stash save ‘comment’</p>
+
+    <p>save the changes temporary</p>
+
+    <ul>
+      <li>
+        <p>git stash list</p>
+
+        <p>view the stash list</p>
+      </li>
+      <li>
+        <p>git stash apply stash@{2}</p>
+
+        <p>apply the specified stash.    </p>
+      </li>
+      <li>
+        <p>git stash apply –index</p>
+
+        <p>reapply the staged changes</p>
+      </li>
+      <li>
+        <p>git stash drop </p>
+
+        <p>remote from the stash list</p>
+      </li>
+      <li>
+        <p>git stash pop</p>
+
+        <p>apply the stash and immediately drop it from the stack. Be causious.</p>
+      </li>
+      <li>
+        <p>git stash branch</p>
+
+        <p>creating a branch from a stash</p>
+      </li>
+    </ul>
   </li>
 </ul>
 
