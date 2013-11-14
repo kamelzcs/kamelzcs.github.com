@@ -11,6 +11,8 @@ keywords: The useful git commands
 description: 
 ---
 
+Here is a useful tutorial for Git:[Visual git guide][1]
+
 * git status 
 
     Check the status of the files. 
@@ -107,4 +109,4 @@ description:
 
         creating a branch from a stash
 
-
+[1]:http://marklodato.github.io/visual-git-guide/index-en.html#reset
