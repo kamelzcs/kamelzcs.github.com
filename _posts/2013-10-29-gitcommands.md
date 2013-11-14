@@ -25,7 +25,7 @@ description:
 
     remove files
     
-* git log p -2
+* git log -p -2
 
     show the changing between the past two submitions
 
@@ -37,7 +37,7 @@ description:
 
     unstage files
 
-* git checkout -- 
+* git checkout \<file\>- 
 
     unmodifying a modified file, revert it back to what it looked like when last committed.
 
@@ -69,7 +69,42 @@ description:
 
     take all the changes that were commited on one branch and replay on another one.
 
-* git diff branch branch
+   * git rebase -i \<the SHA-1 of unchanged commit\>
+
+      merge multiple commits
+      pick = use the commit
+      squash = use commit, but merge into previous commit
+
+* git diff \<branch\> \<branch\>
     
     compare the difference between two branches
+
+* git stash save 'comment'
+
+    save the changes temporary
+
+    * git stash list
+        
+        view the stash list
+
+    * git stash apply stash@{2}
+
+        apply the specified stash.    
+
+    * git stash apply --index
+
+        reapply the staged changes
+
+    * git stash drop 
+
+        remote from the stash list
+
+    * git stash pop
+
+        apply the stash and immediately drop it from the stack. Be causious.
+
+    * git stash branch
+
+        creating a branch from a stash
+
 
