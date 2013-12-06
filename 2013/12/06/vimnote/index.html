@@ -214,14 +214,17 @@ h3,h4 {
     <p><code>J</code> Join two lines</p>
   </li>
   <li>
-    <p><code>&gt;</code> indent block(in visual mode)</p>
+    <p><code>&gt;</code> and <code>&lt;</code> indent block(in visual mode)</p>
   </li>
   <li>
     <p><code>CTRL + A or X</code> increase or decrease the number</p>
   </li>
+  <li>
+    <p><code>%</code> go to the corresponding <code>()</code>,<code>{}</code>,<code>[]</code></p>
+  </li>
 </ul>
 
-<h3 id="move">Move</h3>
+<h4 id="move">Move</h4>
 
 <ul>
   <li>
@@ -245,16 +248,41 @@ h3,h4 {
   <li>
     <p><code>B/E</code> go to the beginning/end of this WORD</p>
   </li>
+  <li>
+    <p><code>&lt;start position&gt;&lt;command&gt;&lt;end position&gt;</code> for example <code>y`a</code> yank from here to he marked <code>a</code></p>
+  </li>
+  <li>
+    <p>use markers in the way <code>a z b e</code></p>
+  </li>
+  <li>
+    <p><code>{ }</code> to move to the beginning/ending of the paragraph</p>
+  </li>
 </ul>
 
-<h4 id="macro-recording">Macro recording</h4>
+<h3 id="zone-selection">Zone selection</h3>
 
-<ul>
-  <li><code>q[ key ]</code> to start recording</li>
-  <li><code>q</code> to stop recording</li>
-  <li><code>@[ key ]</code> to use the macro</li>
-</ul>
+<p>```</p>
+<action>a<object> and <action>i<object>
+```
 
+Action can be any action, for example `d`, `y`, `c`(change), `v`(select in visual mode). The object can be:
+`w` a word, `W` a WORD, `s` a sentence, `p` a paragraph. But also, natural character such as ``",',),],}``
+
+```
+vi" will select foo.
+va" will select "foo" 
+```
+
+####Macro recording
+
+* `q[ key ]` to start recording
+* `q` to stop recording
+* `@[ key ]` to use the macro
+
+
+
+
+</object></action></object></action>
 
 	</div>
 	
