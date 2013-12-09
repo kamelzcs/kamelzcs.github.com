@@ -196,15 +196,6 @@ h3,h4 {
     <p><code>.</code> duplicate last command</p>
   </li>
   <li>
-    <p><code>mz `z</code> Marker and go to the last position </p>
-  </li>
-  <li>
-    <p><code>'.</code> Jump back to last edited line</p>
-  </li>
-  <li>
-    <p><code>g;</code>and <code>g,</code> move (forward,backward) through the changelist</p>
-  </li>
-  <li>
     <p><code>I</code> insert at the begin </p>
   </li>
   <li>
@@ -220,7 +211,16 @@ h3,h4 {
     <p><code>CTRL + A or X</code> increase or decrease the number</p>
   </li>
   <li>
-    <p><code>%</code> go to the corresponding <code>()</code>,<code>{}</code>,<code>[]</code></p>
+    <p><code>~</code> toggle the casing of a letter/selection(upper-case/down-case)</p>
+  </li>
+  <li>
+    <p><code>!!</code> execute last command</p>
+  </li>
+  <li>
+    <p><code>&lt;start position&gt;&lt;command&gt;&lt;end position&gt;</code> for example <code>y`a</code> yank from here to he marked <code>a</code></p>
+  </li>
+  <li>
+    <p>use markers in the way <code>a z b e</code></p>
   </li>
 </ul>
 
@@ -228,10 +228,28 @@ h3,h4 {
 
 <ul>
   <li>
+    <p><code>%</code> go to the corresponding <code>()</code>,<code>{}</code>,<code>[]</code></p>
+  </li>
+  <li>
+    <p><code>mz `z</code> Marker and go to the last position </p>
+  </li>
+  <li>
+    <p><code>'.</code> Jump back to last edited line</p>
+  </li>
+  <li>
+    <p><code>g;</code>and <code>g,</code> move (forward,backward) through the changelist</p>
+  </li>
+  <li>
+    <p><code>gi</code> go to the last place you inserted a text</p>
+  </li>
+  <li>
+    <p><code>Ctrl-o</code> and <code>Ctrl-i</code> to go to the previous/next location you jumped to</p>
+  </li>
+  <li>
     <p><code>fa</code> go to the next <code>a</code> in the line</p>
   </li>
   <li>
-    <p><code>t,</code> go to before the next <code>,</code> </p>
+    <p><code>t,</code> go to before the next <code>,</code></p>
   </li>
   <li>
     <p><code>F</code> and <code>T</code> are backward</p>
@@ -247,12 +265,6 @@ h3,h4 {
   </li>
   <li>
     <p><code>B/E</code> go to the beginning/end of this WORD</p>
-  </li>
-  <li>
-    <p><code>&lt;start position&gt;&lt;command&gt;&lt;end position&gt;</code> for example <code>y`a</code> yank from here to he marked <code>a</code></p>
-  </li>
-  <li>
-    <p>use markers in the way <code>a z b e</code></p>
   </li>
   <li>
     <p><code>{ }</code> to move to the beginning/ending of the paragraph</p>
