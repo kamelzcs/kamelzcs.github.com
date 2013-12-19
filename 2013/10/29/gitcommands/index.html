@@ -190,80 +190,96 @@ h3,h4 {
 
 <ul>
   <li>
-    <p>git status </p>
+    <p><code>git status</code> </p>
 
     <p>Check the status of the files. </p>
   </li>
   <li>
-    <p>gitk &amp; git diff </p>
+    <p><code>gitk -all &amp; git diff</code> </p>
 
     <p>show the branch in graphical mode.</p>
 
     <p>check the difference.</p>
   </li>
   <li>
-    <p>git rm</p>
+    <p><code>git rm</code></p>
 
     <p>remove files</p>
   </li>
   <li>
-    <p>git log -p -2</p>
+    <p><code>git log</code></p>
 
-    <p>show the changing between the past two submitions</p>
+    <ul>
+      <li>
+        <p><code>git log -p -2</code></p>
+
+        <p>show the changing between the past two submitions</p>
+      </li>
+      <li>
+        <p><code>git log --oneline</code></p>
+
+        <p>Condense each commit to a single line. </p>
+      </li>
+      <li>
+        <p><code>git log --stat</code></p>
+
+        <p>Along with the ordinary git log information, include which files were altered and the relative number of lines that were added or deleted from each of them.</p>
+      </li>
+    </ul>
   </li>
   <li>
-    <p>git commit –amend</p>
+    <p><code>git commit --amend</code></p>
 
     <p>replace the last submit</p>
   </li>
   <li>
-    <p>git reset HEAD </p>
+    <p><code>git reset HEAD</code> </p>
 
     <p>unstage files</p>
   </li>
   <li>
-    <p>git checkout &lt;file&gt;- </p>
+    <p><code>git checkout \&lt;file\&gt;-</code> </p>
 
     <p>unmodifying a modified file, revert it back to what it looked like when last committed.</p>
   </li>
   <li>
-    <p>git remote -v</p>
+    <p><code>git remote -v</code></p>
 
     <p>shows the URL for the shorname to be expaned to</p>
   </li>
   <li>
-    <p>git remote show origin</p>
+    <p><code>git remote show origin</code></p>
 
     <p>list the more infomation of the remote</p>
   </li>
   <li>
-    <p>git push origin local-branch-name:remote-branch-name</p>
+    <p><code>git push origin local-branch-name:remote-branch-name</code></p>
 
     <p>push to specilized banch </p>
   </li>
   <li>
-    <p>git fetch origin &amp; git checkout -b test origin/test</p>
+    <p><code>git fetch origin &amp; git checkout -b test origin/test</code></p>
 
     <p>fetch all the remote branches and checkout the specific branch</p>
   </li>
   <li>
-    <p>git branch -a</p>
+    <p><code>git branch -a</code></p>
 
     <p>show the branch info in remote and local</p>
   </li>
   <li>
-    <p>git checkout –track </p>
+    <p><code>git checkout --track</code> </p>
 
     <p>set the track branch  </p>
   </li>
   <li>
-    <p>git rebase </p>
+    <p><code>git rebase</code> </p>
 
     <p>take all the changes that were commited on one branch and replay on another one.</p>
 
     <ul>
       <li>
-        <p>git rebase -i &lt;the SHA-1 of unchanged commit&gt;</p>
+        <p><code>git rebase -i \&lt;the SHA-1 of unchanged commit\&gt;</code></p>
 
         <p>merge multiple commits
  pick = use the commit
@@ -272,43 +288,43 @@ h3,h4 {
     </ul>
   </li>
   <li>
-    <p>git diff &lt;branch&gt; &lt;branch&gt;</p>
+    <p><code>git diff \&lt;branch\&gt; \&lt;branch\&gt;</code></p>
 
     <p>compare the difference between two branches</p>
   </li>
   <li>
-    <p>git stash save ‘comment’</p>
+    <p><code>git stash save 'comment'</code></p>
 
     <p>save the changes temporary</p>
 
     <ul>
       <li>
-        <p>git stash list</p>
+        <p><code>git stash list</code></p>
 
         <p>view the stash list</p>
       </li>
       <li>
-        <p>git stash apply stash@{2}</p>
+        <p><code>git stash apply stash@{2}</code></p>
 
         <p>apply the specified stash.    </p>
       </li>
       <li>
-        <p>git stash apply –index</p>
+        <p><code>git stash apply --index</code></p>
 
         <p>reapply the staged changes</p>
       </li>
       <li>
-        <p>git stash drop </p>
+        <p><code>git stash drop</code> </p>
 
         <p>remote from the stash list</p>
       </li>
       <li>
-        <p>git stash pop</p>
+        <p><code>git stash pop</code></p>
 
         <p>apply the stash and immediately drop it from the stack. Be causious.</p>
       </li>
       <li>
-        <p>git stash branch</p>
+        <p><code>git stash branch</code></p>
 
         <p>creating a branch from a stash</p>
       </li>
@@ -532,7 +548,7 @@ h3,h4 {
 
 	<div class="sidebar-module">
 		<div class="title"><a href='/categories'>Categories</a></div>
-		<a href="/categories/生活"><strong>生活</strong></a> (4)<br /><a href="/categories/technique"><strong>technique</strong></a> (6)<br /><a href="/categories/诗词"><strong>诗词</strong></a> (1)<br /><a href="/categories/technology"><strong>technology</strong></a> (3)<br /><a href="/categories/jekyll"><strong>jekyll</strong></a> (1)<br /><a href="/categories/语音"><strong>语音</strong></a> (1)<br /><a href="/categories/讲座"><strong>讲座</strong></a> (1)<br /><a href="/categories/vim"><strong>vim</strong></a> (1)<br />
+		<a href="/categories/生活"><strong>生活</strong></a> (4)<br /><a href="/categories/technique"><strong>technique</strong></a> (6)<br /><a href="/categories/technology"><strong>technology</strong></a> (3)<br /><a href="/categories/vim"><strong>vim</strong></a> (1)<br /><a href="/categories/语音"><strong>语音</strong></a> (1)<br /><a href="/categories/讲座"><strong>讲座</strong></a> (1)<br /><a href="/categories/诗词"><strong>诗词</strong></a> (1)<br /><a href="/categories/jekyll"><strong>jekyll</strong></a> (1)<br />
 	</div>
 	
 	<div class="sidebar-module">
