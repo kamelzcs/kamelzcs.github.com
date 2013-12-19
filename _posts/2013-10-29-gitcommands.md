@@ -13,99 +13,109 @@ description:
 
 Here is a useful tutorial for Git:[Visual git guide][1]
 
-* git status 
+* `git status` 
 
     Check the status of the files. 
 
-* gitk & git diff 
+* `gitk -all & git diff` 
 
     show the branch in graphical mode.
 
     check the difference.
 
-* git rm
+* `git rm`
 
     remove files
     
-* git log -p -2
+* `git log`
 
-    show the changing between the past two submitions
+    * `git log -p -2`
 
-* git commit --amend
+        show the changing between the past two submitions
+
+    * `git log --oneline`
+
+        Condense each commit to a single line. 
+
+    * `git log --stat`
+
+        Along with the ordinary git log information, include which files were altered and the relative number of lines that were added or deleted from each of them.
+
+* `git commit --amend`
 
     replace the last submit
 
-* git reset HEAD 
+* `git reset HEAD` 
 
     unstage files
 
-* git checkout \<file\>- 
+* `git checkout \<file\>-` 
 
     unmodifying a modified file, revert it back to what it looked like when last committed.
 
-* git remote -v
+* `git remote -v`
 
     shows the URL for the shorname to be expaned to
 
-* git remote show origin
+* `git remote show origin`
 
     list the more infomation of the remote
 
-* git push origin local-branch-name:remote-branch-name
+* `git push origin local-branch-name:remote-branch-name`
 
     push to specilized banch 
     
-* git fetch origin & git checkout -b test origin/test
+* `git fetch origin & git checkout -b test origin/test`
 
     fetch all the remote branches and checkout the specific branch
 
-* git branch -a
+* `git branch -a`
 
     show the branch info in remote and local
 
-* git checkout --track 
+* `git checkout --track` 
 
     set the track branch  
 
-* git rebase 
+* `git rebase` 
 
     take all the changes that were commited on one branch and replay on another one.
 
-   * git rebase -i \<the SHA-1 of unchanged commit\>
+   * `git rebase -i \<the SHA-1 of unchanged commit\>`
 
       merge multiple commits
       pick = use the commit
       squash = use commit, but merge into previous commit
 
-* git diff \<branch\> \<branch\>
+* `git diff \<branch\> \<branch\>`
     
     compare the difference between two branches
 
-* git stash save 'comment'
+* `git stash save 'comment'`
 
     save the changes temporary
 
-    * git stash list
+    * `git stash list`
         
         view the stash list
 
-    * git stash apply stash@{2}
+    * `git stash apply stash@{2}`
 
         apply the specified stash.    
 
-    * git stash apply --index
+    * `git stash apply --index`
 
         reapply the staged changes
 
-    * git stash drop 
+    * `git stash drop` 
 
         remote from the stash list
 
-    * git stash pop
+    * `git stash pop`
 
         apply the stash and immediately drop it from the stack. Be causious.
 
-    * git stash branch
+    * `git stash branch`
 
         creating a branch from a stash
 
