@@ -86,11 +86,11 @@ Figure 1-9. Git branch
 
 Figure 1-10. Git head.
 
-#### 参考资料
+#### Reference
 
-1） [Visual git tutorial](http://marklodato.github.io/visual-git-guide/index-en.html)
+[1] [Visual git tutorial](http://marklodato.github.io/visual-git-guide/index-en.html)
 
-2)  [Git tutorial](https://github.s3.amazonaws.com/media/progit.en.pdf)
+[2]  [Git tutorial](https://github.s3.amazonaws.com/media/progit.en.pdf)
 
 
 
