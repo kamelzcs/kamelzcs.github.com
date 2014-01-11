@@ -5,9 +5,9 @@ date: 2012-12-27 21:44:30
 isOriginal: true
 category: jekyll
 tags:
- - jekyll
- - git
- - github
+ - Jekyll
+ - Git
+ - Github
 keywords: jekyll git github
 description: 使用模板的方法
 ---

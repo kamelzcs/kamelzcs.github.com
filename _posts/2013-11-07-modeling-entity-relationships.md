@@ -5,9 +5,8 @@ date: 2013-11-07 19:01:35
 isOriginal: true
 category:  Technique
 tags:
- - Technique
  - App Engine
- - Datastore
+ - Database
 keywords: 
 description: Entity  relationships in App Engine
 ---

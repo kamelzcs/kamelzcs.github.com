@@ -6,7 +6,6 @@ isOriginal: true
 category: Technology 
 tags:
  - App Engine
- - Technology
  - Database
 keywords: 
 description:  Transaction in App Engine

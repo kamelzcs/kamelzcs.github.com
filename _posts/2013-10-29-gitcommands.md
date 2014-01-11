@@ -6,7 +6,6 @@ isOriginal: true
 category: Technique 
 tags:
  - Git 
- - Technique
 keywords: The useful git commands 
 description: 
 ---

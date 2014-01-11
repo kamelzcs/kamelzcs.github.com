@@ -5,11 +5,8 @@ date: 2013-11-11 12:15:27
 isOriginal: true
 category: Technique
 tags:
- - Technique
- - Datastore
- - Relationships
+ - Database
  - App Engine
- - Study note
 keywords: 
 description:  relationships in app engine
 ---
