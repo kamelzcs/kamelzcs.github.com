@@ -120,7 +120,7 @@ The key idea is in the
 {%endhighlight%}
 
 This part will store the partial lists, whose lengths whill be 
-$$2^i$$ where i is the index of the part array.
+$$2^i$$ where $$i$$ is the index of the part array.
 
 It uses the [Fibonacci](http://en.wikipedia.org/wiki/Fibonacci_number)
 property of the length in the mergesort list. Only the same length list of occur
