@@ -63,7 +63,15 @@ Here is a useful tutorial for Git:[Visual git guide][1]
 * `git push origin local-branch-name:remote-branch-name`
 
     push to specilized banch 
-    
+
+* `git push origin :newfeature`
+
+    delete remote branch newfeature
+
+*   `git merge --squash bugfix`&`git commit -m 'fix bug'`
+
+    Take all the commits from the `bugfix` branch, squash them into 1 commit and then merge it with the  `master` branch
+
 * `git fetch origin & git checkout -b test origin/test`
 
     fetch all the remote branches and checkout the specific branch
