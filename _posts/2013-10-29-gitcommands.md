@@ -46,6 +46,8 @@ Here is a useful tutorial for Git:[Visual git guide][1]
 
 * `git reset HEAD` 
 
+* `git add .`  add all the files in the subdirectory.
+
     unstage files
 
 * `git checkout \<file\>-` 
