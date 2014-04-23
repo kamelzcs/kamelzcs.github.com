@@ -97,6 +97,9 @@ Here is a useful tutorial for Git:[Visual git guide][1]
       merge multiple commits
       pick = use the commit
       squash = use commit, but merge into previous commit
+* `git cherrypick <the SHA-1 of unchanged commit>`
+
+    pick the specified commit to the current branch
 
 * `git diff \<branch\> \<branch\>`
     
