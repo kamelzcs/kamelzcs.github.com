@@ -105,6 +105,32 @@ google.setOnLoadCallback(function() {
   //]]>
   </script>
 
+
+	<!-- mathjax config similar to math.stackexchange -->
+	<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({
+	  jax: ["input/TeX", "output/HTML-CSS"],
+	  tex2jax: {
+		inlineMath: [ ['$', '$'] ],
+		displayMath: [ ['$$', '$$']],
+		processEscapes: true,
+		skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+	  },
+	  messageStyle: "none",
+	  "HTML-CSS": {
+		  preferredFont: "TeX",
+		  availableFonts: ["STIX","TeX"],
+		  }
+	});
+	</script>
+	<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+	<!-- mathjax css conflict with pygments -->
+	<style>
+	.MathJax .mo,
+	.MathJax .mi {
+	  color: inherit;
+	</style>
+
 </head>
 
 <body>
@@ -121,36 +147,6 @@ google.setOnLoadCallback(function() {
       <!--<li class="last"><a id="mail" href="mailto:kamelzcs@gmail.com">Contact</a></li>-->
     </ul>
   </div>
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-      processEscapes: true
-    }
-  });
-</script>
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      }
-    });
-</script>
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for(i=0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
-</script>
-
-<script type="text/javascript"
-   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
-
 </div>
 
 		
