@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<title>Bash Command Line Processing - kamelzcs's library</title>
+	
+	
+	<meta name="author" content="kamelzcs" />
+	
+	<meta name="description" content="The command Line Processing of Bash" />
+	
+
+	
+	<meta name="keywords" content="Bash" />	
+	
+
+	<meta name="robots" content="noodp, nydir" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	
+	<link href="/css/blueprint/screen.css" type="text/css" rel="stylesheet" />
+	<!--[if lt IE 8]> <link href="/css/blueprint/ie.css" type="text/css" rel="stylesheet" /> <![endif]-->	 
+	<link href="/css/railscasts.css" type="text/css" rel="stylesheet" />
+	<link href="/css/site.css" type="text/css" rel="stylesheet" />
+
+	<script type="text/javascript" src="/js/writeCapture-1.0.5-nolib-min.js"></script>
+		<script type="text/javascript" src="/js/jquery.js"></script>
+	<script type="text/javascript" src="/js/site.js"></script>
+	<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-45986644-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+	<script src="https://www.google.com/jsapi" type="text/javascript"></script>
+  <script language="Javascript" type="text/javascript">
+  //<![CDATA[
+google.load("search", "1");
+
+function OnLoad() {
+	// Create a search control
+	var searchControl = new google.search.SearchControl();
+	
+	// Add in a WebSearch
+	var webSearch = new google.search.WebSearch();
+	
+	// Restrict our search to pages from this site
+	webSearch.setSiteRestriction('kamelzcs.github.com');
+	
+	// Add the searcher to the SearchControl
+	searchControl.addSearcher(webSearch);
+	
+	// tell the searcher to draw itself and tell it where to attach
+	searchControl.draw(document.getElementById("searchcontrol"));
+	// Add the value of "Search..." to the input field and a class of .empty
+}
+
+google.setOnLoadCallback(function() {
+  $(function() {
+	OnLoad()
+	$(".gsc-input > input").val("Search... powered by Google").addClass("empty");
+	 
+	// When you click on #search
+	$(".gsc-input > input").focus(function(){
+	 
+		// If the value is equal to "Search..."
+		if($(this).val() == "Search... powered by Google") {
+			// remove all the text and the class of .empty
+			$(this).val("").removeClass("empty");;
+		}
+		this.select();
+	});
+	 
+	// When the focus on #search is lost
+	$(".gsc-input > input").blur(function(){
+	 
+		// If the input field is empty
+		if($(this).val() == "") {
+			// Add the text "Search..." and a class of .empty
+			$(this).val("Search... powered by Google").addClass("empty");
+		}
+	});
+
+	$("#comment_heading").click(function()
+	{
+		$(this).next("#disqus_thread").slideToggle(500);
+		if($(this).text() == "Show Comments") {
+			$(this).text("Hide Comments")
+		}else{
+			$(this).text("Show Comments")
+		}
+	});
+		
+  });
+});
+
+
+  //]]>
+  </script>
+
+</head>
+
+<body>
+	<div class="container">
+	<!-- <div class="container showgrid"> -->
+		<div id="header" class="span-24">
+  <div id="menu" class="span-15 last">
+    <ul>
+      <li class="first"><a href="/">Home</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/blog">Blog</a></li>
+      <li><a href="/archives">Archives</a></li>
+      <li><a href="/projects">Projects</a></li>
+      <!--<li class="last"><a id="mail" href="mailto:kamelzcs@gmail.com">Contact</a></li>-->
+    </ul>
+  </div>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+</div>
+
+		
+		<div id="main" class="span-17">
+			<style type="text/css">
+h3,h4{ 
+	color: #335E8D;
+}			
+h3,h4 {
+	margin-left		: 3px;
+	font-variant	: small-caps;
+	font-weight		: normal;
+	border-bottom : 1px dotted #ccc;	
+}
+</style>
+
+
+
+
+<div class="post" id="main-content">
+	<h1>Bash Command Line Processing</h1>
+	<h4 class="large-bottom">
+		Posted on January 17, 2014
+		 in <a href="/categories/computer">Computer</a> 
+
+		<span class="tag-list">
+			
+			<a href="/tags/bash">Bash</a>
+			
+		</span>
+	</h4>
+	
+	<div class="content">
+		<h2 id="command-line-processing">Command Line Processing</h2>
+
+<p>Each line the shell get is called a <em>pipeline</em>, it contains commands which are seperated by the pipe character(|).
+For each pipeline it gets, the shell will breaks it into commands, set up the I/O for the pipeline and follows the
+following figure to excecute the commands.</p>
+
+<p><img src="/images/posts/bash-commandline/bash.jpg" alt="alt text" /></p>
+
+<ol>
+  <li>
+    <p>Split the command into tokens by the metacharacters set: <code>SPACE, TAB, NEWLINE, ;, (, ), &lt;, &gt;, |, and &amp;.</code>
+Types of tokens include: <code>words, keywords, I/O redirectors, and semicolons.</code></p>
+  </li>
+  <li>
+    <p>Checks the first token of each command to see if it is a keyword with no quotes or backslashes. If it is an opening keyword, 
+such as <code>if</code> or orther control-structure openers, then the shell sets things up internally for compound commands, reads the next command,
+and start process again.</p>
+  </li>
+  <li>
+    <p>Checks the first word of each command against the list of aliases. If a match is found, it substitudes and go back to Step 1.
+This scheme allows recursive aliases.</p>
+  </li>
+  <li>
+    <p>Performs brace expansion. For example, <code>a{b,c}</code> becomes <code>ab</code> <code>ac</code>.</p>
+  </li>
+  <li>
+    <p>Substitudes the user’s home directory(<code>$HOME</code>) for tilde if it is at the beginning of a word. </p>
+  </li>
+  <li>
+    <p>Performs parameter(variable) substitution for any expression that starts with a dollar sign(<code>$</code>).</p>
+  </li>
+  <li>
+    <p>Does command substitution for any expression of the form $(string).</p>
+  </li>
+  <li>
+    <p>Evaluates arithmetic expressions of the form $((string)).</p>
+  </li>
+  <li>
+    <p>Takes the parts of the line that resulted from parameter, command, and arithmetic substitution and splits them into words again.
+This time it uses the characters in <code>$IFS</code> which usually is whitespace (space, tab, and newline).</p>
+  </li>
+  <li>
+    <p>Performs pathname expansion, a.k.a. wildcard expansion, for any occurrences of <code>*</code> <code>?</code> and <code>[/]</code> pairs.</p>
+  </li>
+  <li>
+    <p>Uses the first word as a command by looking up its source as a function command, then as a built-in, then as a file in any of the directories
+in <code>$PATH</code></p>
+  </li>
+  <li>
+    <p>Runs the command after setting up I/O redirection and other such things.</p>
+  </li>
+</ol>
+
+<h3 id="reference">Reference</h3>
+<p>[1] <a href="http://shop.oreilly.com/product/9780596009656.do">Learning the bash shell</a></p>
+
+
+	</div>
+	
+	<div class="next-prev-nav low-top">
+		
+		-----------------------------------
+		<b>本文内容遵从<a title="Content licenced under Creative Commons by-nc-sa 3.0" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.zh">CC版权协议</a>转载请注明出自<a href="http://kamelzcs.github.com">kamelzcs</a></b>
+		-----------------------------------
+		<hr/>
+		
+		
+		
+			&laquo;&nbsp;<a href="/2014/01/20/quoting-bash" rel="next" title="Quoting and eval in Bash">Quoting and eval in Bash</a>
+		
+	
+		
+			
+				|
+			
+		
+		
+	
+		
+			<a href="/2014/01/06/past2013" rel="previous" title="逝去的2013">逝去的2013</a>&nbsp;&raquo;
+		
+	
+		<br />
+	</div>
+
+	<hr />
+	<!--<div class="sharing">
+	
+	 
+	
+	
+	
+	
+	
+	
+	 
+</div>
+ -->
+	
+
+<script type="text/javascript">
+      var disqus_shortname = 'kamelzcs';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://kamelzcs.github.com/2014/01/17/bash-command-line-processing';
+        var disqus_url = 'http://kamelzcs.github.com/2014/01/17/bash-command-line-processing';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+	<div>
+		<h2 id='comment_heading'>Hide Comments</h2>
+		<div id="disqus_thread" aria-live="polite"><div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'kamelzcs'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+	</div>
+</div>
+
+		</div>
+		
+		
+			<div id="sidebar" class="span-6 push-1 last">
+	<div class="sidebar-module" id='gsearcher'>
+				 
+		<div id="searchcontrol">
+			
+		</div>
+		
+	</div>
+
+	<div class="sidebar-module">
+		<div class="title"><a href='/tags'>Tags</a></div>
+		
+            <span style="font-size: 280%">
+              <a href="/tags/app-engine/" title="5 posts">App Engine</a>
+            </span>
+          
+            <span style="font-size: 126%">
+              <a href="/tags/bash/" title="2 posts">Bash</a>
+            </span>
+          
+            <span style="font-size: 280%">
+              <a href="/tags/database/" title="5 posts">Database</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/datastructure/" title="1 post">Datastructure</a>
+            </span>
+          
+            <span style="font-size: 177%">
+              <a href="/tags/git/" title="3 posts">Git</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/github/" title="1 post">Github</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/jekyll/" title="1 post">Jekyll</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/jinja2/" title="1 post">Jinja2</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/life/" title="1 post">Life</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/python/" title="1 post">Python</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/review/" title="1 post">Review</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/solarized/" title="1 post">Solarized</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/sourcecode/" title="1 post">Sourcecode</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/template/" title="1 post">Template</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/variable-scope/" title="1 post">Variable scope</a>
+            </span>
+          
+            <span style="font-size: 126%">
+              <a href="/tags/vim/" title="2 posts">Vim</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/life/" title="1 post">life</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/亲情/" title="1 post">亲情</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/回忆/" title="1 post">回忆</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/大规模机器学习/" title="1 post">大规模机器学习</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/展望/" title="1 post">展望</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/日本/" title="1 post">日本</a>
+            </span>
+          
+            <span style="font-size: 126%">
+              <a href="/tags/生活/" title="2 posts">生活</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/诗歌/" title="1 post">诗歌</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/诗词/" title="1 post">诗词</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/语音/" title="1 post">语音</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/趋势/" title="1 post">趋势</a>
+            </span>
+          
+	</div>
+
+	<div class="sidebar-module">
+		<div class="title"><a href='/categories'>Categories</a></div>
+		<a href="/categories/jekyll"><strong>jekyll</strong></a> (1)<br /><a href="/categories/生活"><strong>生活</strong></a> (4)<br /><a href="/categories/语音"><strong>语音</strong></a> (1)<br /><a href="/categories/讲座"><strong>讲座</strong></a> (1)<br /><a href="/categories/technique"><strong>technique</strong></a> (6)<br /><a href="/categories/technology"><strong>technology</strong></a> (4)<br /><a href="/categories/vim"><strong>vim</strong></a> (1)<br /><a href="/categories/诗词"><strong>诗词</strong></a> (1)<br /><a href="/categories/life"><strong>life</strong></a> (2)<br /><a href="/categories/computer"><strong>computer</strong></a> (1)<br /><a href="/categories/linux"><strong>linux</strong></a> (1)<br /><a href="/categories/data-structure"><strong>data structure</strong></a> (1)<br />
+	</div>
+	
+	<div class="sidebar-module">
+		<div class="title"><a href='/archives'>Archives</a></div>
+		<a href="/2014/02"><strong>February 2014</strong></a> (1)<br /><a href="/2014/01"><strong>January 2014</strong></a> (4)<br /><a href="/2013/12"><strong>December 2013</strong></a> (2)<br /><a href="/2013/11"><strong>November 2013</strong></a> (8)<br /><a href="/2013/10"><strong>October 2013</strong></a> (2)<br /><a href="/2013/03"><strong>March 2013</strong></a> (3)<br /><a href="/2013/02"><strong>February 2013</strong></a> (2)<br /><a href="/2013/01"><strong>January 2013</strong></a> (1)<br /><a href="/2012/12"><strong>December 2012</strong></a> (1)<br />
+	</div>
+</div>
+
+		
+		
+		<div id="footer" class="span-24"> 
+<span  title="Content licenced under Creative Commons by-nc-sa 3.0">版权所有<a title="Content licenced under Creative Commons by-nc-sa 3.0" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.zh">&copy;</a> 
+	2012-2015 kamelzcs。
+</span> 
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="https://github.com/kamelzcs">GitHub</a>
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="http://weibo.com/u/2534942150">新浪微博</a>
+ &nbsp;&nbsp;&nbsp;&nbsp; <a href="http://twitter.com/kamelzcs">Twitter</a>
+&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
+<span>
+    主题由<a title="site's theme made by Bilal Hussain" href="http://bilalh.github.com">Bilal Hussain Hussain</a>提供,由<a href="http://ddrccw.github.com">ddrccw</a>修改。
+</span>
+</div>
+
+	</div>
+	
+</body>
+</html>
