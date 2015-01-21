@@ -9,14 +9,14 @@ safe:     false
 #markdown: rdiscount
 #markdown: maruku
 markdown: kramdown
-pygments: true
+highlighter: pygments
 
 github_user:  kamelzcs
-disqus_short_name: kamelzcs 
+disqus_short_name: kamelzcs
 
 #plugin jekyll-pagination at blog.html
 paginate: 5
-paginate_files: 
+paginate_files:
   - blog.html
 
 
@@ -40,7 +40,7 @@ recent_post_listing_limit: 19        #single page only has 10 articles
 #        icon:      project_icon.png                          //optional
 #        version:   version_number                            //optional
 #        download:  download_url                              //optional
-#        docs:      wiki or docs_url                          //optional 
+#        docs:      wiki or docs_url                          //optional
 #        changelog: true or false if existing changelog.html  //optional
 #        apidocs:   true or false if existing apidocs         //optional
 #        support:   support_url                               //optional

@@ -29,5 +29,8 @@ description: 使用模板的方法
 2013年10月28日 更新：
 jekyll升级到1.2.1 以后，jekyll-pagination会导致jekyll在 build的时候失败，只能将pagination.rb手动更新为最新的代码,同时\__plugin文件夹中不能使用中文。
 
+2015年1月21日 更新：
+jekyll升级到2.5.4 以后，jekyll-pagination已经被内置jekyll-paginate代替。
+
 
 
