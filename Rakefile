@@ -113,7 +113,7 @@ task :new do
 		EOF
 	]
 =end
-	`mate #{path}`
+	#`mate #{path}`
 	exit
 end
 
