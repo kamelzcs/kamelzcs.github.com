@@ -2,14 +2,16 @@
 <html>
 <head>
 	
-	<title>Archives for February 03, 2014 - kamelzcs's library</title>
+	<title>说好的2014 - kamelzcs's library</title>
 	
 	
 	<meta name="author" content="kamelzcs" />
 	
-	<meta name="description" content="kamelzcs's library Archives for February 03, 2014" />
+	<meta name="description" content="说好的2014" />
 	
 
+	
+	<meta name="keywords" content="life review" />	
 	
 
 	<meta name="robots" content="noodp, nydir" />
@@ -149,32 +151,206 @@ google.setOnLoadCallback(function() {
 
 		
 		<div id="main" class="span-17">
-			<h1>Archives for February 03, 2014</h1>
+			<style type="text/css">
+h3,h4{ 
+	color: #335E8D;
+}			
+h3,h4 {
+	margin-left		: 3px;
+	font-variant	: small-caps;
+	font-weight		: normal;
+	border-bottom : 1px dotted #ccc;	
+}
+</style>
 
-<div id="main-content">
-	   
-	
-<div class="post-listing">
-	<h2><a href="/2014/02/03/goals-in-2014" class="dark-link">Goals in 2014</a></h2>
-	<div class="low-top">
-		<span class="low-top ">Posted on  February 03, 2014 in <a href="/categories/life">life</a></span>
+
+
+
+<div class="post" id="main-content">
+	<h1>说好的2014</h1>
+	<h4 class="large-bottom">
+		Posted on February 09, 2015
+		 in <a href="/categories/life">Life</a> 
+
 		<span class="tag-list">
 			
-			<a href="/tags/life">life</a>
+			<a href="/tags/review">Review</a>
 			
 		</span>
+	</h4>
+	
+	<div class="content">
+		<h3 id="section">工作</h3>
+
+<p>2014年，职业生涯真正开始的一年，在所谓的Full-Stack 上迈出了第一步。</p>
+
+<p>前端上加入了一个照片上传的插件，没错，这个货就是Javascript。
+看着它那略怪异的各种语法， 然后小心的查着各种Tips，读着各种Good parts和Bad parts，生怕跌入深坑。
+开源大法好，要是让我开发这个玩意，没有个几年时间肯定做不出既能兼容各种浏览器，又具有很好的扩展性，同时
+又经过严格的单元测试的项目。</p>
+
+<p>Jascript就是这样，在给予一个最简单的跨平台的展示媒介的情况下，却不得不“忍受”它与生俱来的各种问题。</p>
+
+<p>在App Engine的项目上加入了一个绿坝系统，在App Engine扩展性限制下，用了最简单的关键词+正则表达的方式。大部分的经历花在了用Jinja2处理
+复杂的前端Html页面上面。前端和后端一样，甚至比后端更需要抽象。因为前端需求变动的情况更多，同时展现涉及的页面
+也更多，抽象不好，然后每一次页面的修改都会变为O(N)的人肉暴力。</p>
+
+<p>基于语义的过滤系统肯定最准确，但是计算量太大。退而求其次，在分词的基础上进行匹配处理，效果就会好的多。
+基于Lucene的Elastic search应该是做这个最方便的工具。</p>
+
+<p>尝试做了NoSQL的Migration。后来想想，在目标Web服务器及数据库都没有确定的情况下，这个工作实在难以评价效果。
+最大的收获还是线下开发，然后推入EC2测试，最后评价的整个流程走了一遍。Google的工具还是太高端了，因为系统拆分成了
+多个模块，然后拥有非常优秀的可扩展性及灵活性。这是只使用工具所不能拥有的成就感。</p>
+
+<p>完成了一个自动化配置工具-Ansible的项目。系统自动化配置Web服务器Tornado，数据库Postgresql，任务队列Celery与Nginx，RabbitMQ,
+Supervisor, Iptable, Redis。同时可以在配置文件中修改各种参数，不用再为系统环境的兼容性上苦恼。</p>
+
+<p>Ansbile的优点为用Python实现，上手容易。但是因为它依赖Yaml与Jinja2等已有工具，所以在DSL解释的过程中，有不少陷阱。Python还是太不
+适合用来实现DSL了。如果目标为长期的大型复杂项目，应该考虑其他的工具，如基于Ruby的Puppet等。</p>
+
+<p>做了一个Tornado与Postgresql之间的异步ORM。在个人看来，这是今年做的最有价值的工作。不知为何，现在没有开源的基于SQL的异步ORM。然后
+现在的这个ORM非常简陋，但是支持CURD及可支持嵌套的Transaction。
+基本思路和工具都是在不断阅读相关项目的代码及文档，不断的思考，同时在网络上请教，最终一点点攒起来的。
+思路很简单，Peewee的DSL部分+MomokoPool及执行部分+Peewee的resultwrapper部分。</p>
+
+<p>第一次在实际工程中用到Compiler里面学到的东西。虽然只是一个用Python解释的DSL前端。Python的DSL是用重载运算符实现的，这一点直观上容易混淆。
+别的方面，学到了Mixin在动态加载时改变代码执行路径，Python的胶水特性。</p>
+
+<h3 id="section-1">学习</h3>
+
+<p>阅读的源代码：
+- Tornado
+- Peewee
+- Momoko</p>
+
+<p>阅读的书籍：
+- Lisp 系列
+  - The Little Schemer
+  - The Seasoned Schemer
+  - The Reasoned Schemer
+- SICP
+- Haskell Books
+  - Learn you a Haskell for Great Good
+  - The Real World Haskell
+- Introduction to Algorithm
+- Compiler course in Stanford
+- The Economist
+- 日语系列
+  - 初级日本语上、下
+  - 中级日本语上、下
+  - 大家的日语初级</p>
+
+<h3 id="section-2">可量化的成绩</h3>
+
+<ul>
+  <li>日语N2</li>
+  <li>编程相关
+    <ul>
+      <li>Github
+        <ul>
+          <li>被fork的项目Vim</li>
+          <li>被Star的项目Google Analytics</li>
+          <li>Patch被Accepted项目
+            <ul>
+              <li>Momoko</li>
+              <li>Ansbile playbook</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="section-3">总结</h3>
+
+<p>2014年学习了Web开发的各种语言，各种工具，可以独立的承担一些项目。
+2014年并未如原来曾有的乐观一样，出现突飞猛进的变化。根本原因，大的目标不明确。
+涉猎了不少东西，但是真正能量化的成绩却非常少。
+这也与设立目标时总是关注目标本身，却缺少量化的可考量的手段。
+就像是在跑步时，没有明确要跑多少，而是告诉自己，尽量跑。
+没有可量化的目标，很难超出自己的心理舒适期，更无法超越自己的极限。
+无法超越极限，水平自然停滞不前。
+自己曾经尝试过独立的优化或者在一些工具上开发一些项目。但是最终都以失败而告终。
+总结其中的原因，目标与现实的能力水平有差异。在没有真正兴趣的情况下选择一个新的领域
+或者是在仅仅知道皮毛，却想独立一步作成一个大的项目的野望。</p>
+
+<p>脚踏实地，立足现在，寻求合伙人，设立可量化的目标，总结与纠正，不断向前。</p>
+
+
+	</div>
+	
+	<div class="next-prev-nav low-top">
+		
+		-----------------------------------
+		<b>本文内容遵从<a title="Content licenced under Creative Commons by-nc-sa 3.0" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.zh">CC版权协议</a>转载请注明出自<a href="http://kamelzcs.github.com">kamelzcs</a></b>
+		-----------------------------------
+		<hr/>
+		
+		
+		
+	
+		
+		
+	
+		
+			<a href="/2014/02/03/goals-in-2014" rel="previous" title="Goals in 2014">Goals in 2014</a>&nbsp;&raquo;
+		
+	
+		<br />
 	</div>
 
-
+	<hr />
+	<!--<div class="sharing">
 	
-	<p>About the 2014 plan.</p>
+	 
 	
 	
-	<p class><a href="/2014/02/03/goals-in-2014">Read more...</a></p>
+	
+	
+	
+	
+	 
 </div>
+ -->
 	
-</div>
 
+<script type="text/javascript">
+      var disqus_shortname = 'kamelzcs';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://kamelzcs.github.com/2015/02/09/2014';
+        var disqus_url = 'http://kamelzcs.github.com/2015/02/09/2014';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+	<div>
+		<h2 id='comment_heading'>Hide Comments</h2>
+		<div id="disqus_thread" aria-live="polite"><div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'kamelzcs'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+	</div>
+</div>
 
 		</div>
 		
