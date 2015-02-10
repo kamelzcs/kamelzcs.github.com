@@ -180,27 +180,36 @@ h3,h4 {
 	</h4>
 	
 	<div class="content">
-		<h3 id="section">工作</h3>
+		<h2 id="section">工作</h2>
 
 <p>2014年，职业生涯真正开始的一年，在所谓的Full-Stack 上迈出了第一步。</p>
 
+<h4 id="section-1">前端</h4>
 <p>前端上加入了一个照片上传的插件，没错，这个货就是Javascript。
-看着它那略怪异的各种语法， 然后小心的查着各种Tips，读着各种Good parts和Bad parts，生怕跌入深坑。
+看着它那略怪异的各种语法， 然后小心的查着各种Tips，读着Good parts, 查着Bad parts，生怕跌入深坑。
 开源大法好，要是让我开发这个玩意，没有个几年时间肯定做不出既能兼容各种浏览器，又具有很好的扩展性，同时
 又经过严格的单元测试的项目。</p>
 
 <p>Jascript就是这样，在给予一个最简单的跨平台的展示媒介的情况下，却不得不“忍受”它与生俱来的各种问题。</p>
 
-<p>在App Engine的项目上加入了一个绿坝系统，在App Engine扩展性限制下，用了最简单的关键词+正则表达的方式。大部分的经历花在了用Jinja2处理
+<p>除此之外，开始使用Jinja2来生成Html，也要调试一些CSS相关的代码。</p>
+
+<p>前端的东西还是Trick太多，无论是语言的设计还是各种浏览器的兼容。</p>
+
+<h4 id="app-engine">App Engine</h4>
+
+<p>在App Engine的项目上加入了一个绿坝系统，在App Engine扩展性限制下，用了最简单的关键词+正则表达的方式。大部分的精力花在了用Jinja2处理
 复杂的前端Html页面上面。前端和后端一样，甚至比后端更需要抽象。因为前端需求变动的情况更多，同时展现涉及的页面
 也更多，抽象不好，然后每一次页面的修改都会变为O(N)的人肉暴力。</p>
 
 <p>基于语义的过滤系统肯定最准确，但是计算量太大。退而求其次，在分词的基础上进行匹配处理，效果就会好的多。
-基于Lucene的Elastic search应该是做这个最方便的工具。</p>
+基于Lucene的Elastic Search应该是做这个最方便的工具。</p>
 
-<p>尝试做了NoSQL的Migration。后来想想，在目标Web服务器及数据库都没有确定的情况下，这个工作实在难以评价效果。
+<p>尝试做了到NoSQL的Migration。后来想想，在目标Web服务器及数据库都没有确定的情况下，这个工作实在难以评价效果。
 最大的收获还是线下开发，然后推入EC2测试，最后评价的整个流程走了一遍。Google的工具还是太高端了，因为系统拆分成了
 多个模块，然后拥有非常优秀的可扩展性及灵活性。这是只使用工具所不能拥有的成就感。</p>
+
+<h4 id="ansible">自动化配置-Ansible</h4>
 
 <p>完成了一个自动化配置工具-Ansible的项目。系统自动化配置Web服务器Tornado，数据库Postgresql，任务队列Celery与Nginx，RabbitMQ,
 Supervisor, Iptable, Redis。同时可以在配置文件中修改各种参数，不用再为系统环境的兼容性上苦恼。</p>
@@ -208,61 +217,76 @@ Supervisor, Iptable, Redis。同时可以在配置文件中修改各种参数，
 <p>Ansbile的优点为用Python实现，上手容易。但是因为它依赖Yaml与Jinja2等已有工具，所以在DSL解释的过程中，有不少陷阱。Python还是太不
 适合用来实现DSL了。如果目标为长期的大型复杂项目，应该考虑其他的工具，如基于Ruby的Puppet等。</p>
 
-<p>做了一个Tornado与Postgresql之间的异步ORM。在个人看来，这是今年做的最有价值的工作。不知为何，现在没有开源的基于SQL的异步ORM。然后
-现在的这个ORM非常简陋，但是支持CURD及可支持嵌套的Transaction。
+<h4 id="orm">异步ORM</h4>
+
+<p>做了一个Tornado与Postgresql之间的异步ORM。在个人看来，这是今年做的最有价值的工作。不知为何，现在没有开源的基于SQL的异步ORM。
+虽然现在的这个ORM非常简陋，但是支持CURD及可支持嵌套的Transaction。
 基本思路和工具都是在不断阅读相关项目的代码及文档，不断的思考，同时在网络上请教，最终一点点攒起来的。
-思路很简单，Peewee的DSL部分+MomokoPool及执行部分+Peewee的resultwrapper部分。</p>
+思路很简单，Peewee的DSL部分+Momoko的线程Pool及执行部分+Peewee的resultwrapper部分。</p>
+
+<p>Peewee是一个简单强大的ORM, 但是对Raw SQL的支持有限，究其原因还是resultwrapper很简单，并不是对SQL语句进行解释分析的。</p>
 
 <p>第一次在实际工程中用到Compiler里面学到的东西。虽然只是一个用Python解释的DSL前端。Python的DSL是用重载运算符实现的，这一点直观上容易混淆。
 别的方面，学到了Mixin在动态加载时改变代码执行路径，Python的胶水特性。</p>
 
-<h3 id="section-1">学习</h3>
+<h2 id="section-2">学习</h2>
 
-<p>阅读的源代码：
-- Tornado
-- Peewee
-- Momoko</p>
+<p>阅读的源代码：</p>
 
-<p>阅读的书籍：
-- Lisp 系列
-  - The Little Schemer
-  - The Seasoned Schemer
-  - The Reasoned Schemer
-- SICP
-- Haskell Books
-  - Learn you a Haskell for Great Good
-  - The Real World Haskell
-- Introduction to Algorithm
-- Compiler course in Stanford
-- The Economist
-- 日语系列
-  - 初级日本语上、下
-  - 中级日本语上、下
-  - 大家的日语初级</p>
+<ul>
+  <li>Tornado: 代码的文档及注释都很出色，代码质量也可靠。</li>
+  <li>Peewee: 短小精悍，只用了三千行就写出了一个这么出色的ORM。</li>
+  <li>Momoko: Raw SQL runner + Thread Pool</li>
+</ul>
 
-<h3 id="section-2">可量化的成绩</h3>
+<p>阅读的书籍：</p>
+
+<ul>
+  <li>Lisp 系列
+    <ul>
+      <li>The Little Schemer: 简单易懂，最后推倒出了Y表达式。</li>
+      <li>The Seasoned Schemer: 关注更简洁、抽象的函数表达式。</li>
+      <li>The Reasoned Schemer: Logic Programming， 脑洞大开。</li>
+    </ul>
+  </li>
+  <li>SICP: 读过两遍，试题略略的看了一下。不得不说这是一本神书，每一个对编译语音有兴趣的人，都会从中学到很多。</li>
+  <li>Haskell Books: 对Haskell产生兴趣先是由于各种传说，后来读了之后发现，要掌握好这门语言，居然要学习Category Theory, 瞬间好感度上升一个数量级。
+    <ul>
+      <li>Learn you a Haskell for Great Good</li>
+      <li>The Real World Haskell</li>
+    </ul>
+  </li>
+  <li>Introduction to Algorithm: 重读了部分常用算法，简洁、从直觉出发，算法设计的经典书籍。</li>
+  <li>Compiler course in Stanford: 主要精力花在了前端的整个算法理解上，优化及IR，二进制码实现略看了下。比龙书易懂，适合入门。</li>
+  <li>The Economist: 自从日元贬值开始，开始发现金融界的事情开始和自己有莫大的关系。现在停留在看热闹的阶段，主要关注中国及亚洲版。</li>
+  <li>日语系列: 多掌握一门语言，据说就多了一种选择。英语确实有极大的用处，日语现在的最大的用处还是处在简单的吹牛，读读杂志的阶段。
+    <ul>
+      <li>初级日本语上、下</li>
+      <li>中级日本语上、下</li>
+      <li>大家的日语初级</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="section-3">可量化的成绩</h2>
 
 <ul>
   <li>日语N2</li>
   <li>编程相关
     <ul>
-      <li>Github
+      <li>被fork的项目Vim</li>
+      <li>被Star的项目Google Analytics</li>
+      <li>Patch被Accepted项目
         <ul>
-          <li>被fork的项目Vim</li>
-          <li>被Star的项目Google Analytics</li>
-          <li>Patch被Accepted项目
-            <ul>
-              <li>Momoko</li>
-              <li>Ansbile playbook</li>
-            </ul>
-          </li>
+          <li>Momoko</li>
+          <li>Ansbile playbook</li>
         </ul>
       </li>
     </ul>
   </li>
 </ul>
 
-<h3 id="section-3">总结</h3>
+<h2 id="section-4">总结</h2>
 
 <p>2014年学习了Web开发的各种语言，各种工具，可以独立的承担一些项目。
 2014年并未如原来曾有的乐观一样，出现突飞猛进的变化。根本原因，大的目标不明确。
@@ -276,7 +300,6 @@ Supervisor, Iptable, Redis。同时可以在配置文件中修改各种参数，
 或者是在仅仅知道皮毛，却想独立一步作成一个大的项目的野望。</p>
 
 <p>脚踏实地，立足现在，寻求合伙人，设立可量化的目标，总结与纠正，不断向前。</p>
-
 
 	</div>
 	
