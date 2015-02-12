@@ -167,20 +167,7 @@ google.setOnLoadCallback(function() {
 
 
 	
-	<p>1.16
-
-#lang planet neil/sicp
-
- (define (square x) (* x x))
-
-(define (fast-expt b n)
-  (define (iter a b n)
-    (cond ((= n 0) a)
-          ((even? n) (iter a (square b) (/ n 2)))
-          (else (iter (* a b) b (- n 1)))))
-  (iter 1 b n))
-
-</p>
+	<p>1.16 #lang planet neil/sicp (define (square x) (* x x)) (define (fast-expt b n) (define (iter a b n) (cond ((= n 0) a) ((even? n) (iter a (square b) (/ n 2))) (else (iter (* a b) b (- n 1))))) (iter 1 b n)) 1.18 (define (multi a...</p>
 	
 	
 	<p class><a href="/2015/02/12/sicp-section-124-125">Read more...</a></p>
