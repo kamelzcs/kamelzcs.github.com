@@ -2,14 +2,16 @@
 <html>
 <head>
 	
-	<title>Tag: Lisp - kamelzcs's library</title>
+	<title>SICP 1.2.3 - kamelzcs's library</title>
 	
 	
 	<meta name="author" content="kamelzcs" />
 	
-	<meta name="description" content="Tag: Lisp" />
+	<meta name="description" content="Lisp" />
 	
 
+	
+	<meta name="keywords" content="Lisp" />	
 	
 
 	<meta name="robots" content="noodp, nydir" />
@@ -149,88 +151,143 @@ google.setOnLoadCallback(function() {
 
 		
 		<div id="main" class="span-17">
-			<h1 class="large-bottom">Tag: Lisp</h1>
-<div id="main-content">
+			<style type="text/css">
+h3,h4{ 
+	color: #335E8D;
+}			
+h3,h4 {
+	margin-left		: 3px;
+	font-variant	: small-caps;
+	font-weight		: normal;
+	border-bottom : 1px dotted #ccc;	
+}
+</style>
 
 
-<div class="post-listing">
-	<h2><a href="/2015/02/12/1-2-3" class="dark-link">SICP 1.2.3</a></h2>
-	<div class="low-top">
-		<span class="low-top ">Posted on  February 12, 2015 in <a href="/categories/sicp">SICP</a></span>
+
+
+<div class="post" id="main-content">
+	<h1>SICP 1.2.3</h1>
+	<h4 class="large-bottom">
+		Posted on February 12, 2015
+		 in <a href="/categories/sicp">SICP</a> 
+
 		<span class="tag-list">
 			
 			<a href="/tags/lisp">Lisp</a>
 			
 		</span>
+	</h4>
+	
+	<div class="content">
+		<p>Time and space complexity is kind of difficult for me.</p>
+
+<h4 id="section">1.14</h4>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">count-change</span> <span class="nv">amount</span><span class="p">)</span> 
+   <span class="p">(</span><span class="nf">cc</span> <span class="nv">amount</span> <span class="mi">5</span><span class="p">))</span> 
+ <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">cc</span> <span class="nv">amount</span> <span class="nv">kinds-of-coins</span><span class="p">)</span> 
+   <span class="p">(</span><span class="k">cond </span><span class="p">((</span><span class="nb">= </span><span class="nv">amount</span> <span class="mi">0</span><span class="p">)</span> <span class="mi">1</span><span class="p">)</span> 
+         <span class="p">((</span><span class="k">or </span><span class="p">(</span><span class="nb">&lt; </span><span class="nv">amount</span> <span class="mi">0</span><span class="p">)</span> <span class="p">(</span><span class="nb">= </span><span class="nv">kinds-of-coins</span> <span class="mi">0</span><span class="p">))</span> <span class="mi">0</span><span class="p">)</span> 
+         <span class="p">(</span><span class="k">else </span><span class="p">(</span><span class="nb">+ </span><span class="p">(</span><span class="nf">cc</span> <span class="nv">amount</span> 
+                      <span class="p">(</span><span class="nb">- </span><span class="nv">kinds-of-coins</span> <span class="mi">1</span><span class="p">))</span> 
+                  <span class="p">(</span><span class="nf">cc</span> <span class="p">(</span><span class="nb">- </span><span class="nv">amount</span> 
+                         <span class="p">(</span><span class="nf">first-denomination</span> <span class="nv">kinds-of-coins</span><span class="p">))</span> 
+                      <span class="nv">kinds-of-coins</span><span class="p">)))))</span> 
+ <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">first-denomination</span> <span class="nv">kinds-of-coins</span><span class="p">)</span> 
+   <span class="p">(</span><span class="k">cond </span><span class="p">((</span><span class="nb">= </span><span class="nv">kinds-of-coins</span> <span class="mi">1</span><span class="p">)</span> <span class="mi">50</span><span class="p">)</span> 
+         <span class="p">((</span><span class="nb">= </span><span class="nv">kinds-of-coins</span> <span class="mi">2</span><span class="p">)</span> <span class="mi">25</span><span class="p">)</span> 
+         <span class="p">((</span><span class="nb">= </span><span class="nv">kinds-of-coins</span> <span class="mi">3</span><span class="p">)</span> <span class="mi">10</span><span class="p">)</span> 
+         <span class="p">((</span><span class="nb">= </span><span class="nv">kinds-of-coins</span> <span class="mi">4</span><span class="p">)</span> <span class="mi">5</span><span class="p">)</span> 
+         <span class="p">((</span><span class="nb">= </span><span class="nv">kinds-of-coins</span> <span class="mi">5</span><span class="p">)</span> <span class="mi">1</span><span class="p">)))</span></code></pre></div>
+
+<p>To analyze the time complexity of $cc(n, k)$, it is more easy to start from $k=1$</p>
+
+<p>if $k=1$, then $cc(n, 1)=O(n)$</p>
+
+<p>if $k=2$, then $cc(n, 2) = cc(n - 5, 2) + cc(n, 1) = O(n^2)$</p>
+
+<p>…</p>
+
+<p>By induction, $cc(n, 5)=O(n^5)$</p>
+
+<h4 id="section-1">1.15</h4>
+
+<p>Time complexity is about $log_3(n)$.</p>
+
+	</div>
+	
+	<div class="next-prev-nav low-top">
+		
+		-----------------------------------
+		<b>本文内容遵从<a title="Content licenced under Creative Commons by-nc-sa 3.0" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.zh">CC版权协议</a>转载请注明出自<a href="http://kamelzcs.github.com">kamelzcs</a></b>
+		-----------------------------------
+		<hr/>
+		
+		
+		
+	
+		
+		
+	
+		
+			<a href="/2015/02/12/1-2-2" rel="previous" title="SICP 1.2.2">SICP 1.2.2</a>&nbsp;&raquo;
+		
+	
+		<br />
 	</div>
 
-
+	<hr />
+	<!--<div class="sharing">
 	
-	<p>Lisp</p>
+	 
 	
 	
-	<p class><a href="/2015/02/12/1-2-3">Read more...</a></p>
+	
+	
+	
+	
+	 
 </div>
+ -->
+	
 
-<div class="post-listing">
-	<h2><a href="/2015/02/12/1-2-2" class="dark-link">SICP 1.2.2</a></h2>
-	<div class="low-top">
-		<span class="low-top ">Posted on  February 12, 2015 in <a href="/categories/sicp">SICP</a></span>
-		<span class="tag-list">
-			
-			<a href="/tags/lisp">Lisp</a>
-			
-		</span>
+<script type="text/javascript">
+      var disqus_shortname = 'kamelzcs';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://kamelzcs.github.com/2015/02/12/1-2-3';
+        var disqus_url = 'http://kamelzcs.github.com/2015/02/12/1-2-3';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+	<div>
+		<h2 id='comment_heading'>Hide Comments</h2>
+		<div id="disqus_thread" aria-live="polite"><div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'kamelzcs'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
 	</div>
-
-
-	
-	<p>Lisp</p>
-	
-	
-	<p class><a href="/2015/02/12/1-2-2">Read more...</a></p>
 </div>
-
-<div class="post-listing">
-	<h2><a href="/2015/02/12/sicp-1.2.1" class="dark-link">SICP 1.2.1</a></h2>
-	<div class="low-top">
-		<span class="low-top ">Posted on  February 12, 2015 in <a href="/categories/sicp">SICP</a></span>
-		<span class="tag-list">
-			
-			<a href="/tags/lisp">Lisp</a>
-			
-		</span>
-	</div>
-
-
-	
-	<p>Lisp</p>
-	
-	
-	<p class><a href="/2015/02/12/sicp-1.2.1">Read more...</a></p>
-</div>
-
-<div class="post-listing">
-	<h2><a href="/2015/02/12/sicp-1-1" class="dark-link">SICP section 1.1</a></h2>
-	<div class="low-top">
-		<span class="low-top ">Posted on  February 12, 2015 in <a href="/categories/sicp">SICP</a></span>
-		<span class="tag-list">
-			
-			<a href="/tags/lisp">Lisp</a>
-			
-		</span>
-	</div>
-
-
-	
-	<p>Elements of Programming</p>
-	
-	
-	<p class><a href="/2015/02/12/sicp-1-1">Read more...</a></p>
-</div>
-
-</div>
-
 
 		</div>
 		
