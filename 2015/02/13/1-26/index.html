@@ -2,12 +2,12 @@
 <html>
 <head>
 	
-	<title>Archives for March 17, 2013 - kamelzcs's library</title>
+	<title>SICP 1.26 - kamelzcs's library</title>
 	
 	
 	<meta name="author" content="kamelzcs" />
 	
-	<meta name="description" content="kamelzcs's library Archives for March 17, 2013" />
+	<meta name="description" content="kamelzcs's library SICP 1.26" />
 	
 
 	
@@ -149,57 +149,120 @@ google.setOnLoadCallback(function() {
 
 		
 		<div id="main" class="span-17">
-			<h1>Archives for March 17, 2013</h1>
+			<style type="text/css">
+h3,h4{ 
+	color: #335E8D;
+}			
+h3,h4 {
+	margin-left		: 3px;
+	font-variant	: small-caps;
+	font-weight		: normal;
+	border-bottom : 1px dotted #ccc;	
+}
+</style>
 
-<div id="main-content">
-	   
-	
-<div class="post-listing">
-	<h2><a href="/2013/03/17/talkinjapaneseforeignaffair" class="dark-link">日本大使馆活动见闻</a></h2>
-	<div class="low-top">
-		<span class="low-top ">Posted on  March 17, 2013 in <a href="/categories/讲座">讲座</a></span>
+
+
+
+<div class="post" id="main-content">
+	<h1>SICP 1.26</h1>
+	<h4 class="large-bottom">
+		Posted on February 13, 2015
+		 in <a href="/categories/sicp">SICP</a> 
+
 		<span class="tag-list">
 			
-			<a href="/tags/日本">日本</a>
-			
-			<a href="/tags/生活">生活</a>
+			<a href="/tags/lisp">Lisp</a>
 			
 		</span>
+	</h4>
+	
+	<div class="content">
+		<h4 id="section">1.21</h4>
+
+<div class="highlight"><pre><code class="language-scm" data-lang="scm"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">square</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">* </span><span class="nv">x</span> <span class="nv">x</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">smallest-divisor</span> <span class="nv">n</span><span class="p">)</span> <span class="p">(</span><span class="nf">find-divisor</span> <span class="nv">n</span> <span class="mi">2</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">find-divisor</span> <span class="nv">n</span> <span class="nv">test-divisor</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">cond </span><span class="p">((</span><span class="nb">&gt; </span><span class="p">(</span><span class="nf">square</span> <span class="nv">test-divisor</span><span class="p">)</span> <span class="nv">n</span><span class="p">)</span> <span class="nv">n</span><span class="p">)</span>
+        <span class="p">((</span><span class="nf">divides?</span> <span class="nv">test-divisor</span> <span class="nv">n</span><span class="p">)</span> <span class="nv">test-divisor</span><span class="p">)</span>
+        <span class="p">(</span><span class="k">else </span><span class="p">(</span><span class="nf">find-divisor</span> <span class="nv">n</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">test-divisor</span> <span class="mi">1</span><span class="p">)))))</span>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">divides?</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)</span> <span class="p">(</span><span class="nb">= </span><span class="p">(</span><span class="nb">remainder </span><span class="nv">b</span> <span class="nv">a</span><span class="p">)</span> <span class="mi">0</span><span class="p">))</span></code></pre></div>
+
+<p>199 and 1999 are primes, 19999’s smallest divisor is 7</p>
+
+	</div>
+	
+	<div class="next-prev-nav low-top">
+		
+		-----------------------------------
+		<b>本文内容遵从<a title="Content licenced under Creative Commons by-nc-sa 3.0" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.zh">CC版权协议</a>转载请注明出自<a href="http://kamelzcs.github.com">kamelzcs</a></b>
+		-----------------------------------
+		<hr/>
+		
+		
+		
+	
+		
+		
+	
+		
+			<a href="/2015/02/12/sicp-section-124-125" rel="previous" title="sicp-section-124-125">sicp-section-124-125</a>&nbsp;&raquo;
+		
+	
+		<br />
 	</div>
 
-
+	<hr />
+	<!--<div class="sharing">
 	
-	<p>日本驻北京大使馆3.9活动</p>
+	 
 	
 	
-	<p class><a href="/2013/03/17/talkinjapaneseforeignaffair">Read more...</a></p>
+	
+	
+	
+	
+	 
 </div>
+ -->
+	
 
-<div class="post-listing">
-	<h2><a href="/2013/03/17/techtalkvoice" class="dark-link">语音技术沙龙</a></h2>
-	<div class="low-top">
-		<span class="low-top ">Posted on  March 17, 2013 in <a href="/categories/语音">语音</a></span>
-		<span class="tag-list">
-			
-			<a href="/tags/语音">语音</a>
-			
-			<a href="/tags/趋势">趋势</a>
-			
-			<a href="/tags/大规模机器学习">大规模机器学习</a>
-			
-		</span>
+<script type="text/javascript">
+      var disqus_shortname = 'kamelzcs';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://kamelzcs.github.com/2015/02/13/1-26';
+        var disqus_url = 'http://kamelzcs.github.com/2015/02/13/1-26';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+	<div>
+		<h2 id='comment_heading'>Hide Comments</h2>
+		<div id="disqus_thread" aria-live="polite"><div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'kamelzcs'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
 	</div>
-
-
-	
-	<p>语音处理趋势</p>
-	
-	
-	<p class><a href="/2013/03/17/techtalkvoice">Read more...</a></p>
 </div>
-	
-</div>
-
 
 		</div>
 		
