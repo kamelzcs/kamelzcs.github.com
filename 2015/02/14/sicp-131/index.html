@@ -261,6 +261,14 @@ h3,h4 {
       <span class="p">(</span><span class="nf">iter</span> <span class="p">(</span><span class="nf">next</span> <span class="nv">a</span><span class="p">)</span> <span class="p">(</span><span class="nf">combiner</span> <span class="nv">result</span> <span class="p">(</span><span class="nf">term</span> <span class="nv">a</span><span class="p">)))))</span>
   <span class="p">(</span><span class="nf">iter</span> <span class="nv">a</span> <span class="nv">null-value</span><span class="p">))</span></code></pre></div>
 
+<h4 id="section-4">1.33</h4>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">filtered-accumulate</span> <span class="nv">combiner</span> <span class="nv">null-value</span> <span class="nv">term</span> <span class="nv">a</span> <span class="nv">next</span> <span class="nv">b</span> <span class="nv">filter</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">&gt; </span><span class="nv">a</span> <span class="nv">b</span><span class="p">)</span> <span class="nv">null-value</span>
+    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nf">filter</span> <span class="nv">a</span><span class="p">)</span>
+      <span class="p">(</span><span class="nf">combiner</span> <span class="p">(</span><span class="nf">term</span> <span class="nv">a</span><span class="p">)</span> <span class="p">(</span><span class="nf">filtered-accumulate</span> <span class="nv">combiner</span> <span class="nv">null-value</span> <span class="nv">term</span> <span class="p">(</span><span class="nf">next</span> <span class="nv">a</span><span class="p">)</span> <span class="nv">next</span> <span class="nv">b</span> <span class="nv">filter</span><span class="p">))</span>
+      <span class="p">(</span><span class="nf">filtered-accumulate</span> <span class="nv">combiner</span> <span class="nv">null-value</span> <span class="nv">term</span> <span class="p">(</span><span class="nf">next</span> <span class="nv">a</span><span class="p">)</span> <span class="nv">next</span> <span class="nv">b</span> <span class="nv">filter</span><span class="p">))))</span></code></pre></div>
+
 
 	</div>
 	
