@@ -2,16 +2,14 @@
 <html>
 <head>
 	
-	<title>review 2012 - kamelzcs's library</title>
+	<title>1.3.4 - kamelzcs's library</title>
 	
 	
 	<meta name="author" content="kamelzcs" />
 	
-	<meta name="description" content="回首2012" />
+	<meta name="description" content="kamelzcs's library 1.3.4" />
 	
 
-	
-	<meta name="keywords" content="生活" />	
 	
 
 	<meta name="robots" content="noodp, nydir" />
@@ -167,44 +165,117 @@ h3,h4 {
 
 
 <div class="post" id="main-content">
-	<h1>review 2012</h1>
+	<h1>1.3.4</h1>
 	<h4 class="large-bottom">
-		Posted on January 02, 2013
-		 in <a href="/categories/生活">生活</a> 
+		Posted on February 16, 2015
+		 in <a href="/categories/sicp">SICP</a> 
 
 		<span class="tag-list">
 			
-			<a href="/tags/回忆">回忆</a>
-			
-			<a href="/tags/展望">展望</a>
+			<a href="/tags/lisp">Lisp</a>
 			
 		</span>
 	</h4>
 	
 	<div class="content">
-		<h2 id="section">1 回首</h2>
+		<blockquote>
+  <p>In general, programming languages impose restrictions on the ways in which computational elements can be manipulated. Elements with the fewest restrictions are said to have first-class status. Some of the ``rights and privileges’’ of first-class elements are:</p>
 
-<p>过去的2012年是失去的一年，是获得的一年，有很多遗憾，但是也有很多新的经历，总的来说，在这相对安稳的一年当中，收获相对往年有所减少，这是值得反思的一件事情。</p>
+  <ul>
+    <li>They may be named by variables.</li>
+    <li>They may be passed as arguments to procedures.</li>
+    <li>They may be returned as the results of procedures.</li>
+    <li>They may be included in data structures.</li>
+  </ul>
+</blockquote>
 
-<p>从3月份返校，开始着重分析、搭建完成第一个机器学习相关的中央高校创新基金，同时，重点分析、优化Ray Tracing中的BVH，在六月份的时候完成了机器学习项目的初版并完成答辩，在六月份获得了优化的一个idea，开始动手写作。写作从动手，到回头做实验，完成初稿，投稿，历时一个月的时间。然后开始着手准备暑假去日本暑期学校的事情。原本以为去日本的暑期学校能勾兑下老师，最终的结果是惨不忍睹，只认识了一位美帝的老师，但是感觉学校不是太满意。从日本回来，也与在美帝读Ph.D的廖老师聊了不少，最终决定还是先找个工作，去美帝读Ph.D的想法基本上放弃了。</p>
+<h4 id="section">1.40</h4>
 
-<p>回校处理了点杂事，然后就开始准备找工作了。从刚开始百度、腾讯的顺利，到MS、google、Facebook的悲剧，整个过程算是高开低走，这也让我当初过于乐观和准备不足的缺点暴露了出来。代码能力本来就不是我的强项，加之准备又如此不充分，到最后只能是一个高不成，低不就的局面。</p>
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="nv">tolerance</span> <span class="mf">0.00001</span><span class="p">)</span>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">fixed-point</span> <span class="nv">f</span> <span class="nv">first-guess</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">close-enough?</span> <span class="nv">v1</span> <span class="nv">v2</span><span class="p">)</span>
+    <span class="p">(</span><span class="nb">&lt; </span><span class="p">(</span><span class="nb">abs </span><span class="p">(</span><span class="nb">- </span><span class="nv">v1</span> <span class="nv">v2</span><span class="p">))</span> <span class="nv">tolerance</span><span class="p">))</span>
+  <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">try</span> <span class="nv">guess</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">let </span><span class="p">((</span><span class="nf">next</span> <span class="p">(</span><span class="nf">f</span> <span class="nv">guess</span><span class="p">)))</span>
+      <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nf">close-enough?</span> <span class="nv">guess</span> <span class="nv">next</span><span class="p">)</span>
+          <span class="nv">next</span>
+          <span class="p">(</span><span class="nf">try</span> <span class="nv">next</span><span class="p">))))</span>
+  <span class="p">(</span><span class="nf">try</span> <span class="nv">first-guess</span><span class="p">))</span>
 
-<p>妹子找到了一份日本的工作，我和她都觉得工作挺好的，但是这样的话，很有可能要异地了。妹子是个要强的人，同时自己现在也不能够一个人就能把家里撑起来，里外为难。</p>
+<span class="p">(</span><span class="k">define </span><span class="nv">dx</span> <span class="mf">0.00001</span><span class="p">)</span>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">deriv</span> <span class="nv">g</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">x</span><span class="p">)</span>
+    <span class="p">(</span><span class="nb">/ </span><span class="p">(</span><span class="nb">- </span><span class="p">(</span><span class="nf">g</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">x</span> <span class="nv">dx</span><span class="p">))</span> <span class="p">(</span><span class="nf">g</span> <span class="nv">x</span><span class="p">))</span>
+       <span class="nv">dx</span><span class="p">)))</span>
 
-<h2 id="section-1">2 抉择</h2>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">newton-transform</span> <span class="nv">g</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">x</span><span class="p">)</span>
+    <span class="p">(</span><span class="nb">- </span><span class="nv">x</span> <span class="p">(</span><span class="nb">/ </span><span class="p">(</span><span class="nf">g</span> <span class="nv">x</span><span class="p">)</span> <span class="p">((</span><span class="nf">deriv</span> <span class="nv">g</span><span class="p">)</span> <span class="nv">x</span><span class="p">)))))</span>
 
-<p>一个是国内互联网公司的机器学习职位的研发工程师，没有户口，开始的薪资也是一个平均值，未来的发展也不是很确定。这样的好处是自己可以继续做技术，同时，有相对简单的工作环境，晋升与否完全看自己在工作中能力的表现，未来想在互联网公司间跳槽的话也相对简单，同时上升空间应该是没有限制的，限制自己的就是工作能力了。同时，如果两个人异地的话，这份工作能够帮助我去日本的概率要大的多。缺点来说，工作的强度应该会比较大，按照坊间传闻来说，朝九晚十可能是家常便饭，业余生活和健康应该是比较大的牺牲。</p>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">newtons-method</span> <span class="nv">g</span> <span class="nv">guess</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">fixed-point</span> <span class="p">(</span><span class="nf">newton-transform</span> <span class="nv">g</span><span class="p">)</span> <span class="nv">guess</span><span class="p">))</span>
 
-<p>另外一个是银行的软开。按照IT技术在银行的地位来说，发展的空间要相对小一些，同时，作为国企，技术能力并不是最重要的，需要的是更好的综合能力。在这个方面，本人从小就没有接触过这种事情，同时，在性格方面，想要在里面要好的发展，必须要改变些东西。这个offer意味着相对稳定的生活，但是较小的上升空间，在生活和健康上有较好的保障，但是想出人头地基本很难了。</p>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">square</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">* </span><span class="nv">x</span> <span class="nv">x</span><span class="p">))</span>
 
-<p>还有一种可能就是找到去日本的工作，作为自己来讲，去日本，还是想多多学习更好的前沿技术，这样在面对将来可能的变数时才会有更好的选择的机会，如果仅仅为了选择一个稳定的生活，我认为其意义并不是如此之大，毕竟，可能安逸的生活国内也能有，但是，发展的机会的话，应该没有国内好。毕竟，定居这个问题还是要考虑多种因素的，与日本的种种不缺定的未来，这是一个不得不考虑的问题。</p>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">cube</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">* </span><span class="nv">x</span> <span class="nv">x</span> <span class="nv">x</span><span class="p">))</span>
 
-<p>一个选择基本上就意味着将来非常不同的生活轨迹。</p>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">cubic</span> <span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">x</span><span class="p">)</span>
+    <span class="p">(</span><span class="nb">+ </span><span class="p">(</span><span class="nf">cube</span> <span class="nv">x</span><span class="p">)</span>
+       <span class="p">(</span><span class="nb">* </span><span class="nv">a</span> <span class="p">(</span><span class="nf">square</span> <span class="nv">x</span><span class="p">))</span>
+       <span class="p">(</span><span class="nb">* </span><span class="nv">b</span> <span class="nv">x</span><span class="p">)</span>
+       <span class="nv">c</span><span class="p">)))</span>
 
-<h2 id="section-2">3 展望</h2>
+<span class="nv">-&gt;</span> <span class="p">(</span><span class="nf">newtons-method</span> <span class="p">(</span><span class="nf">cubic</span> <span class="mi">8</span> <span class="mi">16</span> <span class="mi">10</span><span class="p">)</span> <span class="mi">1</span><span class="p">)</span>
+<span class="mf">-5.3652300134140924</span></code></pre></div>
 
-<p>希望来年自己去北京实习能够结交到新的朋友，能够适应公司的生活，同时能够多方面的了解信息，争取能够有更好的选择，希望也能够有更好的机会，如果去日本工作的话，希望大家都能顺顺利利的，同时，能够更多的了解业内的动向，结交更多的朋友，有更好的身体，能够找到一条双方都能接受的，早日不再异地的途径。未来很美好，但是自己过还是觉得太苦逼，不好玩。作为自己来讲，在我看来，自己的优势应该是一个较为整体的素质。我不是一个标准的Geek，但是，希望自己能够多读书，多接触挑战性的问题，也希望能够有好的运气，相信未来！</p>
+<h4 id="section-1">1.41</h4>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">double</span> <span class="nv">f</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">x</span><span class="p">)</span> <span class="p">(</span><span class="nf">f</span> <span class="p">(</span><span class="nf">f</span> <span class="nv">x</span><span class="p">))))</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">inc</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">x</span> <span class="mi">1</span><span class="p">))</span>
+
+<span class="nv">-&gt;</span> <span class="p">((</span><span class="nf">double</span> <span class="nv">inc</span><span class="p">)</span> <span class="mi">1</span><span class="p">)</span>
+<span class="mi">3</span>
+
+<span class="nv">-&gt;</span> <span class="p">(((</span><span class="nf">double</span> <span class="p">(</span><span class="nf">double</span> <span class="nv">double</span><span class="p">))</span> <span class="nv">inc</span><span class="p">)</span> <span class="mi">5</span><span class="p">)</span>
+<span class="mi">21</span>
+
+<span class="nv">It</span> <span class="nv">increases</span> <span class="nv">$2^2^2$</span><span class="o">.</span></code></pre></div>
+
+<h4 id="section-2">1.42</h4>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">compose</span> <span class="nv">f</span> <span class="nv">g</span><span class="p">)</span>
+ <span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">x</span><span class="p">)</span> <span class="p">(</span><span class="nf">f</span> <span class="p">(</span><span class="nf">g</span> <span class="nv">x</span><span class="p">))))</span></code></pre></div>
+
+<h4 id="section-3">1.43</h4>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">repeated</span> <span class="nv">f</span> <span class="nv">x</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">= </span><span class="nv">x</span> <span class="mi">1</span><span class="p">)</span>
+      <span class="nv">f</span>
+      <span class="p">(</span><span class="nf">compose</span> <span class="nv">f</span> <span class="p">(</span><span class="nf">repeated</span> <span class="nv">f</span> <span class="p">(</span><span class="nb">- </span><span class="nv">x</span> <span class="mi">1</span><span class="p">)))))</span></code></pre></div>
+
+<h4 id="section-4">1.44</h4>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">smooth</span> <span class="nv">f</span> <span class="nv">dx</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">x</span><span class="p">)</span>
+    <span class="p">(</span><span class="nb">/ </span><span class="p">(</span><span class="nb">+ </span><span class="p">(</span><span class="nf">f</span> <span class="nv">x</span><span class="p">)</span>
+          <span class="p">(</span><span class="nf">f</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">x</span> <span class="nv">dx</span><span class="p">))</span>
+          <span class="p">(</span><span class="nf">f</span> <span class="p">(</span><span class="nb">- </span><span class="nv">x</span> <span class="nv">dx</span><span class="p">)))</span>
+       <span class="mi">3</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">n-fold-smooth</span> <span class="nv">f</span> <span class="nv">dx</span> <span class="nv">n</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">repeated</span> <span class="p">(</span><span class="nf">smooth</span> <span class="nv">f</span> <span class="nv">dx</span><span class="p">)</span> <span class="nv">n</span><span class="p">))</span></code></pre></div>
+
+<h4 id="section-5">1.46</h4>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">iterative-improve</span> <span class="nv">good-enough?</span> <span class="nv">improve</span><span class="p">)</span>
+   <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">iter</span> <span class="nv">guess</span><span class="p">)</span>
+     <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nf">good-enough?</span> <span class="nv">guess</span><span class="p">)</span>
+         <span class="nv">guess</span>
+         <span class="p">(</span><span class="nf">iter</span> <span class="p">(</span><span class="nf">improve</span> <span class="nv">guess</span><span class="p">))))</span>
+   <span class="nv">iter</span><span class="p">)</span></code></pre></div>
 
 
 	</div>
@@ -218,18 +289,12 @@ h3,h4 {
 		
 		
 		
-			&laquo;&nbsp;<a href="/2013/02/12/chinesenewyear" rel="next" title="春节">春节</a>
-		
 	
-		
-			
-				|
-			
 		
 		
 	
 		
-			<a href="/2012/12/28/how-to-install-the-template" rel="previous" title="如何使用模板">如何使用模板</a>&nbsp;&raquo;
+			<a href="/2015/02/15/1-3-2-1-3-3" rel="previous" title="SICP 1.3.2-1.3.3">SICP 1.3.2-1.3.3</a>&nbsp;&raquo;
 		
 	
 		<br />
@@ -255,8 +320,8 @@ h3,h4 {
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://kamelzcs.github.com/2013/01/02/review-2012';
-        var disqus_url = 'http://kamelzcs.github.com/2013/01/02/review-2012';
+        var disqus_identifier = 'http://kamelzcs.github.com/2015/02/16/1-3-4';
+        var disqus_url = 'http://kamelzcs.github.com/2015/02/16/1-3-4';
         var disqus_script = 'embed.js';
       
     (function () {
