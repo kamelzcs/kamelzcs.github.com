@@ -2,12 +2,12 @@
 <html>
 <head>
 	
-	<title>Python variable scope - kamelzcs's library</title>
+	<title>sicp-2.2.1 - kamelzcs's library</title>
 	
 	
 	<meta name="author" content="kamelzcs" />
 	
-	<meta name="description" content="about the python variable scope in classes" />
+	<meta name="description" content="kamelzcs's library sicp-2.2.1" />
 	
 
 	
@@ -165,68 +165,65 @@ h3,h4 {
 
 
 <div class="post" id="main-content">
-	<h1>Python variable scope</h1>
+	<h1>sicp-2.2.1</h1>
 	<h4 class="large-bottom">
-		Posted on November 13, 2013
-		 in <a href="/categories/technique">Technique</a> 
+		Posted on February 17, 2015
+		 in <a href="/categories/sicp">SICP</a> 
 
 		<span class="tag-list">
 			
-			<a href="/tags/python">Python</a>
-			
-			<a href="/tags/variable-scope">Variable scope</a>
+			<a href="/tags/lisp">Lisp</a>
 			
 		</span>
 	</h4>
 	
 	<div class="content">
-		<h3 id="about-variable-scope">About variable scope</h3>
+		<h4 id="section">2.17</h4>
 
-<p>In python, the variable scope has four kinds:</p>
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">last-pair</span> <span class="nv">lst</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">let </span><span class="p">([</span><span class="nv">second</span> <span class="p">(</span><span class="nb">cdr </span><span class="nv">lst</span><span class="p">)])</span>
+    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">null? </span><span class="nv">second</span><span class="p">)</span>
+      <span class="p">(</span><span class="nb">car </span><span class="nv">lst</span><span class="p">)</span>
+      <span class="p">(</span><span class="nf">last-pair</span> <span class="nv">second</span><span class="p">))))</span></code></pre></div>
 
-<ul>
-  <li>global</li>
-  <li>class</li>
-  <li>instance</li>
-  <li>local</li>
-</ul>
+<h4 id="section-1">2.18</h4>
 
-<p>In those kinds, the class-based and instance-based may merge in some cases: </p>
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nb">append </span><span class="nv">list1</span> <span class="nv">list2</span><span class="p">)</span>
+   <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">null? </span><span class="nv">list1</span><span class="p">)</span>
+       <span class="nv">list2</span>
+       <span class="p">(</span><span class="nb">cons </span><span class="p">(</span><span class="nb">car </span><span class="nv">list1</span><span class="p">)</span> <span class="p">(</span><span class="nb">append </span><span class="p">(</span><span class="nb">cdr </span><span class="nv">list1</span><span class="p">)</span> <span class="nv">list2</span><span class="p">))))</span>
 
-<p>Every time, the instance-based is looked up, which has not been initialized, the class-based result will
-be returned if there is any. Once it is initialized, it will be in the field of the instance.</p>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nb">reverse </span><span class="nv">lst</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">null? </span><span class="nv">lst</span><span class="p">)</span>
+    <span class="nv">lst</span>
+    <span class="p">(</span><span class="nf">append</span>
+      <span class="p">(</span><span class="nb">reverse </span><span class="p">(</span><span class="nb">cdr </span><span class="nv">lst</span><span class="p">))</span>
+      <span class="p">(</span><span class="nb">list </span><span class="p">(</span><span class="nb">car </span><span class="nv">lst</span><span class="p">)))))</span></code></pre></div>
 
-<p>One example from <a href="http://stackoverflow.com/questions/12941748/python-variable-scope-and-classes">stackoverflow</a>:</p>
+<h4 id="section-2">2.19</h4>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">MyClass</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="n">my_var</span> <span class="o">=</span> <span class="mi">10</span>
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="nv">us-coins</span> <span class="p">(</span><span class="nb">list </span><span class="mi">50</span> <span class="mi">25</span> <span class="mi">10</span> <span class="mi">5</span> <span class="mi">1</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define </span><span class="nv">uk-coins</span> <span class="p">(</span><span class="nb">list </span><span class="mi">100</span> <span class="mi">50</span> <span class="mi">20</span> <span class="mi">10</span> <span class="mi">5</span> <span class="mi">2</span> <span class="mi">1</span> <span class="mf">0.5</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">my_var</span><span class="p">)</span>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">cc</span> <span class="nv">amount</span> <span class="nv">coin-values</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">cond </span><span class="p">((</span><span class="nb">= </span><span class="nv">amount</span> <span class="mi">0</span><span class="p">)</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="p">((</span><span class="k">or </span><span class="p">(</span><span class="nb">&lt; </span><span class="nv">amount</span> <span class="mi">0</span><span class="p">)</span> <span class="p">(</span><span class="nf">no-more?</span> <span class="nv">coin-values</span><span class="p">))</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">(</span><span class="nf">else</span>
+         <span class="p">(</span><span class="nb">+ </span><span class="p">(</span><span class="nf">cc</span> <span class="nv">amount</span>
+                <span class="p">(</span><span class="nf">except-first-denomination</span> <span class="nv">coin-values</span><span class="p">))</span>
+            <span class="p">(</span><span class="nf">cc</span> <span class="p">(</span><span class="nb">- </span><span class="nv">amount</span>
+                   <span class="p">(</span><span class="nf">first-denomination</span> <span class="nv">coin-values</span><span class="p">))</span>
+                <span class="nv">coin-values</span><span class="p">)))))</span>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">no-more?</span> <span class="nv">coin-values</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">null? </span><span class="nv">coin-values</span><span class="p">))</span>
 
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">except-first-denomination</span> <span class="nv">coin-values</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">cdr </span><span class="nv">coin-values</span><span class="p">))</span>
 
-<span class="n">m1</span> <span class="o">=</span> <span class="n">MyClass</span><span class="p">()</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="mi">10</span>          <span class="c"># class-based </span>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">first-denomination</span> <span class="nv">coin-values</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">car </span><span class="nv">coin-values</span><span class="p">))</span></code></pre></div>
 
-<span class="n">MyClass</span><span class="o">.</span><span class="n">my_var</span> <span class="o">=</span> <span class="mi">20</span>
-<span class="k">print</span><span class="p">(</span><span class="n">m1</span><span class="o">.</span><span class="n">my_var</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="mi">20</span>          <span class="c"># Only class-based available.</span>
-
-<span class="n">m2</span> <span class="o">=</span> <span class="n">MyClass</span><span class="p">()</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="mi">20</span>          <span class="c"># class-based</span>
-
-<span class="n">m1</span><span class="o">.</span><span class="n">my_var</span> <span class="o">=</span> <span class="mi">30</span>
-<span class="k">print</span><span class="p">(</span><span class="n">MyClass</span><span class="o">.</span><span class="n">my_var</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="mi">20</span>          <span class="c"># class-based,but the instance-based variable has been set in m1.</span>
-
-<span class="n">MyClass</span><span class="o">.</span><span class="n">my_var</span> <span class="o">=</span> <span class="mi">40</span> 
-<span class="k">print</span><span class="p">(</span><span class="n">m1</span><span class="o">.</span><span class="n">my_var</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="mi">30</span>           
-                 <span class="c"># The value WAS shared before m1.my_var = 30 had happened.</span>
-
-<span class="k">print</span><span class="p">(</span><span class="n">m2</span><span class="o">.</span><span class="n">my_var</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="mi">40</span>           <span class="c"># m2.my_var&#39;s value is still shared</span></code></pre></div>
-
+<p>As this procedure does not rely not on the order, it would not affect the final answer.</p>
 
 	</div>
 	
@@ -239,18 +236,12 @@ be returned if there is any. Once it is initialized, it will be in the field of 
 		
 		
 		
-			&laquo;&nbsp;<a href="/2013/11/19/solarized-install" rel="next" title="Install solarized color theme">Install solarized color theme</a>
-		
 	
-		
-			
-				|
-			
 		
 		
 	
 		
-			<a href="/2013/11/11/modeling-relationship-in-app-engine" rel="previous" title="Modeling-Relationship-in-App-Engine">Modeling-Relationship-in-App-Engine</a>&nbsp;&raquo;
+			<a href="/2015/02/17/sicp-2-1-4" rel="previous" title="sicp-2.1.4">sicp-2.1.4</a>&nbsp;&raquo;
 		
 	
 		<br />
@@ -276,8 +267,8 @@ be returned if there is any. Once it is initialized, it will be in the field of 
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://kamelzcs.github.com/2013/11/13/python-variable-scope-classes';
-        var disqus_url = 'http://kamelzcs.github.com/2013/11/13/python-variable-scope-classes';
+        var disqus_identifier = 'http://kamelzcs.github.com/2015/02/17/sicp-2-2-1';
+        var disqus_url = 'http://kamelzcs.github.com/2015/02/17/sicp-2-2-1';
         var disqus_script = 'embed.js';
       
     (function () {
