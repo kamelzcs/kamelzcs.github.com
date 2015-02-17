@@ -322,6 +322,31 @@ h3,h4 {
               <span class="p">(</span><span class="nb">* </span><span class="nv">sub-tree</span> <span class="nv">sub-tree</span><span class="p">)))</span>
         <span class="nv">tree</span><span class="p">))</span></code></pre></div>
 
+<h4 id="section-7">2.31</h4>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">tree-map</span> <span class="nv">f</span> <span class="nv">tree</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">cond </span><span class="p">((</span><span class="nb">null? </span><span class="nv">tree</span><span class="p">)</span> <span class="nv">null</span><span class="p">)</span>
+        <span class="p">((</span><span class="nb">not </span><span class="p">(</span><span class="nb">pair? </span><span class="nv">tree</span><span class="p">))</span> <span class="p">(</span><span class="nf">f</span> <span class="nv">tree</span><span class="p">))</span>
+        <span class="p">(</span><span class="k">else </span><span class="p">(</span><span class="nb">cons </span><span class="p">(</span><span class="nf">tree-map</span> <span class="nv">f</span> <span class="p">(</span><span class="nb">car </span><span class="nv">tree</span><span class="p">))</span>
+                    <span class="p">(</span><span class="nf">tree-map</span> <span class="nv">f</span> <span class="p">(</span><span class="nb">cdr </span><span class="nv">tree</span><span class="p">))))))</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">tree-map</span> <span class="nv">f</span> <span class="nv">tree</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">map </span><span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">sub-tree</span><span class="p">)</span>
+         <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">pair? </span><span class="nv">sub-tree</span><span class="p">)</span> <span class="p">(</span><span class="nf">tree-map</span> <span class="nv">f</span> <span class="nv">sub-tree</span><span class="p">)</span> <span class="p">(</span><span class="nf">f</span> <span class="nv">sub-tree</span><span class="p">)))</span>
+       <span class="nv">tree</span><span class="p">))</span></code></pre></div>
+
+<h4 id="section-8">2.32</h4>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">subsets</span> <span class="nv">s</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">null? </span><span class="nv">s</span><span class="p">)</span>
+      <span class="p">(</span><span class="nb">list </span><span class="nv">null</span><span class="p">)</span>
+      <span class="p">(</span><span class="k">let </span><span class="p">([</span><span class="nv">rest</span> <span class="p">(</span><span class="nf">subsets</span> <span class="p">(</span><span class="nb">cdr </span><span class="nv">s</span><span class="p">))])</span>
+        <span class="p">(</span><span class="nb">append </span><span class="nv">rest</span>
+                <span class="p">(</span><span class="nf">map</span>
+                  <span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">x</span><span class="p">)</span>
+                    <span class="p">(</span><span class="nb">append </span><span class="p">(</span><span class="nb">list </span><span class="p">(</span><span class="nb">car </span><span class="nv">s</span><span class="p">))</span> <span class="nv">x</span><span class="p">))</span>
+                  <span class="nv">rest</span><span class="p">)))))</span></code></pre></div>
+
 
 	</div>
 	
