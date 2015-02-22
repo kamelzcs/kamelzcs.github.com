@@ -4,11 +4,35 @@
 		<link type="application/atom+xml" href="http://kamelzcs.github.com/feed" rel="self" />
 		<link type="text" href="http://kamelzcs.github.com" rel="alternate" />
 		
-		<updated>2015-02-19T23:44:31+09:00</updated>
+		<updated>2015-02-22T23:26:28+09:00</updated>
 		<id>http://kamelzcs.github.com</id>
 		<author><name>kamelzcs</name></author>
 		<rights>Copyright (c) 2012 kamelzcs</rights>
 		
+		
+			<entry>
+					<title>sicp-2-3-4</title>
+					<link href="http://kamelzcs.github.com/2015/02/23/sicp-2-3-4/"/>
+					<updated>2015-02-23T02:20:49+09:00</updated>
+					<id>http://kamelzcs.github.com/2015/02/23/sicp-2-3-4/</id>
+					<summary type="html">2.67 (define (make-leaf symbol weight) (list &#39;leaf symbol weight)) (define (leaf? object) (eq? (car object) &#39;leaf)) (define (symbol-leaf x) (cadr...</summary>
+			</entry>
+		
+			<entry>
+					<title>sicp-2.3.3</title>
+					<link href="http://kamelzcs.github.com/2015/02/22/sicp-2-3-3/"/>
+					<updated>2015-02-22T23:54:30+09:00</updated>
+					<id>http://kamelzcs.github.com/2015/02/22/sicp-2-3-3/</id>
+					<summary type="html">2.59 (define (union-set set1 set2) (cond ((null? set1) set2) ((element-of-set? (car set1) set2) (union-set (cdr set1) set2)) (else (cons (car...</summary>
+			</entry>
+		
+			<entry>
+					<title>sicp-2.3.2</title>
+					<link href="http://kamelzcs.github.com/2015/02/21/sicp-2-3-2/"/>
+					<updated>2015-02-21T07:41:20+09:00</updated>
+					<id>http://kamelzcs.github.com/2015/02/21/sicp-2-3-2/</id>
+					<summary type="html">2.56 (print-as-expression #f) (define (variable? x) (symbol? x)) (define (same-variable? v1 v2) (and (variable? v1) (variable? v2) (eq? v1 v2)))...</summary>
+			</entry>
 		
 			<entry>
 					<title>sicp-2.2.4</title>
@@ -238,30 +262,6 @@
 					<updated>2013-11-11T21:15:27+09:00</updated>
 					<id>http://kamelzcs.github.com/2013/11/11/modeling-relationship-in-app-engine/</id>
 					<summary type="html">The origin article is in relationship. The nature of relationships There are many relationships, such as one to one, one...</summary>
-			</entry>
-		
-			<entry>
-					<title>Modeling-entity-relationships</title>
-					<link href="http://kamelzcs.github.com/2013/11/08/modeling-entity-relationships/"/>
-					<updated>2013-11-08T04:01:35+09:00</updated>
-					<id>http://kamelzcs.github.com/2013/11/08/modeling-entity-relationships/</id>
-					<summary type="html">One to Many class Contact(db.Model): # Basic info. name = db.StringProperty() birth_day = db.DateProperty() # Address info. address = db.PostalAddressProperty()...</summary>
-			</entry>
-		
-			<entry>
-					<title>Transaction Isolation in App Engine</title>
-					<link href="http://kamelzcs.github.com/2013/11/07/transaction-isolation-in-app-engine/"/>
-					<updated>2013-11-07T03:26:26+09:00</updated>
-					<id>http://kamelzcs.github.com/2013/11/07/transaction-isolation-in-app-engine/</id>
-					<summary type="html">Inside Transactions: Serializable From strongest to weakest the four isolation levels are Serializable, Repeatable Read, Read Committed, and Read Uncommitted....</summary>
-			</entry>
-		
-			<entry>
-					<title>Life of a Datastore Write</title>
-					<link href="http://kamelzcs.github.com/2013/11/07/life-of-a-datastore-write/"/>
-					<updated>2013-11-07T03:02:45+09:00</updated>
-					<id>http://kamelzcs.github.com/2013/11/07/life-of-a-datastore-write/</id>
-					<summary type="html">An Insert When we call put or makePersistent, several things happen behind the scenes before the call returns and sets...</summary>
 			</entry>
 		
 </feed>
