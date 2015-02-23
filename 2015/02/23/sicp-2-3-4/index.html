@@ -290,6 +290,17 @@ h3,h4 {
 <p>It take <code>84</code> bits compared with the <code>108</code> bits in
 fixed-length.</p>
 
+<h4 id="section-4">2.71</h4>
+
+<p>It takes <code>1</code> bit to encode the most frequent bit and <code>n - 1</code> bits to 
+encode the least frequent bit.</p>
+
+<h4 id="section-5">2.72</h4>
+
+<p>If the <code>encode</code> uses an unordered set to keep its symbols, it would
+take about $O(n)$ to encode the most frequent symbol and
+<script type="math/tex">\sum_1^n = n * (n+1)/2 = O(n^2) </script> to encode the least frequent symbol.</p>
+
 	</div>
 	
 	<div class="next-prev-nav low-top">
