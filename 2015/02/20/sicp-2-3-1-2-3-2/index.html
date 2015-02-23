@@ -2,16 +2,14 @@
 <html>
 <head>
 	
-	<title>Bash Command Line Processing - kamelzcs's library</title>
+	<title>sicp-2.3.1-2.3.2 - kamelzcs's library</title>
 	
 	
 	<meta name="author" content="kamelzcs" />
 	
-	<meta name="description" content="The command Line Processing of Bash" />
+	<meta name="description" content="kamelzcs's library sicp-2.3.1-2.3.2" />
 	
 
-	
-	<meta name="keywords" content="Bash" />	
 	
 
 	<meta name="robots" content="noodp, nydir" />
@@ -167,74 +165,36 @@ h3,h4 {
 
 
 <div class="post" id="main-content">
-	<h1>Bash Command Line Processing</h1>
+	<h1>sicp-2.3.1-2.3.2</h1>
 	<h4 class="large-bottom">
-		Posted on January 17, 2014
-		 in <a href="/categories/computer">Computer</a> 
+		Posted on February 20, 2015
+		 in <a href="/categories/sicp">SICP</a> 
 
 		<span class="tag-list">
 			
-			<a href="/tags/bash">Bash</a>
+			<a href="/tags/lisp">Lisp</a>
 			
 		</span>
 	</h4>
 	
 	<div class="content">
-		<h2 id="command-line-processing">Command Line Processing</h2>
+		<h4 id="section">2.54</h4>
 
-<p>Each line the shell get is called a <em>pipeline</em>, it contains commands which are seperated by the pipe character(|).
-For each pipeline it gets, the shell will breaks it into commands, set up the I/O for the pipeline and follows the
-following figure to excecute the commands.</p>
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nb">equal? </span><span class="nv">a</span> <span class="nv">b</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">cond </span><span class="p">((</span><span class="k">and </span><span class="p">(</span><span class="nb">pair? </span><span class="nv">a</span><span class="p">)</span> <span class="p">(</span><span class="nb">pair? </span><span class="nv">b</span><span class="p">))</span>
+         <span class="p">(</span><span class="k">and </span><span class="p">(</span><span class="nb">equal? </span><span class="p">(</span><span class="nb">car </span><span class="nv">a</span><span class="p">)</span> <span class="p">(</span><span class="nb">car </span><span class="nv">b</span><span class="p">))</span>
+              <span class="p">(</span><span class="nb">equal? </span><span class="p">(</span><span class="nb">cdr </span><span class="nv">a</span><span class="p">)</span> <span class="p">(</span><span class="nb">cdr </span><span class="nv">b</span><span class="p">))))</span>
+        <span class="p">((</span><span class="k">and </span><span class="p">(</span><span class="nb">not </span><span class="p">(</span><span class="nb">pair? </span><span class="nv">a</span><span class="p">))</span> <span class="p">(</span><span class="nb">not </span><span class="p">(</span><span class="nb">pair? </span><span class="nv">b</span><span class="p">)))</span>
+         <span class="p">(</span><span class="nb">eq? </span><span class="nv">a</span> <span class="nv">b</span><span class="p">))</span>
+        <span class="p">(</span><span class="k">else </span><span class="no">#f</span><span class="p">)))</span></code></pre></div>
 
-<p><img src="/images/posts/bash-commandline/bash.jpg" alt="alt text" /></p>
+<h4 id="section-1">2.55</h4>
 
-<ol>
-  <li>
-    <p>Split the command into tokens by the metacharacters set: <code>SPACE, TAB, NEWLINE, ;, (, ), &lt;, &gt;, |, and &amp;.</code>
-Types of tokens include: <code>words, keywords, I/O redirectors, and semicolons.</code></p>
-  </li>
-  <li>
-    <p>Checks the first token of each command to see if it is a keyword with no quotes or backslashes. If it is an opening keyword, 
-such as <code>if</code> or orther control-structure openers, then the shell sets things up internally for compound commands, reads the next command,
-and start process again.</p>
-  </li>
-  <li>
-    <p>Checks the first word of each command against the list of aliases. If a match is found, it substitudes and go back to Step 1.
-This scheme allows recursive aliases.</p>
-  </li>
-  <li>
-    <p>Performs brace expansion. For example, <code>a{b,c}</code> becomes <code>ab</code> <code>ac</code>.</p>
-  </li>
-  <li>
-    <p>Substitudes the user’s home directory(<code>$HOME</code>) for tilde if it is at the beginning of a word. </p>
-  </li>
-  <li>
-    <p>Performs parameter(variable) substitution for any expression that starts with a dollar sign(<code>$</code>).</p>
-  </li>
-  <li>
-    <p>Does command substitution for any expression of the form $(string).</p>
-  </li>
-  <li>
-    <p>Evaluates arithmetic expressions of the form $((string)).</p>
-  </li>
-  <li>
-    <p>Takes the parts of the line that resulted from parameter, command, and arithmetic substitution and splits them into words again.
-This time it uses the characters in <code>$IFS</code> which usually is whitespace (space, tab, and newline).</p>
-  </li>
-  <li>
-    <p>Performs pathname expansion, a.k.a. wildcard expansion, for any occurrences of <code>*</code> <code>?</code> and <code>[/]</code> pairs.</p>
-  </li>
-  <li>
-    <p>Uses the first word as a command by looking up its source as a function command, then as a built-in, then as a file in any of the directories
-in <code>$PATH</code></p>
-  </li>
-  <li>
-    <p>Runs the command after setting up I/O redirection and other such things.</p>
-  </li>
-</ol>
-
-<h3 id="reference">Reference</h3>
-<p>[1] <a href="http://shop.oreilly.com/product/9780596009656.do">Learning the bash shell</a></p>
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="nb">car </span><span class="o">&#39;</span><span class="ss">&#39;abracadabra</span><span class="p">)</span>
+<span class="nv">--&gt;</span>
+<span class="p">(</span><span class="nb">car </span><span class="p">(</span><span class="k">quote </span><span class="p">(</span><span class="k">quote </span><span class="nv">abracadabra</span><span class="p">)))</span>
+<span class="nv">--&gt;</span>
+<span class="ss">&#39;quote</span></code></pre></div>
 
 
 	</div>
@@ -248,7 +208,7 @@ in <code>$PATH</code></p>
 		
 		
 		
-			&laquo;&nbsp;<a href="/2014/01/20/quoting-bash" rel="next" title="Quoting and eval in Bash">Quoting and eval in Bash</a>
+			&laquo;&nbsp;<a href="/2015/02/21/sicp-2-3-2" rel="next" title="sicp-2.3.2">sicp-2.3.2</a>
 		
 	
 		
@@ -259,7 +219,7 @@ in <code>$PATH</code></p>
 		
 	
 		
-			<a href="/2014/01/06/past2013" rel="previous" title="逝去的2013">逝去的2013</a>&nbsp;&raquo;
+			<a href="/2015/02/20/sicp-2-2-4" rel="previous" title="sicp-2.2.4">sicp-2.2.4</a>&nbsp;&raquo;
 		
 	
 		<br />
@@ -285,8 +245,8 @@ in <code>$PATH</code></p>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://kamelzcs.github.com/2014/01/17/bash-command-line-processing';
-        var disqus_url = 'http://kamelzcs.github.com/2014/01/17/bash-command-line-processing';
+        var disqus_identifier = 'http://kamelzcs.github.com/2015/02/20/sicp-2-3-1-2-3-2';
+        var disqus_url = 'http://kamelzcs.github.com/2015/02/20/sicp-2-3-1-2-3-2';
         var disqus_script = 'embed.js';
       
     (function () {

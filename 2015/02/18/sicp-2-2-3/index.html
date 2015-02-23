@@ -270,7 +270,127 @@ Just remaind me this equition: <code>cons 1 (list 2 3) = (list 1 2 3)</code></p>
 
 <span class="p">(</span><span class="nf">matrix-*-matrix</span> <span class="nv">m0</span> <span class="p">(</span><span class="nf">transpose</span> <span class="nv">m0</span><span class="p">))</span></code></pre></div>
 
-<p>The key idea to understand <code>map</code> is relate it with <a href="http://en.wikibooks.org/wiki/Haskell/Category_theory">Category Theory</a></p>
+<h4 id="section-5">2.38</h4>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">fold-right</span> <span class="nv">op</span> <span class="nv">initial</span> <span class="nv">sequence</span><span class="p">)</span>
+   <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">null? </span><span class="nv">sequence</span><span class="p">)</span>
+       <span class="nv">initial</span>
+       <span class="p">(</span><span class="nf">op</span> <span class="p">(</span><span class="nb">car </span><span class="nv">sequence</span><span class="p">)</span>
+           <span class="p">(</span><span class="nf">fold-right</span> <span class="nv">op</span> <span class="nv">initial</span> <span class="p">(</span><span class="nb">cdr </span><span class="nv">sequence</span><span class="p">)))))</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">fold-left</span> <span class="nv">op</span> <span class="nv">initial</span> <span class="nv">sequence</span><span class="p">)</span>
+   <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">iter</span> <span class="nv">result</span> <span class="nv">rest</span><span class="p">)</span>
+     <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">null? </span><span class="nv">rest</span><span class="p">)</span>
+         <span class="nv">result</span>
+         <span class="p">(</span><span class="nf">iter</span> <span class="p">(</span><span class="nf">op</span> <span class="nv">result</span> <span class="p">(</span><span class="nb">car </span><span class="nv">rest</span><span class="p">))</span>
+               <span class="p">(</span><span class="nb">cdr </span><span class="nv">rest</span><span class="p">))))</span>
+   <span class="p">(</span><span class="nf">iter</span> <span class="nv">initial</span> <span class="nv">sequence</span><span class="p">))</span>
+
+<span class="p">(</span><span class="nf">fold-right</span> <span class="nv">/</span> <span class="mi">1</span> <span class="p">(</span><span class="nb">list </span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">))</span>
+<span class="mi">3</span><span class="nv">/2</span>
+<span class="p">(</span><span class="nf">fold-left</span> <span class="nv">/</span> <span class="mi">1</span> <span class="p">(</span><span class="nb">list </span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">))</span>
+<span class="mi">1</span><span class="nv">/6</span>
+<span class="p">(</span><span class="nf">fold-right</span> <span class="nv">list</span> <span class="nv">null</span> <span class="p">(</span><span class="nb">list </span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">))</span>
+<span class="p">(</span><span class="mi">1</span> <span class="p">(</span><span class="mi">2</span> <span class="p">(</span><span class="mi">3</span> <span class="p">())))</span>
+<span class="p">(</span><span class="nf">fold-left</span> <span class="nv">list</span> <span class="nv">null</span> <span class="p">(</span><span class="nb">list </span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">))</span>
+<span class="p">(((()</span> <span class="mi">1</span><span class="p">)</span> <span class="mi">2</span><span class="p">)</span> <span class="mi">3</span><span class="p">)</span></code></pre></div>
+
+<p>Both associativity and commutativity.
+That is</p>
+
+<p><code>(op a b) = (op b a)</code> and <code>(op (op a b) c) = (op a (op b c))</code></p>
+
+<h4 id="section-6">2.39</h4>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nb">reverse </span><span class="nv">sequence</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">fold-right</span> <span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">x</span> <span class="nv">y</span><span class="p">)</span>
+                <span class="p">(</span><span class="nb">append </span><span class="nv">y</span> <span class="p">(</span><span class="nb">list </span><span class="nv">x</span><span class="p">)))</span>
+              <span class="nv">null</span>
+              <span class="nv">sequence</span><span class="p">))</span>
+
+<span class="p">(</span><span class="nb">reverse </span><span class="p">(</span><span class="nb">list </span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nb">reverse </span><span class="nv">sequence</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">fold-left</span> <span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">x</span> <span class="nv">y</span><span class="p">)</span>
+                <span class="p">(</span><span class="nb">cons </span><span class="nv">y</span>  <span class="nv">x</span><span class="p">))</span>
+              <span class="nv">null</span>
+              <span class="nv">sequence</span><span class="p">))</span>
+
+<span class="p">(</span><span class="nb">reverse </span><span class="p">(</span><span class="nb">list </span><span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">))</span></code></pre></div>
+
+<h4 id="section-7">2.40</h4>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">unique-pairs</span> <span class="nv">n</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">flatmap</span> <span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">i</span><span class="p">)</span>
+             <span class="p">(</span><span class="nb">map </span><span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">j</span><span class="p">)</span> <span class="p">(</span><span class="nb">list </span><span class="nv">i</span> <span class="nv">j</span><span class="p">))</span>
+                  <span class="p">(</span><span class="nf">enumerate-interval</span> <span class="mi">1</span> <span class="p">(</span><span class="nb">- </span><span class="nv">i</span> <span class="mi">1</span><span class="p">))))</span>
+           <span class="p">(</span><span class="nf">enumerate-interval</span> <span class="mi">1</span> <span class="nv">n</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">prime-sum-pairs</span> <span class="nv">n</span><span class="p">)</span>
+   <span class="p">(</span><span class="nb">map </span><span class="nv">make-pair-sum</span>
+        <span class="p">(</span><span class="nf">filter</span> <span class="nv">prime-sum?</span>
+                <span class="p">(</span><span class="nf">unique-pairs</span> <span class="nv">n</span><span class="p">))))</span></code></pre></div>
+
+<h4 id="section-8">2.41</h4>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">unique-triples</span> <span class="nv">n</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">flatmap</span> <span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">i</span><span class="p">)</span>
+             <span class="p">(</span><span class="nf">flatmap</span> <span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">j</span><span class="p">)</span>
+                        <span class="p">(</span><span class="nf">map</span>
+                          <span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">k</span><span class="p">)</span> <span class="p">(</span><span class="nb">list </span><span class="nv">i</span> <span class="nv">j</span> <span class="nv">k</span><span class="p">))</span>
+                          <span class="p">(</span><span class="nf">enumerate-interval</span> <span class="mi">1</span> <span class="p">(</span><span class="nb">- </span><span class="nv">j</span> <span class="mi">1</span><span class="p">))))</span>
+                      <span class="p">(</span><span class="nf">enumerate-interval</span> <span class="mi">1</span> <span class="p">(</span><span class="nb">- </span><span class="nv">i</span> <span class="mi">1</span><span class="p">))))</span>
+           <span class="p">(</span><span class="nf">enumerate-interval</span> <span class="mi">1</span> <span class="nv">n</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">equal-sum?</span> <span class="nv">s</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">lst</span><span class="p">)</span>
+    <span class="p">(</span><span class="nb">= </span><span class="nv">s</span> <span class="p">(</span><span class="nf">accumulate</span> <span class="nv">+</span> <span class="mi">0</span> <span class="nv">lst</span><span class="p">))))</span></code></pre></div>
+
+<h4 id="section-9">2.42</h4>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">queens</span> <span class="nv">board-size</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">queen-cols</span> <span class="nv">k</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">= </span><span class="nv">k</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">(</span><span class="nb">list </span><span class="nv">empty-board</span><span class="p">)</span>
+        <span class="p">(</span><span class="nf">filter</span>
+         <span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">positions</span><span class="p">)</span> <span class="p">(</span><span class="nf">safe?</span> <span class="nv">k</span> <span class="nv">positions</span><span class="p">))</span>
+         <span class="p">(</span><span class="nf">flatmap</span>
+          <span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">rest-of-queens</span><span class="p">)</span>
+            <span class="p">(</span><span class="nb">map </span><span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">new-row</span><span class="p">)</span>
+                   <span class="p">(</span><span class="nf">adjoin-position</span> <span class="nv">new-row</span> <span class="nv">k</span> <span class="nv">rest-of-queens</span><span class="p">))</span>
+                 <span class="p">(</span><span class="nf">enumerate-interval</span> <span class="mi">1</span> <span class="nv">board-size</span><span class="p">)))</span>
+          <span class="p">(</span><span class="nf">queen-cols</span> <span class="p">(</span><span class="nb">- </span><span class="nv">k</span> <span class="mi">1</span><span class="p">))))))</span>
+  <span class="p">(</span><span class="nf">queen-cols</span> <span class="nv">board-size</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define </span><span class="nv">empty-board</span> <span class="o">&#39;</span><span class="p">())</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">adjoin-position</span> <span class="nv">row</span> <span class="nv">k</span> <span class="nv">rest-of-queens</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">append </span><span class="nv">rest-of-queens</span> <span class="p">(</span><span class="nb">list </span><span class="p">(</span><span class="nb">list </span><span class="nv">row</span> <span class="nv">k</span><span class="p">))))</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">last</span> <span class="nv">l</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">cond </span><span class="p">((</span><span class="nb">null? </span><span class="p">(</span><span class="nb">cdr </span><span class="nv">l</span><span class="p">))</span> <span class="p">(</span><span class="nb">car </span><span class="nv">l</span><span class="p">))</span>
+          <span class="p">(</span><span class="k">else </span><span class="p">(</span><span class="nf">last</span> <span class="p">(</span><span class="nb">cdr </span><span class="nv">l</span><span class="p">)))))</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">safe?</span> <span class="nv">k</span> <span class="nv">positions</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">attack?</span> <span class="nv">q1</span> <span class="nv">q2</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">and </span><span class="p">(</span><span class="nb">not </span><span class="p">(</span><span class="nb">= </span><span class="p">(</span><span class="nb">car </span><span class="nv">q1</span><span class="p">)</span> <span class="p">(</span><span class="nb">car </span><span class="nv">q2</span><span class="p">)))</span>
+         <span class="p">(</span><span class="nb">not </span><span class="p">(</span><span class="nb">= </span><span class="p">(</span><span class="nb">abs </span><span class="p">(</span><span class="nb">- </span><span class="p">(</span><span class="nb">car </span><span class="nv">q1</span><span class="p">)</span> <span class="p">(</span><span class="nb">car </span><span class="nv">q2</span><span class="p">)))</span>
+                 <span class="p">(</span><span class="nb">abs </span><span class="p">(</span><span class="nb">- </span> <span class="p">(</span><span class="nb">cadr </span><span class="nv">q1</span><span class="p">)(</span><span class="nb">cadr </span><span class="nv">q2</span><span class="p">)))))))</span>
+
+  <span class="p">(</span><span class="k">let </span><span class="p">((</span><span class="nf">new-queen</span> <span class="p">(</span><span class="nf">last</span> <span class="nv">positions</span><span class="p">)))</span>
+    <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">check</span> <span class="nv">i</span> <span class="nv">positions</span><span class="p">)</span>
+      <span class="p">(</span><span class="k">cond </span><span class="p">((</span><span class="nb">= </span><span class="nv">i</span> <span class="nv">k</span><span class="p">)</span> <span class="nv">true</span><span class="p">)</span>
+            <span class="p">((</span><span class="nf">attack?</span> <span class="p">(</span><span class="nb">car </span><span class="nv">positions</span><span class="p">)</span> <span class="nv">new-queen</span><span class="p">)</span>
+             <span class="p">(</span><span class="nf">check</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">i</span> <span class="mi">1</span><span class="p">)</span> <span class="p">(</span><span class="nb">cdr </span><span class="nv">positions</span><span class="p">)))</span>
+            <span class="p">(</span><span class="k">else </span><span class="nv">false</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nf">check</span> <span class="mi">1</span> <span class="nv">positions</span><span class="p">)))</span></code></pre></div>
+
+<h4 id="summary">summary</h4>
+
+<p>The key idea to understand <code>map</code>, <code>flatmap</code> is to relate it with <a href="http://en.wikibooks.org/wiki/Haskell/Category_theory">Category Theory</a>.
+To think about something more abstractly would help a lot in understanding
+concrete concepts. Knowing <code>HOW</code> is the key to finish something, but <code>WHY</code>
+is the key to master something.</p>
 
 
 	</div>
@@ -368,15 +488,15 @@ Just remaind me this equition: <code>cons 1 (list 2 3) = (list 1 2 3)</code></p>
 	<div class="sidebar-module">
 		<div class="title"><a href='/tags'>Tags</a></div>
 		
-            <span style="font-size: 123%">
+            <span style="font-size: 120%">
               <a href="/tags/app-engine/" title="5 posts">App Engine</a>
             </span>
           
-            <span style="font-size: 87%">
+            <span style="font-size: 86%">
               <a href="/tags/bash/" title="2 posts">Bash</a>
             </span>
           
-            <span style="font-size: 123%">
+            <span style="font-size: 120%">
               <a href="/tags/database/" title="5 posts">Database</a>
             </span>
           
@@ -384,7 +504,7 @@ Just remaind me this equition: <code>cons 1 (list 2 3) = (list 1 2 3)</code></p>
               <a href="/tags/datastructure/" title="1 post">Datastructure</a>
             </span>
           
-            <span style="font-size: 99%">
+            <span style="font-size: 97%">
               <a href="/tags/git/" title="3 posts">Git</a>
             </span>
           
@@ -405,14 +525,14 @@ Just remaind me this equition: <code>cons 1 (list 2 3) = (list 1 2 3)</code></p>
             </span>
           
             <span style="font-size: 280%">
-              <a href="/tags/lisp/" title="18 posts">Lisp</a>
+              <a href="/tags/lisp/" title="19 posts">Lisp</a>
             </span>
           
             <span style="font-size: 75%">
               <a href="/tags/python/" title="1 post">Python</a>
             </span>
           
-            <span style="font-size: 87%">
+            <span style="font-size: 86%">
               <a href="/tags/review/" title="2 posts">Review</a>
             </span>
           
@@ -432,7 +552,7 @@ Just remaind me this equition: <code>cons 1 (list 2 3) = (list 1 2 3)</code></p>
               <a href="/tags/variable-scope/" title="1 post">Variable scope</a>
             </span>
           
-            <span style="font-size: 87%">
+            <span style="font-size: 86%">
               <a href="/tags/vim/" title="2 posts">Vim</a>
             </span>
           
@@ -460,7 +580,7 @@ Just remaind me this equition: <code>cons 1 (list 2 3) = (list 1 2 3)</code></p>
               <a href="/tags/日本/" title="1 post">日本</a>
             </span>
           
-            <span style="font-size: 87%">
+            <span style="font-size: 86%">
               <a href="/tags/生活/" title="2 posts">生活</a>
             </span>
           
@@ -484,12 +604,12 @@ Just remaind me this equition: <code>cons 1 (list 2 3) = (list 1 2 3)</code></p>
 
 	<div class="sidebar-module">
 		<div class="title"><a href='/categories'>Categories</a></div>
-		<a href="/categories/jekyll"><strong>jekyll</strong></a> (1)<br /><a href="/categories/生活"><strong>生活</strong></a> (4)<br /><a href="/categories/语音"><strong>语音</strong></a> (1)<br /><a href="/categories/讲座"><strong>讲座</strong></a> (1)<br /><a href="/categories/technique"><strong>technique</strong></a> (6)<br /><a href="/categories/technology"><strong>technology</strong></a> (4)<br /><a href="/categories/vim"><strong>vim</strong></a> (1)<br /><a href="/categories/诗词"><strong>诗词</strong></a> (1)<br /><a href="/categories/life"><strong>life</strong></a> (3)<br /><a href="/categories/computer"><strong>computer</strong></a> (1)<br /><a href="/categories/linux"><strong>linux</strong></a> (1)<br /><a href="/categories/data-structure"><strong>data structure</strong></a> (1)<br /><a href="/categories/sicp"><strong>sicp</strong></a> (18)<br />
+		<a href="/categories/jekyll"><strong>jekyll</strong></a> (1)<br /><a href="/categories/生活"><strong>生活</strong></a> (4)<br /><a href="/categories/语音"><strong>语音</strong></a> (1)<br /><a href="/categories/讲座"><strong>讲座</strong></a> (1)<br /><a href="/categories/technique"><strong>technique</strong></a> (6)<br /><a href="/categories/technology"><strong>technology</strong></a> (4)<br /><a href="/categories/vim"><strong>vim</strong></a> (1)<br /><a href="/categories/诗词"><strong>诗词</strong></a> (1)<br /><a href="/categories/life"><strong>life</strong></a> (3)<br /><a href="/categories/computer"><strong>computer</strong></a> (1)<br /><a href="/categories/linux"><strong>linux</strong></a> (1)<br /><a href="/categories/data-structure"><strong>data structure</strong></a> (1)<br /><a href="/categories/sicp"><strong>sicp</strong></a> (19)<br />
 	</div>
 	
 	<div class="sidebar-module">
 		<div class="title"><a href='/archives'>Archives</a></div>
-		<a href="/2015/02"><strong>February 2015</strong></a> (19)<br /><a href="/2014/02"><strong>February 2014</strong></a> (1)<br /><a href="/2014/01"><strong>January 2014</strong></a> (4)<br /><a href="/2013/12"><strong>December 2013</strong></a> (2)<br /><a href="/2013/11"><strong>November 2013</strong></a> (8)<br /><a href="/2013/10"><strong>October 2013</strong></a> (2)<br /><a href="/2013/03"><strong>March 2013</strong></a> (3)<br /><a href="/2013/02"><strong>February 2013</strong></a> (2)<br /><a href="/2013/01"><strong>January 2013</strong></a> (1)<br /><a href="/2012/12"><strong>December 2012</strong></a> (1)<br />
+		<a href="/2015/02"><strong>February 2015</strong></a> (20)<br /><a href="/2014/02"><strong>February 2014</strong></a> (1)<br /><a href="/2014/01"><strong>January 2014</strong></a> (4)<br /><a href="/2013/12"><strong>December 2013</strong></a> (2)<br /><a href="/2013/11"><strong>November 2013</strong></a> (8)<br /><a href="/2013/10"><strong>October 2013</strong></a> (2)<br /><a href="/2013/03"><strong>March 2013</strong></a> (3)<br /><a href="/2013/02"><strong>February 2013</strong></a> (2)<br /><a href="/2013/01"><strong>January 2013</strong></a> (1)<br /><a href="/2012/12"><strong>December 2012</strong></a> (1)<br />
 	</div>
 </div>
 
