@@ -2,16 +2,14 @@
 <html>
 <head>
 	
-	<title>如何使用模板 - kamelzcs's library</title>
+	<title>sicp-2-5-2 - kamelzcs's library</title>
 	
 	
 	<meta name="author" content="kamelzcs" />
 	
-	<meta name="description" content="使用模板的方法" />
+	<meta name="description" content="kamelzcs's library sicp-2-5-2" />
 	
 
-	
-	<meta name="keywords" content="jekyll git github" />	
 	
 
 	<meta name="robots" content="noodp, nydir" />
@@ -167,43 +165,60 @@ h3,h4 {
 
 
 <div class="post" id="main-content">
-	<h1>如何使用模板</h1>
+	<h1>sicp-2-5-2</h1>
 	<h4 class="large-bottom">
-		Posted on December 28, 2012
-		 in <a href="/categories/jekyll">jekyll</a> 
+		Posted on February 25, 2015
+		 in <a href="/categories/sicp">SICP</a> 
 
 		<span class="tag-list">
 			
-			<a href="/tags/jekyll">Jekyll</a>
-			
-			<a href="/tags/git">Git</a>
-			
-			<a href="/tags/github">Github</a>
+			<a href="/tags/lisp">Lisp</a>
 			
 		</span>
 	</h4>
 	
 	<div class="content">
-		<h2 id="section">1 介绍</h2>
+		<h4 id="section">2.81</h4>
 
-<p>在github上搭建一个中小型网站，可以充分利用github提供的托管功能，并且不用担心代码丢失的问题，是一件很惬意的事情。</p>
+<p>If try to coerce two numbers, it would fall into a infinite loop.</p>
 
-<h2 id="section-1">2 安装</h2>
+<p>It would show an error message if trying to convert an augument to
+its own type, which is correct.</p>
 
-<p>基本参照<a href="http://kamelzcs.github.com/2012/08/14/blogging-with-jekyll/">http://kamelzcs.github.com/2012/08/14/blogging-with-jekyll/</a>即可。
-说明几个需要注意的问题：</p>
+<h4 id="section-1">2.82</h4>
 
-<ol>
-  <li>建立 username.github.com 这样的repo，这样就可以直接使用这个域名访问网站.</li>
-  <li>_compiled主要用来中转,将_site拷贝过来之后，然后将目录切换到 _compiled，因为 _compiled 克隆的时候用的是master，所以自动切换到了master分支，然后提交到master分支。这里有个疑问,_compiled既然克隆出来的时候是在master分支，为什么在source分支下又可以看到这个文件夹，暂时不清楚。</li>
-  <li>git会自动确定切换分支时哪些文件该出现，哪些不应该出现。</li>
-</ol>
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">apply-generic</span> <span class="nv">op</span> <span class="o">.</span> <span class="nv">args</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">apply-generic</span> <span class="nv">op</span> <span class="nv">args</span> <span class="nv">type-list</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">null? </span><span class="nv">type-list</span><span class="p">)</span>
+      <span class="p">(</span><span class="nf">error</span> <span class="s">&quot;No method for types&quot;</span>
+             <span class="p">(</span><span class="nb">list </span><span class="nv">op</span> <span class="p">(</span><span class="nb">map </span><span class="nv">type-tag</span> <span class="nv">args</span><span class="p">))))</span>
+    <span class="p">(</span><span class="k">let </span><span class="p">((</span><span class="nf">new-args</span> <span class="p">(</span><span class="nb">map </span><span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">x</span><span class="p">)</span>
+                           <span class="p">(</span><span class="nf">convert</span> <span class="nv">x</span> <span class="p">(</span><span class="nb">car </span><span class="nv">type-list</span><span class="p">)))</span>
+                         <span class="nv">args</span><span class="p">)))</span>
+      <span class="p">(</span><span class="k">let </span><span class="p">((</span><span class="nf">new-tags</span> <span class="p">(</span><span class="nb">map </span><span class="nv">type-tag</span> <span class="nv">new-args</span><span class="p">)))</span>
+        <span class="p">(</span><span class="k">let </span><span class="p">((</span><span class="nf">proc</span> <span class="p">(</span><span class="nf">get</span> <span class="nv">op</span> <span class="nv">new-tags</span><span class="p">)))</span>
+          <span class="p">(</span><span class="k">if </span><span class="nv">proc</span>
+            <span class="p">(</span><span class="nb">apply </span><span class="nv">proc</span> <span class="p">(</span><span class="nb">map </span><span class="nv">contents</span> <span class="nv">new-args</span><span class="p">))</span>
+            <span class="p">(</span><span class="nf">apply-generic</span> <span class="nv">op</span> <span class="nv">args</span> <span class="p">(</span><span class="nb">cdr </span><span class="nv">type-list</span><span class="p">)))))))</span>
+  <span class="p">(</span><span class="k">let </span><span class="p">((</span><span class="nf">type-tags</span> <span class="p">(</span><span class="nb">map </span><span class="nv">type-tag</span> <span class="nv">args</span><span class="p">)))</span>
+    <span class="p">(</span><span class="k">let </span><span class="p">((</span><span class="nf">proc</span> <span class="p">(</span><span class="nf">get</span> <span class="nv">op</span> <span class="nv">type-tags</span><span class="p">)))</span>
+      <span class="p">(</span><span class="k">if </span><span class="nv">proc</span>
+        <span class="p">(</span><span class="nb">apply </span><span class="nv">proc</span> <span class="p">(</span><span class="nb">map </span><span class="nv">contents</span> <span class="nv">args</span><span class="p">))</span>
+        <span class="p">(</span><span class="nf">apply-generic</span> <span class="nv">op</span> <span class="nv">args</span> <span class="nv">type-tags</span><span class="p">)))))</span></code></pre></div>
 
-<p>2013年10月28日 更新：
-jekyll升级到1.2.1 以后，jekyll-pagination会导致jekyll在 build的时候失败，只能将pagination.rb手动更新为最新的代码,同时__plugin文件夹中不能使用中文。</p>
+<h4 id="section-2">2.83</h4>
 
-<p>2015年1月21日 更新：
-jekyll升级到2.5.4 以后，jekyll-pagination已经被内置jekyll-paginate代替。</p>
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">raise</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nf">apply-generic</span> <span class="ss">&#39;raise</span> <span class="nv">x</span><span class="p">))</span>
+ <span class="p">(</span><span class="nf">put</span> <span class="ss">&#39;raise</span> <span class="ss">&#39;integer</span>
+      <span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">x</span><span class="p">)</span> <span class="p">(</span><span class="nf">make-rational</span> <span class="nv">x</span> <span class="mi">1</span><span class="p">)))</span>
+
+ <span class="p">(</span><span class="nf">put</span> <span class="ss">&#39;raise</span> <span class="ss">&#39;rational</span>
+      <span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">x</span><span class="p">)</span> <span class="p">(</span><span class="nf">make-real</span> <span class="p">(</span><span class="nb">/ </span><span class="p">(</span><span class="nf">numer</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nf">denom</span> <span class="nv">x</span><span class="p">)))))</span>
+
+ <span class="p">(</span><span class="nf">put</span> <span class="ss">&#39;raise</span> <span class="ss">&#39;real</span>
+          <span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">x</span><span class="p">)</span> <span class="p">(</span><span class="nf">make-from-real-imag</span> <span class="nv">x</span> <span class="mi">0</span><span class="p">)))</span></code></pre></div>
+
+<h4 id="section-3">2.84</h4>
 
 
 	</div>
@@ -217,14 +232,12 @@ jekyll升级到2.5.4 以后，jekyll-pagination已经被内置jekyll-paginate代
 		
 		
 		
-			&laquo;&nbsp;<a href="/2013/01/02/review-2012" rel="next" title="review 2012">review 2012</a>
+	
+		
 		
 	
 		
-			
-		
-		
-	
+			<a href="/2015/02/24/sicp-2-5-1" rel="previous" title="sicp-2-5-1">sicp-2-5-1</a>&nbsp;&raquo;
 		
 	
 		<br />
@@ -250,8 +263,8 @@ jekyll升级到2.5.4 以后，jekyll-pagination已经被内置jekyll-paginate代
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://kamelzcs.github.com/2012/12/28/how-to-install-the-template';
-        var disqus_url = 'http://kamelzcs.github.com/2012/12/28/how-to-install-the-template';
+        var disqus_identifier = 'http://kamelzcs.github.com/2015/02/25/sicp-2-5-2';
+        var disqus_url = 'http://kamelzcs.github.com/2015/02/25/sicp-2-5-2';
         var disqus_script = 'embed.js';
       
     (function () {
