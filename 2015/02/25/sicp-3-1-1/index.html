@@ -2,12 +2,12 @@
 <html>
 <head>
 	
-	<title>sicp-2.3.1-2.3.2 - kamelzcs's library</title>
+	<title>sicp-3-1-1 - kamelzcs's library</title>
 	
 	
 	<meta name="author" content="kamelzcs" />
 	
-	<meta name="description" content="kamelzcs's library sicp-2.3.1-2.3.2" />
+	<meta name="description" content="kamelzcs's library sicp-3-1-1" />
 	
 
 	
@@ -165,9 +165,9 @@ h3,h4 {
 
 
 <div class="post" id="main-content">
-	<h1>sicp-2.3.1-2.3.2</h1>
+	<h1>sicp-3-1-1</h1>
 	<h4 class="large-bottom">
-		Posted on February 20, 2015
+		Posted on February 25, 2015
 		 in <a href="/categories/sicp">SICP</a> 
 
 		<span class="tag-list">
@@ -178,23 +178,67 @@ h3,h4 {
 	</h4>
 	
 	<div class="content">
-		<h4 id="section">2.54</h4>
+		<h4 id="section">3.1</h4>
 
-<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nb">equal? </span><span class="nv">a</span> <span class="nv">b</span><span class="p">)</span>
-  <span class="p">(</span><span class="k">cond </span><span class="p">((</span><span class="k">and </span><span class="p">(</span><span class="nb">pair? </span><span class="nv">a</span><span class="p">)</span> <span class="p">(</span><span class="nb">pair? </span><span class="nv">b</span><span class="p">))</span>
-         <span class="p">(</span><span class="k">and </span><span class="p">(</span><span class="nb">equal? </span><span class="p">(</span><span class="nb">car </span><span class="nv">a</span><span class="p">)</span> <span class="p">(</span><span class="nb">car </span><span class="nv">b</span><span class="p">))</span>
-              <span class="p">(</span><span class="nb">equal? </span><span class="p">(</span><span class="nb">cdr </span><span class="nv">a</span><span class="p">)</span> <span class="p">(</span><span class="nb">cdr </span><span class="nv">b</span><span class="p">))))</span>
-        <span class="p">((</span><span class="k">and </span><span class="p">(</span><span class="nb">not </span><span class="p">(</span><span class="nb">pair? </span><span class="nv">a</span><span class="p">))</span> <span class="p">(</span><span class="nb">not </span><span class="p">(</span><span class="nb">pair? </span><span class="nv">b</span><span class="p">)))</span>
-         <span class="p">(</span><span class="nb">eq? </span><span class="nv">a</span> <span class="nv">b</span><span class="p">))</span>
-        <span class="p">(</span><span class="k">else </span><span class="no">#f</span><span class="p">)))</span></code></pre></div>
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">make-accumulator</span> <span class="nv">initial</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">let </span><span class="p">((</span><span class="nf">accumulate</span> <span class="nv">initial</span><span class="p">))</span>
+    <span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">x</span><span class="p">)</span>
+      <span class="p">(</span><span class="k">set! </span><span class="nv">accumulate</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">accumulate</span> <span class="nv">x</span><span class="p">))</span>
+      <span class="nv">accumulate</span><span class="p">)))</span></code></pre></div>
 
-<h4 id="section-1">2.55</h4>
+<h4 id="section-1">3.2</h4>
 
-<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="nb">car </span><span class="o">&#39;</span><span class="ss">&#39;abracadabra</span><span class="p">)</span>
-<span class="nv">--&gt;</span>
-<span class="p">(</span><span class="nb">car </span><span class="p">(</span><span class="k">quote </span><span class="p">(</span><span class="k">quote </span><span class="nv">abracadabra</span><span class="p">)))</span>
-<span class="nv">--&gt;</span>
-<span class="ss">&#39;quote</span></code></pre></div>
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">make-monitored</span> <span class="nv">proc</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">let </span><span class="p">((</span><span class="nf">call-times</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">dispatch</span> <span class="nv">m</span><span class="p">)</span>
+      <span class="p">(</span><span class="nf">cond</span>
+        <span class="p">((</span><span class="nb">eq? </span><span class="nv">m</span> <span class="ss">&#39;how-many-calls?</span><span class="p">)</span> <span class="nv">call-times</span><span class="p">)</span>
+        <span class="p">((</span><span class="nb">eq? </span><span class="nv">m</span> <span class="ss">&#39;reset-count</span><span class="p">)</span> <span class="p">(</span><span class="k">set! </span><span class="nv">call-count</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="p">(</span><span class="nf">else</span>
+          <span class="p">(</span><span class="k">set! </span><span class="nv">call-times</span> <span class="p">(</span><span class="nb">+ </span><span class="mi">1</span> <span class="nv">call-times</span><span class="p">))</span>
+          <span class="p">(</span><span class="nf">proc</span> <span class="nv">m</span><span class="p">))))</span>
+    <span class="nv">dispatch</span><span class="p">))</span></code></pre></div>
+
+<h4 id="section-2">3.3</h4>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">make-account</span> <span class="nv">balance</span> <span class="nv">password</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">withdraw</span> <span class="nv">amount</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">&gt;= </span><span class="nv">balance</span> <span class="nv">amount</span><span class="p">)</span> <span class="p">(</span><span class="k">begin </span><span class="p">(</span><span class="k">set! </span><span class="nv">balance</span> <span class="p">(</span><span class="nb">- </span><span class="nv">balance</span> <span class="nv">amount</span><span class="p">))</span> <span class="nv">balance</span><span class="p">)</span>
+        <span class="s">&quot;Insufficient funds&quot;</span><span class="p">))</span>
+  <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">deposit</span> <span class="nv">amount</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">set! </span><span class="nv">balance</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">balance</span> <span class="nv">amount</span><span class="p">))</span> <span class="nv">balance</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">dispatch</span> <span class="nv">pass</span> <span class="nv">m</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">not </span><span class="p">(</span><span class="nb">eq? </span><span class="nv">pass</span> <span class="nv">password</span><span class="p">))</span>
+      <span class="p">(</span><span class="nf">error</span> <span class="s">&quot;Bad password -- &quot;</span> <span class="nv">pass</span><span class="p">)</span>
+      <span class="p">(</span><span class="k">cond </span><span class="p">((</span><span class="nb">eq? </span><span class="nv">m</span> <span class="ss">&#39;withdraw</span><span class="p">)</span> <span class="nv">withdraw</span><span class="p">)</span>
+            <span class="p">((</span><span class="nb">eq? </span><span class="nv">m</span> <span class="ss">&#39;deposit</span><span class="p">)</span> <span class="nv">deposit</span><span class="p">)</span>
+            <span class="p">(</span><span class="k">else </span><span class="p">(</span><span class="nf">error</span> <span class="s">&quot;Unknown request -- MAKE-ACCOUNT&quot;</span> <span class="nv">m</span><span class="p">)))))</span>
+  <span class="nv">dispatch</span><span class="p">)</span></code></pre></div>
+
+<h4 id="section-3">3.4</h4>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">make-account</span> <span class="nv">balance</span> <span class="nv">password</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">withdraw</span> <span class="nv">amount</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">&gt;= </span><span class="nv">balance</span> <span class="nv">amount</span><span class="p">)</span> <span class="p">(</span><span class="k">begin </span><span class="p">(</span><span class="k">set! </span><span class="nv">balance</span> <span class="p">(</span><span class="nb">- </span><span class="nv">balance</span> <span class="nv">amount</span><span class="p">))</span> <span class="nv">balance</span><span class="p">)</span>
+        <span class="s">&quot;Insufficient funds&quot;</span><span class="p">))</span>
+  <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">deposit</span> <span class="nv">amount</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">set! </span><span class="nv">balance</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">balance</span> <span class="nv">amount</span><span class="p">))</span> <span class="nv">balance</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">error-message</span> <span class="nv">amount</span><span class="p">)</span>
+    <span class="p">(</span><span class="nb">display </span><span class="ss">&#39;incorrect-password</span><span class="p">))</span>
+  <span class="p">(</span><span class="k">let </span><span class="p">((</span><span class="nf">incorrect-pass-count</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">dispatch</span> <span class="nv">pass</span> <span class="nv">m</span><span class="p">)</span>
+        <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">not </span><span class="p">(</span><span class="nb">eq? </span><span class="nv">pass</span> <span class="nv">password</span><span class="p">))</span>
+          <span class="p">(</span><span class="nf">begin</span>
+            <span class="p">(</span><span class="k">set! </span><span class="nv">incorrect-pass-count</span> <span class="p">(</span><span class="nb">+ </span><span class="mi">1</span> <span class="nv">incorrect-pass-count</span><span class="p">))</span>
+            <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">&gt; </span><span class="nv">incorrect-pass-count</span> <span class="mi">7</span><span class="p">)</span>
+              <span class="nv">call-the-cops</span>
+              <span class="nv">error-message</span><span class="p">))</span>
+          <span class="p">(</span><span class="nf">begin</span>
+            <span class="p">(</span><span class="k">set! </span><span class="nv">incorrect-pass-count</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="p">(</span><span class="k">cond </span><span class="p">((</span><span class="nb">eq? </span><span class="nv">m</span> <span class="ss">&#39;withdraw</span><span class="p">)</span> <span class="nv">withdraw</span><span class="p">)</span>
+                            <span class="p">((</span><span class="nb">eq? </span><span class="nv">m</span> <span class="ss">&#39;deposit</span><span class="p">)</span> <span class="nv">deposit</span><span class="p">)</span>
+                            <span class="p">(</span><span class="k">else </span><span class="p">(</span><span class="nf">error</span> <span class="s">&quot;Unknown request -- MAKE-ACCOUNT&quot;</span> <span class="nv">m</span><span class="p">)))))))</span>
+  <span class="nv">dispatch</span><span class="p">)</span></code></pre></div>
 
 
 	</div>
@@ -208,7 +252,7 @@ h3,h4 {
 		
 		
 		
-			&laquo;&nbsp;<a href="/2015/02/21/sicp-2-3-2" rel="next" title="sicp-2.3.2">sicp-2.3.2</a>
+			&laquo;&nbsp;<a href="/2015/02/26/sicp-3-1-2-3-1-3" rel="next" title="sicp-3-1-2-3-1-3">sicp-3-1-2-3-1-3</a>
 		
 	
 		
@@ -219,7 +263,7 @@ h3,h4 {
 		
 	
 		
-			<a href="/2015/02/20/sicp-2-2-4" rel="previous" title="sicp-2.2.4">sicp-2.2.4</a>&nbsp;&raquo;
+			<a href="/2015/02/25/sicp-2-5-2" rel="previous" title="sicp-2-5-2">sicp-2-5-2</a>&nbsp;&raquo;
 		
 	
 		<br />
@@ -245,8 +289,8 @@ h3,h4 {
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://kamelzcs.github.com/2015/02/20/sicp-2-3-1-2-3-2';
-        var disqus_url = 'http://kamelzcs.github.com/2015/02/20/sicp-2-3-1-2-3-2';
+        var disqus_identifier = 'http://kamelzcs.github.com/2015/02/25/sicp-3-1-1';
+        var disqus_url = 'http://kamelzcs.github.com/2015/02/25/sicp-3-1-1';
         var disqus_script = 'embed.js';
       
     (function () {
