@@ -154,7 +154,26 @@ google.setOnLoadCallback(function() {
 
 
 <div class="post-listing">
-	<h2><a href="/2015/02/27/3-3-3-md" class="dark-link">3-3-3.md</a></h2>
+	<h2><a href="/2015/02/28/sicp-3-3-4" class="dark-link">sicp-3-3-4</a></h2>
+	<div class="low-top">
+		<span class="low-top ">Posted on  February 28, 2015 in <a href="/categories/sicp">SICP</a></span>
+		<span class="tag-list">
+			
+			<a href="/tags/lisp">Lisp</a>
+			
+		</span>
+	</div>
+
+
+	
+	<p>3.28 (define (or-gate a1 a2 output) (define or-action-procedure (let ((new-value (logical-or (get-signal a1) (get-signal a2)))) (after-delay or-gate-delay (lambda () set-signal! output new_value)))) (add-action! a1 or-action-procedure) (add-action! a2 or-action-procedure) &#39;ok) 3.29 (define (or-gate a1 a2 output) (define (or-action-procedure) (let ((not-a1 (make-wire)) (not-a2 (make-wire)) (b (make-wire)) ) (inverter a1 not-a1) (inverter a2...</p>
+	
+	
+	<p class><a href="/2015/02/28/sicp-3-3-4">Read more...</a></p>
+</div>
+
+<div class="post-listing">
+	<h2><a href="/2015/02/27/sicp-3-3-3" class="dark-link">sicp-3-3-3</a></h2>
 	<div class="low-top">
 		<span class="low-top ">Posted on  February 27, 2015 in <a href="/categories/sicp">SICP</a></span>
 		<span class="tag-list">
@@ -166,10 +185,10 @@ google.setOnLoadCallback(function() {
 
 
 	
-	<p>3.25 (define (fold-left op init seq) (define (iter ans res) (if (null? res) ans (iter (op ans (car res)) (cdr res)))) (iter init seq)) (define (make-table same-key?) (define (associate key records) (cond ((null? records) #f) ((same-key? key (caar records)) (car records)) (else (associate key (cdr records))))) (let ((the-table (list &#39;*table*)))...</p>
+	<p>3.24 (define (make-table same-key?) (let ((local-table (list &#39;*table*))) (define (assoc key records) (cond ((null? records) #f) ((same-key? key (caar records)) (car records)) (else (assoc key (cdr records))))) (define (lookup key-1 key-2) (let ((subtable (assoc key-1 (cdr local-table)))) (if subtable (let ((record (assoc key-2 (cdr subtable)))) (if record (cdr record) #f...</p>
 	
 	
-	<p class><a href="/2015/02/27/3-3-3-md">Read more...</a></p>
+	<p class><a href="/2015/02/27/sicp-3-3-3">Read more...</a></p>
 </div>
 
 <div class="post-listing">
@@ -721,7 +740,7 @@ google.setOnLoadCallback(function() {
 	<div class="sidebar-module">
 		<div class="title"><a href='/tags'>Tags</a></div>
 		
-            <span style="font-size: 105%">
+            <span style="font-size: 104%">
               <a href="/tags/app-engine/" title="5 posts">App Engine</a>
             </span>
           
@@ -729,7 +748,7 @@ google.setOnLoadCallback(function() {
               <a href="/tags/bash/" title="2 posts">Bash</a>
             </span>
           
-            <span style="font-size: 105%">
+            <span style="font-size: 104%">
               <a href="/tags/database/" title="5 posts">Database</a>
             </span>
           
@@ -737,7 +756,7 @@ google.setOnLoadCallback(function() {
               <a href="/tags/datastructure/" title="1 post">Datastructure</a>
             </span>
           
-            <span style="font-size: 90%">
+            <span style="font-size: 89%">
               <a href="/tags/git/" title="3 posts">Git</a>
             </span>
           
@@ -758,7 +777,7 @@ google.setOnLoadCallback(function() {
             </span>
           
             <span style="font-size: 280%">
-              <a href="/tags/lisp/" title="28 posts">Lisp</a>
+              <a href="/tags/lisp/" title="29 posts">Lisp</a>
             </span>
           
             <span style="font-size: 75%">
@@ -837,12 +856,12 @@ google.setOnLoadCallback(function() {
 
 	<div class="sidebar-module">
 		<div class="title"><a href='/categories'>Categories</a></div>
-		<a href="/categories/jekyll"><strong>jekyll</strong></a> (1)<br /><a href="/categories/生活"><strong>生活</strong></a> (4)<br /><a href="/categories/语音"><strong>语音</strong></a> (1)<br /><a href="/categories/讲座"><strong>讲座</strong></a> (1)<br /><a href="/categories/technique"><strong>technique</strong></a> (6)<br /><a href="/categories/technology"><strong>technology</strong></a> (4)<br /><a href="/categories/vim"><strong>vim</strong></a> (1)<br /><a href="/categories/诗词"><strong>诗词</strong></a> (1)<br /><a href="/categories/life"><strong>life</strong></a> (3)<br /><a href="/categories/computer"><strong>computer</strong></a> (1)<br /><a href="/categories/linux"><strong>linux</strong></a> (1)<br /><a href="/categories/data-structure"><strong>data structure</strong></a> (1)<br /><a href="/categories/sicp"><strong>sicp</strong></a> (28)<br />
+		<a href="/categories/jekyll"><strong>jekyll</strong></a> (1)<br /><a href="/categories/生活"><strong>生活</strong></a> (4)<br /><a href="/categories/语音"><strong>语音</strong></a> (1)<br /><a href="/categories/讲座"><strong>讲座</strong></a> (1)<br /><a href="/categories/technique"><strong>technique</strong></a> (6)<br /><a href="/categories/technology"><strong>technology</strong></a> (4)<br /><a href="/categories/vim"><strong>vim</strong></a> (1)<br /><a href="/categories/诗词"><strong>诗词</strong></a> (1)<br /><a href="/categories/life"><strong>life</strong></a> (3)<br /><a href="/categories/computer"><strong>computer</strong></a> (1)<br /><a href="/categories/linux"><strong>linux</strong></a> (1)<br /><a href="/categories/data-structure"><strong>data structure</strong></a> (1)<br /><a href="/categories/sicp"><strong>sicp</strong></a> (29)<br />
 	</div>
 	
 	<div class="sidebar-module">
 		<div class="title"><a href='/archives'>Archives</a></div>
-		<a href="/2015/02"><strong>February 2015</strong></a> (29)<br /><a href="/2014/02"><strong>February 2014</strong></a> (1)<br /><a href="/2014/01"><strong>January 2014</strong></a> (4)<br /><a href="/2013/12"><strong>December 2013</strong></a> (2)<br /><a href="/2013/11"><strong>November 2013</strong></a> (8)<br /><a href="/2013/10"><strong>October 2013</strong></a> (2)<br /><a href="/2013/03"><strong>March 2013</strong></a> (3)<br /><a href="/2013/02"><strong>February 2013</strong></a> (2)<br /><a href="/2013/01"><strong>January 2013</strong></a> (1)<br /><a href="/2012/12"><strong>December 2012</strong></a> (1)<br />
+		<a href="/2015/02"><strong>February 2015</strong></a> (30)<br /><a href="/2014/02"><strong>February 2014</strong></a> (1)<br /><a href="/2014/01"><strong>January 2014</strong></a> (4)<br /><a href="/2013/12"><strong>December 2013</strong></a> (2)<br /><a href="/2013/11"><strong>November 2013</strong></a> (8)<br /><a href="/2013/10"><strong>October 2013</strong></a> (2)<br /><a href="/2013/03"><strong>March 2013</strong></a> (3)<br /><a href="/2013/02"><strong>February 2013</strong></a> (2)<br /><a href="/2013/01"><strong>January 2013</strong></a> (1)<br /><a href="/2012/12"><strong>December 2012</strong></a> (1)<br />
 	</div>
 </div>
 

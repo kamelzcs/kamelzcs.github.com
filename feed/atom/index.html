@@ -4,18 +4,26 @@
 		<link type="application/atom+xml" href="http://kamelzcs.github.com/feed" rel="self" />
 		<link type="text" href="http://kamelzcs.github.com" rel="alternate" />
 		
-		<updated>2015-02-27T19:40:43+09:00</updated>
+		<updated>2015-02-27T23:53:04+09:00</updated>
 		<id>http://kamelzcs.github.com</id>
 		<author><name>kamelzcs</name></author>
 		<rights>Copyright (c) 2012 kamelzcs</rights>
 		
 		
 			<entry>
-					<title>3-3-3.md</title>
-					<link href="http://kamelzcs.github.com/2015/02/27/3-3-3-md/"/>
+					<title>sicp-3-3-4</title>
+					<link href="http://kamelzcs.github.com/2015/02/28/sicp-3-3-4/"/>
+					<updated>2015-02-28T07:36:07+09:00</updated>
+					<id>http://kamelzcs.github.com/2015/02/28/sicp-3-3-4/</id>
+					<summary type="html">3.28 (define (or-gate a1 a2 output) (define or-action-procedure (let ((new-value (logical-or (get-signal a1) (get-signal a2)))) (after-delay or-gate-delay (lambda () set-signal!...</summary>
+			</entry>
+		
+			<entry>
+					<title>sicp-3-3-3</title>
+					<link href="http://kamelzcs.github.com/2015/02/27/sicp-3-3-3/"/>
 					<updated>2015-02-27T19:57:55+09:00</updated>
-					<id>http://kamelzcs.github.com/2015/02/27/3-3-3-md/</id>
-					<summary type="html">3.25 (define (fold-left op init seq) (define (iter ans res) (if (null? res) ans (iter (op ans (car res)) (cdr...</summary>
+					<id>http://kamelzcs.github.com/2015/02/27/sicp-3-3-3/</id>
+					<summary type="html">3.24 (define (make-table same-key?) (let ((local-table (list &#39;*table*))) (define (assoc key records) (cond ((null? records) #f) ((same-key? key (caar records))...</summary>
 			</entry>
 		
 			<entry>
@@ -240,14 +248,6 @@
 					<updated>2015-02-09T19:27:53+09:00</updated>
 					<id>http://kamelzcs.github.com/2015/02/09/2014/</id>
 					<summary type="html">工作 2014年，职业生涯真正开始的一年，在所谓的Full-Stack 上迈出了第一步。 前端 前端上加入了一个照片上传的插件，没错，这个货就是Javascript。 看着它那略怪异的各种语法， 然后小心的查着各种Tips，读着Good parts, 查着Bad parts，生怕跌入深坑。 开源大法好，要是让我开发这个玩意，没有个几年时间肯定做不出既能兼容各种浏览器，又具有很好的扩展性，同时 又经过严格的单元测试的项目。 Jascript就是这样，在给予一个最简单的跨平台的展示媒介的情况下，却不得不“忍受”它与生俱来的各种问题。 除此之外，开始使用Jinja2来生成Html，也要调试一些CSS相关的代码。 前端的东西还是Trick太多，无论是语言的设计还是各种浏览器的兼容。 App Engine 在App Engine的项目上加入了一个绿坝系统，在App Engine扩展性限制下，用了最简单的关键词+正则表达的方式。大部分的精力花在了用Jinja2处理...</summary>
-			</entry>
-		
-			<entry>
-					<title>Goals in 2014</title>
-					<link href="http://kamelzcs.github.com/2014/02/03/goals-in-2014/"/>
-					<updated>2014-02-03T01:01:43+09:00</updated>
-					<id>http://kamelzcs.github.com/2014/02/03/goals-in-2014/</id>
-					<summary type="html">About Japanese Learning I would like to take the J3 level example in the December of 2014. J3 requires at...</summary>
 			</entry>
 		
 </feed>
