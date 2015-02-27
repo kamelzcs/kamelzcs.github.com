@@ -125,3 +125,7 @@ task :css do
 		f.write Sass::Engine.new(contents, :syntax => :scss, :style => :compressed).render
 	end
 end
+
+task :rebase do
+  puts %x[git fetch; git rebase; cd _compiled; git fetch; git rebase; cd ..]
+end
