@@ -154,6 +154,63 @@ google.setOnLoadCallback(function() {
 
 
 <div class="post-listing">
+	<h2><a href="/2015/02/27/3-3-3-md" class="dark-link">3-3-3.md</a></h2>
+	<div class="low-top">
+		<span class="low-top ">Posted on  February 27, 2015 in <a href="/categories/sicp">SICP</a></span>
+		<span class="tag-list">
+			
+			<a href="/tags/lisp">Lisp</a>
+			
+		</span>
+	</div>
+
+
+	
+	<p>3.25 (define (fold-left op init seq) (define (iter ans res) (if (null? res) ans (iter (op ans (car res)) (cdr res)))) (iter init seq)) (define (make-table same-key?) (define (associate key records) (cond ((null? records) #f) ((same-key? key (caar records)) (car records)) (else (associate key (cdr records))))) (let ((the-table (list &#39;*table*)))...</p>
+	
+	
+	<p class><a href="/2015/02/27/3-3-3-md">Read more...</a></p>
+</div>
+
+<div class="post-listing">
+	<h2><a href="/2015/02/27/sicp-3-3-2" class="dark-link">sicp-3-3-2</a></h2>
+	<div class="low-top">
+		<span class="low-top ">Posted on  February 27, 2015 in <a href="/categories/sicp">SICP</a></span>
+		<span class="tag-list">
+			
+			<a href="/tags/lisp">Lisp</a>
+			
+		</span>
+	</div>
+
+
+	
+	<p>3.21 (define (front-ptr queue) (car queue)) (define (rear-ptr queue) (cdr queue)) (define (set-front-ptr! queue item) (set-car! queue item)) (define (set-rear-ptr! queue item) (set-cdr! queue item)) (define (empty-queue? queue) (null? (front-ptr queue))) (define (make-queue) (cons &#39;() &#39;())) (define (front-queue queue) (if (empty-queue? queue) (error &quot;FRONT called with an empty queue&quot; queue)...</p>
+	
+	
+	<p class><a href="/2015/02/27/sicp-3-3-2">Read more...</a></p>
+</div>
+
+<div class="post-listing">
+	<h2><a href="/2015/02/26/sicp-3-3-1" class="dark-link">sicp-3-3-1</a></h2>
+	<div class="low-top">
+		<span class="low-top ">Posted on  February 26, 2015 in <a href="/categories/sicp">SICP</a></span>
+		<span class="tag-list">
+			
+			<a href="/tags/lisp">Lisp</a>
+			
+		</span>
+	</div>
+
+
+	
+	<p>3.16 (define (count-pairs x) (if (not (pair? x)) 0 (+ (count-pairs (car x)) (count-pairs (cdr x)) 1))) (define z3 &#39;(a b c)) (count-pairs z3) (define z1 &#39;(c)) (define z4 (list z1 z1)) (define z23 (cons z1 z1)) (define z7 (cons z23 z23)) (define zi &#39;(a b c)) (set-cdr! (cddr zi)...</p>
+	
+	
+	<p class><a href="/2015/02/26/sicp-3-3-1">Read more...</a></p>
+</div>
+
+<div class="post-listing">
 	<h2><a href="/2015/02/26/sicp-3-2" class="dark-link">sicp-3-2</a></h2>
 	<div class="low-top">
 		<span class="low-top ">Posted on  February 26, 2015 in <a href="/categories/sicp">SICP</a></span>
@@ -166,7 +223,7 @@ google.setOnLoadCallback(function() {
 
 
 	
-	<p>Important quote from the SICP text, which is the principle to understand the model part. In the environment model of evaluation, a procedure is always a pair consisting of some code and a pointer to an environment. Procedures are created in one way only: by evaluating a lambda expression. This...</p>
+	<p>In the environment model of evaluation, a procedure is always a pair consisting of some code and a pointer to an environment. Procedures are created in one way only: by evaluating a lambda expression. This produces a procedure whose code is obtained from the text of the lambda expression and...</p>
 	
 	
 	<p class><a href="/2015/02/26/sicp-3-2">Read more...</a></p>
@@ -664,15 +721,15 @@ google.setOnLoadCallback(function() {
 	<div class="sidebar-module">
 		<div class="title"><a href='/tags'>Tags</a></div>
 		
-            <span style="font-size: 109%">
+            <span style="font-size: 105%">
               <a href="/tags/app-engine/" title="5 posts">App Engine</a>
             </span>
           
-            <span style="font-size: 83%">
+            <span style="font-size: 82%">
               <a href="/tags/bash/" title="2 posts">Bash</a>
             </span>
           
-            <span style="font-size: 109%">
+            <span style="font-size: 105%">
               <a href="/tags/database/" title="5 posts">Database</a>
             </span>
           
@@ -680,7 +737,7 @@ google.setOnLoadCallback(function() {
               <a href="/tags/datastructure/" title="1 post">Datastructure</a>
             </span>
           
-            <span style="font-size: 92%">
+            <span style="font-size: 90%">
               <a href="/tags/git/" title="3 posts">Git</a>
             </span>
           
@@ -701,14 +758,14 @@ google.setOnLoadCallback(function() {
             </span>
           
             <span style="font-size: 280%">
-              <a href="/tags/lisp/" title="25 posts">Lisp</a>
+              <a href="/tags/lisp/" title="28 posts">Lisp</a>
             </span>
           
             <span style="font-size: 75%">
               <a href="/tags/python/" title="1 post">Python</a>
             </span>
           
-            <span style="font-size: 83%">
+            <span style="font-size: 82%">
               <a href="/tags/review/" title="2 posts">Review</a>
             </span>
           
@@ -728,7 +785,7 @@ google.setOnLoadCallback(function() {
               <a href="/tags/variable-scope/" title="1 post">Variable scope</a>
             </span>
           
-            <span style="font-size: 83%">
+            <span style="font-size: 82%">
               <a href="/tags/vim/" title="2 posts">Vim</a>
             </span>
           
@@ -756,7 +813,7 @@ google.setOnLoadCallback(function() {
               <a href="/tags/日本/" title="1 post">日本</a>
             </span>
           
-            <span style="font-size: 83%">
+            <span style="font-size: 82%">
               <a href="/tags/生活/" title="2 posts">生活</a>
             </span>
           
@@ -780,12 +837,12 @@ google.setOnLoadCallback(function() {
 
 	<div class="sidebar-module">
 		<div class="title"><a href='/categories'>Categories</a></div>
-		<a href="/categories/jekyll"><strong>jekyll</strong></a> (1)<br /><a href="/categories/生活"><strong>生活</strong></a> (4)<br /><a href="/categories/语音"><strong>语音</strong></a> (1)<br /><a href="/categories/讲座"><strong>讲座</strong></a> (1)<br /><a href="/categories/technique"><strong>technique</strong></a> (6)<br /><a href="/categories/technology"><strong>technology</strong></a> (4)<br /><a href="/categories/vim"><strong>vim</strong></a> (1)<br /><a href="/categories/诗词"><strong>诗词</strong></a> (1)<br /><a href="/categories/life"><strong>life</strong></a> (3)<br /><a href="/categories/computer"><strong>computer</strong></a> (1)<br /><a href="/categories/linux"><strong>linux</strong></a> (1)<br /><a href="/categories/data-structure"><strong>data structure</strong></a> (1)<br /><a href="/categories/sicp"><strong>sicp</strong></a> (25)<br />
+		<a href="/categories/jekyll"><strong>jekyll</strong></a> (1)<br /><a href="/categories/生活"><strong>生活</strong></a> (4)<br /><a href="/categories/语音"><strong>语音</strong></a> (1)<br /><a href="/categories/讲座"><strong>讲座</strong></a> (1)<br /><a href="/categories/technique"><strong>technique</strong></a> (6)<br /><a href="/categories/technology"><strong>technology</strong></a> (4)<br /><a href="/categories/vim"><strong>vim</strong></a> (1)<br /><a href="/categories/诗词"><strong>诗词</strong></a> (1)<br /><a href="/categories/life"><strong>life</strong></a> (3)<br /><a href="/categories/computer"><strong>computer</strong></a> (1)<br /><a href="/categories/linux"><strong>linux</strong></a> (1)<br /><a href="/categories/data-structure"><strong>data structure</strong></a> (1)<br /><a href="/categories/sicp"><strong>sicp</strong></a> (28)<br />
 	</div>
 	
 	<div class="sidebar-module">
 		<div class="title"><a href='/archives'>Archives</a></div>
-		<a href="/2015/02"><strong>February 2015</strong></a> (26)<br /><a href="/2014/02"><strong>February 2014</strong></a> (1)<br /><a href="/2014/01"><strong>January 2014</strong></a> (4)<br /><a href="/2013/12"><strong>December 2013</strong></a> (2)<br /><a href="/2013/11"><strong>November 2013</strong></a> (8)<br /><a href="/2013/10"><strong>October 2013</strong></a> (2)<br /><a href="/2013/03"><strong>March 2013</strong></a> (3)<br /><a href="/2013/02"><strong>February 2013</strong></a> (2)<br /><a href="/2013/01"><strong>January 2013</strong></a> (1)<br /><a href="/2012/12"><strong>December 2012</strong></a> (1)<br />
+		<a href="/2015/02"><strong>February 2015</strong></a> (29)<br /><a href="/2014/02"><strong>February 2014</strong></a> (1)<br /><a href="/2014/01"><strong>January 2014</strong></a> (4)<br /><a href="/2013/12"><strong>December 2013</strong></a> (2)<br /><a href="/2013/11"><strong>November 2013</strong></a> (8)<br /><a href="/2013/10"><strong>October 2013</strong></a> (2)<br /><a href="/2013/03"><strong>March 2013</strong></a> (3)<br /><a href="/2013/02"><strong>February 2013</strong></a> (2)<br /><a href="/2013/01"><strong>January 2013</strong></a> (1)<br /><a href="/2012/12"><strong>December 2012</strong></a> (1)<br />
 	</div>
 </div>
 
