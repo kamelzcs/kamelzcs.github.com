@@ -218,6 +218,65 @@ h3,h4 {
       <span class="p">(</span><span class="nf">ripple-carry-adder</span> <span class="p">(</span><span class="nb">cdr </span><span class="nv">A</span><span class="p">)</span> <span class="p">(</span><span class="nb">cdr </span><span class="nv">B</span><span class="p">)</span> <span class="p">(</span><span class="nb">cdr </span><span class="nv">S</span><span class="p">)</span> <span class="nv">c-middle</span><span class="p">))</span>
     <span class="p">(</span><span class="nf">full-adder</span> <span class="p">(</span><span class="nb">car </span><span class="nv">A</span><span class="p">)</span> <span class="p">(</span><span class="nb">car </span><span class="nv">B</span><span class="p">)</span> <span class="nv">c-middle</span> <span class="p">(</span><span class="nb">car </span><span class="nv">S</span><span class="p">)</span> <span class="nv">C</span><span class="p">)))</span></code></pre></div>
 
+<h4 id="section-3">3.31</h4>
+
+<p>After calling it immediatly, the initial value of the circuit is propagated.
+But there is somoe overhead here, in the <code>and-date</code> function, both <code>a1</code> and <code>a2</code>
+will call the <code>and-function-procedure</code>, there would be two function calls and yield
+two same results, one of which will be looked over by the <code>set-my-signal</code> function.</p>
+
+<h4 id="section-4">3.32</h4>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">make-wire</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">let </span><span class="p">((</span><span class="nf">signal-value</span> <span class="mi">0</span><span class="p">)</span> <span class="p">(</span><span class="nf">action-procedures</span> <span class="o">&#39;</span><span class="p">()))</span>
+    <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">set-my-signal!</span> <span class="nv">new-value</span><span class="p">)</span>
+      <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">not </span><span class="p">(</span><span class="nb">= </span><span class="nv">signal-value</span> <span class="nv">new-value</span><span class="p">))</span>
+          <span class="p">(</span><span class="k">begin </span><span class="p">(</span><span class="k">set! </span><span class="nv">signal-value</span> <span class="nv">new-value</span><span class="p">)</span>
+                 <span class="p">(</span><span class="nf">call-each</span> <span class="nv">action-procedures</span><span class="p">))</span>
+          <span class="ss">&#39;done</span><span class="p">))</span>
+    <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">accept-action-procedure!</span> <span class="nv">proc</span><span class="p">)</span>
+      <span class="p">(</span><span class="k">set! </span><span class="nv">action-procedures</span> <span class="p">(</span><span class="nb">cons </span><span class="nv">proc</span> <span class="nv">action-procedures</span><span class="p">))</span>
+      <span class="p">(</span><span class="nf">proc</span><span class="p">))</span>
+    <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">dispatch</span> <span class="nv">m</span><span class="p">)</span>
+      <span class="p">(</span><span class="k">cond </span><span class="p">((</span><span class="nb">eq? </span><span class="nv">m</span> <span class="ss">&#39;get-signal</span><span class="p">)</span> <span class="nv">signal-value</span><span class="p">)</span>
+            <span class="p">((</span><span class="nb">eq? </span><span class="nv">m</span> <span class="ss">&#39;set-signal!</span><span class="p">)</span> <span class="nv">set-my-signal!</span><span class="p">)</span>
+            <span class="p">((</span><span class="nb">eq? </span><span class="nv">m</span> <span class="ss">&#39;add-action!</span><span class="p">)</span> <span class="nv">accept-action-procedure!</span><span class="p">)</span>
+            <span class="p">(</span><span class="k">else </span><span class="p">(</span><span class="nf">error</span> <span class="s">&quot;Unknown operation -- WIRE&quot;</span> <span class="nv">m</span><span class="p">))))</span>
+    <span class="nv">dispatch</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">and-gate</span> <span class="nv">a1</span> <span class="nv">a2</span> <span class="nv">output</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">and-action-procedure</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">let </span><span class="p">((</span><span class="nf">new-value</span>
+           <span class="p">(</span><span class="nf">logical-and</span> <span class="p">(</span><span class="nf">get-signal</span> <span class="nv">a1</span><span class="p">)</span> <span class="p">(</span><span class="nf">get-signal</span> <span class="nv">a2</span><span class="p">))))</span>
+      <span class="p">(</span><span class="nf">after-delay</span> <span class="nv">and-gate-delay</span>
+                   <span class="p">(</span><span class="k">lambda </span><span class="p">()</span>
+                     <span class="p">(</span><span class="nf">set-signal!</span> <span class="nv">output</span> <span class="nv">new-value</span><span class="p">)))))</span>
+  <span class="p">(</span><span class="nf">add-action!</span> <span class="nv">a1</span> <span class="nv">and-action-procedure</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">add-action!</span> <span class="nv">a2</span> <span class="nv">and-action-procedure</span><span class="p">)</span>
+  <span class="ss">&#39;ok</span><span class="p">)</span></code></pre></div>
+
+<p>It is important to note that <code>set-my-value</code> will set the state and
+push the procedure into the queue of the agenda.</p>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="nv">a</span> <span class="p">(</span><span class="nf">make-wire</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define </span><span class="nv">b</span> <span class="p">(</span><span class="nf">make-wire</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define </span><span class="nv">o</span> <span class="p">(</span><span class="nf">make-wire</span><span class="p">))</span>
+<span class="p">(</span><span class="nf">and-gate</span> <span class="nv">a</span> <span class="nv">b</span> <span class="nv">o</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">propagate</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nf">set-signal!</span> <span class="nv">a</span> <span class="mi">0</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">set-signal!</span> <span class="nv">b</span> <span class="mi">1</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">propagate</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nf">set-signal!</span> <span class="nv">a</span> <span class="mi">1</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">set-signal!</span> <span class="nv">b</span> <span class="mi">0</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">propagate</span><span class="p">)</span></code></pre></div>
+
+<p>When <code>a</code> changed from <code>0</code> to <code>1</code>, <code>output=1</code> is pushed to the agenda queue,
+in the following, when <code>b</code> changed from <code>1</code> to <code>0</code>, <code>output=0</code> is pushed to the agenda queue.</p>
+
+<p>If <code>FIFO</code> is used in the agenda, the final result would be <code>output=0</code>, otherwise,
+<code>FILO</code> is used, the final result would be <code>output=1</code>, which is not the correct answer at all!</p>
 
 	</div>
 	
@@ -230,7 +289,13 @@ h3,h4 {
 		
 		
 		
+			&laquo;&nbsp;<a href="/2015/03/01/sicp-3-3-5" rel="next" title="sicp-3-3-5">sicp-3-3-5</a>
+		
 	
+		
+			
+				|
+			
 		
 		
 	
@@ -308,15 +373,15 @@ h3,h4 {
 	<div class="sidebar-module">
 		<div class="title"><a href='/tags'>Tags</a></div>
 		
-            <span style="font-size: 104%">
+            <span style="font-size: 102%">
               <a href="/tags/app-engine/" title="5 posts">App Engine</a>
             </span>
           
-            <span style="font-size: 82%">
+            <span style="font-size: 81%">
               <a href="/tags/bash/" title="2 posts">Bash</a>
             </span>
           
-            <span style="font-size: 104%">
+            <span style="font-size: 102%">
               <a href="/tags/database/" title="5 posts">Database</a>
             </span>
           
@@ -324,7 +389,7 @@ h3,h4 {
               <a href="/tags/datastructure/" title="1 post">Datastructure</a>
             </span>
           
-            <span style="font-size: 89%">
+            <span style="font-size: 88%">
               <a href="/tags/git/" title="3 posts">Git</a>
             </span>
           
@@ -345,14 +410,14 @@ h3,h4 {
             </span>
           
             <span style="font-size: 280%">
-              <a href="/tags/lisp/" title="29 posts">Lisp</a>
+              <a href="/tags/lisp/" title="31 posts">Lisp</a>
             </span>
           
             <span style="font-size: 75%">
               <a href="/tags/python/" title="1 post">Python</a>
             </span>
           
-            <span style="font-size: 82%">
+            <span style="font-size: 81%">
               <a href="/tags/review/" title="2 posts">Review</a>
             </span>
           
@@ -372,7 +437,7 @@ h3,h4 {
               <a href="/tags/variable-scope/" title="1 post">Variable scope</a>
             </span>
           
-            <span style="font-size: 82%">
+            <span style="font-size: 81%">
               <a href="/tags/vim/" title="2 posts">Vim</a>
             </span>
           
@@ -400,7 +465,7 @@ h3,h4 {
               <a href="/tags/日本/" title="1 post">日本</a>
             </span>
           
-            <span style="font-size: 82%">
+            <span style="font-size: 81%">
               <a href="/tags/生活/" title="2 posts">生活</a>
             </span>
           
@@ -424,12 +489,12 @@ h3,h4 {
 
 	<div class="sidebar-module">
 		<div class="title"><a href='/categories'>Categories</a></div>
-		<a href="/categories/jekyll"><strong>jekyll</strong></a> (1)<br /><a href="/categories/生活"><strong>生活</strong></a> (4)<br /><a href="/categories/语音"><strong>语音</strong></a> (1)<br /><a href="/categories/讲座"><strong>讲座</strong></a> (1)<br /><a href="/categories/technique"><strong>technique</strong></a> (6)<br /><a href="/categories/technology"><strong>technology</strong></a> (4)<br /><a href="/categories/vim"><strong>vim</strong></a> (1)<br /><a href="/categories/诗词"><strong>诗词</strong></a> (1)<br /><a href="/categories/life"><strong>life</strong></a> (3)<br /><a href="/categories/computer"><strong>computer</strong></a> (1)<br /><a href="/categories/linux"><strong>linux</strong></a> (1)<br /><a href="/categories/data-structure"><strong>data structure</strong></a> (1)<br /><a href="/categories/sicp"><strong>sicp</strong></a> (29)<br />
+		<a href="/categories/jekyll"><strong>jekyll</strong></a> (1)<br /><a href="/categories/生活"><strong>生活</strong></a> (4)<br /><a href="/categories/语音"><strong>语音</strong></a> (1)<br /><a href="/categories/讲座"><strong>讲座</strong></a> (1)<br /><a href="/categories/technique"><strong>technique</strong></a> (6)<br /><a href="/categories/technology"><strong>technology</strong></a> (4)<br /><a href="/categories/vim"><strong>vim</strong></a> (1)<br /><a href="/categories/诗词"><strong>诗词</strong></a> (1)<br /><a href="/categories/life"><strong>life</strong></a> (3)<br /><a href="/categories/computer"><strong>computer</strong></a> (1)<br /><a href="/categories/linux"><strong>linux</strong></a> (1)<br /><a href="/categories/data-structure"><strong>data structure</strong></a> (1)<br /><a href="/categories/sicp"><strong>sicp</strong></a> (31)<br />
 	</div>
 	
 	<div class="sidebar-module">
 		<div class="title"><a href='/archives'>Archives</a></div>
-		<a href="/2015/02"><strong>February 2015</strong></a> (30)<br /><a href="/2014/02"><strong>February 2014</strong></a> (1)<br /><a href="/2014/01"><strong>January 2014</strong></a> (4)<br /><a href="/2013/12"><strong>December 2013</strong></a> (2)<br /><a href="/2013/11"><strong>November 2013</strong></a> (8)<br /><a href="/2013/10"><strong>October 2013</strong></a> (2)<br /><a href="/2013/03"><strong>March 2013</strong></a> (3)<br /><a href="/2013/02"><strong>February 2013</strong></a> (2)<br /><a href="/2013/01"><strong>January 2013</strong></a> (1)<br /><a href="/2012/12"><strong>December 2012</strong></a> (1)<br />
+		<a href="/2015/03"><strong>March 2015</strong></a> (2)<br /><a href="/2015/02"><strong>February 2015</strong></a> (30)<br /><a href="/2014/02"><strong>February 2014</strong></a> (1)<br /><a href="/2014/01"><strong>January 2014</strong></a> (4)<br /><a href="/2013/12"><strong>December 2013</strong></a> (2)<br /><a href="/2013/11"><strong>November 2013</strong></a> (8)<br /><a href="/2013/10"><strong>October 2013</strong></a> (2)<br /><a href="/2013/03"><strong>March 2013</strong></a> (3)<br /><a href="/2013/02"><strong>February 2013</strong></a> (2)<br /><a href="/2013/01"><strong>January 2013</strong></a> (1)<br /><a href="/2012/12"><strong>December 2012</strong></a> (1)<br />
 	</div>
 </div>
 
