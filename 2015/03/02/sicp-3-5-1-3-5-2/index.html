@@ -280,6 +280,103 @@ h3,h4 {
 <p>It is confusing for me to understand this  <code>memo-proc</code> function.
 All the <code>delayed</code> functions are cached after the first running.</p>
 
+<h4 id="section-2">3.52</h4>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="nv">sum</span> <span class="mi">0</span><span class="p">)</span>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">accum</span> <span class="nv">x</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">set! </span><span class="nv">sum</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">x</span> <span class="nv">sum</span><span class="p">))</span>
+  <span class="nv">sum</span><span class="p">)</span>
+<span class="p">(</span><span class="k">define </span><span class="nv">seq</span> <span class="p">(</span><span class="nf">stream-map</span> <span class="nv">accum</span> <span class="p">(</span><span class="nf">stream-enumerate-interval</span> <span class="mi">1</span> <span class="mi">20</span><span class="p">)))</span>
+<span class="c1">; sum = 1</span>
+
+<span class="p">(</span><span class="k">define </span><span class="nv">y</span> <span class="p">(</span><span class="nf">stream-filter</span> <span class="nv">even?</span> <span class="nv">seq</span><span class="p">))</span>
+<span class="c1">; sum = 6</span>
+
+<span class="p">(</span><span class="k">define </span><span class="nv">z</span> <span class="p">(</span><span class="nf">stream-filter</span> <span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">= </span><span class="p">(</span><span class="nb">remainder </span><span class="nv">x</span> <span class="mi">5</span><span class="p">)</span> <span class="mi">0</span><span class="p">))</span>
+                         <span class="nv">seq</span><span class="p">))</span>
+<span class="c1">; sum = 10</span>
+
+<span class="p">(</span><span class="nf">stream-ref</span> <span class="nv">y</span> <span class="mi">7</span><span class="p">)</span>
+<span class="c1">;Value: 136</span>
+
+<span class="p">(</span><span class="nf">display-stream</span> <span class="nv">z</span><span class="p">)</span>
+<span class="c1">; 10</span>
+<span class="c1">; 15</span>
+<span class="c1">; 45</span>
+<span class="c1">; 55</span>
+<span class="c1">; 105</span>
+<span class="c1">; 120</span>
+<span class="c1">; 190</span>
+<span class="c1">; 210</span>
+<span class="c1">; sum = 210</span></code></pre></div>
+
+<p><code>sum</code> acts as a global value, which is a bad idea in the stream.
+When the <code>delay</code> is <code>memorized</code>, <code>seq</code> is the same no matter how many times it is called.</p>
+
+<p>If the <code>non-memorized</code> version is used, then <code>seq</code> would have different result
+because of the sharing <code>sum</code>.</p>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="nv">sum</span> <span class="mi">0</span><span class="p">)</span>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">accum</span> <span class="nv">x</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">set! </span><span class="nv">sum</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">x</span> <span class="nv">sum</span><span class="p">))</span>
+  <span class="nv">sum</span><span class="p">)</span>
+<span class="p">(</span><span class="k">define </span><span class="nv">seq</span> <span class="p">(</span><span class="nf">stream-map</span> <span class="nv">accum</span> <span class="p">(</span><span class="nf">stream-enumerate-interval</span> <span class="mi">1</span> <span class="mi">20</span><span class="p">)))</span>
+<span class="c1">;seq=(1, (accum 2), (accum 3)...(accum 20))</span>
+<span class="c1">;sum=1</span>
+
+<span class="p">(</span><span class="k">define </span><span class="nv">y</span> <span class="p">(</span><span class="nf">stream-filter</span> <span class="nv">even?</span> <span class="nv">seq</span><span class="p">))</span>
+<span class="c1">;y=(6, (stream-filter even? ((accum 4), (accum 5), ...)))</span>
+<span class="c1">;sum=6</span>
+
+<span class="p">(</span><span class="k">define </span><span class="nv">z</span> <span class="p">(</span><span class="nf">stream-filter</span> <span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">= </span><span class="p">(</span><span class="nb">remainder </span><span class="nv">x</span> <span class="mi">5</span><span class="p">)</span> <span class="mi">0</span><span class="p">))</span>
+                         <span class="nv">seq</span><span class="p">))</span>
+<span class="c1">;z=(15, (stream-filter (lambda (x) (...)) ((accum 5) ...)))</span>
+<span class="c1">;sum=15</span>
+
+<span class="p">(</span><span class="nf">stream-ref</span> <span class="nv">y</span> <span class="mi">7</span><span class="p">)</span>
+<span class="c1">;y=(6, 24, 30, 54,...)</span></code></pre></div>
+
+<h4 id="section-3">3.53</h4>
+
+<p>(1 2 4 8 16 32 …)</p>
+
+<h4 id="section-4">3.54</h4>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">mul-streams</span> <span class="nv">s1</span> <span class="nv">s2</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">stream-map</span> <span class="nv">*</span> <span class="nv">s1</span> <span class="nv">s2</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define </span><span class="nv">factorials</span>
+  <span class="p">(</span><span class="nf">cons-stream</span> <span class="mi">1</span> <span class="p">(</span><span class="nf">mul-streams</span>
+                  <span class="nv">factorials</span>
+                  <span class="p">(</span><span class="nf">integers-starting-from</span> <span class="mi">2</span><span class="p">))))</span></code></pre></div>
+
+<h4 id="section-5">3.55</h4>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">partial-sum</span> <span class="nv">s</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">cons-stream</span>
+    <span class="p">(</span><span class="nb">car </span><span class="nv">s</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">add-streams</span>
+      <span class="p">(</span><span class="nf">stream-cdr</span> <span class="nv">s</span><span class="p">)</span>
+      <span class="p">(</span><span class="nf">partial-sum</span> <span class="nv">s</span><span class="p">))))</span></code></pre></div>
+
+<h4 id="section-6">3.56</h4>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="nv">S</span>
+  <span class="p">(</span><span class="nf">cons-stream</span>
+   <span class="mi">1</span> <span class="p">(</span><span class="nf">merge</span> <span class="p">(</span><span class="nf">scale-stream</span> <span class="nv">S</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="p">(</span><span class="nf">merge</span> <span class="p">(</span><span class="nf">scale-stream</span> <span class="nv">S</span> <span class="mi">3</span><span class="p">)</span>
+                   <span class="p">(</span><span class="nf">scale-stream</span> <span class="nv">S</span> <span class="mi">5</span><span class="p">)))))</span></code></pre></div>
+
+<h4 id="section-7">3.57</h4>
+<p><code>memorized</code> version is $O(n)$ while naive version is $O(2^n)$</p>
+
+<h4 id="section-8">3.58</h4>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">expand</span> <span class="nv">num</span> <span class="nv">den</span> <span class="nv">radix</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">cons-stream</span>
+   <span class="p">(</span><span class="nb">quotient </span><span class="p">(</span><span class="nb">* </span><span class="nv">num</span> <span class="nv">radix</span><span class="p">)</span> <span class="nv">den</span><span class="p">)</span>
+   <span class="p">(</span><span class="nf">expand</span> <span class="p">(</span><span class="nb">remainder </span><span class="p">(</span><span class="nb">* </span><span class="nv">num</span> <span class="nv">radix</span><span class="p">)</span> <span class="nv">den</span><span class="p">)</span> <span class="nv">den</span> <span class="nv">radix</span><span class="p">)))</span></code></pre></div>
+
+<p>It is long divide.</p>
 
 	</div>
 	
