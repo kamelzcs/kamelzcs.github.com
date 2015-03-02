@@ -2,12 +2,12 @@
 <html>
 <head>
 	
-	<title>SICP section 1.1 - kamelzcs's library</title>
+	<title>sicp-3-5-1-3-5-2 - kamelzcs's library</title>
 	
 	
 	<meta name="author" content="kamelzcs" />
 	
-	<meta name="description" content="Elements of Programming" />
+	<meta name="description" content="kamelzcs's library sicp-3-5-1-3-5-2" />
 	
 
 	
@@ -165,9 +165,9 @@ h3,h4 {
 
 
 <div class="post" id="main-content">
-	<h1>SICP section 1.1</h1>
+	<h1>sicp-3-5-1-3-5-2</h1>
 	<h4 class="large-bottom">
-		Posted on February 12, 2015
+		Posted on March 02, 2015
 		 in <a href="/categories/sicp">SICP</a> 
 
 		<span class="tag-list">
@@ -178,70 +178,107 @@ h3,h4 {
 	</h4>
 	
 	<div class="content">
-		<h4 id="section">1.3</h4>
+		<p>Code from the text.</p>
 
-<p>In order to find out the bigger ones, compare them pairwisely.</p>
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">stream-ref</span> <span class="nv">s</span> <span class="nv">n</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">= </span><span class="nv">n</span> <span class="mi">0</span><span class="p">)</span>
+      <span class="p">(</span><span class="nf">stream-car</span> <span class="nv">s</span><span class="p">)</span>
+      <span class="p">(</span><span class="nf">stream-ref</span> <span class="p">(</span><span class="nf">stream-cdr</span> <span class="nv">s</span><span class="p">)</span> <span class="p">(</span><span class="nb">- </span><span class="nv">n</span> <span class="mi">1</span><span class="p">))))</span>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">stream-map</span> <span class="nv">proc</span> <span class="nv">s</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nf">stream-null?</span> <span class="nv">s</span><span class="p">)</span>
+      <span class="nv">the-empty-stream</span>
+      <span class="p">(</span><span class="nf">cons-stream</span> <span class="p">(</span><span class="nf">proc</span> <span class="p">(</span><span class="nf">stream-car</span> <span class="nv">s</span><span class="p">))</span>
+                   <span class="p">(</span><span class="nf">stream-map</span> <span class="nv">proc</span> <span class="p">(</span><span class="nf">stream-cdr</span> <span class="nv">s</span><span class="p">)))))</span>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">stream-for-each</span> <span class="nv">proc</span> <span class="nv">s</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nf">stream-null?</span> <span class="nv">s</span><span class="p">)</span>
+      <span class="ss">&#39;done</span>
+      <span class="p">(</span><span class="k">begin </span><span class="p">(</span><span class="nf">proc</span> <span class="p">(</span><span class="nf">stream-car</span> <span class="nv">s</span><span class="p">))</span>
+             <span class="p">(</span><span class="nf">stream-for-each</span> <span class="nv">proc</span> <span class="p">(</span><span class="nf">stream-cdr</span> <span class="nv">s</span><span class="p">)))))</span>
 
-<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="o">#</span><span class="nv">lang</span> <span class="nv">planet</span> <span class="nv">neil/sicp</span>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">display-stream</span> <span class="nv">s</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">stream-for-each</span> <span class="nv">display-line</span> <span class="nv">s</span><span class="p">))</span>
 
-<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">square</span> <span class="nv">x</span><span class="p">)</span>
-  <span class="p">(</span><span class="nb">* </span><span class="nv">x</span> <span class="nv">x</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">display-line</span> <span class="nv">x</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">newline</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">display </span><span class="nv">x</span><span class="p">))</span>
 
-<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">sum-of-squares</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
-    <span class="p">(</span><span class="nb">+ </span><span class="p">(</span><span class="nf">square</span> <span class="nv">x</span><span class="p">)</span>
-       <span class="p">(</span><span class="nf">square</span> <span class="nv">y</span><span class="p">)))</span>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">stream-car</span> <span class="nv">stream</span><span class="p">)</span> <span class="p">(</span><span class="nb">car </span><span class="nv">stream</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">stream-cdr</span> <span class="nv">stream</span><span class="p">)</span> <span class="p">(</span><span class="nb">force </span><span class="p">(</span><span class="nb">cdr </span><span class="nv">stream</span><span class="p">)))</span>
 
-<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">bigger</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
-  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">&gt; </span><span class="nv">x</span> <span class="nv">y</span><span class="p">)</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">stream-enumerate-interval</span> <span class="nv">low</span> <span class="nv">high</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">&gt; </span><span class="nv">low</span> <span class="nv">high</span><span class="p">)</span>
+      <span class="nv">the-empty-stream</span>
+      <span class="p">(</span><span class="nf">cons-stream</span>
+       <span class="nv">low</span>
+       <span class="p">(</span><span class="nf">stream-enumerate-interval</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">low</span> <span class="mi">1</span><span class="p">)</span> <span class="nv">high</span><span class="p">))))</span>
 
-<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">smaller</span>  <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
-  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">&lt; </span><span class="nv">x</span> <span class="nv">y</span><span class="p">)</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">stream-filter</span> <span class="nv">pred</span> <span class="nv">stream</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">cond </span><span class="p">((</span><span class="nf">stream-null?</span> <span class="nv">stream</span><span class="p">)</span> <span class="nv">the-empty-stream</span><span class="p">)</span>
+        <span class="p">((</span><span class="nf">pred</span> <span class="p">(</span><span class="nf">stream-car</span> <span class="nv">stream</span><span class="p">))</span>
+         <span class="p">(</span><span class="nf">cons-stream</span> <span class="p">(</span><span class="nf">stream-car</span> <span class="nv">stream</span><span class="p">)</span>
+                      <span class="p">(</span><span class="nf">stream-filter</span> <span class="nv">pred</span>
+                                     <span class="p">(</span><span class="nf">stream-cdr</span> <span class="nv">stream</span><span class="p">))))</span>
+        <span class="p">(</span><span class="k">else </span><span class="p">(</span><span class="nf">stream-filter</span> <span class="nv">pred</span> <span class="p">(</span><span class="nf">stream-cdr</span> <span class="nv">stream</span><span class="p">)))))</span>
 
-<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">bigger-sum-of-square</span> <span class="nv">x</span> <span class="nv">y</span> <span class="nv">z</span><span class="p">)</span>
-  <span class="p">(</span><span class="nf">sum-of-squares</span> <span class="p">(</span><span class="nf">bigger</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
-                 <span class="p">(</span><span class="nf">bigger</span> <span class="p">(</span><span class="nf">smaller</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
-                         <span class="nv">z</span><span class="p">)))</span></code></pre></div>
+<span class="p">(</span><span class="nf">stream-ref</span>
+   <span class="p">(</span><span class="nf">stream-enumerate-interval</span> <span class="mi">1</span> <span class="mi">100</span><span class="p">)</span>
+   <span class="mi">10</span><span class="p">)</span>
 
-<h4 id="section-1">1.4</h4>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">memo-proc</span> <span class="nv">proc</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">let </span><span class="p">((</span><span class="nf">already-run?</span> <span class="nv">false</span><span class="p">)</span> <span class="p">(</span><span class="nf">result</span> <span class="nv">false</span><span class="p">))</span>
+    <span class="p">(</span><span class="k">lambda </span><span class="p">()</span>
+      <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">not </span><span class="nv">already-run?</span><span class="p">)</span>
+          <span class="p">(</span><span class="k">begin </span><span class="p">(</span><span class="k">set! </span><span class="nv">result</span> <span class="p">(</span><span class="nf">proc</span><span class="p">))</span>
+                 <span class="p">(</span><span class="k">set! </span><span class="nv">already-run?</span> <span class="nv">true</span><span class="p">)</span>
+                 <span class="nv">result</span><span class="p">)</span>
+          <span class="nv">result</span><span class="p">))))</span></code></pre></div>
 
-<p>This is the first order useage of the function, which is <code>+</code></p>
+<h4 id="section">3.50</h4>
 
-<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="o">#</span><span class="nv">lang</span> <span class="nv">planet</span> <span class="nv">neil/sicp</span>
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">stream-map</span> <span class="nv">proc</span> <span class="o">.</span> <span class="nv">argstreams</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">null? </span><span class="p">(</span><span class="nb">car </span><span class="nv">argstreams</span><span class="p">))</span>
+      <span class="nv">the-empty-stream</span>
+      <span class="p">(</span><span class="nf">cons-stream</span>
+       <span class="p">(</span><span class="nb">apply </span><span class="nv">proc</span> <span class="p">(</span><span class="nb">map </span><span class="nv">stream-car</span> <span class="nv">argstreams</span><span class="p">))</span>
+       <span class="p">(</span><span class="nb">apply </span><span class="nv">stream-map</span>
+              <span class="p">(</span><span class="nb">cons </span><span class="nv">proc</span> <span class="p">(</span><span class="nb">map </span><span class="nv">stream-cdr</span> <span class="nv">argstreams</span><span class="p">))))))</span>
 
-<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">a-plus-abs-b</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)</span>
-  <span class="p">((</span><span class="k">if </span><span class="p">(</span><span class="nb">&gt; </span><span class="nv">b</span> <span class="mi">0</span><span class="p">)</span> <span class="nv">+</span> <span class="nv">-</span><span class="p">)</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">))</span></code></pre></div>
+<span class="p">(</span><span class="k">define </span><span class="nv">s1</span> <span class="p">(</span><span class="nf">stream-enumerate-interval</span> <span class="mi">10</span> <span class="mi">100</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define </span><span class="nv">s2</span> <span class="p">(</span><span class="nf">stream-enumerate-interval</span> <span class="mi">20</span> <span class="mi">200</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define </span><span class="nv">s3</span> <span class="p">(</span><span class="nf">stream-enumerate-interval</span> <span class="mi">30</span> <span class="mi">300</span><span class="p">))</span>
 
-<h4 id="section-2">1.5</h4>
+<span class="p">(</span><span class="k">define </span><span class="nv">test</span> <span class="p">(</span><span class="nf">stream-map</span> <span class="nv">+</span> <span class="nv">s1</span> <span class="nv">s2</span> <span class="nv">s3</span><span class="p">))</span>
+<span class="p">(</span><span class="nf">stream-ref</span> <span class="nv">test</span> <span class="mi">0</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">stream-ref</span> <span class="nv">test</span> <span class="mi">1</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">stream-ref</span> <span class="nv">test</span> <span class="mi">2</span><span class="p">)</span></code></pre></div>
 
-<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="o">#</span><span class="nv">lang</span> <span class="nv">planet</span> <span class="nv">neil/sicp</span>
+<h4 id="section-1">3.51</h4>
 
-<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">p</span><span class="p">)</span> <span class="p">(</span><span class="nf">p</span><span class="p">))</span>
-<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">test</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
-<span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">= </span><span class="nv">x</span> <span class="mi">0</span><span class="p">)</span> <span class="mi">0</span> <span class="nv">y</span><span class="p">))</span></code></pre></div>
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">show</span> <span class="nv">x</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">display-line</span> <span class="nv">x</span><span class="p">)</span>
+  <span class="nv">x</span><span class="p">)</span>
 
-<p>If it is evaluated in applicative order, then the evaluation of the <code>(p)</code> would lead to infinite loop.
-While, if it is evaluated in normal order, then <code>0</code> would return before it is evaluated.</p>
+<span class="p">(</span><span class="k">define </span><span class="nv">x</span> <span class="p">(</span><span class="nf">stream-map</span> <span class="nv">show</span> <span class="p">(</span><span class="nf">stream-enumerate-interval</span> <span class="mi">0</span> <span class="mi">10</span><span class="p">)))</span>
+<span class="mi">0</span>
+<span class="c1">;Value: x</span>
+<span class="p">(</span><span class="nf">stream-ref</span> <span class="nv">x</span> <span class="mi">5</span><span class="p">)</span>
 
-<h4 id="section-3">1.6</h4>
+<span class="mi">1</span>
+<span class="mi">2</span>
+<span class="mi">3</span>
+<span class="mi">4</span>
+<span class="mi">5</span>
 
-<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">if </span><span class="err">⟨</span> <span class="nv">predicate</span> <span class="err">⟩</span> <span class="err">⟨</span> <span class="nv">consequent</span> <span class="err">⟩</span> <span class="err">⟨</span> <span class="nv">alternative</span> <span class="err">⟩</span><span class="p">)</span></code></pre></div>
+<span class="c1">;Value: 5</span>
 
-<p><code>If</code> is special form becuase it is not a regular expression, which will have its arguments being evaluted at first.</p>
+<span class="p">(</span><span class="nf">stream-ref</span> <span class="nv">x</span> <span class="mi">7</span><span class="p">)</span>
 
-<p>Only<code>consequent</code> OR <code>alternative</code> will be evaluted, but never both at the same time.</p>
+<span class="mi">6</span>
+<span class="mi">7</span>
+<span class="c1">;Value: 7</span></code></pre></div>
 
-<p>The <code>new-if</code> statement will lead to infinite loop.</p>
-
-<h4 id="section-4">1.7</h4>
-
-<p>For small numbers, such as <code>(sqrt 0.00000000000002)</code>, the accuracy itself is too inaccurate.</p>
-
-<p>For large numbers, such as <code>(sqrt 20000000000000)</code> will be trapped in infinite loop.
-The guess would be a fixed point which equals <code>4472135.954995</code>.
-But <code>20000000000000/4472135.954995 =4472135.955</code> which is not equal to <code>4472135.954995</code> exactly.</p>
-
-<p>The reason is for float number, when the exp bits gets larger, its coificent bits would loose some accuracy.
-Accurary lost meet with big exponent number, then this float number becomes inaccurate.</p>
+<p>It is confusing for me to understand this  <code>memo-proc</code> function.
+All the <code>delayed</code> functions are cached after the first running.</p>
 
 
 	</div>
@@ -255,18 +292,12 @@ Accurary lost meet with big exponent number, then this float number becomes inac
 		
 		
 		
-			&laquo;&nbsp;<a href="/2015/02/12/sicp-1.2.1" rel="next" title="SICP 1.2.1">SICP 1.2.1</a>
-		
 	
-		
-			
-				|
-			
 		
 		
 	
 		
-			<a href="/2015/02/09/2014" rel="previous" title="说好的2014">说好的2014</a>&nbsp;&raquo;
+			<a href="/2015/03/02/sicp-3-4" rel="previous" title="sicp-3-4">sicp-3-4</a>&nbsp;&raquo;
 		
 	
 		<br />
@@ -292,8 +323,8 @@ Accurary lost meet with big exponent number, then this float number becomes inac
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://kamelzcs.github.com/2015/02/12/sicp-1-1';
-        var disqus_url = 'http://kamelzcs.github.com/2015/02/12/sicp-1-1';
+        var disqus_identifier = 'http://kamelzcs.github.com/2015/03/02/sicp-3-5-1-3-5-2';
+        var disqus_url = 'http://kamelzcs.github.com/2015/03/02/sicp-3-5-1-3-5-2';
         var disqus_script = 'embed.js';
       
     (function () {
