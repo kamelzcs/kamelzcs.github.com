@@ -378,6 +378,64 @@ because of the sharing <code>sum</code>.</p>
 
 <p>It is long divide.</p>
 
+<h4 id="section-9">3.59</h4>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">integrate-series</span> <span class="nv">s</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">stream-map</span> <span class="nv">/</span> <span class="nv">s</span> <span class="nv">integers</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define </span><span class="nv">sine-series</span>
+  <span class="p">(</span><span class="nf">cons-stream</span> <span class="mi">0</span> <span class="p">(</span><span class="nf">integrate-series</span> <span class="nv">cosine-series</span><span class="p">)))</span>
+<span class="p">(</span><span class="k">define </span><span class="nv">cosine-series</span>
+  <span class="p">(</span><span class="nf">cons-stream</span> <span class="mi">1</span>
+               <span class="p">(</span><span class="nf">scale-stream</span>
+                 <span class="p">(</span><span class="nf">integrate-series</span> <span class="nv">sine-series</span><span class="p">)</span>
+                 <span class="mi">-1</span><span class="p">))</span></code></pre></div>
+
+<h4 id="section-10">3.60</h4>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">mul-series</span> <span class="nv">s1</span> <span class="nv">s2</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">cons-stream</span>
+    <span class="p">(</span><span class="nb">* </span><span class="p">(</span><span class="nf">stream-car</span> <span class="nv">s1</span><span class="p">)</span> <span class="p">(</span><span class="nf">stream-car</span> <span class="nv">s2</span><span class="p">))</span>
+    <span class="p">(</span><span class="nf">add-streams</span>
+      <span class="p">(</span><span class="nf">scale-stream</span>
+        <span class="p">(</span><span class="nf">stream-cdr</span> <span class="nv">s2</span><span class="p">)</span>
+        <span class="p">(</span><span class="nf">stream-car</span> <span class="nv">s1</span><span class="p">))</span>
+      <span class="p">(</span><span class="nf">mul-series</span>
+        <span class="p">(</span><span class="nf">stream-cdr</span> <span class="nv">s1</span><span class="p">)</span>
+        <span class="nv">s2</span><span class="p">))))</span>
+
+<span class="p">(</span><span class="k">define </span><span class="nv">t</span>
+  <span class="p">(</span><span class="nf">add-streams</span>
+    <span class="p">(</span><span class="nf">mul-series</span> <span class="nv">sine-series</span> <span class="nv">sine-series</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">mul-series</span> <span class="nv">cosine-series</span> <span class="nv">cosine-series</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="nf">display-stream</span> <span class="nv">t</span><span class="p">)</span></code></pre></div>
+
+<p>$(h1 + tail1) * (h2 + tail2) = h1 * h2 + h1<em>tail2 + tail1</em>(h2+tail2)$</p>
+
+<h4 id="section-11">3.61</h4>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">invert-unit-series</span> <span class="nv">s</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">cons-stream</span> <span class="mi">1</span>
+               <span class="p">(</span><span class="nf">scale-stream</span>
+                 <span class="p">(</span><span class="nf">mul-series</span>
+                   <span class="p">(</span><span class="nf">stream-cdr</span> <span class="nv">s</span><span class="p">)</span>
+                   <span class="p">(</span><span class="nf">invert-unit-series</span> <span class="nv">s</span><span class="p">)))))</span></code></pre></div>
+
+<h4 id="section-12">3.62</h4>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">div-series</span> <span class="nv">num</span> <span class="nv">den</span><span class="p">)</span>
+   <span class="p">(</span><span class="k">let </span><span class="p">((</span><span class="nf">den0</span> <span class="p">(</span><span class="nf">stream-car</span> <span class="nv">den</span><span class="p">)))</span>
+      <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">= </span><span class="nv">den-const</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">(</span><span class="nf">error</span> <span class="s">&quot;The constant term of the denominator must be nonzero&quot;</span><span class="p">)</span>
+        <span class="p">(</span><span class="nf">scale-stream</span>
+         <span class="p">(</span><span class="nf">mul-series</span>
+          <span class="nv">num</span> <span class="p">(</span><span class="nf">invert-unit-series</span>
+                <span class="p">(</span><span class="nf">scale-stream</span> <span class="nv">den</span> <span class="p">(</span><span class="nb">/ </span><span class="mi">1</span> <span class="nv">den-const</span><span class="p">))))</span>
+         <span class="p">(</span><span class="nb">/ </span><span class="mi">1</span> <span class="nv">den-const</span><span class="p">)))))</span></code></pre></div>
+
+<p>The <code>den</code> should be normalized to have the $constant=1$</p>
+
 	</div>
 	
 	<div class="next-prev-nav low-top">
@@ -389,7 +447,13 @@ because of the sharing <code>sum</code>.</p>
 		
 		
 		
+			&laquo;&nbsp;<a href="/2015/03/03/sicp-3-5-3" rel="next" title="sicp-3-5-3">sicp-3-5-3</a>
+		
 	
+		
+			
+				|
+			
 		
 		
 	
@@ -467,7 +531,7 @@ because of the sharing <code>sum</code>.</p>
 	<div class="sidebar-module">
 		<div class="title"><a href='/tags'>Tags</a></div>
 		
-            <span style="font-size: 101%">
+            <span style="font-size: 100%">
               <a href="/tags/app-engine/" title="5 posts">App Engine</a>
             </span>
           
@@ -475,7 +539,7 @@ because of the sharing <code>sum</code>.</p>
               <a href="/tags/bash/" title="2 posts">Bash</a>
             </span>
           
-            <span style="font-size: 101%">
+            <span style="font-size: 100%">
               <a href="/tags/database/" title="5 posts">Database</a>
             </span>
           
@@ -483,7 +547,7 @@ because of the sharing <code>sum</code>.</p>
               <a href="/tags/datastructure/" title="1 post">Datastructure</a>
             </span>
           
-            <span style="font-size: 88%">
+            <span style="font-size: 87%">
               <a href="/tags/git/" title="3 posts">Git</a>
             </span>
           
@@ -504,7 +568,7 @@ because of the sharing <code>sum</code>.</p>
             </span>
           
             <span style="font-size: 280%">
-              <a href="/tags/lisp/" title="32 posts">Lisp</a>
+              <a href="/tags/lisp/" title="33 posts">Lisp</a>
             </span>
           
             <span style="font-size: 75%">
@@ -583,12 +647,12 @@ because of the sharing <code>sum</code>.</p>
 
 	<div class="sidebar-module">
 		<div class="title"><a href='/categories'>Categories</a></div>
-		<a href="/categories/jekyll"><strong>jekyll</strong></a> (1)<br /><a href="/categories/生活"><strong>生活</strong></a> (4)<br /><a href="/categories/语音"><strong>语音</strong></a> (1)<br /><a href="/categories/讲座"><strong>讲座</strong></a> (1)<br /><a href="/categories/technique"><strong>technique</strong></a> (6)<br /><a href="/categories/technology"><strong>technology</strong></a> (4)<br /><a href="/categories/vim"><strong>vim</strong></a> (1)<br /><a href="/categories/诗词"><strong>诗词</strong></a> (1)<br /><a href="/categories/life"><strong>life</strong></a> (3)<br /><a href="/categories/computer"><strong>computer</strong></a> (1)<br /><a href="/categories/linux"><strong>linux</strong></a> (1)<br /><a href="/categories/data-structure"><strong>data structure</strong></a> (1)<br /><a href="/categories/sicp"><strong>sicp</strong></a> (32)<br />
+		<a href="/categories/jekyll"><strong>jekyll</strong></a> (1)<br /><a href="/categories/生活"><strong>生活</strong></a> (4)<br /><a href="/categories/语音"><strong>语音</strong></a> (1)<br /><a href="/categories/讲座"><strong>讲座</strong></a> (1)<br /><a href="/categories/technique"><strong>technique</strong></a> (6)<br /><a href="/categories/technology"><strong>technology</strong></a> (4)<br /><a href="/categories/vim"><strong>vim</strong></a> (1)<br /><a href="/categories/诗词"><strong>诗词</strong></a> (1)<br /><a href="/categories/life"><strong>life</strong></a> (3)<br /><a href="/categories/computer"><strong>computer</strong></a> (1)<br /><a href="/categories/linux"><strong>linux</strong></a> (1)<br /><a href="/categories/data-structure"><strong>data structure</strong></a> (1)<br /><a href="/categories/sicp"><strong>sicp</strong></a> (33)<br />
 	</div>
 	
 	<div class="sidebar-module">
 		<div class="title"><a href='/archives'>Archives</a></div>
-		<a href="/2015/03"><strong>March 2015</strong></a> (3)<br /><a href="/2015/02"><strong>February 2015</strong></a> (30)<br /><a href="/2014/02"><strong>February 2014</strong></a> (1)<br /><a href="/2014/01"><strong>January 2014</strong></a> (4)<br /><a href="/2013/12"><strong>December 2013</strong></a> (2)<br /><a href="/2013/11"><strong>November 2013</strong></a> (8)<br /><a href="/2013/10"><strong>October 2013</strong></a> (2)<br /><a href="/2013/03"><strong>March 2013</strong></a> (3)<br /><a href="/2013/02"><strong>February 2013</strong></a> (2)<br /><a href="/2013/01"><strong>January 2013</strong></a> (1)<br /><a href="/2012/12"><strong>December 2012</strong></a> (1)<br />
+		<a href="/2015/03"><strong>March 2015</strong></a> (4)<br /><a href="/2015/02"><strong>February 2015</strong></a> (30)<br /><a href="/2014/02"><strong>February 2014</strong></a> (1)<br /><a href="/2014/01"><strong>January 2014</strong></a> (4)<br /><a href="/2013/12"><strong>December 2013</strong></a> (2)<br /><a href="/2013/11"><strong>November 2013</strong></a> (8)<br /><a href="/2013/10"><strong>October 2013</strong></a> (2)<br /><a href="/2013/03"><strong>March 2013</strong></a> (3)<br /><a href="/2013/02"><strong>February 2013</strong></a> (2)<br /><a href="/2013/01"><strong>January 2013</strong></a> (1)<br /><a href="/2012/12"><strong>December 2012</strong></a> (1)<br />
 	</div>
 </div>
 
