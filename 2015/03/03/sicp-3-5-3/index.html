@@ -305,6 +305,116 @@ infinite loop.</p>
                <span class="p">(</span><span class="nf">stream-cdr</span> <span class="nv">s2</span><span class="p">)</span>
                <span class="p">(</span><span class="nf">stream-cdr</span> <span class="nv">s3</span><span class="p">)))))</span></code></pre></div>
 
+<h4 id="section-7">3.70</h4>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">merge-weighted</span> <span class="nv">s1</span> <span class="nv">s2</span> <span class="nv">weight</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">cond </span><span class="p">((</span><span class="nf">stream-null?</span> <span class="nv">s1</span><span class="p">)</span> <span class="nv">s2</span><span class="p">)</span>
+        <span class="p">((</span><span class="nf">stream-null?</span> <span class="nv">s2</span><span class="p">)</span> <span class="nv">s1</span><span class="p">)</span>
+        <span class="p">(</span><span class="nf">else</span>
+          <span class="p">(</span><span class="k">let </span><span class="p">((</span><span class="nf">s1car</span> <span class="p">(</span><span class="nf">stream-car</span> <span class="nv">s1</span><span class="p">))</span>
+                <span class="p">(</span><span class="nf">s2car</span> <span class="p">(</span><span class="nf">stream-car</span> <span class="nv">s2</span><span class="p">)))</span>
+            <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">&lt;= </span><span class="p">(</span><span class="nf">weight</span> <span class="nv">s1car</span><span class="p">)</span>
+                    <span class="p">(</span><span class="nf">weight</span> <span class="nv">s2car</span><span class="p">))</span>
+              <span class="p">(</span><span class="nf">cons-stream</span> <span class="nv">s1car</span>
+                           <span class="p">(</span><span class="nf">merge-weighted</span> <span class="p">(</span><span class="nf">stream-cdr</span> <span class="nv">s1</span><span class="p">)</span>
+                                           <span class="nv">s2</span>
+                                           <span class="nv">weight</span><span class="p">))</span>
+              <span class="p">(</span><span class="nf">cons-stream</span> <span class="nv">s2car</span>
+                           <span class="p">(</span><span class="nf">merge-weighted</span> <span class="nv">s1</span>
+                                           <span class="p">(</span><span class="nf">stream-cdr</span> <span class="nv">s2</span><span class="p">)</span>
+                                           <span class="nv">weight</span><span class="p">)))))))</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">weighted-pairs</span> <span class="nv">s</span> <span class="nv">t</span> <span class="nv">weight</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">cons-stream</span>
+    <span class="p">(</span><span class="nb">list </span><span class="p">(</span><span class="nf">stream-car</span> <span class="nv">s</span><span class="p">)</span> <span class="p">(</span><span class="nf">stream-car</span> <span class="nv">t</span><span class="p">))</span>
+    <span class="p">(</span><span class="nf">merge-weighted</span>
+      <span class="p">(</span><span class="nf">stream-map</span>
+        <span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">list </span><span class="p">(</span><span class="nf">stream-car</span> <span class="nv">s</span><span class="p">)</span> <span class="nv">x</span><span class="p">))</span>
+        <span class="p">(</span><span class="nf">stream-cdr</span> <span class="nv">t</span><span class="p">))</span>
+      <span class="p">(</span><span class="nf">weighted-pairs</span>
+        <span class="p">(</span><span class="nf">stream-cdr</span> <span class="nv">s</span><span class="p">)</span>
+        <span class="p">(</span><span class="nf">stream-cdr</span> <span class="nv">t</span><span class="p">)</span>
+        <span class="nv">weight</span><span class="p">)</span>
+      <span class="nv">weight</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="nf">weighted-pairs</span> <span class="nv">integers</span>
+                <span class="nv">integers</span>
+                <span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">x</span><span class="p">)</span>
+                  <span class="p">(</span><span class="nb">apply </span><span class="nv">+</span> <span class="nv">x</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define </span><span class="nv">no-factors</span>
+  <span class="p">(</span><span class="nf">stream-filter</span>
+    <span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">x</span><span class="p">)</span>
+      <span class="p">(</span><span class="nf">not</span>
+        <span class="p">(</span><span class="k">or </span><span class="p">(</span><span class="nf">divides?</span> <span class="nv">x</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="p">(</span><span class="nf">divides?</span> <span class="nv">x</span> <span class="mi">3</span><span class="p">)</span>
+            <span class="p">(</span><span class="nf">divides?</span> <span class="nv">x</span> <span class="mi">5</span><span class="p">))))</span>
+    <span class="nv">integers</span><span class="p">))</span>
+
+<span class="p">(</span><span class="nf">weighted-pairs</span> <span class="nv">no-factors</span>
+                <span class="nv">no-factors</span>
+                <span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">lst</span><span class="p">)</span>
+                  <span class="p">(</span><span class="k">let </span><span class="p">((</span><span class="nf">i</span> <span class="p">(</span><span class="nb">car </span><span class="nv">lst</span><span class="p">))</span>
+                        <span class="p">(</span><span class="nf">j</span> <span class="p">(</span><span class="nb">cadr </span><span class="nv">lst</span><span class="p">)))</span>
+                    <span class="p">(</span><span class="nf">+</span>
+                      <span class="p">(</span><span class="nb">* </span><span class="mi">2</span> <span class="nv">i</span><span class="p">)</span>
+                      <span class="p">(</span><span class="nb">* </span><span class="mi">3</span> <span class="nv">j</span><span class="p">)</span>
+                      <span class="p">(</span><span class="nb">* </span><span class="mi">5</span> <span class="nv">i</span> <span class="nv">j</span><span class="p">)))))</span></code></pre></div>
+
+<h4 id="section-8">3.71</h4>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">sum-cube</span> <span class="nv">pair</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">let </span><span class="p">((</span><span class="nf">i</span> <span class="p">(</span><span class="nb">car </span><span class="nv">pair</span><span class="p">))</span>
+        <span class="p">(</span><span class="nf">j</span> <span class="p">(</span><span class="nb">cadr </span><span class="nv">pair</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nb">+ </span><span class="p">(</span><span class="nb">* </span><span class="nv">i</span> <span class="nv">i</span> <span class="nv">i</span><span class="p">)</span>
+       <span class="p">(</span><span class="nb">* </span><span class="nv">j</span> <span class="nv">j</span> <span class="nv">j</span><span class="p">))))</span>
+
+<span class="p">(</span><span class="k">define </span><span class="nv">all-pairs</span>
+  <span class="p">(</span><span class="nf">weighted-pairs</span> <span class="nv">integers</span> <span class="nv">integers</span> <span class="nv">sum-cube</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">ram-numbers</span> <span class="nv">stream</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">let* </span><span class="p">((</span><span class="nf">w1</span> <span class="p">(</span><span class="nf">sum-cube</span>
+               <span class="p">(</span><span class="nf">stream-car</span> <span class="nv">stream</span><span class="p">)))</span>
+         <span class="p">(</span><span class="nf">rest</span> <span class="p">(</span><span class="nf">stream-cdr</span> <span class="nv">stream</span><span class="p">))</span>
+         <span class="p">(</span><span class="nf">w2</span> <span class="p">(</span><span class="nf">sum-cube</span>
+               <span class="p">(</span><span class="nf">stream-car</span> <span class="nv">rest</span><span class="p">))))</span>
+    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">= </span><span class="nv">w1</span> <span class="nv">w2</span><span class="p">)</span>
+      <span class="p">(</span><span class="nf">cons-stream</span> <span class="nv">w1</span>
+                   <span class="p">(</span><span class="nf">ram-numbers</span> <span class="p">(</span><span class="nf">stream-cdr</span>
+                                  <span class="nv">rest</span><span class="p">)))</span>
+      <span class="p">(</span><span class="nf">ram-numbers</span> <span class="nv">rest</span><span class="p">))))</span>
+
+<span class="p">(</span><span class="nf">show-stream</span> <span class="p">(</span><span class="nf">ram-numbers</span> <span class="nv">all-pairs</span><span class="p">)</span> <span class="mi">6</span><span class="p">)</span></code></pre></div>
+
+<h4 id="section-9">3.73</h4>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">RC</span> <span class="nv">r</span> <span class="nv">c</span> <span class="nv">dt</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">i</span> <span class="nv">v</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">add-streams</span>
+      <span class="p">(</span><span class="nf">scale-stream</span> <span class="nv">i</span> <span class="nv">r</span><span class="p">)</span>
+      <span class="p">(</span><span class="nf">integral</span> <span class="p">(</span><span class="nf">scale-stream</span> <span class="nv">i</span>
+                              <span class="p">(</span><span class="nb">/ </span><span class="mi">1</span> <span class="nv">c</span><span class="p">))</span>
+                <span class="nv">v</span>
+                <span class="nv">dt</span><span class="p">))))</span></code></pre></div>
+
+<h4 id="section-10">3.74</h4>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="nv">zero-crossings</span>
+  <span class="p">(</span><span class="nf">stream-map</span> <span class="nv">sign-change-detector</span> <span class="nv">sense-data</span>
+              <span class="p">(</span><span class="nf">cons-stream</span> <span class="mi">0</span> <span class="nv">sense-data</span><span class="p">)))</span></code></pre></div>
+
+<h4 id="section-11">3.75</h4>
+
+<p>The last value of the origin stream should be passed in, otherwise <code>avpt</code>
+would acutally become a recursive version.</p>
+
+<h4 id="section-12">3.76</h4>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">smooth</span> <span class="nv">s</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">stream-map</span> <span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">x</span> <span class="nv">y</span><span class="p">)</span> <span class="p">(</span><span class="nb">/ </span><span class="p">(</span><span class="nb">+ </span><span class="nv">x</span> <span class="nv">y</span><span class="p">)</span> <span class="mi">2</span><span class="p">))</span>
+              <span class="p">(</span><span class="nf">cons-stream</span> <span class="mi">0</span> <span class="nv">s</span><span class="p">)</span>
+              <span class="nv">s</span><span class="p">))</span></code></pre></div>
+
 
 	</div>
 	
