@@ -166,9 +166,7 @@ google.setOnLoadCallback(function() {
 
 
 	
-	<p>4.16
-
-</p>
+	<p>4.16 a: (define (lookup-variable-value var env) (define (env-loop env) (define (scan vars vals) (cond ((null? vars) (env-loop (enclosing-environment env))) ((eq? var (car vars)) (if (equal? (car vals) &#39;*unassigned*) (error &quot;Unassigned variable&quot; var) (car vals))) (else (scan (cdr vars) (cdr vals))))) (if (eq? env the-empty-environment) (error &quot;Unbound variable&quot; var) (let ((frame...</p>
 	
 	
 	<p class><a href="/2015/03/09/sicp-4-1-6-4-1-7">Read more...</a></p>
