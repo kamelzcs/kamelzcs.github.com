@@ -334,6 +334,43 @@ For racket:</p>
 
 <p>$\lambda$ makes functional programming possible.</p>
 
+<h4 id="section-6">4.22</h4>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">((</span><span class="nf">let?</span> <span class="nv">exp</span><span class="p">)</span> <span class="p">(</span><span class="nf">analyze</span> <span class="p">(</span><span class="nf">let-&gt;combination</span> <span class="nv">exp</span><span class="p">)))</span></code></pre></div>
+
+<p>Analyze is able to handle it.</p>
+
+<h4 id="section-7">4.23</h4>
+
+<p><code>execute-sequence</code> has <code>cond</code> and other extra commands, while the text version
+is just some runnable procedure.</p>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">lambda </span><span class="p">(</span><span class="nf">env</span><span class="p">)</span>
+  <span class="p">((</span><span class="k">lambda </span><span class="p">(</span><span class="nf">env</span><span class="p">)</span> 
+     <span class="p">(</span><span class="nf">proc1</span> <span class="nv">env</span><span class="p">)</span> 
+     <span class="p">(</span><span class="nf">proc2</span> <span class="nv">env</span><span class="p">))</span>
+   <span class="nv">env</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">proc3</span> <span class="nv">env</span><span class="p">))</span></code></pre></div>
+
+<h4 id="section-8">4.24</h4>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="nb">eval </span><span class="o">&#39;</span><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">factorial</span> <span class="nv">n</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">= </span><span class="nv">n</span> <span class="mi">1</span><span class="p">)</span>
+      <span class="mi">1</span>
+      <span class="p">(</span><span class="nb">* </span><span class="p">(</span><span class="nf">factorial</span> <span class="p">(</span><span class="nb">- </span><span class="nv">n</span> <span class="mi">1</span><span class="p">))</span> <span class="nv">n</span><span class="p">)))</span> <span class="nv">the-global-environment</span><span class="p">)</span>
+
+<span class="p">(</span><span class="k">let </span><span class="p">((</span><span class="nf">t0</span> <span class="mi">0</span><span class="p">)</span> <span class="p">(</span><span class="nf">t1</span> <span class="mi">0</span><span class="p">))</span>
+  <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">loop</span> <span class="nv">i</span> <span class="nv">n</span><span class="p">)</span>
+    <span class="p">(</span><span class="nb">eval </span><span class="o">&#39;</span><span class="p">(</span><span class="nv">factorial</span> <span class="mi">1234</span><span class="p">)</span> <span class="nv">the-global-environment</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">&lt; </span><span class="nv">i</span> <span class="nv">n</span><span class="p">)</span>
+      <span class="p">(</span><span class="nf">loop</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">i</span> <span class="mi">1</span><span class="p">)</span> <span class="nv">n</span><span class="p">)))</span>
+  <span class="p">(</span><span class="k">set! </span><span class="nv">t0</span> <span class="p">(</span><span class="nf">runtime</span><span class="p">))</span>
+  <span class="p">(</span><span class="nf">loop</span> <span class="mi">0</span> <span class="mi">200</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">set! </span><span class="nv">t1</span> <span class="p">(</span><span class="nf">runtime</span><span class="p">))</span>
+  <span class="p">(</span><span class="nb">- </span><span class="nv">t1</span> <span class="nv">t0</span><span class="p">))</span></code></pre></div>
+
+<p>For original version: $3.302853$ second, while for optimized version $2.106789$ second.</p>
+
 	</div>
 	
 	<div class="next-prev-nav low-top">
