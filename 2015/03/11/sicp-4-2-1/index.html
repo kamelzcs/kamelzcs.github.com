@@ -277,6 +277,27 @@ such as:</p>
 <span class="c1">;9.864471 second without memorization</span>
 <span class="c1">;0.027408 second with memorization</span></code></pre></div>
 
+<h4 id="section-5">4.30</h4>
+
+<ol>
+  <li><code>display</code> is a primitive function, so Ben is right.</li>
+  <li>with original version, <code>(p1 1) = (1,2)</code> and <code>(p2 1) = 1</code> while in Cy’s version, both of them would be <code>(1, 2)</code>.</li>
+</ol>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">p2</span> <span class="nv">x</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">p</span> <span class="nv">e</span><span class="p">)</span>
+    <span class="nv">e</span>
+    <span class="nv">x</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">p</span> <span class="p">(</span><span class="k">set! </span><span class="nv">x</span> <span class="p">(</span><span class="nb">cons </span><span class="nv">x</span> <span class="o">&#39;</span><span class="p">(</span><span class="mi">2</span><span class="p">)))))</span></code></pre></div>
+
+<p><code>(set! x (cons x '(2)))</code> is passed in as a thunk parameter <code>e</code> of the internal <code>p</code> procedure in the
+original version and is not forced as it is not passed to a primitive procedure.</p>
+
+<ol>
+  <li>Obviously.</li>
+  <li>I prefer the text’s. As lazy evalution is better not involved with side effects.</li>
+</ol>
+
 
 	</div>
 	
