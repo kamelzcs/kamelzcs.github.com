@@ -2,12 +2,12 @@
 <html>
 <head>
 	
-	<title>sicp-3-3-1 - kamelzcs's library</title>
+	<title>sicp-4-2-3 - kamelzcs's library</title>
 	
 	
 	<meta name="author" content="kamelzcs" />
 	
-	<meta name="description" content="kamelzcs's library sicp-3-3-1" />
+	<meta name="description" content="kamelzcs's library sicp-4-2-3" />
 	
 
 	
@@ -165,9 +165,9 @@ h3,h4 {
 
 
 <div class="post" id="main-content">
-	<h1>sicp-3-3-1</h1>
+	<h1>sicp-4-2-3</h1>
 	<h4 class="large-bottom">
-		Posted on February 26, 2015
+		Posted on March 12, 2015
 		 in <a href="/categories/sicp">SICP</a> 
 
 		<span class="tag-list">
@@ -178,84 +178,29 @@ h3,h4 {
 	</h4>
 	
 	<div class="content">
-		<h4 id="section">3.16</h4>
+		<h4 id="section">4.32</h4>
 
-<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">count-pairs</span> <span class="nv">x</span><span class="p">)</span>
-  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">not </span><span class="p">(</span><span class="nb">pair? </span><span class="nv">x</span><span class="p">))</span>
-      <span class="mi">0</span>
-      <span class="p">(</span><span class="nb">+ </span><span class="p">(</span><span class="nf">count-pairs</span> <span class="p">(</span><span class="nb">car </span><span class="nv">x</span><span class="p">))</span>
-         <span class="p">(</span><span class="nf">count-pairs</span> <span class="p">(</span><span class="nb">cdr </span><span class="nv">x</span><span class="p">))</span>
-         <span class="mi">1</span><span class="p">)))</span>
+<p>In the current version, <code>car</code> is lazy as well, which makes it possible to build structures such as <code>infinite tree</code>.</p>
 
-<span class="p">(</span><span class="k">define </span><span class="nv">z3</span> <span class="o">&#39;</span><span class="p">(</span><span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span><span class="p">))</span>
-<span class="p">(</span><span class="nf">count-pairs</span> <span class="nv">z3</span><span class="p">)</span>
+<h4 id="section-1">4.33</h4>
 
-<span class="p">(</span><span class="k">define </span><span class="nv">z1</span> <span class="o">&#39;</span><span class="p">(</span><span class="nv">c</span><span class="p">))</span>
-<span class="p">(</span><span class="k">define </span><span class="nv">z4</span>
-  <span class="p">(</span><span class="nb">list </span><span class="nv">z1</span> <span class="nv">z1</span><span class="p">))</span>
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="c1">;&#39;(a b c)--&gt;(cons &#39;a (cons &#39;b (cons &#39;c &#39;())))</span>
 
-<span class="p">(</span><span class="k">define </span><span class="nv">z23</span>
-  <span class="p">(</span><span class="nb">cons </span><span class="nv">z1</span> <span class="nv">z1</span><span class="p">))</span>
-<span class="p">(</span><span class="k">define </span><span class="nv">z7</span>
-  <span class="p">(</span><span class="nb">cons </span><span class="nv">z23</span> <span class="nv">z23</span><span class="p">))</span>
+<span class="p">((</span><span class="nf">quoted?</span> <span class="nv">exp</span><span class="p">)</span> <span class="p">(</span><span class="nf">text-of-quotation</span> <span class="nv">exp</span> <span class="nv">env</span><span class="p">))</span>
 
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">list-&gt;cons</span> <span class="nv">lst</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">null? </span><span class="nv">lst</span><span class="p">)</span>
+    <span class="o">&#39;</span><span class="p">()</span>
+    <span class="p">(</span><span class="nb">list </span><span class="ss">&#39;cons</span>
+          <span class="p">(</span><span class="nb">list </span><span class="ss">&#39;quote</span> <span class="p">(</span><span class="nb">car </span><span class="nv">lst</span><span class="p">))</span>
+          <span class="p">(</span><span class="nf">list-&gt;cons</span> <span class="p">(</span><span class="nb">cdr </span><span class="nv">lst</span><span class="p">)))))</span>
 
-<span class="p">(</span><span class="k">define </span><span class="nv">zi</span> <span class="o">&#39;</span><span class="p">(</span><span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span><span class="p">))</span>
-<span class="p">(</span><span class="nb">set-cdr! </span><span class="p">(</span><span class="nb">cddr </span><span class="nv">zi</span><span class="p">)</span> <span class="nv">zi</span><span class="p">)</span>
-<span class="p">(</span><span class="nf">count-pairs</span> <span class="nv">zi</span><span class="p">)</span></code></pre></div>
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">text-of-quotation</span> <span class="nv">exp</span> <span class="nv">env</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">let </span><span class="p">((</span><span class="nf">quoted-operand</span> <span class="p">(</span><span class="nb">cadr </span><span class="nv">exp</span><span class="p">)))</span>
+    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">pair? </span><span class="nv">quoted-operand</span><span class="p">)</span>
+      <span class="p">(</span><span class="nb">eval </span><span class="p">(</span><span class="nf">list-&gt;cons</span> <span class="nv">quoted-operand</span><span class="p">)</span> <span class="nv">env</span><span class="p">)</span>
+      <span class="nv">quoted-operand</span><span class="p">)))</span></code></pre></div>
 
-<p>The construct of <code>zi</code> is hard for me.
-It could be built with the <code>lazy evaluation</code> as well.</p>
-
-<h4 id="section-1">3.17</h4>
-
-<blockquote>
-  <p><code>(eq? x y)</code> tests whether x and y are the same object (that is, whether x and y are equal as pointers)</p>
-</blockquote>
-
-<p>Understanding the pointer is the key to understand sameness and sharing.</p>
-
-<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">count-pairs</span> <span class="nv">x</span><span class="p">)</span>
-  <span class="p">(</span><span class="k">let </span><span class="p">((</span><span class="nf">aux</span> <span class="o">&#39;</span><span class="p">()))</span>
-    <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">uncounted?</span> <span class="nv">x</span><span class="p">)</span>
-      <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">memq </span><span class="nv">x</span> <span class="nv">aux</span><span class="p">)</span>
-        <span class="mi">0</span>
-        <span class="p">(</span><span class="nf">begin</span>
-          <span class="p">(</span><span class="k">set! </span><span class="nv">aux</span> <span class="p">(</span><span class="nb">cons </span><span class="nv">x</span> <span class="nv">aux</span><span class="p">))</span>
-          <span class="mi">1</span><span class="p">)))</span>
-    <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">count</span> <span class="nv">x</span><span class="p">)</span>
-      <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">not </span><span class="p">(</span><span class="nb">pair? </span><span class="nv">x</span><span class="p">))</span>
-        <span class="mi">0</span>
-        <span class="p">(</span><span class="nf">+</span>
-          <span class="p">(</span><span class="nf">count</span> <span class="p">(</span><span class="nb">car </span><span class="nv">x</span><span class="p">))</span>
-          <span class="p">(</span><span class="nf">count</span> <span class="p">(</span><span class="nb">cdr </span><span class="nv">x</span><span class="p">))</span>
-          <span class="p">(</span><span class="nf">uncounted?</span> <span class="nv">x</span><span class="p">))))</span>
-    <span class="p">(</span><span class="nf">count</span> <span class="nv">x</span><span class="p">)))</span></code></pre></div>
-
-<h4 id="section-2">3.18</h4>
-
-<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">cycle?</span> <span class="nv">l</span><span class="p">)</span>
-  <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">detect</span> <span class="nv">pair</span> <span class="nv">countedList</span><span class="p">)</span>
-    <span class="p">(</span><span class="k">cond </span><span class="p">((</span><span class="nb">not </span><span class="p">(</span><span class="nb">pair? </span><span class="nv">pair</span><span class="p">))</span> <span class="no">#f</span><span class="p">)</span>
-          <span class="p">((</span><span class="nb">memq </span><span class="nv">pair</span> <span class="nv">countedList</span><span class="p">)</span> <span class="no">#t</span><span class="p">)</span>
-          <span class="p">(</span><span class="nf">else</span>
-            <span class="p">(</span><span class="nf">detect</span> <span class="p">(</span><span class="nb">cdr </span><span class="nv">pair</span><span class="p">)</span> <span class="p">(</span><span class="nb">cons </span><span class="nv">pair</span> <span class="nv">countedList</span><span class="p">)))))</span>
-  <span class="p">(</span><span class="nf">detect</span> <span class="nv">l</span> <span class="o">&#39;</span><span class="p">()))</span></code></pre></div>
-
-<h4 id="section-3">3.19</h4>
-
-<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">has_cycle?</span> <span class="nv">l</span><span class="p">)</span>
-  <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">iter</span> <span class="nv">l</span> <span class="nv">r</span><span class="p">)</span>
-    <span class="p">(</span><span class="k">cond </span><span class="p">((</span><span class="nb">eq? </span><span class="nv">l</span> <span class="nv">r</span><span class="p">)</span> <span class="no">#t</span><span class="p">)</span>
-          <span class="p">((</span><span class="nb">not </span><span class="p">(</span><span class="nb">pair? </span><span class="nv">r</span><span class="p">))</span> <span class="no">#f</span><span class="p">)</span>
-          <span class="p">((</span><span class="nb">not </span><span class="p">(</span><span class="nb">pair? </span><span class="p">(</span><span class="nb">cdr </span><span class="nv">r</span><span class="p">)))</span> <span class="no">#f</span><span class="p">)</span>
-          <span class="p">(</span><span class="k">else </span><span class="p">(</span><span class="nf">iter</span> <span class="p">(</span><span class="nb">cdr </span><span class="nv">l</span><span class="p">)</span> <span class="p">(</span><span class="nb">cdr </span><span class="p">(</span><span class="nb">cdr </span><span class="nv">r</span><span class="p">))))))</span>
-  <span class="p">(</span><span class="k">cond </span><span class="p">((</span><span class="nb">not </span><span class="p">(</span><span class="nb">pair? </span><span class="nv">l</span><span class="p">))</span> <span class="no">#f</span><span class="p">)</span>
-        <span class="p">((</span><span class="nb">not </span><span class="p">(</span><span class="nb">pair? </span><span class="p">(</span><span class="nb">cdr </span><span class="nv">l</span><span class="p">)))</span> <span class="no">#f</span><span class="p">)</span>
-        <span class="p">(</span><span class="k">else </span><span class="p">(</span><span class="nf">iter</span> <span class="p">(</span><span class="nb">cdr </span><span class="nv">l</span><span class="p">)</span> <span class="p">(</span><span class="nb">cdr </span><span class="p">(</span><span class="nb">cdr </span><span class="nv">l</span><span class="p">))))))</span></code></pre></div>
-
-<p>It is a frequently asked question in a interview.
-Special attention should be paied to the corner cases.</p>
 
 	</div>
 	
@@ -268,18 +213,12 @@ Special attention should be paied to the corner cases.</p>
 		
 		
 		
-			&laquo;&nbsp;<a href="/2015/02/27/sicp-3-3-2" rel="next" title="sicp-3-3-2">sicp-3-3-2</a>
-		
 	
-		
-			
-				|
-			
 		
 		
 	
 		
-			<a href="/2015/02/26/sicp-3-2" rel="previous" title="sicp-3-2">sicp-3-2</a>&nbsp;&raquo;
+			<a href="/2015/03/11/sicp-4-2-1" rel="previous" title="sicp-4-2-1">sicp-4-2-1</a>&nbsp;&raquo;
 		
 	
 		<br />
@@ -305,8 +244,8 @@ Special attention should be paied to the corner cases.</p>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://kamelzcs.github.com/2015/02/26/sicp-3-3-1';
-        var disqus_url = 'http://kamelzcs.github.com/2015/02/26/sicp-3-3-1';
+        var disqus_identifier = 'http://kamelzcs.github.com/2015/03/12/sicp-4-2-3';
+        var disqus_url = 'http://kamelzcs.github.com/2015/03/12/sicp-4-2-3';
         var disqus_script = 'embed.js';
       
     (function () {
