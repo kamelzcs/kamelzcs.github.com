@@ -201,6 +201,21 @@ the idea befind it is <a href="http://en.wikipedia.org/wiki/Continuation-passing
 
 <span class="p">(</span><span class="nf">a-pythagorean-triple-between</span> <span class="mi">1</span> <span class="mi">100</span><span class="p">)</span></code></pre></div>
 
+<h4 id="section-1">4.36</h4>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">a-pythagorean-triple-from</span> <span class="nv">low</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">let </span><span class="p">((</span><span class="nf">k</span> <span class="p">(</span><span class="nf">an-integer-starting-from</span> <span class="nv">low</span><span class="p">)))</span>
+    <span class="p">(</span><span class="k">let </span><span class="p">((</span><span class="nf">i</span> <span class="p">(</span><span class="nf">an-integer-between</span> <span class="nv">low</span> <span class="nv">k</span><span class="p">)))</span>
+      <span class="p">(</span><span class="k">let </span><span class="p">((</span><span class="nf">j</span> <span class="p">(</span><span class="nf">an-integer-between</span> <span class="nv">i</span> <span class="nv">k</span><span class="p">)))</span>
+        <span class="p">(</span><span class="nf">require</span> <span class="p">(</span><span class="nb">= </span><span class="p">(</span><span class="nb">+ </span><span class="p">(</span><span class="nb">* </span><span class="nv">i</span> <span class="nv">i</span><span class="p">)</span> <span class="p">(</span><span class="nb">* </span><span class="nv">j</span> <span class="nv">j</span><span class="p">))</span> <span class="p">(</span><span class="nb">* </span><span class="nv">k</span> <span class="nv">k</span><span class="p">)))</span>
+        <span class="p">(</span><span class="nb">list </span><span class="nv">i</span> <span class="nv">j</span> <span class="nv">k</span><span class="p">)))))</span>
+
+<span class="p">(</span><span class="nf">a-pythagorean-triple-from</span> <span class="mi">1</span><span class="p">)</span></code></pre></div>
+
+<h4 id="section-2">4.37</h4>
+
+<p>It would cut many useless branches.</p>
+
 
 	</div>
 	
@@ -213,7 +228,13 @@ the idea befind it is <a href="http://en.wikipedia.org/wiki/Continuation-passing
 		
 		
 		
+			&laquo;&nbsp;<a href="/2015/03/15/sicp-4-3-2" rel="next" title="sicp-4-3-2">sicp-4-3-2</a>
+		
 	
+		
+			
+				|
+			
 		
 		
 	
@@ -291,7 +312,7 @@ the idea befind it is <a href="http://en.wikipedia.org/wiki/Continuation-passing
 	<div class="sidebar-module">
 		<div class="title"><a href='/tags'>Tags</a></div>
 		
-            <span style="font-size: 96%">
+            <span style="font-size: 95%">
               <a href="/tags/app-engine/" title="5 posts">App Engine</a>
             </span>
           
@@ -299,7 +320,7 @@ the idea befind it is <a href="http://en.wikipedia.org/wiki/Continuation-passing
               <a href="/tags/bash/" title="2 posts">Bash</a>
             </span>
           
-            <span style="font-size: 96%">
+            <span style="font-size: 95%">
               <a href="/tags/database/" title="5 posts">Database</a>
             </span>
           
@@ -328,7 +349,7 @@ the idea befind it is <a href="http://en.wikipedia.org/wiki/Continuation-passing
             </span>
           
             <span style="font-size: 280%">
-              <a href="/tags/lisp/" title="40 posts">Lisp</a>
+              <a href="/tags/lisp/" title="41 posts">Lisp</a>
             </span>
           
             <span style="font-size: 75%">
@@ -407,12 +428,12 @@ the idea befind it is <a href="http://en.wikipedia.org/wiki/Continuation-passing
 
 	<div class="sidebar-module">
 		<div class="title"><a href='/categories'>Categories</a></div>
-		<a href="/categories/jekyll"><strong>jekyll</strong></a> (1)<br /><a href="/categories/生活"><strong>生活</strong></a> (4)<br /><a href="/categories/语音"><strong>语音</strong></a> (1)<br /><a href="/categories/讲座"><strong>讲座</strong></a> (1)<br /><a href="/categories/technique"><strong>technique</strong></a> (6)<br /><a href="/categories/technology"><strong>technology</strong></a> (4)<br /><a href="/categories/vim"><strong>vim</strong></a> (1)<br /><a href="/categories/诗词"><strong>诗词</strong></a> (1)<br /><a href="/categories/life"><strong>life</strong></a> (3)<br /><a href="/categories/computer"><strong>computer</strong></a> (1)<br /><a href="/categories/linux"><strong>linux</strong></a> (1)<br /><a href="/categories/data-structure"><strong>data structure</strong></a> (1)<br /><a href="/categories/sicp"><strong>sicp</strong></a> (40)<br />
+		<a href="/categories/jekyll"><strong>jekyll</strong></a> (1)<br /><a href="/categories/生活"><strong>生活</strong></a> (4)<br /><a href="/categories/语音"><strong>语音</strong></a> (1)<br /><a href="/categories/讲座"><strong>讲座</strong></a> (1)<br /><a href="/categories/technique"><strong>technique</strong></a> (6)<br /><a href="/categories/technology"><strong>technology</strong></a> (4)<br /><a href="/categories/vim"><strong>vim</strong></a> (1)<br /><a href="/categories/诗词"><strong>诗词</strong></a> (1)<br /><a href="/categories/life"><strong>life</strong></a> (3)<br /><a href="/categories/computer"><strong>computer</strong></a> (1)<br /><a href="/categories/linux"><strong>linux</strong></a> (1)<br /><a href="/categories/data-structure"><strong>data structure</strong></a> (1)<br /><a href="/categories/sicp"><strong>sicp</strong></a> (41)<br />
 	</div>
 	
 	<div class="sidebar-module">
 		<div class="title"><a href='/archives'>Archives</a></div>
-		<a href="/2015/03"><strong>March 2015</strong></a> (11)<br /><a href="/2015/02"><strong>February 2015</strong></a> (30)<br /><a href="/2014/02"><strong>February 2014</strong></a> (1)<br /><a href="/2014/01"><strong>January 2014</strong></a> (4)<br /><a href="/2013/12"><strong>December 2013</strong></a> (2)<br /><a href="/2013/11"><strong>November 2013</strong></a> (8)<br /><a href="/2013/10"><strong>October 2013</strong></a> (2)<br /><a href="/2013/03"><strong>March 2013</strong></a> (3)<br /><a href="/2013/02"><strong>February 2013</strong></a> (2)<br /><a href="/2013/01"><strong>January 2013</strong></a> (1)<br /><a href="/2012/12"><strong>December 2012</strong></a> (1)<br />
+		<a href="/2015/03"><strong>March 2015</strong></a> (12)<br /><a href="/2015/02"><strong>February 2015</strong></a> (30)<br /><a href="/2014/02"><strong>February 2014</strong></a> (1)<br /><a href="/2014/01"><strong>January 2014</strong></a> (4)<br /><a href="/2013/12"><strong>December 2013</strong></a> (2)<br /><a href="/2013/11"><strong>November 2013</strong></a> (8)<br /><a href="/2013/10"><strong>October 2013</strong></a> (2)<br /><a href="/2013/03"><strong>March 2013</strong></a> (3)<br /><a href="/2013/02"><strong>February 2013</strong></a> (2)<br /><a href="/2013/01"><strong>January 2013</strong></a> (1)<br /><a href="/2012/12"><strong>December 2012</strong></a> (1)<br />
 	</div>
 </div>
 
