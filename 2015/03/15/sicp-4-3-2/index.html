@@ -272,6 +272,35 @@ h3,h4 {
 <p>One important thing to note is, <code>and</code> and <code>or</code> is not a regular primitive function
 in Scheme, classification is <a href="http://stackoverflow.com/questions/8020870/why-cant-i-define-an-or-function-in-scheme">here</a>, it must be dealt with separatly.</p>
 
+<h4 id="section-4">4.44</h4>
+
+<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">safe?</span> <span class="nv">result</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">let </span><span class="p">((</span><span class="nf">p</span> <span class="p">(</span><span class="nb">car </span><span class="nv">result</span><span class="p">)))</span>
+    <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">conflict?</span> <span class="nv">q</span> <span class="nv">i</span><span class="p">)</span>
+      <span class="p">(</span><span class="nf">or</span>
+        <span class="p">(</span><span class="nb">= </span><span class="nv">p</span> <span class="nv">q</span><span class="p">)</span>
+        <span class="p">(</span><span class="nb">= </span><span class="nv">p</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">q</span> <span class="nv">i</span><span class="p">))</span>
+        <span class="p">(</span><span class="nb">= </span><span class="nv">p</span> <span class="p">(</span><span class="nb">- </span><span class="nv">q</span> <span class="nv">i</span><span class="p">))))</span>
+    <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">check</span> <span class="nv">rest</span> <span class="nv">i</span><span class="p">)</span>
+      <span class="p">(</span><span class="nf">cond</span>
+        <span class="p">((</span><span class="nb">null? </span><span class="nv">rest</span><span class="p">)</span> <span class="nv">true</span><span class="p">)</span>
+        <span class="p">((</span><span class="nf">conflict?</span> <span class="p">(</span><span class="nb">car </span><span class="nv">rest</span><span class="p">)</span> <span class="nv">i</span><span class="p">)</span> <span class="nv">false</span><span class="p">)</span>
+        <span class="p">(</span><span class="k">else </span><span class="p">(</span><span class="nf">check</span> <span class="p">(</span><span class="nb">cdr </span><span class="nv">rest</span><span class="p">)</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">i</span> <span class="mi">1</span><span class="p">)))))</span>
+    <span class="p">(</span><span class="nf">check</span> <span class="p">(</span><span class="nb">cdr </span><span class="nv">result</span><span class="p">)</span> <span class="mi">1</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">queens</span> <span class="nv">n</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">iter</span> <span class="nv">result</span> <span class="nv">left</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">= </span><span class="mi">0</span> <span class="nv">left</span><span class="p">)</span>
+      <span class="nv">result</span>
+      <span class="p">(</span><span class="nf">begin</span>
+        <span class="p">(</span><span class="k">let </span><span class="p">((</span><span class="nf">new</span> <span class="p">(</span><span class="nb">cons </span><span class="p">(</span><span class="nf">an-integer-between</span> <span class="mi">1</span> <span class="nv">n</span><span class="p">)</span>
+                         <span class="nv">result</span><span class="p">)))</span>
+          <span class="p">(</span><span class="nf">require</span> <span class="p">(</span><span class="nf">safe?</span> <span class="nv">new</span><span class="p">))</span>
+          <span class="p">(</span><span class="nf">iter</span> <span class="nv">new</span> <span class="p">(</span><span class="nb">- </span><span class="nv">left</span> <span class="mi">1</span><span class="p">))))))</span>
+  <span class="p">(</span><span class="nf">iter</span> <span class="o">&#39;</span><span class="p">()</span> <span class="nv">n</span><span class="p">))</span>
+
+<span class="p">(</span><span class="nf">queens</span> <span class="mi">8</span><span class="p">)</span></code></pre></div>
+
 
 	</div>
 	
@@ -284,7 +313,13 @@ in Scheme, classification is <a href="http://stackoverflow.com/questions/8020870
 		
 		
 		
+			&laquo;&nbsp;<a href="/2015/03/16/sicp-4-3-3" rel="next" title="sicp-4-3-3">sicp-4-3-3</a>
+		
 	
+		
+			
+				|
+			
 		
 		
 	
@@ -370,6 +405,10 @@ in Scheme, classification is <a href="http://stackoverflow.com/questions/8020870
               <a href="/tags/bash/" title="2 posts">Bash</a>
             </span>
           
+            <span style="font-size: 75%">
+              <a href="/tags/c++/" title="1 post">C++</a>
+            </span>
+          
             <span style="font-size: 95%">
               <a href="/tags/database/" title="5 posts">Database</a>
             </span>
@@ -399,7 +438,11 @@ in Scheme, classification is <a href="http://stackoverflow.com/questions/8020870
             </span>
           
             <span style="font-size: 280%">
-              <a href="/tags/lisp/" title="41 posts">Lisp</a>
+              <a href="/tags/lisp/" title="42 posts">Lisp</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/polymorphism/" title="1 post">Polymorphism</a>
             </span>
           
             <span style="font-size: 75%">
@@ -478,12 +521,12 @@ in Scheme, classification is <a href="http://stackoverflow.com/questions/8020870
 
 	<div class="sidebar-module">
 		<div class="title"><a href='/categories'>Categories</a></div>
-		<a href="/categories/jekyll"><strong>jekyll</strong></a> (1)<br /><a href="/categories/生活"><strong>生活</strong></a> (4)<br /><a href="/categories/语音"><strong>语音</strong></a> (1)<br /><a href="/categories/讲座"><strong>讲座</strong></a> (1)<br /><a href="/categories/technique"><strong>technique</strong></a> (6)<br /><a href="/categories/technology"><strong>technology</strong></a> (4)<br /><a href="/categories/vim"><strong>vim</strong></a> (1)<br /><a href="/categories/诗词"><strong>诗词</strong></a> (1)<br /><a href="/categories/life"><strong>life</strong></a> (3)<br /><a href="/categories/computer"><strong>computer</strong></a> (1)<br /><a href="/categories/linux"><strong>linux</strong></a> (1)<br /><a href="/categories/data-structure"><strong>data structure</strong></a> (1)<br /><a href="/categories/sicp"><strong>sicp</strong></a> (41)<br />
+		<a href="/categories/jekyll"><strong>jekyll</strong></a> (1)<br /><a href="/categories/生活"><strong>生活</strong></a> (4)<br /><a href="/categories/语音"><strong>语音</strong></a> (1)<br /><a href="/categories/讲座"><strong>讲座</strong></a> (1)<br /><a href="/categories/technique"><strong>technique</strong></a> (6)<br /><a href="/categories/technology"><strong>technology</strong></a> (4)<br /><a href="/categories/vim"><strong>vim</strong></a> (1)<br /><a href="/categories/诗词"><strong>诗词</strong></a> (1)<br /><a href="/categories/life"><strong>life</strong></a> (3)<br /><a href="/categories/computer"><strong>computer</strong></a> (1)<br /><a href="/categories/linux"><strong>linux</strong></a> (1)<br /><a href="/categories/data-structure"><strong>data structure</strong></a> (1)<br /><a href="/categories/sicp"><strong>sicp</strong></a> (42)<br /><a href="/categories/cc++"><strong>c/c++</strong></a> (1)<br />
 	</div>
 	
 	<div class="sidebar-module">
 		<div class="title"><a href='/archives'>Archives</a></div>
-		<a href="/2015/03"><strong>March 2015</strong></a> (12)<br /><a href="/2015/02"><strong>February 2015</strong></a> (30)<br /><a href="/2014/02"><strong>February 2014</strong></a> (1)<br /><a href="/2014/01"><strong>January 2014</strong></a> (4)<br /><a href="/2013/12"><strong>December 2013</strong></a> (2)<br /><a href="/2013/11"><strong>November 2013</strong></a> (8)<br /><a href="/2013/10"><strong>October 2013</strong></a> (2)<br /><a href="/2013/03"><strong>March 2013</strong></a> (3)<br /><a href="/2013/02"><strong>February 2013</strong></a> (2)<br /><a href="/2013/01"><strong>January 2013</strong></a> (1)<br /><a href="/2012/12"><strong>December 2012</strong></a> (1)<br />
+		<a href="/2015/05"><strong>May 2015</strong></a> (1)<br /><a href="/2015/03"><strong>March 2015</strong></a> (13)<br /><a href="/2015/02"><strong>February 2015</strong></a> (30)<br /><a href="/2014/02"><strong>February 2014</strong></a> (1)<br /><a href="/2014/01"><strong>January 2014</strong></a> (4)<br /><a href="/2013/12"><strong>December 2013</strong></a> (2)<br /><a href="/2013/11"><strong>November 2013</strong></a> (8)<br /><a href="/2013/10"><strong>October 2013</strong></a> (2)<br /><a href="/2013/03"><strong>March 2013</strong></a> (3)<br /><a href="/2013/02"><strong>February 2013</strong></a> (2)<br /><a href="/2013/01"><strong>January 2013</strong></a> (1)<br /><a href="/2012/12"><strong>December 2012</strong></a> (1)<br />
 	</div>
 </div>
 
