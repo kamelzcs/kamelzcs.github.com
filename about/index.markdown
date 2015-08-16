@@ -5,21 +5,19 @@ no_sidebar: true
 ---
 
 ## Profile ##
-IT从业人员，头脑不发达，四肢不简单。
 
+- Solid knowledge in algorithms and data structures
+- Strong coding ability
+- Full stack knowledge and engineering skill
+- Familiar with RDBMS, Software Engineering, Compiler and Machine learning
+- Interested in system architecture, NoSQL, machine learning, compiler and functional programming
 
-对机器学习,数据挖掘算法有浓厚的兴趣，同时对经济金融略知皮毛，好玩的东西都感兴趣。
-
-## Skills ##
-
-### Experienced ###
-* C/C++ 
-* .NET 
-
-### Others ###
-* Vim
-* Git
-* SVN
+## Professional Skills ##
+- Language Level: English(Business Level), Japanese(JLPT N2), Chinese(Native)
+- Familiar with: Algorithm and datastructure, System Architecture, NoSQL, Compiler, Machine Learning
+- Framework and Tool: MySQL, Postgresql, Tornado, Flask, Ansible, ORM, App Engine
+- Strong Language C/C++(8 yrs), Python(3 yrs)
+- Comfort Language: Javascript, SQL, Scheme, Haskell, C#, Matlab
 
 
 ================================= 华丽的分隔符 ====================================

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Introduction
+title: Introduction to Haskell
 date: 2015-08-15 13:16:12
 isOriginal: true
 category: Functional Programming
