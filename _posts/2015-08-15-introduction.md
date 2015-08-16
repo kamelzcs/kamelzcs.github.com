@@ -11,7 +11,7 @@ keywords:
 description: Introduction part of CIS194
 ---
 
-#### Haskell Basics
+#### Lecture Content
 
 Among all of them, `Pure` is the most tricky part. In the current computer system model,
 `side effects` are inevitable. Haskell uses `Modad` and treats the outside world as static
