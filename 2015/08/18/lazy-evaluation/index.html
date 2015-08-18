@@ -2,12 +2,12 @@
 <html>
 <head>
 	
-	<title>sicp-2.3.2 - kamelzcs's library</title>
+	<title>Lazy evaluation - kamelzcs's library</title>
 	
 	
 	<meta name="author" content="kamelzcs" />
 	
-	<meta name="description" content="kamelzcs's library sicp-2.3.2" />
+	<meta name="description" content="Lazy evaluation" />
 	
 
 	
@@ -165,103 +165,105 @@ h3,h4 {
 
 
 <div class="post" id="main-content">
-	<h1>sicp-2.3.2</h1>
+	<h1>Lazy evaluation</h1>
 	<h4 class="large-bottom">
-		Posted on February 21, 2015
-		 in <a href="/categories/sicp">SICP</a> 
+		Posted on August 18, 2015
+		 in <a href="/categories/functional-programming">Functional Programming</a> 
 
 		<span class="tag-list">
 			
-			<a href="/tags/lisp">Lisp</a>
+			<a href="/tags/haskell">Haskell</a>
+			
+			<a href="/tags/cis194">CIS194</a>
 			
 		</span>
 	</h4>
 	
 	<div class="content">
-		<h4 id="section">2.56</h4>
+		<h4 id="lecture-contents">Lecture Contents</h4>
 
-<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="nf">print-as-expression</span> <span class="no">#f</span><span class="p">)</span>
+<p><code>Lazy evaluation</code> is beautiful because it makes infinite data structures possible.
+But it makes reasoning about the programme harder, especially when mixed with <code>side effects</code>.</p>
 
-<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">variable?</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">symbol? </span><span class="nv">x</span><span class="p">))</span>
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="kr">import</span> <span class="nn">Data.Array</span>
 
-<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">same-variable?</span> <span class="nv">v1</span> <span class="nv">v2</span><span class="p">)</span>
-  <span class="p">(</span><span class="k">and </span><span class="p">(</span><span class="nf">variable?</span> <span class="nv">v1</span><span class="p">)</span> <span class="p">(</span><span class="nf">variable?</span> <span class="nv">v2</span><span class="p">)</span> <span class="p">(</span><span class="nb">eq? </span><span class="nv">v1</span> <span class="nv">v2</span><span class="p">)))</span>
+<span class="nf">knapsack01</span> <span class="ow">::</span> <span class="p">[</span><span class="kt">Double</span><span class="p">]</span>   <span class="c1">-- values </span>
+           <span class="ow">-&gt;</span> <span class="p">[</span><span class="kt">Integer</span><span class="p">]</span>  <span class="c1">-- nonnegative weights</span>
+           <span class="ow">-&gt;</span> <span class="kt">Integer</span>    <span class="c1">-- knapsack size</span>
+           <span class="ow">-&gt;</span> <span class="kt">Double</span>     <span class="c1">-- max possible value</span>
+<span class="nf">knapsack01</span> <span class="n">vs</span> <span class="n">ws</span> <span class="n">maxW</span> <span class="ow">=</span> <span class="n">m</span><span class="o">!</span><span class="p">(</span><span class="n">numItems</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">maxW</span><span class="p">)</span>
+  <span class="kr">where</span> <span class="n">numItems</span> <span class="ow">=</span> <span class="n">length</span> <span class="n">vs</span>
+        <span class="n">m</span> <span class="ow">=</span> <span class="n">array</span> <span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="n">numItems</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">maxW</span><span class="p">))</span> <span class="o">$</span>
+              <span class="p">[((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">w</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span> <span class="o">|</span> <span class="n">w</span> <span class="ow">&lt;-</span> <span class="p">[</span><span class="mi">0</span> <span class="o">..</span> <span class="n">maxW</span><span class="p">]]</span> <span class="o">++</span>
+              <span class="p">[((</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span> <span class="o">|</span> <span class="n">i</span> <span class="ow">&lt;-</span> <span class="p">[</span><span class="mi">0</span> <span class="o">..</span> <span class="n">numItems</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">++</span>
+              <span class="p">[((</span><span class="n">i</span><span class="p">,</span><span class="n">w</span><span class="p">),</span> <span class="n">best</span><span class="p">)</span> 
+                  <span class="o">|</span> <span class="n">i</span> <span class="ow">&lt;-</span> <span class="p">[</span><span class="mi">0</span> <span class="o">..</span> <span class="n">numItems</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                  <span class="p">,</span> <span class="n">w</span> <span class="ow">&lt;-</span> <span class="p">[</span><span class="mi">1</span> <span class="o">..</span> <span class="n">maxW</span><span class="p">]</span>
+                  <span class="p">,</span> <span class="kr">let</span> <span class="n">best</span>
+                          <span class="o">|</span> <span class="n">ws</span><span class="o">!!</span><span class="n">i</span> <span class="o">&gt;</span> <span class="n">w</span>  <span class="ow">=</span> <span class="n">m</span><span class="o">!</span><span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+                          <span class="o">|</span> <span class="n">otherwise</span> <span class="ow">=</span> <span class="n">max</span> <span class="p">(</span><span class="n">m</span><span class="o">!</span><span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">w</span><span class="p">))</span> 
+                                            <span class="p">(</span><span class="n">m</span><span class="o">!</span><span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">w</span> <span class="o">-</span> <span class="n">ws</span><span class="o">!!</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="n">vs</span><span class="o">!!</span><span class="n">i</span><span class="p">)</span>
+              <span class="p">]</span>
 
-<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">=number?</span> <span class="nv">exp</span> <span class="nv">num</span><span class="p">)</span>
-  <span class="p">(</span><span class="k">and </span><span class="p">(</span><span class="nb">number? </span><span class="nv">exp</span><span class="p">)</span> <span class="p">(</span><span class="nb">= </span><span class="nv">exp</span> <span class="nv">num</span><span class="p">)))</span>
+<span class="nf">example</span> <span class="ow">=</span> <span class="n">knapsack01</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">10</span><span class="p">]</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">9</span><span class="p">]</span> <span class="mi">20</span></code></pre></div>
 
-<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">make-sum</span> <span class="nv">a1</span> <span class="nv">a2</span><span class="p">)</span>
-  <span class="p">(</span><span class="k">cond </span><span class="p">((</span><span class="nf">=number?</span> <span class="nv">a1</span> <span class="mi">0</span><span class="p">)</span> <span class="nv">a2</span><span class="p">)</span>
-        <span class="p">((</span><span class="nf">=number?</span> <span class="nv">a2</span> <span class="mi">0</span><span class="p">)</span> <span class="nv">a1</span><span class="p">)</span>
-        <span class="p">((</span><span class="k">and </span><span class="p">(</span><span class="nb">number? </span><span class="nv">a1</span><span class="p">)</span> <span class="p">(</span><span class="nb">number? </span><span class="nv">a2</span><span class="p">))</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">a1</span> <span class="nv">a2</span><span class="p">))</span>
-        <span class="p">(</span><span class="k">else </span><span class="p">(</span><span class="nb">list </span><span class="ss">&#39;+</span> <span class="nv">a1</span> <span class="nv">a2</span><span class="p">))))</span>
+<p>The functional dynamic programming implementation is kind of tricky in my view.</p>
 
-<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">make-product</span> <span class="nv">m1</span> <span class="nv">m2</span><span class="p">)</span>
-  <span class="p">(</span><span class="k">cond </span><span class="p">((</span><span class="k">or </span><span class="p">(</span><span class="nf">=number?</span> <span class="nv">m1</span> <span class="mi">0</span><span class="p">)</span> <span class="p">(</span><span class="nf">=number?</span> <span class="nv">m2</span> <span class="mi">0</span><span class="p">))</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="p">((</span><span class="nf">=number?</span> <span class="nv">m1</span> <span class="mi">1</span><span class="p">)</span> <span class="nv">m2</span><span class="p">)</span>
-        <span class="p">((</span><span class="nf">=number?</span> <span class="nv">m2</span> <span class="mi">1</span><span class="p">)</span> <span class="nv">m1</span><span class="p">)</span>
-        <span class="p">((</span><span class="k">and </span><span class="p">(</span><span class="nb">number? </span><span class="nv">m1</span><span class="p">)</span> <span class="p">(</span><span class="nb">number? </span><span class="nv">m2</span><span class="p">))</span> <span class="p">(</span><span class="nb">* </span><span class="nv">m1</span> <span class="nv">m2</span><span class="p">))</span>
-        <span class="p">(</span><span class="k">else </span><span class="p">(</span><span class="nb">list </span><span class="ss">&#39;*</span> <span class="nv">m1</span> <span class="nv">m2</span><span class="p">))))</span>
+<p>Monolithic <a href="https://www.haskell.org/tutorial/arrays.html">Arrays</a> is used to memorized the overlapped subprobramme.</p>
 
-<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">sum?</span> <span class="nv">x</span><span class="p">)</span>
-  <span class="p">(</span><span class="k">and </span><span class="p">(</span><span class="nb">pair? </span><span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">eq? </span><span class="p">(</span><span class="nb">car </span><span class="nv">x</span><span class="p">)</span> <span class="ss">&#39;+</span><span class="p">)))</span>
+<h4 id="home-work">Home Work</h4>
 
-<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">addend</span> <span class="nv">s</span><span class="p">)</span> <span class="p">(</span><span class="nb">cadr </span><span class="nv">s</span><span class="p">))</span>
-<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">augend</span> <span class="nv">s</span><span class="p">)</span> <span class="p">(</span><span class="nb">caddr </span><span class="nv">s</span><span class="p">))</span>
+<h5 id="exercise-1">Exercise 1</h5>
 
-<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">product?</span> <span class="nv">x</span><span class="p">)</span>
-  <span class="p">(</span><span class="k">and </span><span class="p">(</span><span class="nb">pair? </span><span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">eq? </span><span class="p">(</span><span class="nb">car </span><span class="nv">x</span><span class="p">)</span> <span class="ss">&#39;*</span><span class="p">)))</span>
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="nf">fib</span> <span class="ow">::</span> <span class="kt">Integer</span> <span class="ow">-&gt;</span> <span class="kt">Integer</span>
+<span class="nf">fib</span> <span class="n">n</span>
+  <span class="o">|</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">=</span> <span class="mi">0</span>
+  <span class="o">|</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">=</span> <span class="mi">1</span>
+  <span class="o">|</span> <span class="n">otherwise</span> <span class="ow">=</span> <span class="n">fib</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fib</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
 
-<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">multiplier</span> <span class="nv">p</span><span class="p">)</span> <span class="p">(</span><span class="nb">cadr </span><span class="nv">p</span><span class="p">))</span>
-<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">multiplicand</span> <span class="nv">p</span><span class="p">)</span> <span class="p">(</span><span class="nb">caddr </span><span class="nv">p</span><span class="p">))</span>
-<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">deriv</span> <span class="nv">exp</span> <span class="nv">var</span><span class="p">)</span>
-  <span class="p">(</span><span class="k">cond </span><span class="p">((</span><span class="nb">number? </span><span class="nv">exp</span><span class="p">)</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="p">((</span><span class="nf">variable?</span> <span class="nv">exp</span><span class="p">)</span>
-         <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nf">same-variable?</span> <span class="nv">exp</span> <span class="nv">var</span><span class="p">)</span> <span class="mi">1</span> <span class="mi">0</span><span class="p">))</span>
-        <span class="p">((</span><span class="nf">sum?</span> <span class="nv">exp</span><span class="p">)</span>
-         <span class="p">(</span><span class="nf">make-sum</span> <span class="p">(</span><span class="nf">deriv</span> <span class="p">(</span><span class="nf">addend</span> <span class="nv">exp</span><span class="p">)</span> <span class="nv">var</span><span class="p">)</span>
-                   <span class="p">(</span><span class="nf">deriv</span> <span class="p">(</span><span class="nf">augend</span> <span class="nv">exp</span><span class="p">)</span> <span class="nv">var</span><span class="p">)))</span>
-        <span class="p">((</span><span class="nf">product?</span> <span class="nv">exp</span><span class="p">)</span>
-         <span class="p">(</span><span class="nf">make-sum</span>
-           <span class="p">(</span><span class="nf">make-product</span> <span class="p">(</span><span class="nf">multiplier</span> <span class="nv">exp</span><span class="p">)</span>
-                         <span class="p">(</span><span class="nf">deriv</span> <span class="p">(</span><span class="nf">multiplicand</span> <span class="nv">exp</span><span class="p">)</span> <span class="nv">var</span><span class="p">))</span>
-           <span class="p">(</span><span class="nf">make-product</span> <span class="p">(</span><span class="nf">deriv</span> <span class="p">(</span><span class="nf">multiplier</span> <span class="nv">exp</span><span class="p">)</span> <span class="nv">var</span><span class="p">)</span>
-                         <span class="p">(</span><span class="nf">multiplicand</span> <span class="nv">exp</span><span class="p">))))</span>
-        <span class="p">((</span><span class="nf">exponentiation?</span> <span class="nv">exp</span><span class="p">)</span>
-         <span class="p">(</span><span class="nf">make-product</span>
-           <span class="p">(</span><span class="nf">exponent</span> <span class="nv">exp</span><span class="p">)</span>
-           <span class="p">(</span><span class="nf">make-product</span>
-             <span class="p">(</span><span class="nf">make-exponentiation</span>
-               <span class="p">(</span><span class="nf">base</span> <span class="nv">exp</span><span class="p">)</span>
-               <span class="p">(</span><span class="nf">make-sum</span> <span class="p">(</span><span class="nf">exponent</span> <span class="nv">exp</span><span class="p">)</span> <span class="p">(</span><span class="nb">- </span><span class="mi">1</span><span class="p">)))</span>
-             <span class="p">(</span><span class="nf">deriv</span> <span class="p">(</span><span class="nf">base</span> <span class="nv">exp</span><span class="p">)</span> <span class="nv">var</span><span class="p">))))</span>
-        <span class="p">(</span><span class="nf">else</span>
-         <span class="p">(</span><span class="nf">error</span> <span class="s">&quot;unknown expression type -- DERIV&quot;</span> <span class="nv">exp</span><span class="p">))))</span>
+<span class="nf">fibs1</span> <span class="ow">::</span> <span class="p">[</span><span class="kt">Integer</span><span class="p">]</span>
+<span class="nf">fibs1</span> <span class="ow">=</span> <span class="n">map</span> <span class="n">fib</span> <span class="p">[</span><span class="mi">0</span><span class="o">..</span><span class="p">]</span></code></pre></div>
 
-<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">make-exponentiation</span> <span class="nv">base</span> <span class="nv">exp</span><span class="p">)</span>
-  <span class="p">(</span><span class="k">cond </span><span class="p">((</span><span class="nf">=number?</span> <span class="nv">exp</span> <span class="mi">0</span><span class="p">)</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="p">((</span><span class="nf">=number?</span> <span class="nv">exp</span> <span class="mi">1</span><span class="p">)</span> <span class="nv">base</span><span class="p">)</span>
-        <span class="p">(</span><span class="k">else </span><span class="p">(</span><span class="nb">list </span><span class="ss">&#39;**</span> <span class="nv">base</span> <span class="nv">exp</span><span class="p">))))</span>
+<h5 id="exercise-2">Exercise 2</h5>
 
-<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">exponentiation?</span> <span class="nv">x</span><span class="p">)</span>
-  <span class="p">(</span><span class="k">and </span><span class="p">(</span><span class="nb">pair? </span><span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">eq? </span><span class="p">(</span><span class="nb">car </span><span class="nv">x</span><span class="p">)</span> <span class="ss">&#39;**</span><span class="p">)))</span>
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="nf">fibs2</span> <span class="ow">::</span> <span class="p">[</span><span class="kt">Integer</span><span class="p">]</span>
+<span class="nf">fibs2</span> <span class="ow">=</span> <span class="mi">0</span> <span class="kt">:</span> <span class="mi">1</span> <span class="kt">:</span> <span class="n">zipWith</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span> <span class="n">fibs2</span> <span class="p">(</span><span class="n">tail</span> <span class="n">fibs2</span><span class="p">)</span></code></pre></div>
 
-<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">base</span> <span class="nv">e</span><span class="p">)</span> <span class="p">(</span><span class="nb">cadr </span><span class="nv">e</span><span class="p">))</span>
+<h5 id="exercise-3">Exercise 3</h5>
 
-<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">exponent</span> <span class="nv">e</span><span class="p">)</span> <span class="p">(</span><span class="nb">caddr </span><span class="nv">e</span><span class="p">))</span></code></pre></div>
+<p><code>cons</code> is mentioned in the lecture, but use record syntax makes it
+much more cleaner.</p>
 
-<p>The tricky part to use all the high level function such as
-<code>make-sum</code>, as the <code>exp</code> could be a expression as well.</p>
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="kr">data</span> <span class="kt">Stream</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">Stream</span> <span class="p">{</span> <span class="n">streamToList</span> <span class="ow">::</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="p">}</span>
 
-<h4 id="section-1">2.57</h4>
+<span class="kr">instance</span> <span class="p">(</span><span class="kt">Show</span> <span class="n">a</span><span class="p">)</span> <span class="ow">=&gt;</span> <span class="kt">Show</span> <span class="p">(</span><span class="kt">Stream</span> <span class="n">a</span><span class="p">)</span> <span class="kr">where</span>
+  <span class="n">show</span> <span class="ow">=</span>  <span class="n">show</span> <span class="o">.</span> <span class="n">take</span> <span class="mi">20</span> <span class="o">.</span> <span class="n">streamToList</span></code></pre></div>
 
-<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">augend</span> <span class="nv">s</span><span class="p">)</span>
-  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">null? </span><span class="nv">cdddr</span> <span class="nv">s</span><span class="p">)</span>
-    <span class="p">(</span><span class="nb">caddr </span><span class="nv">s</span><span class="p">)</span>
-    <span class="p">(</span><span class="nb">cons </span><span class="ss">&#39;+</span> <span class="p">(</span><span class="nb">cddr </span><span class="nv">s</span><span class="p">))))</span></code></pre></div>
+<h5 id="exercise-4">Exercise 4</h5>
 
-<h4 id="section-2">2.58</h4>
-<p>Skipped</p>
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="nf">streamRepeat</span> <span class="ow">::</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Stream</span> <span class="n">a</span>
+<span class="nf">streamRepeat</span> <span class="ow">=</span> <span class="kt">Stream</span> <span class="o">.</span> <span class="n">repeat</span>
+
+<span class="nf">streamMap</span> <span class="ow">::</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="kt">Stream</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Stream</span> <span class="n">b</span>
+<span class="nf">streamMap</span> <span class="n">f</span> <span class="ow">=</span> <span class="kt">Stream</span> <span class="o">.</span> <span class="n">map</span> <span class="n">f</span> <span class="o">.</span> <span class="n">streamToList</span>
+
+<span class="nf">streamFromSeed</span> <span class="ow">::</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">a</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Stream</span> <span class="n">a</span>
+<span class="nf">streamFromSeed</span> <span class="n">f</span> <span class="ow">=</span> <span class="kt">Stream</span> <span class="o">.</span> <span class="n">iterate</span> <span class="n">f</span></code></pre></div>
+
+<h5 id="exercise-5">Exercise 5</h5>
+
+<p><a href="http://codereview.stackexchange.com/questions/66700/implementing-function-that-maps-over-stream">Explanation</a></p>
+
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="nf">nats</span> <span class="ow">::</span> <span class="kt">Stream</span> <span class="kt">Integer</span>
+<span class="nf">nats</span> <span class="ow">=</span> <span class="kt">Stream</span> <span class="p">[</span><span class="mi">0</span><span class="o">..</span><span class="p">]</span>
+
+<span class="nf">interleaveStreams</span> <span class="ow">::</span> <span class="kt">Stream</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Stream</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Stream</span> <span class="n">a</span>
+<span class="nf">interleaveStreams</span> <span class="p">(</span><span class="kt">Stream</span> <span class="p">(</span><span class="n">x</span><span class="kt">:</span><span class="n">xs</span><span class="p">))</span> <span class="n">s</span> <span class="ow">=</span>
+  <span class="kt">Stream</span> <span class="o">$</span> <span class="n">x</span> <span class="kt">:</span> <span class="n">streamToList</span> <span class="p">(</span><span class="n">interleaveStreams</span> <span class="n">s</span> <span class="p">(</span><span class="kt">Stream</span> <span class="n">xs</span><span class="p">))</span>
+
+
+<span class="nf">ruler</span> <span class="ow">::</span> <span class="kt">Stream</span> <span class="kt">Integer</span>
+<span class="nf">ruler</span> <span class="ow">=</span> <span class="n">foldr1</span> <span class="n">interleaveStreams</span> <span class="p">(</span><span class="n">map</span> <span class="n">streamRepeat</span> <span class="p">[</span><span class="mi">0</span><span class="o">..</span><span class="p">])</span></code></pre></div>
 
 
 	</div>
@@ -275,18 +277,12 @@ h3,h4 {
 		
 		
 		
-			&laquo;&nbsp;<a href="/2015/02/22/sicp-2-3-3" rel="next" title="sicp-2.3.3">sicp-2.3.3</a>
-		
 	
-		
-			
-				|
-			
 		
 		
 	
 		
-			<a href="/2015/02/20/sicp-2-3-1-2-3-2" rel="previous" title="sicp-2.3.1-2.3.2">sicp-2.3.1-2.3.2</a>&nbsp;&raquo;
+			<a href="/2015/08/18/more-polymorphism-and-type-classes" rel="previous" title="More polymorphism and type classes">More polymorphism and type classes</a>&nbsp;&raquo;
 		
 	
 		<br />
@@ -312,8 +308,8 @@ h3,h4 {
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://kamelzcs.github.com/2015/02/21/sicp-2-3-2';
-        var disqus_url = 'http://kamelzcs.github.com/2015/02/21/sicp-2-3-2';
+        var disqus_identifier = 'http://kamelzcs.github.com/2015/08/18/lazy-evaluation';
+        var disqus_url = 'http://kamelzcs.github.com/2015/08/18/lazy-evaluation';
         var disqus_script = 'embed.js';
       
     (function () {
