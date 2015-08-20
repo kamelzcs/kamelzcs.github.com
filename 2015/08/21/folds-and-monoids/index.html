@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<title>Folds and monoids - kamelzcs's library</title>
+	
+	
+	<meta name="author" content="kamelzcs" />
+	
+	<meta name="description" content="Folds and monoids" />
+	
+
+	
+
+	<meta name="robots" content="noodp, nydir" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	
+	<link href="/css/blueprint/screen.css" type="text/css" rel="stylesheet" />
+	<!--[if lt IE 8]> <link href="/css/blueprint/ie.css" type="text/css" rel="stylesheet" /> <![endif]-->	 
+	<link href="/css/railscasts.css" type="text/css" rel="stylesheet" />
+	<link href="/css/site.css" type="text/css" rel="stylesheet" />
+
+	<script type="text/javascript" src="/js/writeCapture-1.0.5-nolib-min.js"></script>
+		<script type="text/javascript" src="/js/jquery.js"></script>
+	<script type="text/javascript" src="/js/site.js"></script>
+	<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-45986644-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+	<script src="https://www.google.com/jsapi" type="text/javascript"></script>
+  <script language="Javascript" type="text/javascript">
+  //<![CDATA[
+google.load("search", "1");
+
+function OnLoad() {
+	// Create a search control
+	var searchControl = new google.search.SearchControl();
+	
+	// Add in a WebSearch
+	var webSearch = new google.search.WebSearch();
+	
+	// Restrict our search to pages from this site
+	webSearch.setSiteRestriction('kamelzcs.github.com');
+	
+	// Add the searcher to the SearchControl
+	searchControl.addSearcher(webSearch);
+	
+	// tell the searcher to draw itself and tell it where to attach
+	searchControl.draw(document.getElementById("searchcontrol"));
+	// Add the value of "Search..." to the input field and a class of .empty
+}
+
+google.setOnLoadCallback(function() {
+  $(function() {
+	OnLoad()
+	$(".gsc-input > input").val("Search... powered by Google").addClass("empty");
+	 
+	// When you click on #search
+	$(".gsc-input > input").focus(function(){
+	 
+		// If the value is equal to "Search..."
+		if($(this).val() == "Search... powered by Google") {
+			// remove all the text and the class of .empty
+			$(this).val("").removeClass("empty");;
+		}
+		this.select();
+	});
+	 
+	// When the focus on #search is lost
+	$(".gsc-input > input").blur(function(){
+	 
+		// If the input field is empty
+		if($(this).val() == "") {
+			// Add the text "Search..." and a class of .empty
+			$(this).val("Search... powered by Google").addClass("empty");
+		}
+	});
+
+	$("#comment_heading").click(function()
+	{
+		$(this).next("#disqus_thread").slideToggle(500);
+		if($(this).text() == "Show Comments") {
+			$(this).text("Hide Comments")
+		}else{
+			$(this).text("Show Comments")
+		}
+	});
+		
+  });
+});
+
+
+  //]]>
+  </script>
+
+
+	<!-- mathjax config similar to math.stackexchange -->
+	<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({
+	  jax: ["input/TeX", "output/HTML-CSS"],
+	  tex2jax: {
+		inlineMath: [ ['$', '$'] ],
+		displayMath: [ ['$$', '$$']],
+		processEscapes: true,
+		skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+	  },
+	  messageStyle: "none",
+	  "HTML-CSS": {
+		  preferredFont: "TeX",
+		  availableFonts: ["STIX","TeX"],
+		  }
+	});
+	</script>
+	<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+	<!-- mathjax css conflict with pygments -->
+	<style>
+	.MathJax .mo,
+	.MathJax .mi {
+	  color: inherit;
+	</style>
+
+</head>
+
+<body>
+	<div class="container">
+	<!-- <div class="container showgrid"> -->
+		<div id="header" class="span-24">
+  <div id="menu" class="span-15 last">
+    <ul>
+      <li class="first"><a href="/">Home</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/blog">Blog</a></li>
+      <li><a href="/archives">Archives</a></li>
+      <li><a href="/projects">Projects</a></li>
+      <!--<li class="last"><a id="mail" href="mailto:kamelzcs@gmail.com">Contact</a></li>-->
+    </ul>
+  </div>
+</div>
+
+		
+		<div id="main" class="span-17">
+			<style type="text/css">
+h3,h4{ 
+	color: #335E8D;
+}			
+h3,h4 {
+	margin-left		: 3px;
+	font-variant	: small-caps;
+	font-weight		: normal;
+	border-bottom : 1px dotted #ccc;	
+}
+</style>
+
+
+
+
+<div class="post" id="main-content">
+	<h1>Folds and monoids</h1>
+	<h4 class="large-bottom">
+		Posted on August 21, 2015
+		 in <a href="/categories/functional-programming">Functional Programming</a> 
+
+		<span class="tag-list">
+			
+			<a href="/tags/haskell">Haskell</a>
+			
+			<a href="/tags/cis194">CIS194</a>
+			
+		</span>
+	</h4>
+	
+	<div class="content">
+		<h4 id="lecture-contents">Lecture Contents</h4>
+
+<p>To understand the different relations between type classes, <a href="https://wiki.haskell.org/Typeclassopedia">Type class</a> is a great reference.</p>
+
+<p>This is a <a href="https://wiki.haskell.org/wikiupload/d/df/Typeclassopedia-diagram.png">fantastic picture</a>.</p>
+
+<h4 id="home-work">Home Work</h4>
+
+<h5 id="exercise-1">Exercise 1</h5>
+
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="p">(</span><span class="o">+++</span><span class="p">)</span> <span class="ow">::</span> <span class="kt">Monoid</span> <span class="n">m</span> <span class="ow">=&gt;</span> <span class="kt">JoinList</span> <span class="n">m</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">JoinList</span> <span class="n">m</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">JoinList</span> <span class="n">m</span> <span class="n">a</span>
+<span class="nf">l1</span> <span class="o">+++</span> <span class="n">l2</span> <span class="ow">=</span> <span class="kt">Append</span> <span class="p">(</span><span class="n">tag</span> <span class="n">l1</span> <span class="p">`</span><span class="n">mappend</span><span class="p">`</span> <span class="n">tag</span> <span class="n">l2</span><span class="p">)</span> <span class="n">l1</span> <span class="n">l2</span></code></pre></div>
+
+<h5 id="exercise-2">Exercise 2</h5>
+
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="c1">-- 1. Implement the function indexJ to find the JoinList element at</span>
+<span class="c1">-- the specified index; it should satisfy the equivalence:</span>
+<span class="c1">--     (indexJ i jl) == (jlToList jl !!? i)</span>
+
+<span class="nf">indexJ</span> <span class="ow">::</span> <span class="p">(</span><span class="kt">Sized</span> <span class="n">b</span><span class="p">,</span> <span class="kt">Monoid</span> <span class="n">b</span><span class="p">)</span> <span class="ow">=&gt;</span> <span class="kt">Int</span> <span class="ow">-&gt;</span> <span class="kt">JoinList</span> <span class="n">b</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="kt">Maybe</span> <span class="n">a</span>
+<span class="nf">indexJ</span> <span class="kr">_</span> <span class="kt">Empty</span> <span class="ow">=</span> <span class="kt">Nothing</span>
+<span class="nf">indexJ</span> <span class="n">i</span> <span class="kr">_</span> <span class="o">|</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">=</span> <span class="kt">Nothing</span>
+<span class="nf">indexJ</span> <span class="n">i</span> <span class="p">(</span><span class="kt">Single</span> <span class="kr">_</span> <span class="kr">_</span><span class="p">)</span> <span class="o">|</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">=</span> <span class="kt">Nothing</span>
+<span class="nf">indexJ</span> <span class="kr">_</span> <span class="p">(</span><span class="kt">Single</span> <span class="kr">_</span> <span class="n">a</span><span class="p">)</span> <span class="ow">=</span> <span class="kt">Just</span> <span class="n">a</span>
+<span class="nf">indexJ</span> <span class="n">i</span> <span class="n">p</span><span class="o">@</span><span class="p">(</span><span class="kt">Append</span> <span class="kr">_</span> <span class="n">l</span> <span class="n">r</span><span class="p">)</span>
+  <span class="o">|</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="n">sz</span> <span class="n">p</span> <span class="ow">=</span> <span class="kt">Nothing</span>
+  <span class="o">|</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">lsize</span> <span class="ow">=</span> <span class="n">indexJ</span> <span class="n">i</span> <span class="n">l</span>
+  <span class="o">|</span> <span class="n">otherwise</span> <span class="ow">=</span> <span class="n">indexJ</span> <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="n">lsize</span><span class="p">)</span> <span class="n">r</span>
+  <span class="kr">where</span> <span class="n">lsize</span> <span class="ow">=</span> <span class="n">sz</span> <span class="n">l</span>
+
+<span class="c1">-- 2. Implement the function dropJ to drop first n elements of a</span>
+<span class="c1">-- JoinList; it should satisfy the equivalence:</span>
+<span class="c1">--     jlToList (dropJ n jl) = drop n (jlToList jl)</span>
+
+<span class="nf">dropJ</span> <span class="ow">::</span> <span class="p">(</span><span class="kt">Sized</span> <span class="n">b</span><span class="p">,</span> <span class="kt">Monoid</span> <span class="n">b</span><span class="p">)</span> <span class="ow">=&gt;</span> <span class="kt">Int</span> <span class="ow">-&gt;</span> <span class="kt">JoinList</span> <span class="n">b</span> <span class="n">a</span> <span class="ow">-&gt;</span><span class="kt">JoinList</span> <span class="n">b</span> <span class="n">a</span>
+<span class="nf">dropJ</span> <span class="kr">_</span> <span class="kt">Empty</span>        <span class="ow">=</span> <span class="kt">Empty</span>
+<span class="nf">dropJ</span> <span class="n">n</span> <span class="n">l</span> <span class="o">|</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">=</span> <span class="n">l</span>
+<span class="nf">dropJ</span> <span class="kr">_</span> <span class="p">(</span><span class="kt">Single</span> <span class="kr">_</span> <span class="kr">_</span><span class="p">)</span> <span class="ow">=</span> <span class="kt">Empty</span>
+<span class="nf">dropJ</span> <span class="n">n</span> <span class="p">(</span><span class="kt">Append</span> <span class="kr">_</span> <span class="n">l</span> <span class="n">r</span><span class="p">)</span>
+  <span class="o">|</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">lsize</span> <span class="ow">=</span> <span class="p">(</span><span class="n">dropJ</span> <span class="n">n</span> <span class="n">l</span><span class="p">)</span> <span class="o">+++</span> <span class="n">r</span>
+  <span class="o">|</span> <span class="n">otherwise</span> <span class="ow">=</span> <span class="n">dropJ</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">lsize</span><span class="p">)</span> <span class="n">r</span>
+  <span class="kr">where</span> <span class="n">lsize</span> <span class="ow">=</span> <span class="n">sz</span> <span class="n">l</span>
+
+<span class="c1">-- 3. Implement the function takeJ to return the first n elements of a</span>
+<span class="c1">-- JoinList, dropping all other elements; it should satisfy the equivalence:</span>
+<span class="c1">--     jlToList (takeJ n jl) == take n (jlToList jl)</span>
+
+<span class="nf">takeJ</span> <span class="ow">::</span> <span class="p">(</span><span class="kt">Sized</span> <span class="n">b</span><span class="p">,</span> <span class="kt">Monoid</span> <span class="n">b</span><span class="p">)</span> <span class="ow">=&gt;</span> <span class="kt">Int</span> <span class="ow">-&gt;</span> <span class="kt">JoinList</span> <span class="n">b</span> <span class="n">a</span> <span class="ow">-&gt;</span><span class="kt">JoinList</span> <span class="n">b</span> <span class="n">a</span>
+<span class="nf">takeJ</span> <span class="kr">_</span> <span class="kt">Empty</span>          <span class="ow">=</span> <span class="kt">Empty</span>
+<span class="nf">takeJ</span> <span class="n">n</span> <span class="kr">_</span>  <span class="o">|</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span>    <span class="ow">=</span> <span class="kt">Empty</span>
+<span class="nf">takeJ</span> <span class="n">n</span> <span class="n">j</span> <span class="o">|</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&gt;=</span> <span class="n">sz</span> <span class="n">j</span> <span class="ow">=</span> <span class="n">j</span>
+<span class="nf">takeJ</span> <span class="n">n</span> <span class="p">(</span><span class="kt">Append</span> <span class="kr">_</span> <span class="n">l</span> <span class="n">r</span><span class="p">)</span>
+  <span class="o">|</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">lsize</span> <span class="ow">=</span> <span class="n">takeJ</span> <span class="n">n</span> <span class="n">l</span>
+  <span class="o">|</span> <span class="n">otherwise</span> <span class="ow">=</span> <span class="n">l</span> <span class="o">+++</span> <span class="n">takeJ</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">lsize</span><span class="p">)</span> <span class="n">r</span>
+  <span class="kr">where</span> <span class="n">lsize</span> <span class="ow">=</span> <span class="n">sz</span> <span class="n">l</span></code></pre></div>
+
+<h5 id="exercise-3">Exercise 3</h5>
+
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="kr">module</span> <span class="nn">Scrabble</span> <span class="kr">where</span>
+
+<span class="kr">import</span> <span class="nn">Data.Monoid</span>
+
+<span class="kr">data</span> <span class="kt">Score</span> <span class="ow">=</span> <span class="kt">Score</span> <span class="kt">Int</span>
+             <span class="kr">deriving</span> <span class="p">(</span><span class="kt">Eq</span><span class="p">,</span> <span class="kt">Show</span><span class="p">)</span>
+
+<span class="kr">instance</span> <span class="kt">Monoid</span> <span class="kt">Score</span> <span class="kr">where</span>
+  <span class="n">mempty</span> <span class="ow">=</span> <span class="kt">Score</span> <span class="mi">0</span>
+  <span class="kt">Score</span> <span class="n">a</span> <span class="p">`</span><span class="n">mappend</span><span class="p">`</span> <span class="kt">Score</span> <span class="n">b</span> <span class="ow">=</span> <span class="kt">Score</span> <span class="p">(</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="p">)</span>
+
+<span class="nf">score</span> <span class="ow">::</span> <span class="kt">Char</span> <span class="ow">-&gt;</span> <span class="kt">Score</span>
+<span class="nf">score</span> <span class="n">c</span>
+  <span class="o">|</span> <span class="n">c</span> <span class="p">`</span><span class="n">elem</span><span class="p">`</span> <span class="s">&quot;aeilnorstuAEILNORSTU&quot;</span> <span class="ow">=</span> <span class="kt">Score</span> <span class="mi">1</span>
+  <span class="o">|</span> <span class="n">c</span> <span class="p">`</span><span class="n">elem</span><span class="p">`</span> <span class="s">&quot;dgDG&quot;</span>                 <span class="ow">=</span> <span class="kt">Score</span> <span class="mi">2</span>
+  <span class="o">|</span> <span class="n">c</span> <span class="p">`</span><span class="n">elem</span><span class="p">`</span> <span class="s">&quot;bcmpBCMP&quot;</span>             <span class="ow">=</span> <span class="kt">Score</span> <span class="mi">3</span>
+  <span class="o">|</span> <span class="n">c</span> <span class="p">`</span><span class="n">elem</span><span class="p">`</span> <span class="s">&quot;fhvwyFHVWY&quot;</span>           <span class="ow">=</span> <span class="kt">Score</span> <span class="mi">4</span>
+  <span class="o">|</span> <span class="n">c</span> <span class="p">`</span><span class="n">elem</span><span class="p">`</span> <span class="s">&quot;kK&quot;</span>                   <span class="ow">=</span> <span class="kt">Score</span> <span class="mi">5</span>
+  <span class="o">|</span> <span class="n">c</span> <span class="p">`</span><span class="n">elem</span><span class="p">`</span> <span class="s">&quot;jxJX&quot;</span>                 <span class="ow">=</span> <span class="kt">Score</span> <span class="mi">8</span>
+  <span class="o">|</span> <span class="n">c</span> <span class="p">`</span><span class="n">elem</span><span class="p">`</span> <span class="s">&quot;qzQZ&quot;</span>                 <span class="ow">=</span> <span class="kt">Score</span> <span class="mi">10</span>
+  <span class="o">|</span> <span class="n">otherwise</span>                       <span class="ow">=</span> <span class="kt">Score</span> <span class="mi">0</span>
+
+<span class="nf">scoreString</span> <span class="ow">::</span> <span class="kt">String</span> <span class="ow">-&gt;</span> <span class="kt">Score</span>
+<span class="nf">scoreString</span> <span class="ow">=</span> <span class="n">foldr</span> <span class="p">((</span><span class="o">&lt;&gt;</span><span class="p">)</span><span class="o">.</span><span class="n">score</span><span class="p">)</span> <span class="o">$</span> <span class="kt">Score</span> <span class="mi">0</span></code></pre></div>
+
+<p>Test code:</p>
+
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">*</span><span class="kt">JoinList</span><span class="o">&gt;</span> <span class="n">scoreLine</span> <span class="s">&quot;yay &quot;</span> <span class="o">+++</span> <span class="n">scoreLine</span> <span class="s">&quot;haskell!&quot;</span>
+<span class="kt">Append</span> <span class="p">(</span><span class="kt">Score</span> <span class="mi">23</span><span class="p">)</span> <span class="p">(</span><span class="kt">Single</span> <span class="p">(</span><span class="kt">Score</span> <span class="mi">9</span><span class="p">)</span> <span class="s">&quot;yay &quot;</span><span class="p">)</span> <span class="p">(</span><span class="kt">Single</span> <span class="p">(</span><span class="kt">Score</span> <span class="mi">14</span><span class="p">)</span> <span class="s">&quot;haskell!&quot;</span><span class="p">)</span></code></pre></div>
+
+<h5 id="exercise-4">Exercise 4</h5>
+
+<p>The magical part is <code>(Sized b, Monoid b)</code> restriction to <code>Sized (a,b)</code>.</p>
+
+<p>To make it valid, besides the auto implemented</p>
+
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="kr">instance</span> <span class="p">(</span><span class="kt">Monoid</span> <span class="n">a</span><span class="p">,</span> <span class="kt">Monoid</span> <span class="n">b</span><span class="p">)</span> <span class="ow">=&gt;</span> <span class="kt">Monoid</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span> <span class="kr">where</span>
+<span class="nf">mempty</span> <span class="ow">=</span> <span class="p">(</span><span class="n">mempty</span><span class="p">,</span> <span class="n">mempty</span><span class="p">)</span>
+<span class="nf">mappend</span> <span class="p">(</span><span class="n">a1</span><span class="p">,</span><span class="n">b1</span><span class="p">)</span> <span class="p">(</span><span class="n">a2</span><span class="p">,</span><span class="n">b2</span><span class="p">)</span> <span class="ow">=</span> <span class="p">(</span><span class="n">mappend</span> <span class="n">a1</span> <span class="n">a2</span><span class="p">,</span> <span class="n">mappend</span> <span class="n">b1</span> <span class="n">b2</span><span class="p">)</span></code></pre></div>
+
+<p>The functions in <code>Sized.hs</code> is also critical.</p>
+
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="kr">instance</span> <span class="kt">Sized</span> <span class="kt">Size</span> <span class="kr">where</span>
+  <span class="n">size</span> <span class="ow">=</span> <span class="n">id</span>
+
+<span class="c1">-- This instance means that things like</span>
+<span class="c1">--   (Foo, Size)</span>
+<span class="c1">--   (Foo, (Bar, Size))</span>
+<span class="c1">--   ...</span>
+<span class="c1">-- are all instances of Sized.</span>
+<span class="kr">instance</span> <span class="kt">Sized</span> <span class="n">b</span> <span class="ow">=&gt;</span> <span class="kt">Sized</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span> <span class="kr">where</span>
+  <span class="n">size</span> <span class="ow">=</span> <span class="n">size</span> <span class="o">.</span> <span class="n">snd</span>
+
+<span class="kr">instance</span> <span class="kt">Monoid</span> <span class="kt">Size</span> <span class="kr">where</span>
+  <span class="n">mempty</span>  <span class="ow">=</span> <span class="kt">Size</span> <span class="mi">0</span>
+  <span class="n">mappend</span> <span class="ow">=</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span></code></pre></div>
+
+<p>Thanks to these functions, the previously implemented <code>indexJ</code>, <code>dropJ</code>, <code>takeJ</code> are still valid to the <code>(Score, Size)</code></p>
+
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="kr">type</span> <span class="kt">JLBuffer</span> <span class="ow">=</span> <span class="kt">JoinList</span> <span class="p">(</span><span class="kt">Score</span><span class="p">,</span> <span class="kt">Size</span><span class="p">)</span> <span class="kt">String</span>
+
+<span class="kr">instance</span> <span class="kt">Buffer</span> <span class="kt">JLBuffer</span> <span class="kr">where</span>
+
+  <span class="c1">-- toString :: JLBuffer -&gt; String</span>
+  <span class="n">toString</span> <span class="ow">=</span> <span class="n">concat</span> <span class="o">.</span> <span class="n">jlToList</span>
+
+  <span class="c1">-- fromString :: String -&gt; JLBuffer</span>
+  <span class="n">fromString</span> <span class="ow">=</span> <span class="n">foldr1</span> <span class="p">(</span><span class="o">+++</span><span class="p">)</span> <span class="o">.</span> <span class="n">map</span><span class="p">(</span><span class="nf">\</span><span class="n">x</span> <span class="ow">-&gt;</span> <span class="kt">Single</span> <span class="p">(</span><span class="n">scoreString</span> <span class="n">x</span><span class="p">,</span> <span class="kt">Size</span> <span class="mi">1</span><span class="p">)</span> <span class="n">x</span><span class="p">)</span> <span class="o">.</span> <span class="n">lines</span>
+
+  <span class="c1">-- line :: Int -&gt; JLBuffer -&gt; Maybe String</span>
+  <span class="n">line</span> <span class="ow">=</span> <span class="n">indexJ</span>
+
+  <span class="c1">-- replaceLine :: Int -&gt; String -&gt; JLBuffer -&gt; JLBuffer</span>
+  <span class="n">replaceLine</span> <span class="n">n</span> <span class="n">str</span> <span class="n">jlb</span> <span class="ow">=</span>
+    <span class="n">takeJ</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="n">jlb</span> <span class="o">+++</span> <span class="kt">Single</span> <span class="p">(</span><span class="n">scoreString</span> <span class="n">str</span><span class="p">,</span> <span class="kt">Size</span> <span class="mi">1</span><span class="p">)</span> <span class="n">str</span> <span class="o">+++</span> <span class="n">dropJ</span> <span class="n">n</span> <span class="n">jlb</span>
+
+  <span class="c1">-- numLines :: JLBuffer -&gt; Int</span>
+  <span class="n">numLines</span> <span class="ow">=</span> <span class="n">sz</span>
+
+  <span class="c1">-- value :: JLBuffer -&gt; Int</span>
+  <span class="n">value</span> <span class="ow">=</span> <span class="n">scorev</span> <span class="o">.</span> <span class="n">fst</span> <span class="o">.</span> <span class="n">tag</span>
+          <span class="kr">where</span> <span class="n">scorev</span> <span class="p">(</span><span class="kt">Score</span> <span class="n">i</span><span class="p">)</span> <span class="ow">=</span> <span class="n">i</span>
+
+<span class="c1">-- JLBuffer based editor</span>
+
+<span class="nf">main</span> <span class="ow">::</span> <span class="kt">IO</span><span class="nb">()</span>
+<span class="nf">main</span> <span class="ow">=</span> <span class="n">runEditor</span> <span class="n">editor</span> <span class="n">jlb</span>
+  <span class="kr">where</span> <span class="n">jlb</span> <span class="ow">=</span> <span class="n">fromString</span> <span class="o">$</span> <span class="n">unlines</span>
+         <span class="p">[</span> <span class="s">&quot;This buffer is for notes you don&#39;t want to save, and for&quot;</span>
+         <span class="p">,</span> <span class="s">&quot;evaluation of steam valve coefficients.&quot;</span>
+         <span class="p">,</span> <span class="s">&quot;To load a different file, type the character L followed&quot;</span>
+         <span class="p">,</span> <span class="s">&quot;by the name of the file.&quot;</span>
+         <span class="p">]</span> <span class="ow">::</span> <span class="kt">JLBuffer</span></code></pre></div>
+
+
+	</div>
+	
+	<div class="next-prev-nav low-top">
+		
+		-----------------------------------
+		<b>本文内容遵从<a title="Content licenced under Creative Commons by-nc-sa 3.0" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.zh">CC版权协议</a>转载请注明出自<a href="http://kamelzcs.github.com">kamelzcs</a></b>
+		-----------------------------------
+		<hr/>
+		
+		
+		
+	
+		
+		
+	
+		
+			<a href="/2015/08/18/lazy-evaluation" rel="previous" title="Lazy evaluation">Lazy evaluation</a>&nbsp;&raquo;
+		
+	
+		<br />
+	</div>
+
+	<hr />
+	<!--<div class="sharing">
+	
+	 
+	
+	
+	
+	
+	
+	
+	 
+</div>
+ -->
+	
+
+<script type="text/javascript">
+      var disqus_shortname = 'kamelzcs';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://kamelzcs.github.com/2015/08/21/folds-and-monoids';
+        var disqus_url = 'http://kamelzcs.github.com/2015/08/21/folds-and-monoids';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+	<div>
+		<h2 id='comment_heading'>Hide Comments</h2>
+		<div id="disqus_thread" aria-live="polite"><div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'kamelzcs'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+	</div>
+</div>
+
+		</div>
+		
+		
+			<div id="sidebar" class="span-6 push-1 last">
+	<div class="sidebar-module" id='gsearcher'>
+				 
+		<div id="searchcontrol">
+			
+		</div>
+		
+	</div>
+
+	<div class="sidebar-module">
+		<div class="title"><a href='/tags'>Tags</a></div>
+		
+            <span style="font-size: 95%">
+              <a href="/tags/app-engine/" title="5 posts">App Engine</a>
+            </span>
+          
+            <span style="font-size: 80%">
+              <a href="/tags/bash/" title="2 posts">Bash</a>
+            </span>
+          
+            <span style="font-size: 80%">
+              <a href="/tags/c++/" title="2 posts">C++</a>
+            </span>
+          
+            <span style="font-size: 105%">
+              <a href="/tags/cis194/" title="7 posts">CIS194</a>
+            </span>
+          
+            <span style="font-size: 95%">
+              <a href="/tags/database/" title="5 posts">Database</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/datastructure/" title="1 post">Datastructure</a>
+            </span>
+          
+            <span style="font-size: 85%">
+              <a href="/tags/git/" title="3 posts">Git</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/github/" title="1 post">Github</a>
+            </span>
+          
+            <span style="font-size: 110%">
+              <a href="/tags/haskell/" title="8 posts">Haskell</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/ipsc/" title="1 post">IPSC</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/java/" title="1 post">Java</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/jekyll/" title="1 post">Jekyll</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/jinja2/" title="1 post">Jinja2</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/life/" title="1 post">Life</a>
+            </span>
+          
+            <span style="font-size: 280%">
+              <a href="/tags/lisp/" title="42 posts">Lisp</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/polymorphism/" title="1 post">Polymorphism</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/python/" title="1 post">Python</a>
+            </span>
+          
+            <span style="font-size: 80%">
+              <a href="/tags/review/" title="2 posts">Review</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/solarized/" title="1 post">Solarized</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/sourcecode/" title="1 post">Sourcecode</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/template/" title="1 post">Template</a>
+            </span>
+          
+            <span style="font-size: 80%">
+              <a href="/tags/topcoder/" title="2 posts">Topcoder</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/variable-scope/" title="1 post">Variable scope</a>
+            </span>
+          
+            <span style="font-size: 80%">
+              <a href="/tags/vim/" title="2 posts">Vim</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/life/" title="1 post">life</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/亲情/" title="1 post">亲情</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/回忆/" title="1 post">回忆</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/大规模机器学习/" title="1 post">大规模机器学习</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/展望/" title="1 post">展望</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/日本/" title="1 post">日本</a>
+            </span>
+          
+            <span style="font-size: 80%">
+              <a href="/tags/生活/" title="2 posts">生活</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/诗歌/" title="1 post">诗歌</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/诗词/" title="1 post">诗词</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/语音/" title="1 post">语音</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/趋势/" title="1 post">趋势</a>
+            </span>
+          
+	</div>
+
+	<div class="sidebar-module">
+		<div class="title"><a href='/categories'>Categories</a></div>
+		<a href="/categories/jekyll"><strong>jekyll</strong></a> (1)<br /><a href="/categories/生活"><strong>生活</strong></a> (4)<br /><a href="/categories/语音"><strong>语音</strong></a> (1)<br /><a href="/categories/讲座"><strong>讲座</strong></a> (1)<br /><a href="/categories/technique"><strong>technique</strong></a> (6)<br /><a href="/categories/technology"><strong>technology</strong></a> (4)<br /><a href="/categories/vim"><strong>vim</strong></a> (1)<br /><a href="/categories/诗词"><strong>诗词</strong></a> (1)<br /><a href="/categories/life"><strong>life</strong></a> (3)<br /><a href="/categories/computer"><strong>computer</strong></a> (1)<br /><a href="/categories/linux"><strong>linux</strong></a> (1)<br /><a href="/categories/data-structure"><strong>data structure</strong></a> (1)<br /><a href="/categories/sicp"><strong>sicp</strong></a> (42)<br /><a href="/categories/cc++"><strong>c/c++</strong></a> (1)<br /><a href="/categories/contest"><strong>contest</strong></a> (2)<br /><a href="/categories/programming"><strong>programming</strong></a> (1)<br /><a href="/categories/algorithm"><strong>algorithm</strong></a> (1)<br /><a href="/categories/functional-programming"><strong>functional programming</strong></a> (8)<br />
+	</div>
+	
+	<div class="sidebar-module">
+		<div class="title"><a href='/archives'>Archives</a></div>
+		<a href="/2015/08"><strong>August 2015</strong></a> (8)<br /><a href="/2015/07"><strong>July 2015</strong></a> (2)<br /><a href="/2015/06"><strong>June 2015</strong></a> (2)<br /><a href="/2015/05"><strong>May 2015</strong></a> (1)<br /><a href="/2015/03"><strong>March 2015</strong></a> (13)<br /><a href="/2015/02"><strong>February 2015</strong></a> (30)<br /><a href="/2014/02"><strong>February 2014</strong></a> (1)<br /><a href="/2014/01"><strong>January 2014</strong></a> (4)<br /><a href="/2013/12"><strong>December 2013</strong></a> (2)<br /><a href="/2013/11"><strong>November 2013</strong></a> (8)<br /><a href="/2013/10"><strong>October 2013</strong></a> (2)<br /><a href="/2013/03"><strong>March 2013</strong></a> (3)<br /><a href="/2013/02"><strong>February 2013</strong></a> (2)<br /><a href="/2013/01"><strong>January 2013</strong></a> (1)<br /><a href="/2012/12"><strong>December 2012</strong></a> (1)<br />
+	</div>
+</div>
+
+		
+		
+		<div id="footer" class="span-24"> 
+<span  title="Content licenced under Creative Commons by-nc-sa 3.0">版权所有<a title="Content licenced under Creative Commons by-nc-sa 3.0" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.zh">&copy;</a> 
+	2012-2015 kamelzcs。
+</span> 
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="https://github.com/kamelzcs">GitHub</a>
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="http://weibo.com/u/2534942150">新浪微博</a>
+ &nbsp;&nbsp;&nbsp;&nbsp; <a href="http://twitter.com/kamelzcs">Twitter</a>
+&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
+<span>
+    主题由<a title="site's theme made by Bilal Hussain" href="http://bilalh.github.com">Bilal Hussain Hussain</a>提供,由<a href="http://ddrccw.github.com">ddrccw</a>修改。
+</span>
+</div>
+
+	</div>
+	
+</body>
+</html>
