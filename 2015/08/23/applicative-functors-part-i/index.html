@@ -2,12 +2,12 @@
 <html>
 <head>
 	
-	<title>sicp-2.1.4 - kamelzcs's library</title>
+	<title>Applicative functors, Part I - kamelzcs's library</title>
 	
 	
 	<meta name="author" content="kamelzcs" />
 	
-	<meta name="description" content="kamelzcs's library sicp-2.1.4" />
+	<meta name="description" content="Applicative functors, Part I" />
 	
 
 	
@@ -165,62 +165,129 @@ h3,h4 {
 
 
 <div class="post" id="main-content">
-	<h1>sicp-2.1.4</h1>
+	<h1>Applicative functors, Part I</h1>
 	<h4 class="large-bottom">
-		Posted on February 17, 2015
-		 in <a href="/categories/sicp">SICP</a> 
+		Posted on August 23, 2015
+		 in <a href="/categories/functional-programming">Functional Programming</a> 
 
 		<span class="tag-list">
 			
-			<a href="/tags/lisp">Lisp</a>
+			<a href="/tags/haskell">Haskell</a>
+			
+			<a href="/tags/cis194">CIS194</a>
 			
 		</span>
 	</h4>
 	
 	<div class="content">
-		<h4 id="section">2.7</h4>
+		<h4 id="lecture-contents">Lecture Contents</h4>
 
-<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">add-interval</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
-   <span class="p">(</span><span class="nf">make-interval</span> <span class="p">(</span><span class="nb">+ </span><span class="p">(</span><span class="nf">lower-bound</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nf">lower-bound</span> <span class="nv">y</span><span class="p">))</span>
-                  <span class="p">(</span><span class="nb">+ </span><span class="p">(</span><span class="nf">upper-bound</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nf">upper-bound</span> <span class="nv">y</span><span class="p">))))</span>
+<p>The induction from <code>Functor</code> to <code>Applicative</code> is quite beautiful.</p>
 
-<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">mul-interval</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
-   <span class="p">(</span><span class="k">let </span><span class="p">((</span><span class="nf">p1</span> <span class="p">(</span><span class="nb">* </span><span class="p">(</span><span class="nf">lower-bound</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nf">lower-bound</span> <span class="nv">y</span><span class="p">)))</span>
-         <span class="p">(</span><span class="nf">p2</span> <span class="p">(</span><span class="nb">* </span><span class="p">(</span><span class="nf">lower-bound</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nf">upper-bound</span> <span class="nv">y</span><span class="p">)))</span>
-         <span class="p">(</span><span class="nf">p3</span> <span class="p">(</span><span class="nb">* </span><span class="p">(</span><span class="nf">upper-bound</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nf">lower-bound</span> <span class="nv">y</span><span class="p">)))</span>
-         <span class="p">(</span><span class="nf">p4</span> <span class="p">(</span><span class="nb">* </span><span class="p">(</span><span class="nf">upper-bound</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nf">upper-bound</span> <span class="nv">y</span><span class="p">))))</span>
-     <span class="p">(</span><span class="nf">make-interval</span> <span class="p">(</span><span class="nb">min </span><span class="nv">p1</span> <span class="nv">p2</span> <span class="nv">p3</span> <span class="nv">p4</span><span class="p">)</span>
-                    <span class="p">(</span><span class="nb">max </span><span class="nv">p1</span> <span class="nv">p2</span> <span class="nv">p3</span> <span class="nv">p4</span><span class="p">))))</span>
+<p>Recalled that there exists <code>fmap :: (a -&gt; b) -&gt; (f a -&gt; f b)</code> in <code>Functor</code>, it would be great if this mapping
+function is still valid if the input consists of more than one variable, namely <code>(a -&gt; b -&gt; c) -&gt; (f a -&gt; f b -&gt; f c)</code></p>
 
-<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">div-interval</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
-   <span class="p">(</span><span class="nf">mul-interval</span> <span class="nv">x</span>
-                 <span class="p">(</span><span class="nf">make-interval</span> <span class="p">(</span><span class="nb">/ </span><span class="mf">1.0</span> <span class="p">(</span><span class="nf">upper-bound</span> <span class="nv">y</span><span class="p">))</span>
-                                <span class="p">(</span><span class="nb">/ </span><span class="mf">1.0</span> <span class="p">(</span><span class="nf">lower-bound</span> <span class="nv">y</span><span class="p">)))))</span>
+<p>We have</p>
 
-<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">make-interval</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)</span> <span class="p">(</span><span class="nb">cons </span><span class="nv">a</span> <span class="nv">b</span><span class="p">))</span>
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="nf">h</span>  <span class="ow">::</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">c</span>
+<span class="nf">fa</span> <span class="ow">::</span> <span class="n">f</span> <span class="n">a</span>
+<span class="nf">fb</span> <span class="ow">::</span> <span class="n">f</span> <span class="n">b</span>
+<span class="nf">fc</span> <span class="ow">::</span> <span class="n">f</span> <span class="n">c</span></code></pre></div>
 
-<span class="p">(</span><span class="k">define </span><span class="nv">upper-bound</span> <span class="nv">cdr</span><span class="p">)</span>
+<p>Use <code>fmap</code> to lift functions,</p>
 
-<span class="p">(</span><span class="k">define </span><span class="nv">lower-bound</span> <span class="nv">car</span><span class="p">)</span></code></pre></div>
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="nf">h</span>         <span class="ow">::</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">c</span><span class="p">)</span>
+<span class="nf">fmap</span> <span class="n">h</span>    <span class="ow">::</span> <span class="n">f</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">f</span> <span class="p">(</span><span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">c</span><span class="p">)</span>
+<span class="nf">fmap</span> <span class="n">h</span> <span class="n">fa</span> <span class="ow">::</span> <span class="n">f</span> <span class="p">(</span><span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">c</span><span class="p">)</span></code></pre></div>
 
-<h4 id="section-1">2.8</h4>
+<p>But there is no way to make</p>
 
-<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">sub-interval</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
-   <span class="p">(</span><span class="nf">make-interval</span> <span class="p">(</span><span class="nb">- </span><span class="p">(</span><span class="nf">lower-bound</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nf">lower-bound</span> <span class="nv">y</span><span class="p">))</span>
-                  <span class="p">(</span><span class="nb">- </span><span class="p">(</span><span class="nf">upper-bound</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nf">upper-bound</span> <span class="nv">y</span><span class="p">))))</span></code></pre></div>
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="nf">f</span> <span class="p">(</span><span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">c</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">fb</span> <span class="ow">-&gt;</span> <span class="n">fc</span></code></pre></div>
 
-<h4 id="section-2">2.10</h4>
+<p><code>Applicative</code> has the <code>(&lt;*&gt;)</code> to implement it, namely</p>
 
-<div class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">span-zero?</span> <span class="nv">interval</span><span class="p">)</span>
-  <span class="p">(</span><span class="k">and </span><span class="p">(</span><span class="nb">&gt;= </span><span class="p">(</span><span class="nf">upper-bound</span> <span class="nv">interval</span><span class="p">)</span> <span class="mi">0</span><span class="p">)</span>
-           <span class="p">(</span><span class="nb">&lt;= </span><span class="p">(</span><span class="nf">lower-bound</span> <span class="nv">interval</span><span class="p">)</span> <span class="mi">0</span><span class="p">)))</span>
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="p">(</span><span class="o">&lt;*&gt;</span><span class="p">)</span> <span class="ow">::</span> <span class="n">f</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">f</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">f</span> <span class="n">b</span></code></pre></div>
 
-<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">div-interval</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
-  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nf">span-zero?</span> <span class="nv">y</span><span class="p">)</span>
-    <span class="p">(</span><span class="nf">error</span> <span class="s">&quot;divides zero&quot;</span><span class="p">)</span>
-    <span class="p">(</span><span class="nf">mul-interval</span> <span class="nv">x</span>
-                 <span class="p">(</span><span class="nf">make-interval</span> <span class="p">(</span><span class="nb">/ </span><span class="mf">1.0</span> <span class="p">(</span><span class="nf">upper-bound</span> <span class="nv">y</span><span class="p">))</span>
-                                <span class="p">(</span><span class="nb">/ </span><span class="mf">1.0</span> <span class="p">(</span><span class="nf">lower-bound</span> <span class="nv">y</span><span class="p">))))))</span></code></pre></div>
+<p>The final induction is</p>
+
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="nf">liftA2</span> <span class="ow">::</span> <span class="kt">Applicative</span> <span class="n">f</span> <span class="ow">=&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">c</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="n">f</span> <span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">f</span> <span class="n">b</span> <span class="ow">-&gt;</span> <span class="n">f</span> <span class="n">c</span>
+<span class="nf">liftA2</span> <span class="ow">=</span> <span class="n">h</span> <span class="o">&lt;$&gt;</span> <span class="n">fa</span> <span class="o">&lt;*&gt;</span> <span class="n">fb</span></code></pre></div>
+
+<h4 id="home-work">Home Work</h4>
+
+<h5 id="exercise-1">Exercise 1</h5>
+
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="c1">-- Ex. 1 - implement a Functor instance for Parser</span>
+<span class="c1">--</span>
+<span class="c1">-- You may find it useful to implement:</span>
+<span class="c1">-- first :: (a -&gt; b) -&gt; (a,c) -&gt; (b,c)</span>
+
+<span class="nf">first</span> <span class="ow">::</span> <span class="p">(</span><span class="n">a</span> <span class="ow">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="ow">-&gt;</span> <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+<span class="nf">first</span> <span class="n">f</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="ow">=</span> <span class="p">(</span><span class="n">f</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="kr">instance</span> <span class="kt">Functor</span> <span class="kt">Parser</span> <span class="kr">where</span>
+  <span class="n">fmap</span> <span class="n">f</span> <span class="n">parser</span> <span class="ow">=</span> <span class="kt">Parser</span> <span class="o">$</span> <span class="nf">\</span><span class="n">s</span> <span class="ow">-&gt;</span> <span class="n">first</span> <span class="n">f</span> <span class="o">&lt;$&gt;</span> <span class="n">runParser</span> <span class="n">parser</span> <span class="n">s</span></code></pre></div>
+
+<h5 id="exercise-2">Exercise 2</h5>
+
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="c1">-- Ex. 2 - implement an Applicative instance for Parser</span>
+<span class="c1">--</span>
+<span class="kr">instance</span> <span class="kt">Applicative</span> <span class="kt">Parser</span> <span class="kr">where</span>
+  <span class="n">pure</span> <span class="n">a</span> <span class="ow">=</span> <span class="kt">Parser</span> <span class="p">(</span><span class="nf">\</span><span class="n">s</span> <span class="ow">-&gt;</span> <span class="kt">Just</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">s</span><span class="p">))</span>
+
+  <span class="n">p1</span> <span class="o">&lt;*&gt;</span> <span class="n">p2</span> <span class="ow">=</span> <span class="kt">Parser</span> <span class="n">parse</span>
+    <span class="kr">where</span> <span class="n">parse</span> <span class="n">s</span> <span class="ow">=</span> <span class="kr">do</span>
+          <span class="n">r1</span> <span class="ow">&lt;-</span> <span class="n">runParser</span> <span class="n">p1</span> <span class="n">s</span>
+          <span class="n">r2</span> <span class="ow">&lt;-</span> <span class="n">runParser</span> <span class="n">p2</span> <span class="p">(</span><span class="n">snd</span> <span class="n">r1</span><span class="p">)</span>
+          <span class="n">return</span> <span class="p">(</span><span class="n">fst</span> <span class="n">r1</span> <span class="o">$</span> <span class="n">fst</span> <span class="n">r2</span><span class="p">,</span> <span class="n">snd</span> <span class="n">r2</span><span class="p">)</span></code></pre></div>
+
+<h5 id="exercise-3">Exercise 3</h5>
+
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="c1">-- Ex. 3a - Create a parser:</span>
+<span class="c1">--</span>
+<span class="c1">--   abParser :: Parser (Char, Char)</span>
+<span class="c1">--</span>
+<span class="c1">-- which expects to see the characters ’a’ and ’b’ and returns them as a pair</span>
+
+<span class="nf">abParser</span> <span class="ow">::</span> <span class="kt">Parser</span> <span class="p">(</span><span class="kt">Char</span><span class="p">,</span> <span class="kt">Char</span><span class="p">)</span>
+<span class="nf">abParser</span> <span class="ow">=</span> <span class="p">(,)</span> <span class="o">&lt;$&gt;</span> <span class="n">char</span> <span class="n">&#39;a&#39;</span> <span class="o">&lt;*&gt;</span> <span class="n">char</span> <span class="n">&#39;b&#39;</span>
+
+
+<span class="c1">-- Ex. 3b - Create a parser:</span>
+<span class="c1">--</span>
+<span class="c1">--   abParser_ :: Parser ()</span>
+<span class="c1">--</span>
+<span class="c1">-- which acts in the same way as abParser but returns () instead of &#39;a&#39; and &#39;b&#39;</span>
+
+<span class="nf">abParser_</span> <span class="ow">::</span> <span class="kt">Parser</span> <span class="nb">()</span>
+<span class="nf">abParser_</span> <span class="ow">=</span> <span class="n">const</span> <span class="o">.</span> <span class="n">const</span> <span class="nb">()</span> <span class="o">&lt;$&gt;</span> <span class="n">char</span> <span class="n">&#39;a&#39;</span> <span class="o">&lt;*&gt;</span> <span class="n">char</span> <span class="n">&#39;b&#39;</span>
+
+<span class="c1">-- Ex. 3c - Create a parser:</span>
+<span class="c1">--</span>
+<span class="c1">--   intPair </span>
+<span class="c1">--</span>
+<span class="c1">-- which reads two integer values separated by a space and returns the integer </span>
+<span class="c1">-- values in a list. You should use the provided posInt to parse the integer values.</span>
+
+<span class="nf">intPair</span> <span class="ow">::</span> <span class="kt">Parser</span> <span class="p">[</span><span class="kt">Integer</span><span class="p">]</span>
+<span class="nf">intPair</span> <span class="ow">=</span> <span class="p">(</span><span class="nf">\</span><span class="n">x</span>  <span class="n">y</span> <span class="ow">-&gt;</span> <span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">])</span> <span class="o">&lt;$&gt;</span> <span class="n">posInt</span> <span class="o">&lt;*</span> <span class="n">char</span> <span class="n">&#39;</span> <span class="n">&#39;</span> <span class="o">&lt;*&gt;</span> <span class="n">posInt</span></code></pre></div>
+
+<h5 id="exercise-4">Exercise 4</h5>
+
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="kr">instance</span> <span class="kt">Alternative</span> <span class="kt">Parser</span> <span class="kr">where</span>
+  <span class="n">empty</span> <span class="ow">=</span> <span class="kt">Parser</span> <span class="o">$</span> <span class="n">const</span> <span class="kt">Nothing</span>
+  <span class="kt">Parser</span> <span class="n">p1</span> <span class="o">&lt;|&gt;</span> <span class="kt">Parser</span> <span class="n">p2</span> <span class="ow">=</span> <span class="kt">Parser</span> <span class="o">$</span> <span class="n">liftA2</span> <span class="p">(</span><span class="o">&lt;|&gt;</span><span class="p">)</span> <span class="n">p1</span> <span class="n">p2</span></code></pre></div>
+
+<h5 id="exercise-5">Exercise 5</h5>
+
+<div class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="c1">-- Ex. 5 - Implement a parser:</span>
+<span class="c1">--</span>
+<span class="c1">--  intOrUppercase :: Parser ()</span>
+<span class="c1">-- </span>
+<span class="c1">-- which parses either an integer value or an uppercase character, and fails otherwise.</span>
+
+<span class="nf">intOrUppercase</span> <span class="ow">::</span> <span class="kt">Parser</span> <span class="nb">()</span>
+<span class="nf">intOrUppercase</span> <span class="ow">=</span> <span class="n">const</span> <span class="nb">()</span> <span class="o">&lt;$&gt;</span> <span class="n">posInt</span> <span class="o">&lt;|&gt;</span> <span class="n">const</span> <span class="nb">()</span> <span class="o">&lt;$&gt;</span> <span class="n">satisfy</span> <span class="n">isUpper</span></code></pre></div>
 
 
 	</div>
@@ -234,18 +301,12 @@ h3,h4 {
 		
 		
 		
-			&laquo;&nbsp;<a href="/2015/02/17/sicp-2-2-1" rel="next" title="sicp-2.2.1">sicp-2.2.1</a>
-		
 	
-		
-			
-				|
-			
 		
 		
 	
 		
-			<a href="/2015/02/16/sicp-2-1-1-2-1-3" rel="previous" title="sicp-2.1.1-2.1.3">sicp-2.1.1-2.1.3</a>&nbsp;&raquo;
+			<a href="/2015/08/22/io" rel="previous" title="IO">IO</a>&nbsp;&raquo;
 		
 	
 		<br />
@@ -271,8 +332,8 @@ h3,h4 {
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://kamelzcs.github.com/2015/02/17/sicp-2-1-4';
-        var disqus_url = 'http://kamelzcs.github.com/2015/02/17/sicp-2-1-4';
+        var disqus_identifier = 'http://kamelzcs.github.com/2015/08/23/applicative-functors-part-i';
+        var disqus_url = 'http://kamelzcs.github.com/2015/08/23/applicative-functors-part-i';
         var disqus_script = 'embed.js';
       
     (function () {
