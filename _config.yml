@@ -1,6 +1,6 @@
 source:      .
 destination: ./_site
-plugins:     ./_plugins
+plugins_dir:     ./_plugins
 
 #server:   false
 author:   kamel
@@ -9,7 +9,9 @@ safe:     false
 #markdown: rdiscount
 #markdown: maruku
 markdown: kramdown
-highlighter: pygments
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
 
 github_user:  kamelzcs
 disqus_short_name: kamelzcs
@@ -53,3 +55,6 @@ projects:
         languages:    [Objective C]
         description:  >
             尝。
+            #
+# Gems
+gems: [jekyll-paginate]
