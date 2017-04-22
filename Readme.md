@@ -4,7 +4,7 @@
 
 * Ruby (only tested with 1.9)及相关组件(gem 1.9)
    
-    gem install nokogiri growl sass jekyll front-compiler maruku
+    gem install nokogiri growl sass jekyll front-compiler maruku rouge
 
     sudo update-alternatives --config ruby (switch default lib)
 
