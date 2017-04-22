@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+	<title>Vim Tips - kamelzcs's library</title>
+	
+	
+	<meta name="author" content="kamelzcs" />
+	
+	<meta name="description" content="Useful Vim Tips" />
+	
+
+	
+	<meta name="keywords" content="Vim" />	
+	
+
+	<meta name="robots" content="noodp, nydir" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	
+	<link href="/css/blueprint/screen.css" type="text/css" rel="stylesheet" />
+	<!--[if lt IE 8]> <link href="/css/blueprint/ie.css" type="text/css" rel="stylesheet" /> <![endif]-->	 
+	<link href="/css/railscasts.css" type="text/css" rel="stylesheet" />
+	<link href="/css/site.css" type="text/css" rel="stylesheet" />
+
+	<script type="text/javascript" src="/js/writeCapture-1.0.5-nolib-min.js"></script>
+		<script type="text/javascript" src="/js/jquery.js"></script>
+	<script type="text/javascript" src="/js/site.js"></script>
+	<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-45986644-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+	<script src="https://www.google.com/jsapi" type="text/javascript"></script>
+  <script language="Javascript" type="text/javascript">
+  //<![CDATA[
+google.load("search", "1");
+
+function OnLoad() {
+	// Create a search control
+	var searchControl = new google.search.SearchControl();
+	
+	// Add in a WebSearch
+	var webSearch = new google.search.WebSearch();
+	
+	// Restrict our search to pages from this site
+	webSearch.setSiteRestriction('kamelzcs.github.com');
+	
+	// Add the searcher to the SearchControl
+	searchControl.addSearcher(webSearch);
+	
+	// tell the searcher to draw itself and tell it where to attach
+	searchControl.draw(document.getElementById("searchcontrol"));
+	// Add the value of "Search..." to the input field and a class of .empty
+}
+
+google.setOnLoadCallback(function() {
+  $(function() {
+	OnLoad()
+	$(".gsc-input > input").val("Search... powered by Google").addClass("empty");
+	 
+	// When you click on #search
+	$(".gsc-input > input").focus(function(){
+	 
+		// If the value is equal to "Search..."
+		if($(this).val() == "Search... powered by Google") {
+			// remove all the text and the class of .empty
+			$(this).val("").removeClass("empty");;
+		}
+		this.select();
+	});
+	 
+	// When the focus on #search is lost
+	$(".gsc-input > input").blur(function(){
+	 
+		// If the input field is empty
+		if($(this).val() == "") {
+			// Add the text "Search..." and a class of .empty
+			$(this).val("Search... powered by Google").addClass("empty");
+		}
+	});
+
+	$("#comment_heading").click(function()
+	{
+		$(this).next("#disqus_thread").slideToggle(500);
+		if($(this).text() == "Show Comments") {
+			$(this).text("Hide Comments")
+		}else{
+			$(this).text("Show Comments")
+		}
+	});
+		
+  });
+});
+
+
+  //]]>
+  </script>
+
+
+	<!-- mathjax config similar to math.stackexchange -->
+	<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({
+	  jax: ["input/TeX", "output/HTML-CSS"],
+	  tex2jax: {
+		inlineMath: [ ['$', '$'] ],
+		displayMath: [ ['$$', '$$']],
+		processEscapes: true,
+		skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+	  },
+	  messageStyle: "none",
+	  "HTML-CSS": {
+		  preferredFont: "TeX",
+		  availableFonts: ["STIX","TeX"],
+		  }
+	});
+	</script>
+	<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+	<!-- mathjax css conflict with pygments -->
+	<style>
+	.MathJax .mo,
+	.MathJax .mi {
+	  color: inherit;
+	</style>
+
+</head>
+
+<body>
+	<div class="container">
+	<!-- <div class="container showgrid"> -->
+		<div id="header" class="span-24">
+  <div id="menu" class="span-15 last">
+    <ul>
+      <li class="first"><a href="/">Home</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/blog">Blog</a></li>
+      <li><a href="/archives">Archives</a></li>
+      <li><a href="/projects">Projects</a></li>
+      <!--<li class="last"><a id="mail" href="mailto:kamelzcs@gmail.com">Contact</a></li>-->
+    </ul>
+  </div>
+</div>
+
+		
+		<div id="main" class="span-17">
+			<style type="text/css">
+h3,h4{ 
+	color: #335E8D;
+}			
+h3,h4 {
+	margin-left		: 3px;
+	font-variant	: small-caps;
+	font-weight		: normal;
+	border-bottom : 1px dotted #ccc;	
+}
+</style>
+
+
+
+
+<div class="post" id="main-content">
+	<h1>Vim Tips</h1>
+	<h4 class="large-bottom">
+		Posted on 2013-12-06 11:08:11 +0000
+		 in <a href="/categories/Technology">Technology</a> 
+
+		<span class="tag-list">
+			
+			<a href="/tags/Vim">Vim</a>
+			
+		</span>
+	</h4>
+	
+	<div class="content">
+		<p>Here is some useful Vim tips</p>
+
+<h4 id="normal">Normal</h4>
+
+<ul>
+  <li>
+    <p><code class="highlighter-rouge">V</code> multiline copy</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">.</code> duplicate last command</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">I</code> insert at the begin</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">A</code> Append to end</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">J</code> Join two lines</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">&gt;</code> and <code class="highlighter-rouge">&lt;</code> indent block(in visual mode)</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">CTRL + A or X</code> increase or decrease the number</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">~</code> toggle the casing of a letter/selection(upper-case/down-case)</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">!!</code> execute last command</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">&lt;start position&gt;&lt;command&gt;&lt;end position&gt;</code> for example <code class="highlighter-rouge">y`a</code> yank from here to he marked <code class="highlighter-rouge">a</code></p>
+  </li>
+  <li>
+    <p>use markers in the way <code class="highlighter-rouge">a z b e</code></p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">"zyy</code> and <code class="highlighter-rouge">"zp</code> copy to z register and paste from <code class="highlighter-rouge">z</code> register</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">set ft=?</code> look up current file type.</p>
+  </li>
+</ul>
+
+<h4 id="move">Move</h4>
+
+<ul>
+  <li>
+    <p><code class="highlighter-rouge">%</code> go to the corresponding <code class="highlighter-rouge">()</code>,<code class="highlighter-rouge"><span class="p">{}</span></code>,<code class="highlighter-rouge">[]</code></p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">mz `z</code> Marker and go to the last position</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">'.</code> Jump back to last edited line</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">g;</code>and <code class="highlighter-rouge">g,</code> move (forward,backward) through the changelist</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">gi</code> go to the last place you inserted a text</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">Ctrl-o</code> and <code class="highlighter-rouge">Ctrl-i</code> to go to the previous/next location you jumped to</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">fa</code> go to the next <code class="highlighter-rouge">a</code> in the line</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">t,</code> go to before the next <code class="highlighter-rouge">,</code></p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">F</code> and <code class="highlighter-rouge">T</code> are backward</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">w</code> go to the start of the next word</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">b/e</code> go to the beginning/end of this word</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">W</code> go to the start of the following WORD(space separated only)</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">B/E</code> go to the beginning/end of this WORD</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge"><span class="p">{</span><span class="w"> </span><span class="p">}</span></code> to move to the beginning/ending of the paragraph</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">zz</code> move current line to the middle of the screen</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">zt</code> move current line to the top of the screen</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">zt</code> move current line to the bottom of the screen</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">Ctrl</code>+<code class="highlighter-rouge">e</code> move screen up one line</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">Ctrl</code>+<code class="highlighter-rouge">y</code> move screen down one line</p>
+  </li>
+</ul>
+
+<h4 id="zone-selection">Zone selection</h4>
+
+<p><code class="highlighter-rouge">&lt;action&gt;a&lt;object&gt; and &lt;action&gt;i&lt;object&gt;</code></p>
+
+<p>Action can be any action, for example <code class="highlighter-rouge">d</code>, <code class="highlighter-rouge">y</code>, <code class="highlighter-rouge">c</code>(change), <code class="highlighter-rouge">v</code>(select in visual mode). The object can be:
+ <code class="highlighter-rouge">w</code> a word, <code class="highlighter-rouge">W</code> a WORD, <code class="highlighter-rouge">s</code> a sentence, <code class="highlighter-rouge">p</code> a paragraph. But also, natural character such as <code class="highlighter-rouge">",',),],}</code></p>
+
+<p><code class="highlighter-rouge">vi"</code> will select foo.</p>
+
+<p><code class="highlighter-rouge">va"</code> will select “foo”</p>
+
+<h4 id="editing">Editing</h4>
+
+<ul>
+  <li>
+    <p><code class="highlighter-rouge">cc</code> change the entire current line</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">r</code> replace the current character</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">R</code> Enter Insert mode, replacing characters rather than inserting</p>
+  </li>
+</ul>
+
+<h4 id="macro-recording">Macro recording</h4>
+
+<p>/bin/bash: :q: command not found</p>
+
+<ul>
+  <li>
+    <p><code class="highlighter-rouge">q[ key ]</code> to start recording</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">q</code> to stop recording</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">@[ key ]</code> to use the macro
+  ```</p>
+  </li>
+</ul>
+
+
+	</div>
+	
+	<div class="next-prev-nav low-top">
+		
+		-----------------------------------
+		<b>本文内容遵从<a title="Content licenced under Creative Commons by-nc-sa 3.0" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.zh">CC版权协议</a>转载请注明出自<a href="http://kamelzcs.github.com">kamelzcs</a></b>
+		-----------------------------------
+		<hr/>
+		
+		
+		
+			&laquo;&nbsp;<a href="/2013/12/27/gitunderstanding" rel="next" title="Understanding Git">Understanding Git</a>
+		
+	
+		
+			
+				|
+			
+		
+		
+	
+		
+			<a href="/2013/11/28/wushimeiyuan" rel="previous" title="左宗棠题江苏无锡梅园">左宗棠题江苏无锡梅园</a>&nbsp;&raquo;
+		
+	
+		<br />
+	</div>
+
+	<hr />
+	<!--<div class="sharing">
+	
+	 
+	
+	
+	
+	
+	
+	
+	 
+</div>
+ -->
+	
+
+<script type="text/javascript">
+      var disqus_shortname = 'kamelzcs';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+	<div>
+		<h2 id='comment_heading'>Hide Comments</h2>
+		<div id="disqus_thread" aria-live="polite"><div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'kamelzcs'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+	</div>
+</div>
+
+		</div>
+		
+		
+			<div id="sidebar" class="span-6 push-1 last">
+	<div class="sidebar-module" id='gsearcher'>
+				 
+		<div id="searchcontrol">
+			
+		</div>
+		
+	</div>
+
+	<div class="sidebar-module">
+		<div class="title"><a href='/tags'>Tags</a></div>
+		
+            <span style="font-size: 95%">
+              <a href="/tags/app-engine/" title="5 posts">App Engine</a>
+            </span>
+          
+            <span style="font-size: 80%">
+              <a href="/tags/bash/" title="2 posts">Bash</a>
+            </span>
+          
+            <span style="font-size: 80%">
+              <a href="/tags/c++/" title="2 posts">C++</a>
+            </span>
+          
+            <span style="font-size: 125%">
+              <a href="/tags/cis194/" title="11 posts">CIS194</a>
+            </span>
+          
+            <span style="font-size: 95%">
+              <a href="/tags/database/" title="5 posts">Database</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/datastructure/" title="1 post">Datastructure</a>
+            </span>
+          
+            <span style="font-size: 85%">
+              <a href="/tags/git/" title="3 posts">Git</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/github/" title="1 post">Github</a>
+            </span>
+          
+            <span style="font-size: 130%">
+              <a href="/tags/haskell/" title="12 posts">Haskell</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/ipsc/" title="1 post">IPSC</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/java/" title="1 post">Java</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/jekyll/" title="1 post">Jekyll</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/jinja2/" title="1 post">Jinja2</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/life/" title="1 post">Life</a>
+            </span>
+          
+            <span style="font-size: 280%">
+              <a href="/tags/lisp/" title="42 posts">Lisp</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/polymorphism/" title="1 post">Polymorphism</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/python/" title="1 post">Python</a>
+            </span>
+          
+            <span style="font-size: 80%">
+              <a href="/tags/review/" title="2 posts">Review</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/solarized/" title="1 post">Solarized</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/sourcecode/" title="1 post">Sourcecode</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/template/" title="1 post">Template</a>
+            </span>
+          
+            <span style="font-size: 80%">
+              <a href="/tags/topcoder/" title="2 posts">Topcoder</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/variable-scope/" title="1 post">Variable scope</a>
+            </span>
+          
+            <span style="font-size: 80%">
+              <a href="/tags/vim/" title="2 posts">Vim</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/life/" title="1 post">life</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/亲情/" title="1 post">亲情</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/回忆/" title="1 post">回忆</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/大规模机器学习/" title="1 post">大规模机器学习</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/展望/" title="1 post">展望</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/日本/" title="1 post">日本</a>
+            </span>
+          
+            <span style="font-size: 80%">
+              <a href="/tags/生活/" title="2 posts">生活</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/诗歌/" title="1 post">诗歌</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/诗词/" title="1 post">诗词</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/语音/" title="1 post">语音</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/趋势/" title="1 post">趋势</a>
+            </span>
+          
+	</div>
+
+	<div class="sidebar-module">
+		<div class="title"><a href='/categories'>Categories</a></div>
+		<a href="/categories/jekyll"><strong>jekyll</strong></a> (1)<br /><a href="/categories/生活"><strong>生活</strong></a> (4)<br /><a href="/categories/语音"><strong>语音</strong></a> (1)<br /><a href="/categories/讲座"><strong>讲座</strong></a> (1)<br /><a href="/categories/technique"><strong>Technique</strong></a> (5)<br /><a href="/categories/technique"><strong>technique</strong></a> (1)<br /><a href="/categories/technology"><strong>Technology</strong></a> (4)<br /><a href="/categories/vim"><strong>Vim</strong></a> (1)<br /><a href="/categories/诗词"><strong>诗词</strong></a> (1)<br /><a href="/categories/life"><strong>Life</strong></a> (2)<br /><a href="/categories/computer"><strong>Computer</strong></a> (1)<br /><a href="/categories/linux"><strong>Linux</strong></a> (1)<br /><a href="/categories/data-structure"><strong>Data structure</strong></a> (1)<br /><a href="/categories/life"><strong>life</strong></a> (1)<br /><a href="/categories/sicp"><strong>SICP</strong></a> (42)<br /><a href="/categories/cc++"><strong>C/C++</strong></a> (1)<br /><a href="/categories/contest"><strong>Contest</strong></a> (2)<br /><a href="/categories/programming"><strong>Programming</strong></a> (1)<br /><a href="/categories/algorithm"><strong>Algorithm</strong></a> (1)<br /><a href="/categories/functional-programming"><strong>Functional Programming</strong></a> (12)<br />
+	</div>
+	
+	<div class="sidebar-module">
+		<div class="title"><a href='/archives'>Archives</a></div>
+		<a href="/2015/08"><strong>August 2015</strong></a> (12)<br /><a href="/2015/07"><strong>July 2015</strong></a> (2)<br /><a href="/2015/06"><strong>June 2015</strong></a> (2)<br /><a href="/2015/05"><strong>May 2015</strong></a> (1)<br /><a href="/2015/03"><strong>March 2015</strong></a> (13)<br /><a href="/2015/02"><strong>February 2015</strong></a> (30)<br /><a href="/2014/02"><strong>February 2014</strong></a> (1)<br /><a href="/2014/01"><strong>January 2014</strong></a> (4)<br /><a href="/2013/12"><strong>December 2013</strong></a> (2)<br /><a href="/2013/11"><strong>November 2013</strong></a> (8)<br /><a href="/2013/10"><strong>October 2013</strong></a> (2)<br /><a href="/2013/03"><strong>March 2013</strong></a> (3)<br /><a href="/2013/02"><strong>February 2013</strong></a> (2)<br /><a href="/2013/01"><strong>January 2013</strong></a> (1)<br /><a href="/2012/12"><strong>December 2012</strong></a> (1)<br />
+	</div>
+</div>
+
+		
+		
+		<div id="footer" class="span-24"> 
+<span  title="Content licenced under Creative Commons by-nc-sa 3.0">版权所有<a title="Content licenced under Creative Commons by-nc-sa 3.0" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.zh">&copy;</a> 
+	2012-2017 kamelzcs。
+</span> 
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="https://github.com/kamelzcs">GitHub</a>
+&nbsp;&nbsp;&nbsp;&nbsp; <a href="http://weibo.com/u/2534942150">新浪微博</a>
+ &nbsp;&nbsp;&nbsp;&nbsp; <a href="http://twitter.com/kamelzcs">Twitter</a>
+&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
+<span>
+    主题由<a title="site's theme made by Bilal Hussain" href="http://bilalh.github.com">Bilal Hussain Hussain</a>提供,由<a href="http://ddrccw.github.com">ddrccw</a>修改。
+</span>
+</div>
+
+	</div>
+	
+</body>
+</html>
