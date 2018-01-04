@@ -55,4 +55,4 @@ projects:
             尝。
             #
 # Gems
-gems: [jekyll-paginate]
+plugins: [jekyll-paginate]

@@ -2,9 +2,9 @@
 
 ###Prerequisites###
 
-* Ruby (only tested with 1.9)及相关组件(gem 1.9)
+* Ruby (only tested with 2.4)及相关组件(gem 2.4)
    
-    gem install nokogiri growl sass jekyll front-compiler maruku rouge
+    gem install nokogiri growl sass jekyll front-compiler maruku rouge jekyll-paginate
 
     sudo update-alternatives --config ruby (switch default lib)
 
