@@ -10,6 +10,7 @@ safe:     false
 #markdown: maruku
 markdown: kramdown
 highlighter: rouge
+future:      true
 
 github_user:  kamelzcs
 disqus_short_name: kamelzcs
