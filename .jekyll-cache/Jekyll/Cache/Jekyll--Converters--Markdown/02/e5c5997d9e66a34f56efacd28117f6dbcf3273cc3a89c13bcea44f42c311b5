@@ -1,0 +1,62 @@
+I" <h4 id="333">3.33</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">average</span> <span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">x</span> <span class="p">(</span><span class="nf">make-connector</span><span class="p">))</span>
+        <span class="p">(</span><span class="nf">y</span> <span class="p">(</span><span class="nf">make-connector</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nf">adder</span> <span class="nv">a</span> <span class="nv">b</span> <span class="nv">x</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">multiplier</span> <span class="nv">c</span> <span class="nv">v</span> <span class="nv">u</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">constant</span> <span class="mi">2</span> <span class="nv">v</span><span class="p">))</span>
+  <span class="ss">'ok</span><span class="p">)</span></code></pre></figure>
+
+<h4 id="334">3.34</h4>
+
+<p>it is only one-directianl computation. Given the value of <code class="highlighter-rouge">b</code>, the value of
+<code class="highlighter-rouge">a</code> can not be evaluated, as the multiplier does not know the left two values should be the same.</p>
+
+<h4 id="335">3.35</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">squarer</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">process-new-value</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nf">has-value?</span> <span class="nv">b</span><span class="p">)</span>
+        <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">&lt;</span> <span class="p">(</span><span class="nf">get-value</span> <span class="nv">b</span><span class="p">)</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="p">(</span><span class="nf">error</span> <span class="s">"square less than 0 -- SQUARER"</span> <span class="p">(</span><span class="nf">get-value</span> <span class="nv">b</span><span class="p">))</span>
+            <span class="p">(</span><span class="nf">set-value!</span> <span class="nv">a</span> <span class="p">(</span><span class="nb">sqrt</span> <span class="p">(</span><span class="nf">get-value</span> <span class="nv">b</span><span class="p">))</span> <span class="nv">me</span><span class="p">))</span>
+        <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nf">has-value?</span> <span class="nv">a</span><span class="p">)</span>
+          <span class="p">(</span><span class="nf">set-value!</span> <span class="nv">b</span> <span class="p">(</span><span class="nf">square</span> <span class="p">(</span><span class="nf">get-value</span> <span class="nv">a</span><span class="p">))</span> <span class="nv">me</span><span class="p">))))</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">process-forget-value</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">forget-value!</span> <span class="nv">b</span> <span class="nv">me</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">forget-value!</span> <span class="nv">a</span> <span class="nv">me</span><span class="p">))</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">me</span> <span class="nv">request</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">eq?</span> <span class="nv">request</span> <span class="ss">'I-have-a-value</span><span class="p">)</span>
+           <span class="p">(</span><span class="nf">process-new-value</span><span class="p">))</span>
+          <span class="p">((</span><span class="nb">eq?</span> <span class="nv">request</span> <span class="ss">'I-lost-my</span> <span class="nv">value</span><span class="p">)</span>
+           <span class="p">(</span><span class="nf">process-new-value</span><span class="p">))</span>
+          <span class="p">(</span><span class="k">else</span>
+            <span class="p">(</span><span class="nf">error</span> <span class="s">"Unkown request  SQUARE"</span> <span class="nv">request</span><span class="p">))))</span>
+  <span class="p">(</span><span class="nf">connect</span> <span class="nv">a</span> <span class="nv">me</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">connect</span> <span class="nv">b</span> <span class="nv">me</span><span class="p">)</span>
+  <span class="nv">me</span><span class="p">)</span></code></pre></figure>
+
+<h4 id="337">3.37</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">c-</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">z</span> <span class="p">(</span><span class="nf">make-connector</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nf">adder</span> <span class="nv">x</span> <span class="nv">y</span> <span class="nv">z</span><span class="p">)</span>
+    <span class="nv">z</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">c*</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">z</span> <span class="p">(</span><span class="nf">make-connector</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nf">multiplier</span> <span class="nv">x</span> <span class="nv">y</span> <span class="nv">z</span><span class="p">)</span>
+    <span class="nv">z</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">c/</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">z</span> <span class="p">(</span><span class="nf">make-connector</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nf">multiplier</span> <span class="nv">y</span> <span class="nv">z</span> <span class="nv">x</span><span class="p">)</span>
+    <span class="nv">z</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">cv</span> <span class="nv">x</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">z</span> <span class="p">(</span><span class="nf">make-connector</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nf">constant</span> <span class="nv">x</span> <span class="nv">z</span><span class="p">)</span>
+    <span class="nv">z</span><span class="p">))</span></code></pre></figure>
+
+:ET

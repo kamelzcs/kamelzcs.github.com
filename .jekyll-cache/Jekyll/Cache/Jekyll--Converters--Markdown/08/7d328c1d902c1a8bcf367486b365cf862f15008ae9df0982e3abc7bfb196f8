@@ -1,0 +1,87 @@
+I"¿*<p>The origin article is in <a href="http://blog.notdot.net/2010/10/Modeling-relationships-in-App-Engine" title="relationship">relationship</a>.</p>
+
+<h3 id="the-nature-of-relationships">The nature of relationships</h3>
+
+<p>There are many relationships, such as one to one, one to many and many to many. But the they are all built on the similar idea: reference.
+A reference is a field of an entity that contains the key of another entity.</p>
+
+<h3 id="relationships-in-app-engine">Relationships in App Engine</h3>
+
+<h4 id="one-to-many">One to many</h4>
+
+<p>In app engine, it is accomplished by storing the key of one side in the entity of many side.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">Owner</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+  <span class="n">name</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">StringProperty</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">Pet</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+  <span class="n">name</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">StringProperty</span><span class="p">()</span>
+  <span class="n">owner</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">ReferenceProperty</span><span class="p">(</span><span class="n">Owner</span><span class="p">)</span>
+<span class="n">pets</span> <span class="o">=</span> <span class="n">Pet</span><span class="o">.</span><span class="nb">all</span><span class="p">()</span><span class="o">.</span><span class="nb">filter</span><span class="p">(</span><span class="s">'owner ='</span><span class="p">,</span> <span class="n">owner</span><span class="p">)</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span></code></pre></figure>
+
+<p>To fetch all the pets owned by the owner, the query can be in this way.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">pets</span> <span class="o">=</span> <span class="n">Pet</span><span class="o">.</span><span class="nb">all</span><span class="p">()</span><span class="o">.</span><span class="nb">filter</span><span class="p">(</span><span class="s">'owner ='</span><span class="p">,</span> <span class="n">owner</span><span class="p">)</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">pets</span> <span class="o">=</span> <span class="n">owner</span><span class="o">.</span><span class="n">pet_set</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span></code></pre></figure>
+
+<p>To change the default name to our own name, code can be in the following way.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">Pet</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+  <span class="n">name</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">StringProperty</span><span class="p">()</span>
+  <span class="n">owner</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">ReferenceProperty</span><span class="p">(</span><span class="n">Owner</span><span class="p">,</span> <span class="n">collection_name</span><span class="o">=</span><span class="s">'pets'</span><span class="p">)</span>
+
+<span class="n">pets</span> <span class="o">=</span> <span class="n">owner</span><span class="o">.</span><span class="n">pets</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span></code></pre></figure>
+
+<p>Another way to model the one to many relationships is to use parent entities.
+Every entity can specify a parent when it is created. The key of the parent forms part of the key of the created entity, and cannot be modified. The code is like the following:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">Owner</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+  <span class="n">name</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">StringProperty</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">Pet</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+  <span class="n">name</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">StringProperty</span><span class="p">()</span>
+
+<span class="n">bob</span> <span class="o">=</span> <span class="n">Owner</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'Bob'</span><span class="p">)</span>
+<span class="n">felix</span> <span class="o">=</span> <span class="n">Pet</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'Felix'</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">bob</span><span class="p">)</span>
+
+<span class="n">owner_of_felix</span> <span class="o">=</span> <span class="n">felix</span><span class="o">.</span><span class="n">parent</span></code></pre></figure>
+
+<p>The relationship is specified implicitly. It is the most import case for transactions: on app engine, transactions can only be operate on the same entity group. A entity group is the set with same parent.</p>
+
+<h3 id="one-to-one">One to one</h3>
+<p>A special case of one to many.</p>
+
+<h3 id="many-to-many">Many to many</h3>
+
+<p>The most obvious approach is the same as used in relationship databases: a join table.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">Owner</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+  <span class="n">name</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">StringProperty</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">Pet</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+  <span class="n">name</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">StringProperty</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">PetOwner</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+  <span class="n">pet</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">ReferenceProperty</span><span class="p">(</span><span class="n">Pet</span><span class="p">,</span> <span class="n">collection_name</span><span class="o">=</span><span class="s">'owners'</span><span class="p">)</span>
+  <span class="n">owner</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">ReferenceProperty</span><span class="p">(</span><span class="n">Owner</span><span class="p">,</span> <span class="n">collection_name</span><span class="o">=</span><span class="s">'pets'</span><span class="p">)</span></code></pre></figure>
+
+<p>Using the referenceproperty, the code is like the following:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">petowners</span> <span class="o">=</span> <span class="n">felix</span><span class="o">.</span><span class="n">owners</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">prefetch_refprops</span><span class="p">(</span><span class="n">owners</span><span class="p">,</span> <span class="s">'owner'</span><span class="p">)</span>
+<span class="n">owners</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">owner</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">petowners</span><span class="p">]</span></code></pre></figure>
+
+<p>Another approach is to have one side of the relationship store a list of the keys of entities on the other side of the relationship.
+This makes sense when the cardinality on one side is limited.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">Pet</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+  <span class="n">name</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">StringProperty</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">Owner</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+  <span class="n">name</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">StringProperty</span><span class="p">()</span>
+  <span class="n">pets</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">ListProperty</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Key</span><span class="p">)</span>
+
+<span class="n">pets</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">bob</span><span class="o">.</span><span class="n">pets</span><span class="p">)</span>
+<span class="n">owners</span> <span class="o">=</span> <span class="n">Owner</span><span class="o">.</span><span class="nb">all</span><span class="p">()</span><span class="o">.</span><span class="nb">filter</span><span class="p">(</span><span class="s">'pets ='</span><span class="p">,</span> <span class="n">felix</span><span class="p">)</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span></code></pre></figure>
+
+:ET

@@ -1,0 +1,39 @@
+I"ÿ<p>I just find <code class="highlighter-rouge">4.3</code> very hard to understand.
+Eventhough I followed the authorâ€™s ideas, and find it work.</p>
+
+<p>But this time I found even try to understand the callings through debug would be very difficult.</p>
+
+<p>There should be theoretical foundations for this, finally, though <a href="https://www.ida.liu.se/~TDDA69/fo/2014/9-non-deterministic.pdf">this tutorial</a>, I found
+the idea befind it is <a href="http://en.wikipedia.org/wiki/Continuation-passing_style">CPS</a>. There are other materials <a href="https://cgi.soic.indiana.edu/~c311/lib/exe/fetch.php?media=cps-notes.scm">here</a>, <a href="https://cgi.soic.indiana.edu/~c311/doku.php?id=cps-refresher">here</a>.</p>
+
+<h4 id="435">4.35</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">an-integer-between</span> <span class="nv">low</span> <span class="nv">high</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">require</span> <span class="p">(</span><span class="nb">&lt;=</span> <span class="nv">low</span> <span class="nv">high</span><span class="p">))</span>
+  <span class="p">(</span><span class="nf">amb</span> <span class="nv">low</span> <span class="p">(</span><span class="nf">an-integer-between</span> <span class="p">(</span><span class="nb">+</span> <span class="nv">low</span> <span class="mi">1</span><span class="p">)</span> <span class="nv">high</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">a-pythagorean-triple-between</span> <span class="nv">low</span> <span class="nv">high</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">i</span> <span class="p">(</span><span class="nf">an-integer-between</span> <span class="nv">low</span> <span class="nv">high</span><span class="p">)))</span>
+    <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">j</span> <span class="p">(</span><span class="nf">an-integer-between</span> <span class="nv">i</span> <span class="nv">high</span><span class="p">)))</span>
+      <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">k</span> <span class="p">(</span><span class="nf">an-integer-between</span> <span class="nv">j</span> <span class="nv">high</span><span class="p">)))</span>
+        <span class="p">(</span><span class="nf">require</span> <span class="p">(</span><span class="nb">=</span> <span class="p">(</span><span class="nb">+</span> <span class="p">(</span><span class="nb">*</span> <span class="nv">i</span> <span class="nv">i</span><span class="p">)</span> <span class="p">(</span><span class="nb">*</span> <span class="nv">j</span> <span class="nv">j</span><span class="p">))</span> <span class="p">(</span><span class="nb">*</span> <span class="nv">k</span> <span class="nv">k</span><span class="p">)))</span>
+        <span class="p">(</span><span class="nb">list</span> <span class="nv">i</span> <span class="nv">j</span> <span class="nv">k</span><span class="p">)))))</span>
+
+<span class="p">(</span><span class="nf">a-pythagorean-triple-between</span> <span class="mi">1</span> <span class="mi">100</span><span class="p">)</span></code></pre></figure>
+
+<h4 id="436">4.36</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">a-pythagorean-triple-from</span> <span class="nv">low</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">k</span> <span class="p">(</span><span class="nf">an-integer-starting-from</span> <span class="nv">low</span><span class="p">)))</span>
+    <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">i</span> <span class="p">(</span><span class="nf">an-integer-between</span> <span class="nv">low</span> <span class="nv">k</span><span class="p">)))</span>
+      <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">j</span> <span class="p">(</span><span class="nf">an-integer-between</span> <span class="nv">i</span> <span class="nv">k</span><span class="p">)))</span>
+        <span class="p">(</span><span class="nf">require</span> <span class="p">(</span><span class="nb">=</span> <span class="p">(</span><span class="nb">+</span> <span class="p">(</span><span class="nb">*</span> <span class="nv">i</span> <span class="nv">i</span><span class="p">)</span> <span class="p">(</span><span class="nb">*</span> <span class="nv">j</span> <span class="nv">j</span><span class="p">))</span> <span class="p">(</span><span class="nb">*</span> <span class="nv">k</span> <span class="nv">k</span><span class="p">)))</span>
+        <span class="p">(</span><span class="nb">list</span> <span class="nv">i</span> <span class="nv">j</span> <span class="nv">k</span><span class="p">)))))</span>
+
+<span class="p">(</span><span class="nf">a-pythagorean-triple-from</span> <span class="mi">1</span><span class="p">)</span></code></pre></figure>
+
+<h4 id="437">4.37</h4>
+
+<p>It would cut many useless branches.</p>
+
+:ET

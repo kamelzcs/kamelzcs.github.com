@@ -1,0 +1,48 @@
+I"ú<h3 id="about-variable-scope">About variable scope</h3>
+
+<p>In python, the variable scope has four kinds:</p>
+
+<ul>
+  <li>global</li>
+  <li>class</li>
+  <li>instance</li>
+  <li>local</li>
+</ul>
+
+<p>In those kinds, the class-based and instance-based may merge in some cases:</p>
+
+<p>Every time, the instance-based is looked up, which has not been initialized, the class-based result will
+be returned if there is any. Once it is initialized, it will be in the field of the instance.</p>
+
+<p>One example from <a href="http://stackoverflow.com/questions/12941748/python-variable-scope-and-classes">stackoverflow</a>:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">MyClass</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">my_var</span> <span class="o">=</span> <span class="mi">10</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">my_var</span><span class="p">)</span>
+
+
+<span class="n">m1</span> <span class="o">=</span> <span class="n">MyClass</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">10</span>          <span class="c1"># class-based 
+</span>
+<span class="n">MyClass</span><span class="o">.</span><span class="n">my_var</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="k">print</span><span class="p">(</span><span class="n">m1</span><span class="o">.</span><span class="n">my_var</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">20</span>          <span class="c1"># Only class-based available.
+</span>
+<span class="n">m2</span> <span class="o">=</span> <span class="n">MyClass</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">20</span>          <span class="c1"># class-based
+</span>
+<span class="n">m1</span><span class="o">.</span><span class="n">my_var</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="k">print</span><span class="p">(</span><span class="n">MyClass</span><span class="o">.</span><span class="n">my_var</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">20</span>          <span class="c1"># class-based,but the instance-based variable has been set in m1.
+</span>
+<span class="n">MyClass</span><span class="o">.</span><span class="n">my_var</span> <span class="o">=</span> <span class="mi">40</span> 
+<span class="k">print</span><span class="p">(</span><span class="n">m1</span><span class="o">.</span><span class="n">my_var</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">30</span>           
+                 <span class="c1"># The value WAS shared before m1.my_var = 30 had happened.
+</span>
+<span class="k">print</span><span class="p">(</span><span class="n">m2</span><span class="o">.</span><span class="n">my_var</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">40</span>           <span class="c1"># m2.my_var's value is still shared </span></code></pre></figure>
+
+:ET

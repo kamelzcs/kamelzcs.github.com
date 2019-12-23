@@ -1,0 +1,81 @@
+I"Á-<h4 id="lecture-content">Lecture Content</h4>
+
+<p>Among all of them, <code class="highlighter-rouge">Pure</code> is the most tricky part. In the current computer system model,
+<code class="highlighter-rouge">side effects</code> are inevitable. Haskell uses <code class="highlighter-rouge">Modad</code> and treats the outside world as static
+to implement <code class="highlighter-rouge">Pure</code>.</p>
+
+<h4 id="home-work">Home Work</h4>
+
+<h5 id="exercise-1">Exercise 1</h5>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">toDigits</span> <span class="o">::</span> <span class="kt">Integer</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">Integer</span><span class="p">]</span>
+<span class="n">toDigits</span> <span class="n">n</span>
+  <span class="o">|</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="o">=</span> <span class="kt">[]</span>
+  <span class="o">|</span> <span class="n">otherwise</span> <span class="o">=</span> <span class="n">toDigits</span> <span class="p">(</span><span class="n">n</span> <span class="p">`</span><span class="n">div</span><span class="p">`</span> <span class="mi">10</span><span class="p">)</span> <span class="o">++</span> <span class="p">[</span><span class="n">n</span> <span class="p">`</span><span class="n">mod</span><span class="p">`</span> <span class="mi">10</span><span class="p">]</span>
+
+<span class="n">toDigitsRev</span> <span class="o">::</span> <span class="kt">Integer</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">Integer</span><span class="p">]</span>
+<span class="n">toDigitsRev</span> <span class="o">=</span> <span class="n">reverse</span> <span class="o">.</span> <span class="n">toDigits</span></code></pre></figure>
+
+<p>Test part,</p>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">ex1Tests</span> <span class="o">::</span> <span class="p">[</span><span class="kt">Test</span><span class="p">]</span>
+<span class="n">ex1Tests</span> <span class="o">=</span> <span class="p">[</span> <span class="n">testF1</span> <span class="s">"toDigits test"</span> <span class="n">toDigits</span>
+             <span class="p">[(</span><span class="mi">1234</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]),</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="p">[</span><span class="mi">5</span><span class="p">]),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kt">[]</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">17</span><span class="p">,</span> <span class="kt">[]</span><span class="p">)]</span>
+           <span class="p">]</span></code></pre></figure>
+
+<h5 id="exercise-2">Exercise 2</h5>
+
+<p>The key lies in generating infinite lists of <code class="highlighter-rouge">[1, 2, 1, 2, ...]</code>
+There are several ways to generate infinite lists.</p>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">numbers1</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">:</span> <span class="n">map</span> <span class="p">(</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="n">numbers1</span>
+<span class="n">numbers2</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">:</span> <span class="p">[</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span> <span class="o">|</span> <span class="n">x</span> <span class="o">&lt;-</span> <span class="n">numbers2</span><span class="p">]</span>
+<span class="n">numbers3</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="o">..</span><span class="p">]</span></code></pre></figure>
+
+<p>The way to get infinite interchange of <code class="highlighter-rouge">1 2</code> lists is</p>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell">  <span class="n">oneTwo</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">:</span> <span class="mi">2</span> <span class="o">:</span> <span class="n">oneTwo</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">doubleEveryOther</span> <span class="o">::</span> <span class="p">[</span><span class="kt">Integer</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">Integer</span><span class="p">]</span>
+<span class="n">doubleEveryOther</span> <span class="o">=</span> <span class="n">reverse</span> <span class="o">.</span> <span class="n">zipWith</span> <span class="p">(</span><span class="o">*</span><span class="p">)</span> <span class="n">oneTwo</span> <span class="o">.</span> <span class="n">reverse</span> <span class="kr">where</span>
+  <span class="n">oneTwo</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">:</span> <span class="mi">2</span> <span class="o">:</span> <span class="n">oneTwo</span></code></pre></figure>
+
+<p>Test code</p>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">ex2Tests</span> <span class="o">::</span> <span class="p">[</span><span class="kt">Test</span><span class="p">]</span>
+<span class="n">ex2Tests</span> <span class="o">=</span> <span class="p">[</span><span class="n">testF1</span> <span class="s">"doubleEveryOther test"</span> <span class="n">doubleEveryOther</span>
+             <span class="p">[([</span><span class="mi">8</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">]),</span> <span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">])]</span>
+           <span class="p">]</span></code></pre></figure>
+
+<h5 id="exercise-3">Exercise 3</h5>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">sumDigits</span> <span class="o">::</span> <span class="p">[</span><span class="kt">Integer</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="kt">Integer</span>
+<span class="n">sumDigits</span> <span class="o">=</span> <span class="n">sum</span> <span class="o">.</span> <span class="n">map</span> <span class="p">(</span><span class="n">sum</span><span class="o">.</span> <span class="n">toDigits</span><span class="p">)</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">ex3Tests</span> <span class="o">::</span> <span class="p">[</span><span class="kt">Test</span><span class="p">]</span>
+<span class="n">ex3Tests</span> <span class="o">=</span> <span class="p">[</span><span class="n">testF1</span> <span class="s">"sumDigits test"</span> <span class="n">sumDigits</span>
+             <span class="p">[([</span><span class="mi">16</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="mi">22</span><span class="p">)]</span>
+           <span class="p">]</span></code></pre></figure>
+
+<h5 id="exercise-4">Exercise 4</h5>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">validate</span> <span class="o">::</span> <span class="kt">Integer</span> <span class="o">-&gt;</span> <span class="kt">Bool</span>
+<span class="n">validate</span> <span class="o">=</span> <span class="p">(</span><span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">.</span> <span class="p">(`</span><span class="n">mod</span><span class="p">`</span> <span class="mi">10</span><span class="p">)</span> <span class="o">.</span> <span class="n">sumDigits</span> <span class="o">.</span> <span class="n">doubleEveryOther</span> <span class="o">.</span> <span class="n">toDigits</span></code></pre></figure>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">ex4Tests</span> <span class="o">::</span> <span class="p">[</span><span class="kt">Test</span><span class="p">]</span>
+<span class="n">ex4Tests</span> <span class="o">=</span> <span class="p">[</span><span class="n">testF1</span> <span class="s">"validate test"</span> <span class="n">validate</span>
+             <span class="p">[(</span><span class="mi">4012888888881881</span><span class="p">,</span> <span class="kt">True</span><span class="p">),</span> <span class="p">(</span><span class="mi">4012888888881882</span><span class="p">,</span> <span class="kt">False</span><span class="p">)]</span>
+           <span class="p">]</span></code></pre></figure>
+
+<h5 id="exercise-5">Exercise 5</h5>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="kr">type</span> <span class="kt">Peg</span> <span class="o">=</span> <span class="kt">String</span>
+<span class="kr">type</span> <span class="kt">Move</span> <span class="o">=</span> <span class="p">(</span><span class="kt">Peg</span><span class="p">,</span> <span class="kt">Peg</span><span class="p">)</span>
+
+<span class="n">hanoi</span> <span class="o">::</span> <span class="kt">Integer</span> <span class="o">-&gt;</span> <span class="kt">Peg</span> <span class="o">-&gt;</span> <span class="kt">Peg</span> <span class="o">-&gt;</span> <span class="kt">Peg</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">Move</span><span class="p">]</span>
+<span class="n">hanoi</span> <span class="n">n</span> <span class="n">a</span> <span class="n">b</span> <span class="n">c</span>
+  <span class="o">|</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="o">=</span> <span class="kt">[]</span>
+  <span class="o">|</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">=</span> <span class="p">[(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)]</span>
+  <span class="o">|</span> <span class="n">otherwise</span> <span class="o">=</span> <span class="n">hanoi</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="n">a</span> <span class="n">c</span> <span class="n">b</span> <span class="o">++</span> <span class="p">[(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)]</span> <span class="o">++</span> <span class="n">hanoi</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="n">c</span> <span class="n">b</span> <span class="n">a</span></code></pre></figure>
+
+:ET

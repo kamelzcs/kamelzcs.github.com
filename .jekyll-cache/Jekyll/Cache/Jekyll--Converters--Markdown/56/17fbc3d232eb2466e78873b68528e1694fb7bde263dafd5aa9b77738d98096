@@ -1,0 +1,94 @@
+I"Z+<h4 id="259">2.59</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">union-set</span> <span class="nv">set1</span> <span class="nv">set2</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">null?</span> <span class="nv">set1</span><span class="p">)</span> <span class="nv">set2</span><span class="p">)</span>
+        <span class="p">((</span><span class="nf">element-of-set?</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">set1</span><span class="p">)</span> <span class="nv">set2</span><span class="p">)</span>
+         <span class="p">(</span><span class="nf">union-set</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">set1</span><span class="p">)</span> <span class="nv">set2</span><span class="p">))</span>
+        <span class="p">(</span><span class="k">else</span>
+          <span class="p">(</span><span class="nb">cons</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">set1</span><span class="p">)</span>
+                <span class="p">(</span><span class="nf">union-set</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">set1</span><span class="p">)</span>
+                           <span class="nv">set2</span><span class="p">)))))</span></code></pre></figure>
+
+<h4 id="260">2.60</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">adjoin-set</span> <span class="nv">x</span> <span class="nv">set</span><span class="p">)</span>
+   <span class="p">(</span><span class="nb">cons</span> <span class="nv">x</span> <span class="nv">set</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">union-set</span> <span class="nv">set1</span> <span class="nv">set2</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">append</span> <span class="nv">set1</span> <span class="nv">set2</span><span class="p">))</span></code></pre></figure>
+
+<p><code class="highlighter-rouge">adjoin-set</code> goes from $O(n)$ to $O(1)$</p>
+
+<p><code class="highlighter-rouge">union-set</code> goes from $O(n^2)$ to $O(n)$</p>
+
+<h4 id="261">2.61</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">adjoin-set</span> <span class="nv">x</span> <span class="nv">set</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">null?</span> <span class="nv">set</span><span class="p">)</span> <span class="p">(</span><span class="nb">list</span> <span class="nv">x</span><span class="p">))</span>
+        <span class="p">((</span><span class="nb">&lt;</span> <span class="nv">x</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">set</span><span class="p">))</span> <span class="p">(</span><span class="nb">cons</span> <span class="nv">x</span> <span class="nv">set</span><span class="p">))</span>
+        <span class="p">((</span><span class="nb">=</span> <span class="nv">x</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">set</span><span class="p">))</span> <span class="nv">set</span><span class="p">)</span>
+        <span class="p">((</span><span class="nb">&gt;</span> <span class="nv">x</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">set</span><span class="p">))</span> <span class="p">(</span><span class="nb">cons</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">set</span><span class="p">)</span>
+                               <span class="p">(</span><span class="nf">adjoin-set</span> <span class="nv">x</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">set</span><span class="p">))))))</span></code></pre></figure>
+
+<h4 id="262">2.62</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">union-set</span> <span class="nv">set1</span> <span class="nv">set2</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">null?</span> <span class="nv">set1</span><span class="p">)</span> <span class="nv">set2</span><span class="p">)</span>
+        <span class="p">((</span><span class="nb">null?</span> <span class="nv">set2</span><span class="p">)</span> <span class="nv">set1</span><span class="p">)</span>
+        <span class="p">(</span><span class="k">else</span>
+          <span class="p">(</span><span class="k">let*</span> <span class="p">([</span><span class="nf">x1</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">set1</span><span class="p">)]</span> <span class="p">[</span><span class="nf">x2</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">set2</span><span class="p">)])</span>
+            <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">&lt;</span> <span class="nv">x1</span> <span class="nv">x2</span><span class="p">)</span>
+                   <span class="p">(</span><span class="nb">cons</span> <span class="nv">x1</span>
+                         <span class="p">(</span><span class="nf">union-set</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">set1</span><span class="p">)</span> <span class="nv">set2</span><span class="p">)))</span>
+                  <span class="p">((</span><span class="nb">=</span> <span class="nv">x1</span> <span class="nv">x2</span><span class="p">)</span>
+                   <span class="p">(</span><span class="nb">cons</span> <span class="nv">x1</span>
+                         <span class="p">(</span><span class="nf">union-set</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">set1</span><span class="p">)</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">set2</span><span class="p">))))</span>
+                  <span class="p">(</span><span class="k">else</span>
+                    <span class="p">(</span><span class="nb">cons</span> <span class="nv">x2</span>
+                          <span class="p">(</span><span class="nf">union-set</span> <span class="nv">set1</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">set2</span><span class="p">)))))))))</span></code></pre></figure>
+
+<h4 id="263">2.63</h4>
+<p>It would make no difference on the final result, both of them are in order traverse.
+But there is something tricky on the time complexity<a href="http://community.schemewiki.org/?sicp-ex-2.63">1</a>.</p>
+
+<p><code class="highlighter-rouge">append</code> is much more expensive than <code class="highlighter-rouge">cons</code>.</p>
+
+<p>Let $T(n)$ be the time complexity for a balanced tree of $n$ nodes.</p>
+
+<p>For tree-&gt;list-1:</p>
+
+<script type="math/tex; mode=display">T(n) = 2 * T(n/2) + O(n) = O(nlog n)</script>
+
+<p>For tree-&gt;list-2:</p>
+
+<script type="math/tex; mode=display">T(n) = 2 * T(n/2) + O(1) = O(n)</script>
+
+<h4 id="264">2.64</h4>
+<p>The analysis of time complexity is similar to the <code class="highlighter-rouge">2.63</code>, which is $O(nlog n)$.</p>
+
+<h4 id="265">2.65</h4>
+<p>Use <code class="highlighter-rouge">tree-list</code> from <code class="highlighter-rouge">2.63</code> and <code class="highlighter-rouge">list-tree</code> to convert bidirectional.</p>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"> <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">union-set</span> <span class="nv">tree1</span> <span class="nv">tree2</span><span class="p">)</span>
+   <span class="p">(</span><span class="nf">list-&gt;tree</span> <span class="p">(</span><span class="nf">union-set-list</span> <span class="p">(</span><span class="nf">tree-&gt;list</span> <span class="nv">tree1</span><span class="p">)</span>
+                               <span class="p">(</span><span class="nf">tree-&gt;list</span> <span class="nv">tree2</span><span class="p">))))</span>
+
+ <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">intersection-set</span> <span class="nv">tree1</span> <span class="nv">tree2</span><span class="p">)</span>
+   <span class="p">(</span><span class="nf">list-&gt;tree</span> <span class="p">(</span><span class="nf">intersection-set-list</span> <span class="p">(</span><span class="nf">tree-&gt;list</span> <span class="nv">tree1</span><span class="p">)</span>
+                                      <span class="p">(</span><span class="nf">tree-&gt;list</span> <span class="nv">tree2</span><span class="p">))))</span></code></pre></figure>
+
+<h4 id="266">2.66</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">lookup</span> <span class="nv">given-key</span> <span class="nv">set-of-records</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">null?</span> <span class="nv">set-of-records</span><span class="p">)</span>
+    <span class="no">#f</span>
+    <span class="p">(</span><span class="k">let</span> <span class="p">([</span><span class="nf">record</span> <span class="p">(</span><span class="nf">entry</span> <span class="nv">set-of-records</span><span class="p">)])</span>
+      <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">=</span> <span class="nv">given-key</span> <span class="p">(</span><span class="nf">key</span> <span class="nv">record</span><span class="p">))</span> <span class="nv">record</span><span class="p">)</span>
+            <span class="p">((</span><span class="nb">&lt;</span> <span class="nv">given-key</span> <span class="p">(</span><span class="nf">key</span> <span class="nv">record</span><span class="p">))</span>
+             <span class="p">(</span><span class="nf">lookup</span> <span class="nv">given-key</span>
+                     <span class="p">(</span><span class="nf">left-branch</span> <span class="nv">set-of-records</span><span class="p">)))</span>
+            <span class="p">((</span><span class="nb">&gt;</span> <span class="nv">given-key</span> <span class="p">(</span><span class="nf">key</span> <span class="nv">record</span><span class="p">))</span>
+             <span class="p">(</span><span class="nf">lookup</span> <span class="nv">given-key</span> 
+                     <span class="p">(</span><span class="nf">right-branch</span> <span class="nv">set-of-records</span><span class="p">)))))))</span></code></pre></figure>
+
+:ET

@@ -1,0 +1,36 @@
+I"<h4 id="111">1.11</h4>
+
+<p>Recursive versoin:</p>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="o">#</span><span class="nv">lang</span> <span class="nv">planet</span> <span class="nv">neil/sicp</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">f-triple</span> <span class="nv">n</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">&lt;</span> <span class="nv">n</span> <span class="mi">3</span><span class="p">)</span> <span class="nv">n</span><span class="p">)</span>
+        <span class="p">(</span><span class="k">else</span>
+          <span class="p">(</span><span class="nb">+</span> <span class="p">(</span><span class="nf">f-triple</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">n</span> <span class="mi">1</span><span class="p">))</span>
+           <span class="p">(</span><span class="nf">f-triple</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">n</span> <span class="mi">2</span><span class="p">))</span>
+           <span class="p">(</span><span class="nf">f-triple</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">n</span> <span class="mi">3</span><span class="p">))))))</span></code></pre></figure>
+
+<p>Iterate version:</p>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">f-triple-iter</span> <span class="nv">n</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">&lt;</span> <span class="nv">n</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="nv">n</span>
+    <span class="p">(</span><span class="nf">f-iter</span> <span class="mi">2</span> <span class="mi">1</span> <span class="mi">0</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">n</span> <span class="mi">2</span><span class="p">))))</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">f-iter</span> <span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span> <span class="nv">count</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">=</span> <span class="nv">count</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="nv">a</span>
+    <span class="p">(</span><span class="nf">f-iter</span> <span class="p">(</span><span class="nb">+</span> <span class="nv">a</span> <span class="p">(</span><span class="nb">*</span> <span class="mi">2</span> <span class="nv">b</span><span class="p">)</span> <span class="p">(</span><span class="nb">*</span> <span class="mi">3</span> <span class="nv">c</span><span class="p">))</span>
+            <span class="nv">a</span>
+            <span class="nv">b</span>
+            <span class="p">(</span><span class="nb">-</span> <span class="nv">count</span> <span class="mi">1</span><span class="p">))))</span></code></pre></figure>
+
+<h4 id="112">1.12</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">triangle</span> <span class="nv">row</span> <span class="nv">col</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">=</span> <span class="nv">col</span> <span class="mi">1</span><span class="p">)</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="p">((</span><span class="nb">&gt;</span> <span class="nv">col</span> <span class="nv">row</span><span class="p">)</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">(</span><span class="k">else</span>
+            <span class="p">(</span><span class="nb">+</span> <span class="p">(</span><span class="nf">triangle</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">row</span> <span class="mi">1</span><span class="p">)</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">col</span> <span class="mi">1</span><span class="p">))</span>
+               <span class="p">(</span><span class="nf">triangle</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">row</span> <span class="mi">1</span><span class="p">)</span> <span class="nv">col</span><span class="p">)))))</span></code></pre></figure>
+
+:ET

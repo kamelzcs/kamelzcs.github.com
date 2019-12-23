@@ -1,0 +1,124 @@
+I"dQ<h4 id="439">4.39</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme">    <span class="p">(</span><span class="nf">require</span> <span class="p">(</span><span class="nb">&gt;</span> <span class="nv">miller</span> <span class="nv">cooper</span><span class="p">))</span>
+    <span class="p">(</span><span class="nf">require</span> <span class="p">(</span><span class="nb">not</span> <span class="p">(</span><span class="nb">=</span> <span class="nv">baker</span> <span class="mi">5</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nf">require</span> <span class="p">(</span><span class="nb">not</span> <span class="p">(</span><span class="nb">=</span> <span class="nv">cooper</span> <span class="mi">1</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nf">require</span> <span class="p">(</span><span class="nb">not</span> <span class="p">(</span><span class="nb">=</span> <span class="nv">fletcher</span> <span class="mi">5</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nf">require</span> <span class="p">(</span><span class="nb">not</span> <span class="p">(</span><span class="nb">=</span> <span class="nv">fletcher</span> <span class="mi">1</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nf">require</span> <span class="p">(</span><span class="nb">not</span> <span class="p">(</span><span class="nb">=</span> <span class="p">(</span><span class="nb">abs</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">smith</span> <span class="nv">fletcher</span><span class="p">))</span> <span class="mi">1</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nf">require</span>
+     <span class="p">(</span><span class="nf">distinct?</span> <span class="p">(</span><span class="nb">list</span> <span class="nv">baker</span> <span class="nv">cooper</span> <span class="nv">fletcher</span> <span class="nv">miller</span> <span class="nv">smith</span><span class="p">)))(</span><span class="nf">require</span> <span class="p">(</span><span class="nb">not</span> <span class="p">(</span><span class="nb">=</span> <span class="p">(</span><span class="nb">abs</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">fletcher</span> <span class="nv">cooper</span><span class="p">))</span> <span class="mi">1</span><span class="p">)))</span></code></pre></figure>
+
+<p>The answer will always be correct, but the efficiency would be different.</p>
+
+<p>By putting the more restrictive in the front makes the branch cutting happens earlier.</p>
+
+<h4 id="440">4.40</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">multiple-dwelling</span><span class="p">)</span>
+ <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">cooper</span> <span class="p">(</span><span class="nf">amb</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span><span class="p">))</span>
+       <span class="p">(</span><span class="nf">miller</span> <span class="p">(</span><span class="nf">amb</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span><span class="p">)))</span>
+   <span class="p">(</span><span class="nf">require</span> <span class="p">(</span><span class="nb">&gt;</span> <span class="nv">miller</span> <span class="nv">cooper</span><span class="p">))</span>
+   <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">fletcher</span> <span class="p">(</span><span class="nf">amb</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">)))</span>
+     <span class="p">(</span><span class="nf">require</span> <span class="p">(</span><span class="nb">not</span> <span class="p">(</span><span class="nb">=</span> <span class="p">(</span><span class="nb">abs</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">fletcher</span> <span class="nv">cooper</span><span class="p">))</span> <span class="mi">1</span><span class="p">)))</span>
+     <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">smith</span> <span class="p">(</span><span class="nf">amb</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span><span class="p">)))</span>
+       <span class="p">(</span><span class="nf">require</span> <span class="p">(</span><span class="nb">not</span> <span class="p">(</span><span class="nb">=</span> <span class="p">(</span><span class="nb">abs</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">smith</span> <span class="nv">fletcher</span><span class="p">))</span> <span class="mi">1</span><span class="p">)))</span>
+       <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">baker</span> <span class="p">(</span><span class="nf">amb</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">)))</span>
+         <span class="p">(</span><span class="nf">require</span>
+           <span class="p">(</span><span class="nf">distinct?</span> <span class="p">(</span><span class="nb">list</span> <span class="nv">baker</span> <span class="nv">cooper</span> <span class="nv">fletcher</span> <span class="nv">miller</span> <span class="nv">smith</span><span class="p">)))</span>
+         <span class="p">(</span><span class="nb">list</span> <span class="p">(</span><span class="nb">list</span> <span class="ss">'baker</span> <span class="nv">baker</span><span class="p">)</span>
+               <span class="p">(</span><span class="nb">list</span> <span class="ss">'cooper</span> <span class="nv">cooper</span><span class="p">)</span>
+               <span class="p">(</span><span class="nb">list</span> <span class="ss">'fletcher</span> <span class="nv">fletcher</span><span class="p">)</span>
+               <span class="p">(</span><span class="nb">list</span> <span class="ss">'miller</span> <span class="nv">miller</span><span class="p">)</span>
+               <span class="p">(</span><span class="nb">list</span> <span class="ss">'smith</span> <span class="nv">smith</span><span class="p">)))))))</span></code></pre></figure>
+
+<h4 id="441">4.41</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">accumulate</span> <span class="nv">op</span> <span class="nv">initial</span> <span class="nv">sequence</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">null?</span> <span class="nv">sequence</span><span class="p">)</span>
+      <span class="nv">initial</span>
+      <span class="p">(</span><span class="nf">op</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">sequence</span><span class="p">)</span>
+          <span class="p">(</span><span class="nf">accumulate</span> <span class="nv">op</span> <span class="nv">initial</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">sequence</span><span class="p">)))))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">flatmap</span> <span class="nv">proc</span> <span class="nv">seq</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">accumulate</span> <span class="nv">append</span> <span class="nv">nil</span> <span class="p">(</span><span class="nb">map</span> <span class="nv">proc</span> <span class="nv">seq</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">filter</span> <span class="nv">predicate</span> <span class="nv">sequence</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">null?</span> <span class="nv">sequence</span><span class="p">)</span> <span class="o">'</span><span class="p">())</span>
+        <span class="p">((</span><span class="nf">predicate</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">sequence</span><span class="p">))</span>
+         <span class="p">(</span><span class="nb">cons</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">sequence</span><span class="p">)</span>
+               <span class="p">(</span><span class="nf">filter</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">sequence</span><span class="p">))))</span>
+        <span class="p">(</span><span class="k">else</span> <span class="p">(</span><span class="nf">filter</span> <span class="nv">predicate</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">sequence</span><span class="p">)))))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">permutations</span> <span class="nv">lst</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">null?</span> <span class="nv">lst</span><span class="p">)</span>
+    <span class="p">(</span><span class="nb">list</span> <span class="o">'</span><span class="p">())</span>
+    <span class="p">(</span><span class="nf">flatmap</span>
+      <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">first</span><span class="p">)</span>
+        <span class="p">(</span><span class="nb">map</span>
+          <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">rest</span><span class="p">)</span> <span class="p">(</span><span class="nb">cons</span> <span class="nv">first</span> <span class="nv">rest</span><span class="p">))</span>
+          <span class="p">(</span><span class="nf">permutations</span> <span class="p">(</span><span class="nf">filter</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">not</span> <span class="p">(</span><span class="nb">=</span> <span class="nv">x</span> <span class="nv">first</span><span class="p">)))</span> <span class="nv">lst</span><span class="p">))))</span>
+      <span class="nv">lst</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="nf">permutations</span> <span class="o">'</span><span class="p">(</span><span class="nf">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span><span class="p">))</span></code></pre></figure>
+
+<p><code class="highlighter-rouge">permutations</code> function is the key point.</p>
+
+<h4 id="442">4.42</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">xor</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">or</span> <span class="p">(</span><span class="k">and</span> <span class="nv">a</span> <span class="p">(</span><span class="nb">not</span> <span class="nv">b</span><span class="p">))</span>
+      <span class="p">(</span><span class="k">and</span> <span class="p">(</span><span class="nb">not</span> <span class="nv">a</span><span class="p">)</span><span class="nv">b</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="nv">liars</span>
+  <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">betty</span> <span class="p">(</span><span class="nf">amb</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span><span class="p">))</span>
+        <span class="p">(</span><span class="nf">ethel</span> <span class="p">(</span><span class="nf">amb</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span><span class="p">))</span>
+        <span class="p">(</span><span class="nf">joan</span> <span class="p">(</span><span class="nf">amb</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span><span class="p">))</span>
+        <span class="p">(</span><span class="nf">kitty</span> <span class="p">(</span><span class="nf">amb</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span><span class="p">))</span>
+        <span class="p">(</span><span class="nf">mary</span> <span class="p">(</span><span class="nf">amb</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nf">require</span>
+      <span class="p">(</span><span class="nf">distinct?</span> <span class="p">(</span><span class="nb">list</span> <span class="nv">betty</span> <span class="nv">ethel</span> <span class="nv">joan</span> <span class="nv">kitty</span> <span class="nv">mary</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nf">require</span> <span class="p">(</span><span class="nf">xor</span> <span class="p">(</span><span class="nb">=</span> <span class="nv">kitty</span> <span class="mi">2</span><span class="p">)</span> <span class="p">(</span><span class="nb">=</span> <span class="nv">betty</span> <span class="mi">3</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nf">require</span> <span class="p">(</span><span class="nf">xor</span> <span class="p">(</span><span class="nb">=</span> <span class="nv">ethel</span> <span class="mi">1</span><span class="p">)</span> <span class="p">(</span><span class="nb">=</span> <span class="nv">joan</span> <span class="mi">2</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nf">require</span> <span class="p">(</span><span class="nf">xor</span> <span class="p">(</span><span class="nb">=</span> <span class="nv">joan</span> <span class="mi">3</span><span class="p">)</span> <span class="p">(</span><span class="nb">=</span> <span class="nv">ethel</span> <span class="mi">5</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nf">require</span> <span class="p">(</span><span class="nf">xor</span> <span class="p">(</span><span class="nb">=</span> <span class="nv">kitty</span> <span class="mi">2</span><span class="p">)</span> <span class="p">(</span><span class="nb">=</span> <span class="nv">mary</span> <span class="mi">4</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nf">require</span> <span class="p">(</span><span class="nf">xor</span> <span class="p">(</span><span class="nb">=</span> <span class="nv">mary</span> <span class="mi">4</span><span class="p">)</span> <span class="p">(</span><span class="nb">=</span> <span class="nv">betty</span> <span class="mi">1</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nb">list</span> <span class="p">(</span><span class="nb">list</span> <span class="ss">'betty</span> <span class="nv">betty</span><span class="p">)</span>
+          <span class="p">(</span><span class="nb">list</span> <span class="ss">'ethel</span> <span class="nv">ethel</span><span class="p">)</span>
+          <span class="p">(</span><span class="nb">list</span> <span class="ss">'joan</span> <span class="nv">joan</span><span class="p">)</span>
+          <span class="p">(</span><span class="nb">list</span> <span class="ss">'kitty</span> <span class="nv">kitty</span><span class="p">)</span>
+          <span class="p">(</span><span class="nb">list</span> <span class="ss">'mary</span> <span class="nv">mary</span><span class="p">))))</span></code></pre></figure>
+
+<p>One important thing to note is, <code class="highlighter-rouge">and</code> and <code class="highlighter-rouge">or</code> is not a regular primitive function
+in Scheme, classification is <a href="http://stackoverflow.com/questions/8020870/why-cant-i-define-an-or-function-in-scheme">here</a>, it must be dealt with separatly.</p>
+
+<h4 id="444">4.44</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">safe?</span> <span class="nv">result</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">p</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">result</span><span class="p">)))</span>
+    <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">conflict?</span> <span class="nv">q</span> <span class="nv">i</span><span class="p">)</span>
+      <span class="p">(</span><span class="k">or</span>
+        <span class="p">(</span><span class="nb">=</span> <span class="nv">p</span> <span class="nv">q</span><span class="p">)</span>
+        <span class="p">(</span><span class="nb">=</span> <span class="nv">p</span> <span class="p">(</span><span class="nb">+</span> <span class="nv">q</span> <span class="nv">i</span><span class="p">))</span>
+        <span class="p">(</span><span class="nb">=</span> <span class="nv">p</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">q</span> <span class="nv">i</span><span class="p">))))</span>
+    <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">check</span> <span class="nv">rest</span> <span class="nv">i</span><span class="p">)</span>
+      <span class="p">(</span><span class="k">cond</span>
+        <span class="p">((</span><span class="nb">null?</span> <span class="nv">rest</span><span class="p">)</span> <span class="nv">true</span><span class="p">)</span>
+        <span class="p">((</span><span class="nf">conflict?</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">rest</span><span class="p">)</span> <span class="nv">i</span><span class="p">)</span> <span class="nv">false</span><span class="p">)</span>
+        <span class="p">(</span><span class="k">else</span> <span class="p">(</span><span class="nf">check</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">rest</span><span class="p">)</span> <span class="p">(</span><span class="nb">+</span> <span class="nv">i</span> <span class="mi">1</span><span class="p">)))))</span>
+    <span class="p">(</span><span class="nf">check</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">result</span><span class="p">)</span> <span class="mi">1</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">queens</span> <span class="nv">n</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">iter</span> <span class="nv">result</span> <span class="nv">left</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">=</span> <span class="mi">0</span> <span class="nv">left</span><span class="p">)</span>
+      <span class="nv">result</span>
+      <span class="p">(</span><span class="k">begin</span>
+        <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">new</span> <span class="p">(</span><span class="nb">cons</span> <span class="p">(</span><span class="nf">an-integer-between</span> <span class="mi">1</span> <span class="nv">n</span><span class="p">)</span>
+                         <span class="nv">result</span><span class="p">)))</span>
+          <span class="p">(</span><span class="nf">require</span> <span class="p">(</span><span class="nf">safe?</span> <span class="nv">new</span><span class="p">))</span>
+          <span class="p">(</span><span class="nf">iter</span> <span class="nv">new</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">left</span> <span class="mi">1</span><span class="p">))))))</span>
+  <span class="p">(</span><span class="nf">iter</span> <span class="o">'</span><span class="p">()</span> <span class="nv">n</span><span class="p">))</span>
+
+<span class="p">(</span><span class="nf">queens</span> <span class="mi">8</span><span class="p">)</span></code></pre></figure>
+
+:ET

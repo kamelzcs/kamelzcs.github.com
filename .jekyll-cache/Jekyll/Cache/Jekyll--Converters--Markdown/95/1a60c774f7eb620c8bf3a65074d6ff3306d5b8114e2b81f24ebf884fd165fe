@@ -1,0 +1,123 @@
+I"¦I<h4 id="267">2.67</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">make-leaf</span> <span class="nv">symbol</span> <span class="nv">weight</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">list</span> <span class="ss">'leaf</span> <span class="nv">symbol</span> <span class="nv">weight</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">leaf?</span> <span class="nv">object</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">eq?</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">object</span><span class="p">)</span> <span class="ss">'leaf</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">symbol-leaf</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">cadr</span> <span class="nv">x</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">weight-leaf</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">caddr</span> <span class="nv">x</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">make-code-tree</span> <span class="nv">left</span> <span class="nv">right</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">list</span> <span class="nv">left</span>
+        <span class="nv">right</span>
+        <span class="p">(</span><span class="nb">append</span> <span class="p">(</span><span class="nf">symbols</span> <span class="nv">left</span><span class="p">)</span> <span class="p">(</span><span class="nf">symbols</span> <span class="nv">right</span><span class="p">))</span>
+        <span class="p">(</span><span class="nb">+</span> <span class="p">(</span><span class="nf">weight</span> <span class="nv">left</span><span class="p">)</span> <span class="p">(</span><span class="nf">weight</span> <span class="nv">right</span><span class="p">))))</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">left-branch</span> <span class="nv">tree</span><span class="p">)</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">tree</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">right-branch</span> <span class="nv">tree</span><span class="p">)</span> <span class="p">(</span><span class="nb">cadr</span> <span class="nv">tree</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">symbols</span> <span class="nv">tree</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nf">leaf?</span> <span class="nv">tree</span><span class="p">)</span>
+      <span class="p">(</span><span class="nb">list</span> <span class="p">(</span><span class="nf">symbol-leaf</span> <span class="nv">tree</span><span class="p">))</span>
+      <span class="p">(</span><span class="nb">caddr</span> <span class="nv">tree</span><span class="p">)))</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">weight</span> <span class="nv">tree</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nf">leaf?</span> <span class="nv">tree</span><span class="p">)</span>
+      <span class="p">(</span><span class="nf">weight-leaf</span> <span class="nv">tree</span><span class="p">)</span>
+      <span class="p">(</span><span class="nb">cadddr</span> <span class="nv">tree</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">decode</span> <span class="nv">bits</span> <span class="nv">tree</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">decode-1</span> <span class="nv">bits</span> <span class="nv">current-branch</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">null?</span> <span class="nv">bits</span><span class="p">)</span>
+        <span class="o">'</span><span class="p">()</span>
+        <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">next-branch</span>
+               <span class="p">(</span><span class="nf">choose-branch</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">bits</span><span class="p">)</span> <span class="nv">current-branch</span><span class="p">)))</span>
+          <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nf">leaf?</span> <span class="nv">next-branch</span><span class="p">)</span>
+              <span class="p">(</span><span class="nb">cons</span> <span class="p">(</span><span class="nf">symbol-leaf</span> <span class="nv">next-branch</span><span class="p">)</span>
+                    <span class="p">(</span><span class="nf">decode-1</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">bits</span><span class="p">)</span> <span class="nv">tree</span><span class="p">))</span>
+              <span class="p">(</span><span class="nf">decode-1</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">bits</span><span class="p">)</span> <span class="nv">next-branch</span><span class="p">)))))</span>
+  <span class="p">(</span><span class="nf">decode-1</span> <span class="nv">bits</span> <span class="nv">tree</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">choose-branch</span> <span class="nv">bit</span> <span class="nv">branch</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">=</span> <span class="nv">bit</span> <span class="mi">0</span><span class="p">)</span> <span class="p">(</span><span class="nf">left-branch</span> <span class="nv">branch</span><span class="p">))</span>
+        <span class="p">((</span><span class="nb">=</span> <span class="nv">bit</span> <span class="mi">1</span><span class="p">)</span> <span class="p">(</span><span class="nf">right-branch</span> <span class="nv">branch</span><span class="p">))</span>
+        <span class="p">(</span><span class="k">else</span> <span class="p">(</span><span class="nf">error</span> <span class="s">"bad bit -- CHOOSE-BRANCH"</span> <span class="nv">bit</span><span class="p">))))</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">adjoin-set</span> <span class="nv">x</span> <span class="nv">set</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">null?</span> <span class="nv">set</span><span class="p">)</span> <span class="p">(</span><span class="nb">list</span> <span class="nv">x</span><span class="p">))</span>
+        <span class="p">((</span><span class="nb">&lt;</span> <span class="p">(</span><span class="nf">weight</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nf">weight</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">set</span><span class="p">)))</span> <span class="p">(</span><span class="nb">cons</span> <span class="nv">x</span> <span class="nv">set</span><span class="p">))</span>
+        <span class="p">(</span><span class="k">else</span> <span class="p">(</span><span class="nb">cons</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">set</span><span class="p">)</span>
+                    <span class="p">(</span><span class="nf">adjoin-set</span> <span class="nv">x</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">set</span><span class="p">))))))</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">make-leaf-set</span> <span class="nv">pairs</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">null?</span> <span class="nv">pairs</span><span class="p">)</span>
+      <span class="o">'</span><span class="p">()</span>
+      <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">pair</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">pairs</span><span class="p">)))</span>
+        <span class="p">(</span><span class="nf">adjoin-set</span> <span class="p">(</span><span class="nf">make-leaf</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">pair</span><span class="p">)</span>    <span class="c1">; symbol</span>
+                               <span class="p">(</span><span class="nb">cadr</span> <span class="nv">pair</span><span class="p">))</span>  <span class="c1">; frequency</span>
+                    <span class="p">(</span><span class="nf">make-leaf-set</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">pairs</span><span class="p">))))))</span>
+<span class="p">(</span><span class="k">define</span> <span class="nv">sample-tree</span>
+  <span class="p">(</span><span class="nf">make-code-tree</span> <span class="p">(</span><span class="nf">make-leaf</span> <span class="ss">'A</span> <span class="mi">4</span><span class="p">)</span>
+                  <span class="p">(</span><span class="nf">make-code-tree</span>
+                   <span class="p">(</span><span class="nf">make-leaf</span> <span class="ss">'B</span> <span class="mi">2</span><span class="p">)</span>
+                   <span class="p">(</span><span class="nf">make-code-tree</span> <span class="p">(</span><span class="nf">make-leaf</span> <span class="ss">'D</span> <span class="mi">1</span><span class="p">)</span>
+                                   <span class="p">(</span><span class="nf">make-leaf</span> <span class="ss">'C</span> <span class="mi">1</span><span class="p">)))))</span>
+<span class="o">'</span><span class="p">(</span><span class="nf">0</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">0</span><span class="p">)</span>
+<span class="o">'</span><span class="p">(</span><span class="nf">A</span> <span class="nv">D</span>     <span class="nv">A</span> <span class="nv">B</span>   <span class="nv">B</span>   <span class="nv">C</span>     <span class="nv">A</span><span class="p">)</span></code></pre></figure>
+
+<h4 id="268">2.68</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">encode</span> <span class="nv">message</span> <span class="nv">tree</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">null?</span> <span class="nv">message</span><span class="p">)</span>
+      <span class="o">'</span><span class="p">()</span>
+      <span class="p">(</span><span class="nb">append</span> <span class="p">(</span><span class="nf">encode-symbol</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">message</span><span class="p">)</span> <span class="nv">tree</span><span class="p">)</span>
+              <span class="p">(</span><span class="nf">encode</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">message</span><span class="p">)</span> <span class="nv">tree</span><span class="p">))))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">encode-symbol</span> <span class="nv">symbol</span> <span class="nv">tree</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">not</span> <span class="p">(</span><span class="nb">memq</span> <span class="nv">symbol</span> <span class="p">(</span><span class="nf">symbols</span> <span class="nv">tree</span><span class="p">)))</span>
+         <span class="p">(</span><span class="nf">error</span> <span class="s">"bad symbol -- encode-symbol"</span> <span class="nv">symbol</span><span class="p">))</span>
+        <span class="p">((</span><span class="nf">leaf?</span> <span class="nv">tree</span><span class="p">)</span>
+         <span class="o">'</span><span class="p">())</span>
+        <span class="p">((</span><span class="nb">memq</span> <span class="nv">symbol</span> <span class="p">(</span><span class="nf">symbols</span> <span class="p">(</span><span class="nf">left-branch</span> <span class="nv">tree</span><span class="p">)))</span>
+         <span class="p">(</span><span class="nb">cons</span> <span class="mi">0</span>
+               <span class="p">(</span><span class="nf">encode-symbol</span> <span class="nv">symbol</span> <span class="p">(</span><span class="nf">left-branch</span> <span class="nv">tree</span><span class="p">))))</span>
+        <span class="p">((</span><span class="nb">memq</span> <span class="nv">symbol</span> <span class="p">(</span><span class="nf">symbols</span> <span class="p">(</span><span class="nf">right-branch</span> <span class="nv">tree</span><span class="p">)))</span>
+         <span class="p">(</span><span class="nb">cons</span> <span class="mi">1</span>
+               <span class="p">(</span><span class="nf">encode-symbol</span> <span class="nv">symbol</span> <span class="p">(</span><span class="nf">right-branch</span> <span class="nv">tree</span><span class="p">))))))</span></code></pre></figure>
+
+<h4 id="269">2.69</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">generate-huffman-tree</span> <span class="nv">pairs</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">successive-merge</span> <span class="p">(</span><span class="nf">make-leaf-set</span> <span class="nv">pairs</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">successive-merge</span> <span class="nv">leaves</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">null?</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">leaves</span><span class="p">))</span>
+    <span class="p">(</span><span class="nb">car</span> <span class="nv">leaves</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">successive-merge</span>
+      <span class="p">(</span><span class="nf">adjoin-set</span> <span class="p">(</span><span class="nf">make-code-tree</span>
+                    <span class="p">(</span><span class="nb">car</span> <span class="nv">leaves</span><span class="p">)</span>
+                    <span class="p">(</span><span class="nb">cadr</span> <span class="nv">leaves</span><span class="p">))</span>
+                  <span class="p">(</span><span class="nb">cddr</span> <span class="nv">leaves</span><span class="p">)))))</span></code></pre></figure>
+
+<h4 id="270">2.70</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="nv">lyric-tree</span>
+  <span class="p">(</span><span class="nf">generate-huffman-tree</span> <span class="o">'</span><span class="p">((</span><span class="nf">A</span> <span class="mi">2</span><span class="p">)</span> <span class="p">(</span><span class="nf">BOOM</span> <span class="mi">1</span><span class="p">)</span> <span class="p">(</span><span class="nf">GET</span> <span class="mi">2</span><span class="p">)</span> <span class="p">(</span><span class="nf">JOB</span> <span class="mi">2</span><span class="p">)</span>
+                           <span class="p">(</span><span class="nf">NA</span> <span class="mi">16</span><span class="p">)</span> <span class="p">(</span><span class="nf">SHA</span> <span class="mi">3</span><span class="p">)</span> <span class="p">(</span><span class="nf">YIP</span> <span class="mi">9</span><span class="p">)</span> <span class="p">(</span><span class="nf">WAH</span> <span class="mi">1</span><span class="p">))))</span>
+
+<span class="p">(</span><span class="nb">length</span> <span class="p">(</span><span class="nf">encode</span> <span class="o">'</span><span class="p">(</span><span class="nf">GET</span> <span class="nv">A</span> <span class="nv">JOB</span>
+          <span class="nv">SHA</span> <span class="nv">NA</span> <span class="nv">NA</span> <span class="nv">NA</span> <span class="nv">NA</span> <span class="nv">NA</span> <span class="nv">NA</span> <span class="nv">NA</span> <span class="nv">NA</span>
+          <span class="nv">GET</span> <span class="nv">A</span> <span class="nv">JOB</span>
+          <span class="nv">SHA</span> <span class="nv">NA</span> <span class="nv">NA</span> <span class="nv">NA</span> <span class="nv">NA</span> <span class="nv">NA</span> <span class="nv">NA</span> <span class="nv">NA</span> <span class="nv">NA</span>
+          <span class="nv">WAH</span> <span class="nv">YIP</span> <span class="nv">YIP</span> <span class="nv">YIP</span> <span class="nv">YIP</span> <span class="nv">YIP</span> <span class="nv">YIP</span> <span class="nv">YIP</span> <span class="nv">YIP</span> <span class="nv">YIP</span>
+          <span class="nv">SHA</span> <span class="nv">BOOM</span><span class="p">)</span>
+        <span class="nv">lyric-tree</span><span class="p">))</span></code></pre></figure>
+
+<p>It take <code class="highlighter-rouge">84</code> bits compared with the <code class="highlighter-rouge">108</code> bits in
+fixed-length.</p>
+
+<h4 id="271">2.71</h4>
+
+<p>It takes <code class="highlighter-rouge">1</code> bit to encode the most frequent bit and <code class="highlighter-rouge">n - 1</code> bits to 
+encode the least frequent bit.</p>
+
+<h4 id="272">2.72</h4>
+
+<p>If the <code class="highlighter-rouge">encode</code> uses an unordered set to keep its symbols, it would
+take about $O(n)$ to encode the most frequent symbol and
+<script type="math/tex">\sum_1^n = n * (n+1)/2 = O(n^2)</script> to encode the least frequent symbol.</p>
+:ET

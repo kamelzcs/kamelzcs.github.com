@@ -1,0 +1,13 @@
+I"6<h3 id="inside-transactions-serializable">Inside Transactions: Serializable</h3>
+
+<p>From strongest to weakest the four isolation levels are  Serializable, Repeatable Read, Read Committed, and Read Uncommitted. Transactions are separated within each other. Transactions on a given entity group are executed serially.</p>
+
+<p>Within the transaction, the datastore is consistent.</p>
+
+<h3 id="the-commit-process">The Commit Process</h3>
+
+<p>The process is as below:</p>
+
+<p><img src="/images/posts/transaction-isolation-in-app-engine/1.1.png" alt="alt normal" /></p>
+
+:ET

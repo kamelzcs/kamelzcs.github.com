@@ -1,0 +1,92 @@
+I"¼<h3 id="confusing-subtype-polymorphism">Confusing subtype polymorphism</h3>
+
+<p>When I first began to learn the polymorphism of C++, the <code class="highlighter-rouge">Subtype Polymorphism</code> similar to the following confused me a lot.</p>
+
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="c1">//file cats.h</span>
+<span class="k">class</span> <span class="nc">Felid</span> <span class="p">{</span>
+<span class="nl">public:</span>
+ <span class="k">virtual</span> <span class="kt">void</span> <span class="n">meow</span><span class="p">()</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+ <span class="kt">void</span> <span class="n">getName</span><span class="p">(){</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"This is the Felid</span><span class="se">\n\n</span><span class="s">"</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">Cat</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Felid</span> <span class="p">{</span>
+<span class="nl">public:</span>
+ <span class="kt">void</span> <span class="n">meow</span><span class="p">()</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Meowing like a regular cat! meow!</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span> <span class="p">}</span>
+ <span class="kt">void</span> <span class="n">getName</span><span class="p">(){</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"This is the Cat</span><span class="se">\n\n</span><span class="s">"</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">Tiger</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Felid</span> <span class="p">{</span>
+<span class="nl">public:</span>
+ <span class="kt">void</span> <span class="n">meow</span><span class="p">()</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Meowing like a tiger! MREOWWW!</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span> <span class="p">}</span>
+ <span class="kt">void</span> <span class="n">getName</span><span class="p">(){</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"This is the Tiger</span><span class="se">\n\n</span><span class="s">"</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">Ocelot</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Felid</span> <span class="p">{</span>
+<span class="nl">public:</span>
+ <span class="kt">void</span> <span class="n">meow</span><span class="p">()</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Meowing like an ocelot! mews!</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span> <span class="p">}</span>
+ <span class="kt">void</span> <span class="n">getName</span><span class="p">(){</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"This is the Ocelot</span><span class="se">\n\n</span><span class="s">"</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span></code></pre></figure>
+
+<p>Now the programme can uses different <code class="highlighter-rouge">subtypes</code> to call <code class="highlighter-rouge">do_meowing</code>.</p>
+
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="cp">#include &lt;iostream&gt;
+#include "cats.h"
+</span>
+<span class="kt">void</span> <span class="nf">do_meowing</span><span class="p">(</span><span class="n">Felid</span> <span class="o">*</span><span class="n">cat</span><span class="p">)</span> <span class="p">{</span>
+ <span class="n">cat</span><span class="o">-&gt;</span><span class="n">meow</span><span class="p">();</span>
+ <span class="n">cat</span><span class="o">-&gt;</span><span class="n">getName</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+ <span class="n">Cat</span> <span class="n">cat</span><span class="p">;</span>
+ <span class="n">Tiger</span> <span class="n">tiger</span><span class="p">;</span>
+ <span class="n">Ocelot</span> <span class="n">ocelot</span><span class="p">;</span>
+
+ <span class="n">do_meowing</span><span class="p">(</span><span class="o">&amp;</span><span class="n">cat</span><span class="p">);</span>
+ <span class="n">do_meowing</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tiger</span><span class="p">);</span>
+ <span class="n">do_meowing</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ocelot</span><span class="p">);</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>The output is:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Meowing like a regular cat! meow!
+This is the Felid
+
+Meowing like a tiger! MREOWWW!
+This is the Felid
+
+Meowing like an ocelot! mews!
+This is the Felid
+</code></pre></div></div>
+
+<p>So, only the <code class="highlighter-rouge">virtual function</code> is polymorphism, but why and how?</p>
+
+<h3 id="polymorphisms-in-c">polymorphisms in C++</h3>
+
+<p>There are <a href="http://www.catonmat.net/blog/cpp-polymorphism/">four polymorphisms in C++</a>, namely</p>
+
+<ol>
+  <li>Subtype Polymorphism (Runtime Polymorphism)</li>
+  <li>Parametric Polymorphism (Compile-Time Polymorphism)</li>
+  <li>Ad-hoc Polymorphism (Overloading)</li>
+  <li>Coercion Polymorphism (Casting)</li>
+</ol>
+
+<p><code class="highlighter-rouge">virtual function</code> belongs to the <code class="highlighter-rouge">subtype polymorphism</code> category.</p>
+
+<h3 id="subtype-polymorphism-implementation">subtype polymorphism implementation</h3>
+
+<p>Each object owns <a href="http://web.stanford.edu/class/archive/cs/cs143/cs143.1128/lectures/12/Slides12.pdf">several fields</a>, including</p>
+
+<ol>
+  <li>data member</li>
+  <li>inherited data member</li>
+  <li>virtual table</li>
+</ol>
+
+<p><code class="highlighter-rouge">subtype polymorphism</code> in <code class="highlighter-rouge">C++</code> is implemented by <code class="highlighter-rouge">virtual table</code> variable.</p>
+
+<p>Also note that, member function is not stored in the object level, but in the class info level.
+So normal member function is only determined by its declared type, not polymorphismed.</p>
+
+:ET

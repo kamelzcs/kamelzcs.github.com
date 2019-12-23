@@ -1,0 +1,43 @@
+I"ö<h4 id="377">3.77</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"> <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">integral</span> <span class="nv">delayed-integrand</span> <span class="nv">initial-value</span> <span class="nv">dt</span><span class="p">)</span>
+   <span class="p">(</span><span class="nf">cons-stream</span>
+     <span class="nv">initial-value</span>
+     <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">integrand</span> <span class="p">(</span><span class="nb">force</span> <span class="nv">delayed-integrand</span><span class="p">)))</span>
+       <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nf">stream-null?</span> <span class="nv">integrand</span><span class="p">)</span>
+         <span class="nv">the-empty-stream</span>
+         <span class="p">(</span><span class="nf">integral</span>
+           <span class="p">(</span><span class="k">delay</span> <span class="p">(</span><span class="nf">stream-cdr</span> <span class="nv">integrand</span><span class="p">))</span>
+           <span class="p">(</span><span class="nb">+</span> <span class="p">(</span><span class="nb">*</span> <span class="nv">dt</span> <span class="p">(</span><span class="nf">stream-car</span> <span class="nv">integrand</span><span class="p">))</span> <span class="nv">initial-value</span><span class="p">)</span>
+           <span class="nv">dt</span><span class="p">)))))</span></code></pre></figure>
+
+<h4 id="378">3.78</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"> <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">integral</span> <span class="nv">delayed-integrand</span> <span class="nv">initial-value</span> <span class="nv">dt</span><span class="p">)</span>
+   <span class="p">(</span><span class="nf">cons-stream</span>
+     <span class="nv">initial-value</span>
+     <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">integrand</span> <span class="p">(</span><span class="nb">force</span> <span class="nv">delayed-integrand</span><span class="p">)))</span>
+       <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nf">stream-null?</span> <span class="nv">integrand</span><span class="p">)</span>
+         <span class="nv">the-empty-stream</span>
+         <span class="p">(</span><span class="nf">integral</span>
+           <span class="p">(</span><span class="k">delay</span> <span class="p">(</span><span class="nf">stream-cdr</span> <span class="nv">integrand</span><span class="p">))</span>
+           <span class="p">(</span><span class="nb">+</span> <span class="p">(</span><span class="nb">*</span> <span class="nv">dt</span> <span class="p">(</span><span class="nf">stream-car</span> <span class="nv">integrand</span><span class="p">))</span> <span class="nv">initial-value</span><span class="p">)</span>
+           <span class="nv">dt</span><span class="p">)))))</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">solve-2nd</span> <span class="nv">a</span> <span class="nv">b</span> <span class="nv">dt</span> <span class="nv">y0</span> <span class="nv">dy0</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define</span> <span class="nv">y</span> <span class="p">(</span><span class="nf">integral</span> <span class="p">(</span><span class="k">delay</span> <span class="nv">dy</span><span class="p">)</span> <span class="nv">y0</span> <span class="nv">dt</span><span class="p">))</span>
+  <span class="p">(</span><span class="k">define</span> <span class="nv">dy</span> <span class="p">(</span><span class="nf">integral</span> <span class="p">(</span><span class="k">delay</span> <span class="nv">ddy</span><span class="p">)</span> <span class="nv">dy0</span> <span class="nv">dt</span><span class="p">))</span>
+  <span class="p">(</span><span class="k">define</span> <span class="nv">ddy</span>
+    <span class="p">(</span><span class="nf">add-streams</span>
+      <span class="p">(</span><span class="nf">scale-stream</span> <span class="nv">dy</span> <span class="nv">a</span><span class="p">)</span>
+      <span class="p">(</span><span class="nf">scale-stream</span> <span class="nv">y</span> <span class="nv">b</span><span class="p">)))</span>
+  <span class="nv">y</span><span class="p">)</span></code></pre></figure>
+
+<h4 id="379">3.79</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"> <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">general-solve-2nd</span> <span class="nv">f</span> <span class="nv">y0</span> <span class="nv">dy0</span> <span class="nv">dt</span><span class="p">)</span>
+   <span class="p">(</span><span class="k">define</span> <span class="nv">y</span> <span class="p">(</span><span class="nf">integral</span> <span class="p">(</span><span class="k">delay</span> <span class="nv">dy</span><span class="p">)</span> <span class="nv">y0</span> <span class="nv">dt</span><span class="p">))</span>
+   <span class="p">(</span><span class="k">define</span> <span class="nv">dy</span> <span class="p">(</span><span class="nf">integral</span> <span class="p">(</span><span class="k">delay</span> <span class="nv">ddy</span><span class="p">)</span> <span class="nv">dy0</span> <span class="nv">dt</span><span class="p">))</span>
+   <span class="p">(</span><span class="k">define</span> <span class="nv">ddy</span> <span class="p">(</span><span class="nf">stream-map</span> <span class="nv">f</span> <span class="nv">dy</span> <span class="nv">y</span><span class="p">))</span>
+   <span class="nv">y</span><span class="p">)</span></code></pre></figure>
+
+:ET

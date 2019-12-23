@@ -1,0 +1,13 @@
+I"p<blockquote>
+  <p>In the environment model of evaluation, a procedure is always a pair consisting of some code and a pointer to an environment. Procedures are created in one way only: by evaluating a lambda expression. This produces a procedure whose code is obtained from the text of the lambda expression and whose environment is the environment in which the lambda expression was evaluated to produce the procedure.</p>
+</blockquote>
+
+<p>Important quote from the SICP text, which is the principle to understand the model part.
+<code class="highlighter-rouge">Lambda</code> expression is the key to create a procedure.</p>
+
+<p>Each procedure contains a environment pointer and a code pointer. When calling a procedure, a new environment is derived from the defining environment
+with new parameters added in.</p>
+
+<p>Drawing the graphs is time consuming, skip them for now.</p>
+
+:ET

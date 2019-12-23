@@ -1,0 +1,56 @@
+I"<h4 id="116">1.16</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="o">#</span><span class="nv">lang</span> <span class="nv">planet</span> <span class="nv">neil/sicp</span>
+
+ <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">square</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">*</span> <span class="nv">x</span> <span class="nv">x</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">fast-expt</span> <span class="nv">b</span> <span class="nv">n</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">iter</span> <span class="nv">a</span> <span class="nv">b</span> <span class="nv">n</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">=</span> <span class="nv">n</span> <span class="mi">0</span><span class="p">)</span> <span class="nv">a</span><span class="p">)</span>
+          <span class="p">((</span><span class="nb">even?</span> <span class="nv">n</span><span class="p">)</span> <span class="p">(</span><span class="nf">iter</span> <span class="nv">a</span> <span class="p">(</span><span class="nf">square</span> <span class="nv">b</span><span class="p">)</span> <span class="p">(</span><span class="nb">/</span> <span class="nv">n</span> <span class="mi">2</span><span class="p">)))</span>
+          <span class="p">(</span><span class="k">else</span> <span class="p">(</span><span class="nf">iter</span> <span class="p">(</span><span class="nb">*</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)</span> <span class="nv">b</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">n</span> <span class="mi">1</span><span class="p">)))))</span>
+  <span class="p">(</span><span class="nf">iter</span> <span class="mi">1</span> <span class="nv">b</span> <span class="nv">n</span><span class="p">))</span></code></pre></figure>
+
+<h4 id="118">1.18</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">multi</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">fast-multi-iter</span> <span class="nv">x</span> <span class="nv">y</span> <span class="nv">n</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">=</span> <span class="nv">n</span> <span class="mi">0</span><span class="p">)</span> <span class="nv">x</span><span class="p">)</span>
+          <span class="p">((</span><span class="nb">even?</span> <span class="nv">n</span><span class="p">)</span> <span class="p">(</span><span class="nf">fast-multi-iter</span> <span class="nv">x</span> <span class="p">(</span><span class="nf">double</span> <span class="nv">y</span><span class="p">)</span> <span class="p">(</span><span class="nb">/</span> <span class="nv">n</span> <span class="mi">2</span><span class="p">)))</span>
+          <span class="p">(</span><span class="k">else</span> <span class="p">(</span><span class="nf">fast-multi-iter</span> <span class="p">(</span><span class="nb">+</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span> <span class="nv">y</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">n</span> <span class="mi">1</span><span class="p">)))))</span>
+  <span class="p">(</span><span class="nf">fast-multi-iter</span> <span class="mi">0</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">))</span></code></pre></figure>
+
+<h3 id="120">1.20</h3>
+<p>Applicative order:</p>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="nv">gcd</span><span class="p">(</span><span class="nf">206,</span> <span class="mi">40</span><span class="p">)</span>
+<span class="nv">gcd</span><span class="p">(</span><span class="nf">40,</span> <span class="nv">remainder</span><span class="p">(</span><span class="nf">206,</span> <span class="mi">40</span><span class="p">))</span> <span class="c1">;1</span>
+<span class="nv">gcd</span><span class="p">(</span><span class="nf">6,</span> <span class="nv">remainder</span><span class="p">(</span><span class="nf">40,</span> <span class="mi">6</span><span class="p">))</span>   <span class="c1">;2</span>
+<span class="nv">gcd</span><span class="p">(</span><span class="nf">4,</span> <span class="nv">remainder</span><span class="p">(</span><span class="nf">6,</span> <span class="mi">4</span><span class="p">))</span>  <span class="c1">;3</span>
+<span class="nv">gcd</span><span class="p">(</span><span class="nf">2,</span> <span class="nv">remainder</span><span class="p">(</span><span class="nf">4,</span> <span class="mi">2</span><span class="p">))</span>  <span class="c1">;4</span></code></pre></figure>
+
+<p>For normal order, the <code class="highlighter-rouge">remainder</code> function is not calculated instantly.
+It is calculated when it is necessary. It is passed by as a <code class="highlighter-rouge">delay</code> item.</p>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="nb">gcd</span> <span class="mi">206</span> <span class="mi">40</span><span class="p">)</span>
+<span class="p">(</span><span class="nb">gcd</span> <span class="mi">40</span> <span class="p">(</span><span class="nb">remainder</span> <span class="mi">206</span> <span class="mi">40</span><span class="p">))</span>
+<span class="nv">-&gt;</span>
+<span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">=</span> <span class="p">(</span><span class="nb">remainder</span> <span class="mi">206</span> <span class="mi">40</span><span class="p">)</span> <span class="mi">0</span><span class="p">)</span>
+  <span class="mi">40</span>
+  <span class="p">(</span><span class="nb">gcd</span> <span class="p">(</span><span class="nb">remainder</span> <span class="mi">206</span> <span class="mi">40</span><span class="p">)</span>
+    <span class="p">(</span><span class="nb">remainder</span> <span class="mi">40</span> <span class="p">(</span><span class="nb">remainder</span> <span class="mi">206</span> <span class="mi">40</span><span class="p">))))</span>
+<span class="nv">-&gt;</span>
+<span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">=</span> <span class="p">(</span><span class="nb">remainder</span> <span class="mi">40</span> <span class="p">(</span><span class="nb">remainder</span> <span class="mi">206</span> <span class="mi">40</span><span class="p">))</span> <span class="mi">0</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">remainder</span> <span class="mi">206</span> <span class="mi">40</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">gcd</span>
+    <span class="p">(</span><span class="nb">remainder</span>
+      <span class="mi">40</span>
+      <span class="p">(</span><span class="nb">remainder</span> <span class="mi">206</span> <span class="mi">40</span><span class="p">))</span>
+    <span class="p">(</span><span class="nb">remainder</span>
+      <span class="p">(</span><span class="nb">remainder</span> <span class="mi">206</span> <span class="mi">40</span><span class="p">)</span>
+      <span class="p">(</span><span class="nb">remainder</span>
+        <span class="mi">40</span>
+        <span class="p">(</span><span class="nb">remainder</span> <span class="mi">206</span> <span class="mi">40</span><span class="p">)))))</span>
+<span class="o">...</span></code></pre></figure>
+
+:ET

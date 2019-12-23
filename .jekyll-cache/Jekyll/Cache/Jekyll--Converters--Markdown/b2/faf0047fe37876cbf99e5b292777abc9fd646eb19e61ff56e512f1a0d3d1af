@@ -1,0 +1,151 @@
+I"+<p>Here is some useful Vim tips</p>
+
+<h4 id="normal">Normal</h4>
+
+<ul>
+  <li>
+    <p><code class="highlighter-rouge">V</code> multiline copy</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">.</code> duplicate last command</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">I</code> insert at the begin</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">A</code> Append to end</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">J</code> Join two lines</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">&gt;</code> and <code class="highlighter-rouge">&lt;</code> indent block(in visual mode)</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">CTRL + A or X</code> increase or decrease the number</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">~</code> toggle the casing of a letter/selection(upper-case/down-case)</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">!!</code> execute last command</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">&lt;start position&gt;&lt;command&gt;&lt;end position&gt;</code> for example <code class="highlighter-rouge">y`a</code> yank from here to he marked <code class="highlighter-rouge">a</code></p>
+  </li>
+  <li>
+    <p>use markers in the way <code class="highlighter-rouge">a z b e</code></p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">"zyy</code> and <code class="highlighter-rouge">"zp</code> copy to z register and paste from <code class="highlighter-rouge">z</code> register</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">set ft=?</code> look up current file type.</p>
+  </li>
+</ul>
+
+<h4 id="move">Move</h4>
+
+<ul>
+  <li>
+    <p><code class="highlighter-rouge">%</code> go to the corresponding <code class="highlighter-rouge">()</code>,<code class="highlighter-rouge">{}</code>,<code class="highlighter-rouge">[]</code></p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">mz `z</code> Marker and go to the last position</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">'.</code> Jump back to last edited line</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">g;</code>and <code class="highlighter-rouge">g,</code> move (forward,backward) through the changelist</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">gi</code> go to the last place you inserted a text</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">Ctrl-o</code> and <code class="highlighter-rouge">Ctrl-i</code> to go to the previous/next location you jumped to</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">fa</code> go to the next <code class="highlighter-rouge">a</code> in the line</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">t,</code> go to before the next <code class="highlighter-rouge">,</code></p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">F</code> and <code class="highlighter-rouge">T</code> are backward</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">w</code> go to the start of the next word</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">b/e</code> go to the beginning/end of this word</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">W</code> go to the start of the following WORD(space separated only)</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">B/E</code> go to the beginning/end of this WORD</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">{ }</code> to move to the beginning/ending of the paragraph</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">zz</code> move current line to the middle of the screen</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">zt</code> move current line to the top of the screen</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">zt</code> move current line to the bottom of the screen</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">Ctrl</code>+<code class="highlighter-rouge">e</code> move screen up one line</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">Ctrl</code>+<code class="highlighter-rouge">y</code> move screen down one line</p>
+  </li>
+</ul>
+
+<h4 id="zone-selection">Zone selection</h4>
+
+<p><code class="highlighter-rouge">&lt;action&gt;a&lt;object&gt; and &lt;action&gt;i&lt;object&gt;</code></p>
+
+<p>Action can be any action, for example <code class="highlighter-rouge">d</code>, <code class="highlighter-rouge">y</code>, <code class="highlighter-rouge">c</code>(change), <code class="highlighter-rouge">v</code>(select in visual mode). The object can be:
+ <code class="highlighter-rouge">w</code> a word, <code class="highlighter-rouge">W</code> a WORD, <code class="highlighter-rouge">s</code> a sentence, <code class="highlighter-rouge">p</code> a paragraph. But also, natural character such as <code class="highlighter-rouge">",',),],}</code></p>
+
+<p><code class="highlighter-rouge">vi"</code> will select foo.</p>
+
+<p><code class="highlighter-rouge">va"</code> will select “foo”</p>
+
+<h4 id="editing">Editing</h4>
+
+<ul>
+  <li>
+    <p><code class="highlighter-rouge">cc</code> change the entire current line</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">r</code> replace the current character</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">R</code> Enter Insert mode, replacing characters rather than inserting</p>
+  </li>
+</ul>
+
+<h4 id="macro-recording">Macro recording</h4>
+
+<p>/bin/bash: :q: command not found</p>
+
+<ul>
+  <li>
+    <p><code class="highlighter-rouge">q[ key ]</code> to start recording</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">q</code> to stop recording</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">@[ key ]</code> to use the macro
+  ```</p>
+  </li>
+</ul>
+
+:ET

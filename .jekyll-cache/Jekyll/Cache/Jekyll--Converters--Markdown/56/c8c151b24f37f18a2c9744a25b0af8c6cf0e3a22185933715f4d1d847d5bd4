@@ -1,0 +1,100 @@
+I"*3<h4 id="328">3.28</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">or-gate</span> <span class="nv">a1</span> <span class="nv">a2</span> <span class="nv">output</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define</span> <span class="nv">or-action-procedure</span>
+    <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">new-value</span>
+            <span class="p">(</span><span class="nf">logical-or</span> <span class="p">(</span><span class="nf">get-signal</span> <span class="nv">a1</span><span class="p">)</span> <span class="p">(</span><span class="nf">get-signal</span> <span class="nv">a2</span><span class="p">))))</span>
+      <span class="p">(</span><span class="nf">after-delay</span> <span class="nv">or-gate-delay</span>
+                   <span class="p">(</span><span class="k">lambda</span> <span class="p">()</span>
+                     <span class="nv">set-signal!</span> <span class="nv">output</span> <span class="nv">new_value</span><span class="p">))))</span>
+  <span class="p">(</span><span class="nf">add-action!</span> <span class="nv">a1</span> <span class="nv">or-action-procedure</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">add-action!</span> <span class="nv">a2</span> <span class="nv">or-action-procedure</span><span class="p">)</span>
+  <span class="ss">'ok</span><span class="p">)</span></code></pre></figure>
+
+<h4 id="329">3.29</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">or-gate</span> <span class="nv">a1</span> <span class="nv">a2</span> <span class="nv">output</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">or-action-procedure</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">not-a1</span> <span class="p">(</span><span class="nf">make-wire</span><span class="p">))</span>
+          <span class="p">(</span><span class="nf">not-a2</span> <span class="p">(</span><span class="nf">make-wire</span><span class="p">))</span>
+          <span class="p">(</span><span class="nf">b</span> <span class="p">(</span><span class="nf">make-wire</span><span class="p">))</span>
+          <span class="p">)</span>
+      <span class="p">(</span><span class="nf">inverter</span> <span class="nv">a1</span> <span class="nv">not-a1</span><span class="p">)</span>
+      <span class="p">(</span><span class="nf">inverter</span> <span class="nv">a2</span> <span class="nv">not-a2</span><span class="p">)</span>
+      <span class="p">(</span><span class="nf">and-gate</span> <span class="nv">not-a1</span> <span class="nv">not-a2</span> <span class="nv">b</span><span class="p">)</span>
+      <span class="p">(</span><span class="nf">inverter</span> <span class="nv">b</span> <span class="nv">result</span><span class="p">)))</span>
+  <span class="p">(</span><span class="nf">add-action!</span> <span class="nv">a1</span> <span class="nv">or-action-procedure</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">add-action!</span> <span class="nv">a2</span> <span class="nv">or-action-procedure</span><span class="p">)</span>
+  <span class="ss">'ok</span><span class="p">)</span></code></pre></figure>
+
+<p><code class="highlighter-rouge">2 * inverter + and-gate</code></p>
+
+<h4 id="330">3.30</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">ripple-carry-adder</span> <span class="nv">A</span> <span class="nv">B</span> <span class="nv">S</span> <span class="nv">C</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">c-middle</span> <span class="p">(</span><span class="nf">make-wire</span><span class="p">)))</span>
+    <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">null?</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">A</span><span class="p">))</span>
+      <span class="p">(</span><span class="nf">set-signal!</span> <span class="nv">c-middle</span> <span class="mi">0</span><span class="p">)</span>
+      <span class="p">(</span><span class="nf">ripple-carry-adder</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">A</span><span class="p">)</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">B</span><span class="p">)</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">S</span><span class="p">)</span> <span class="nv">c-middle</span><span class="p">))</span>
+    <span class="p">(</span><span class="nf">full-adder</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">A</span><span class="p">)</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">B</span><span class="p">)</span> <span class="nv">c-middle</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">S</span><span class="p">)</span> <span class="nv">C</span><span class="p">)))</span></code></pre></figure>
+
+<h4 id="331">3.31</h4>
+
+<p>After calling it immediatly, the initial value of the circuit is propagated.
+But there is somoe overhead here, in the <code class="highlighter-rouge">and-date</code> function, both <code class="highlighter-rouge">a1</code> and <code class="highlighter-rouge">a2</code>
+will call the <code class="highlighter-rouge">and-function-procedure</code>, there would be two function calls and yield
+two same results, one of which will be looked over by the <code class="highlighter-rouge">set-my-signal</code> function.</p>
+
+<h4 id="332">3.32</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">make-wire</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">signal-value</span> <span class="mi">0</span><span class="p">)</span> <span class="p">(</span><span class="nf">action-procedures</span> <span class="o">'</span><span class="p">()))</span>
+    <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">set-my-signal!</span> <span class="nv">new-value</span><span class="p">)</span>
+      <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">not</span> <span class="p">(</span><span class="nb">=</span> <span class="nv">signal-value</span> <span class="nv">new-value</span><span class="p">))</span>
+          <span class="p">(</span><span class="k">begin</span> <span class="p">(</span><span class="k">set!</span> <span class="nv">signal-value</span> <span class="nv">new-value</span><span class="p">)</span>
+                 <span class="p">(</span><span class="nf">call-each</span> <span class="nv">action-procedures</span><span class="p">))</span>
+          <span class="ss">'done</span><span class="p">))</span>
+    <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">accept-action-procedure!</span> <span class="nv">proc</span><span class="p">)</span>
+      <span class="p">(</span><span class="k">set!</span> <span class="nv">action-procedures</span> <span class="p">(</span><span class="nb">cons</span> <span class="nv">proc</span> <span class="nv">action-procedures</span><span class="p">))</span>
+      <span class="p">(</span><span class="nf">proc</span><span class="p">))</span>
+    <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">dispatch</span> <span class="nv">m</span><span class="p">)</span>
+      <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">eq?</span> <span class="nv">m</span> <span class="ss">'get-signal</span><span class="p">)</span> <span class="nv">signal-value</span><span class="p">)</span>
+            <span class="p">((</span><span class="nb">eq?</span> <span class="nv">m</span> <span class="ss">'set-signal!</span><span class="p">)</span> <span class="nv">set-my-signal!</span><span class="p">)</span>
+            <span class="p">((</span><span class="nb">eq?</span> <span class="nv">m</span> <span class="ss">'add-action!</span><span class="p">)</span> <span class="nv">accept-action-procedure!</span><span class="p">)</span>
+            <span class="p">(</span><span class="k">else</span> <span class="p">(</span><span class="nf">error</span> <span class="s">"Unknown operation -- WIRE"</span> <span class="nv">m</span><span class="p">))))</span>
+    <span class="nv">dispatch</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">and-gate</span> <span class="nv">a1</span> <span class="nv">a2</span> <span class="nv">output</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">and-action-procedure</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">new-value</span>
+           <span class="p">(</span><span class="nf">logical-and</span> <span class="p">(</span><span class="nf">get-signal</span> <span class="nv">a1</span><span class="p">)</span> <span class="p">(</span><span class="nf">get-signal</span> <span class="nv">a2</span><span class="p">))))</span>
+      <span class="p">(</span><span class="nf">after-delay</span> <span class="nv">and-gate-delay</span>
+                   <span class="p">(</span><span class="k">lambda</span> <span class="p">()</span>
+                     <span class="p">(</span><span class="nf">set-signal!</span> <span class="nv">output</span> <span class="nv">new-value</span><span class="p">)))))</span>
+  <span class="p">(</span><span class="nf">add-action!</span> <span class="nv">a1</span> <span class="nv">and-action-procedure</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">add-action!</span> <span class="nv">a2</span> <span class="nv">and-action-procedure</span><span class="p">)</span>
+  <span class="ss">'ok</span><span class="p">)</span></code></pre></figure>
+
+<p>It is important to note that <code class="highlighter-rouge">set-my-value</code> will set the state and
+push the procedure into the queue of the agenda.</p>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="nv">a</span> <span class="p">(</span><span class="nf">make-wire</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span> <span class="nv">b</span> <span class="p">(</span><span class="nf">make-wire</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span> <span class="nv">o</span> <span class="p">(</span><span class="nf">make-wire</span><span class="p">))</span>
+<span class="p">(</span><span class="nf">and-gate</span> <span class="nv">a</span> <span class="nv">b</span> <span class="nv">o</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">propagate</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nf">set-signal!</span> <span class="nv">a</span> <span class="mi">0</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">set-signal!</span> <span class="nv">b</span> <span class="mi">1</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">propagate</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nf">set-signal!</span> <span class="nv">a</span> <span class="mi">1</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">set-signal!</span> <span class="nv">b</span> <span class="mi">0</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">propagate</span><span class="p">)</span></code></pre></figure>
+
+<p>When <code class="highlighter-rouge">a</code> changed from <code class="highlighter-rouge">0</code> to <code class="highlighter-rouge">1</code>, <code class="highlighter-rouge">output=1</code> is pushed to the agenda queue,
+in the following, when <code class="highlighter-rouge">b</code> changed from <code class="highlighter-rouge">1</code> to <code class="highlighter-rouge">0</code>, <code class="highlighter-rouge">output=0</code> is pushed to the agenda queue.</p>
+
+<p>If <code class="highlighter-rouge">FIFO</code> is used in the agenda, the final result would be <code class="highlighter-rouge">output=0</code>, otherwise,
+<code class="highlighter-rouge">FILO</code> is used, the final result would be <code class="highlighter-rouge">output=1</code>, which is not the correct answer at all!</p>
+:ET

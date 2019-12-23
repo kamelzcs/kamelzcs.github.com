@@ -1,0 +1,102 @@
+I"L:<h4 id="411">4.11</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">make-frame</span> <span class="nv">variables</span> <span class="nv">values</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">=</span> <span class="p">(</span><span class="nb">length</span> <span class="nv">variables</span><span class="p">)</span> <span class="p">(</span><span class="nb">length</span> <span class="nv">values</span><span class="p">))</span>
+    <span class="p">(</span><span class="nb">map</span> <span class="nv">cons</span> <span class="nv">variables</span> <span class="nv">values</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">error</span> <span class="s">"length mismatch -- MAKE-FRAME"</span> <span class="nv">variables</span> <span class="nv">values</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">frame-variables</span> <span class="nv">frame</span><span class="p">)</span> <span class="p">(</span><span class="nb">map</span> <span class="nv">car</span> <span class="nv">frame</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">frame-values</span> <span class="nv">frame</span><span class="p">)</span> <span class="p">(</span><span class="nb">map</span> <span class="nv">cdr</span> <span class="nv">frame</span><span class="p">))</span></code></pre></figure>
+
+<h4 id="412">4.12</h4>
+
+<p>I can only come up with a <code class="highlighter-rouge">find-binding-frame</code> function and manually controls its
+process under different situations.
+But <a href="https://wqzhang.wordpress.com/2009/11/03/sicp-exercise-4-12/">Zhang</a> come up with a more higher level abstraction which only expose two
+functions to all the rest logic, which is <code class="highlighter-rouge">null-action</code> and <code class="highlighter-rouge">eq-action</code>. Clean and robust!</p>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">env-loop</span> <span class="nv">var</span> <span class="nv">null-action</span> <span class="nv">eq-action</span> <span class="nv">env</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">scan</span> <span class="nv">vars</span> <span class="nv">vals</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">null?</span> <span class="nv">vars</span><span class="p">)</span>
+           <span class="p">(</span><span class="nf">null-action</span> <span class="nv">env</span><span class="p">))</span>
+          <span class="p">((</span><span class="nb">eq?</span> <span class="nv">var</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">vars</span><span class="p">))</span>
+           <span class="p">(</span><span class="nf">eq-action</span> <span class="nv">vals</span><span class="p">))</span>
+          <span class="p">(</span><span class="k">else</span> <span class="p">(</span><span class="nf">scan</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">vars</span><span class="p">)</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">vals</span><span class="p">)))))</span>
+  <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">eq?</span> <span class="nv">env</span> <span class="nv">the-empty-environment</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">error</span> <span class="s">"Unbound variable"</span> <span class="nv">var</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">frame</span> <span class="p">(</span><span class="nf">first-frame</span> <span class="nv">env</span><span class="p">)))</span>
+      <span class="p">(</span><span class="nf">scan</span> <span class="p">(</span><span class="nf">frame-variables</span> <span class="nv">frame</span><span class="p">)</span>
+            <span class="p">(</span><span class="nf">frame-values</span> <span class="nv">frame</span><span class="p">)))))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">set-variable-value!</span> <span class="nv">var</span> <span class="nv">val</span> <span class="nv">env</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">null-action</span> <span class="nv">e</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">env-loop</span> <span class="nv">var</span> <span class="nv">null-action</span> <span class="nv">eq-action</span> <span class="p">(</span><span class="nf">enclosing-environment</span> <span class="nv">e</span><span class="p">)))</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">eq-action</span> <span class="nv">vs</span><span class="p">)</span>
+    <span class="p">(</span><span class="nb">set-car!</span> <span class="nv">vs</span> <span class="nv">val</span><span class="p">))</span>
+  <span class="p">(</span><span class="nf">env-loop</span> <span class="nv">var</span> <span class="nv">null-action</span> <span class="nv">eq-action</span> <span class="nv">env</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">lookup-variable-value</span> <span class="nv">var</span> <span class="nv">env</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">null-action</span> <span class="nv">e</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">env-loop</span> <span class="nv">var</span> <span class="nv">null-action</span> <span class="nv">eq-action</span> <span class="p">(</span><span class="nf">enclosing-environment</span> <span class="nv">e</span><span class="p">)))</span>
+  <span class="p">(</span><span class="k">define</span> <span class="nv">eq-action</span> <span class="nv">car</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">env-loop</span> <span class="nv">var</span> <span class="nv">null-action</span> <span class="nv">eq-action</span> <span class="nv">env</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">define-variable!</span> <span class="nv">var</span> <span class="nv">val</span> <span class="nv">env</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">null-action</span> <span class="nv">e</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">add-binding-to-frame!</span> <span class="nv">var</span> <span class="nv">val</span> <span class="p">(</span><span class="nf">first-frame</span> <span class="nv">e</span><span class="p">)))</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">eq-action</span> <span class="nv">vs</span><span class="p">)</span>
+    <span class="p">(</span><span class="nb">set-car!</span> <span class="nv">vs</span> <span class="nv">val</span><span class="p">))</span>
+  <span class="p">(</span><span class="nf">env-loop</span> <span class="nv">var</span> <span class="nv">null-action</span> <span class="nv">eq-action</span> <span class="nv">env</span><span class="p">))</span></code></pre></figure>
+
+<h4 id="413">4.13</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"> <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">make-unbound</span> <span class="nv">variable</span> <span class="nv">env</span><span class="p">)</span>
+   <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">vars</span> <span class="p">(</span><span class="nf">frame-variables</span> <span class="p">(</span><span class="nf">first-frame</span> <span class="nv">env</span><span class="p">)))</span>
+         <span class="p">(</span><span class="nf">vals</span> <span class="p">(</span><span class="nf">frame-values</span> <span class="p">(</span><span class="nf">first-frame</span> <span class="nv">env</span><span class="p">))))</span>
+     <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">unbound</span> <span class="nv">vars</span> <span class="nv">vals</span> <span class="nv">new-vars</span> <span class="nv">new-vals</span><span class="p">)</span>
+       <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">null?</span> <span class="nv">vars</span><span class="p">)</span>
+              <span class="p">(</span><span class="nf">error</span> <span class="s">"variable is not in the environment -- MAKE-UNBOUND"</span>
+                     <span class="nv">variable</span><span class="p">))</span>
+             <span class="p">((</span><span class="nb">eq?</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">vars</span><span class="p">)</span> <span class="nv">variable</span><span class="p">)</span>
+              <span class="p">(</span><span class="nb">set-car!</span> <span class="nv">env</span>
+                        <span class="p">(</span><span class="nb">cons</span> <span class="p">(</span><span class="nb">append</span> <span class="nv">new-vars</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">vars</span><span class="p">))</span>
+                              <span class="p">(</span><span class="nb">append</span> <span class="nv">new-vals</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">vals</span><span class="p">)))))</span>
+             <span class="p">(</span><span class="k">else</span> <span class="p">(</span><span class="nf">unbound</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">vars</span><span class="p">)</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">vals</span><span class="p">)</span>
+                            <span class="p">(</span><span class="nb">append</span>  <span class="nv">new-vars</span> <span class="p">(</span><span class="nb">list</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">vars</span><span class="p">)))</span>
+                            <span class="p">(</span><span class="nb">append</span>  <span class="nv">new-vals</span> <span class="p">(</span><span class="nb">list</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">vals</span><span class="p">)))</span>
+     <span class="p">(</span><span class="nf">unbound</span> <span class="nv">vars</span> <span class="nv">vals</span> <span class="o">'</span><span class="p">()</span> <span class="o">'</span><span class="p">())))</span></code></pre></figure>
+
+<h4 id="414">4.14</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">((</span><span class="nf">application?</span> <span class="nv">exp</span><span class="p">)</span>
+ <span class="p">(</span><span class="nb">apply</span> <span class="p">(</span><span class="nb">eval</span> <span class="p">(</span><span class="nf">operator</span> <span class="nv">exp</span><span class="p">)</span> <span class="nv">env</span><span class="p">)</span>
+        <span class="p">(</span><span class="nf">list-of-values</span> <span class="p">(</span><span class="nf">operands</span> <span class="nv">exp</span><span class="p">)</span> <span class="nv">env</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nb">apply</span> <span class="nv">procedure</span> <span class="nv">arguments</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nf">primitive-procedure?</span> <span class="nv">procedure</span><span class="p">)</span>
+         <span class="p">(</span><span class="nf">apply-primitive-procedure</span> <span class="nv">procedure</span> <span class="nv">arguments</span><span class="p">))</span>
+        <span class="o">...</span><span class="p">)</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">apply-primitive-procedure</span> <span class="nv">proc</span> <span class="nv">args</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">apply-in-underlying-scheme</span>
+   <span class="p">(</span><span class="nf">primitive-implementation</span> <span class="nv">proc</span><span class="p">)</span> <span class="nv">args</span><span class="p">))</span></code></pre></figure>
+
+<p>When eval <code class="highlighter-rouge">'(map + '(1 2) '(3 4))</code>, primitive procedure <code class="highlighter-rouge">+</code> is evaluated as <code class="highlighter-rouge">'(primitive +)</code>.
+Then expression becomes <code class="highlighter-rouge">(apply-in-underlying-scheme map '(primitive +) '(1 2) '(3 4))</code>, then failed.</p>
+
+<h4 id="415">4.15</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">run-forever</span><span class="p">)</span> <span class="p">(</span><span class="nf">run-forever</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">try</span> <span class="nv">p</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nf">halts?</span> <span class="nv">p</span> <span class="nv">p</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">run-forever</span><span class="p">)</span>
+    <span class="ss">'halted</span><span class="p">))</span></code></pre></figure>
+
+<p>There are two possible outcomes to run <code class="highlighter-rouge">(try try)</code>, either returns <code class="highlighter-rouge">halted</code> or runs forever.</p>
+
+<ol>
+  <li><code class="highlighter-rouge">(try try)</code> returns <code class="highlighter-rouge">halted</code>: then it would fall into the <code class="highlighter-rouge">(run-forever)</code> trap. Contradiction.</li>
+  <li><code class="highlighter-rouge">(try try)</code> runs forever: then the first condition is false, <code class="highlighter-rouge">halted</code> is returned. Contradiction.</li>
+</ol>
+
+:ET

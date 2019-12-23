@@ -1,0 +1,56 @@
+I"Å<h4 id="lecture-contents">Lecture Contents</h4>
+
+<p><a href="https://wiki.haskell.org/Typeclassopedia">Type class</a> really gives one good intuition about <code class="highlighter-rouge">Monad</code>.</p>
+
+<blockquote>
+  <p>Intuitively, it is this ability to use the output from previous computations to decide what computations to run next that makes Monad more powerful than Applicative. The structure of an Applicative computation is fixed, whereas the structure of a Monad computation can change based on intermediate results. This also means that parsers built using an Applicative interface can only parse context-free languages; in order to parse context-sensitive languages a Monad interface is needed</p>
+</blockquote>
+
+<p><a href="http://yogsototh.github.io/Category-Theory-Presentation/categories.html#slide-71">Category theory</a> gives some theorems behind <code class="highlighter-rouge">Monad</code>.</p>
+
+<blockquote>
+  <p>All told, a monad in X is just a monoid in the category of endofunctors of X, with product Ã— replaced by composition of endofunctors and unit set by the identity endofunctor.</p>
+</blockquote>
+
+<h4 id="home-work">Home Work</h4>
+
+<h5 id="exercise-2">Exercise 2</h5>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">battle</span> <span class="o">::</span> <span class="kt">Battlefield</span> <span class="o">-&gt;</span> <span class="kt">Rand</span> <span class="kt">StdGen</span> <span class="kt">Battlefield</span>
+<span class="n">battle</span> <span class="n">b</span> <span class="o">=</span> <span class="kr">do</span>
+    <span class="p">(</span><span class="n">aStream</span> <span class="o">::</span> <span class="p">[</span><span class="kt">DieValue</span><span class="p">])</span> <span class="o">&lt;-</span> <span class="n">getRandoms</span>
+    <span class="p">(</span><span class="n">bStream</span> <span class="o">::</span> <span class="p">[</span><span class="kt">DieValue</span><span class="p">])</span> <span class="o">&lt;-</span> <span class="n">getRandoms</span>
+    <span class="kr">let</span> <span class="n">rollPairs</span> <span class="o">=</span> <span class="n">zip</span> <span class="p">(</span><span class="n">sort</span> <span class="o">.</span> <span class="n">take</span> <span class="n">numAttackRolls</span>   <span class="o">$</span> <span class="n">aStream</span><span class="p">)</span>
+                        <span class="p">(</span><span class="n">sort</span> <span class="o">.</span> <span class="n">take</span> <span class="n">numDefenderRolls</span> <span class="o">$</span> <span class="n">bStream</span><span class="p">)</span>
+    <span class="n">return</span> <span class="o">$</span> <span class="n">foldl'</span> <span class="p">(</span><span class="nf">\</span><span class="n">newB</span> <span class="p">(</span><span class="n">attackRoll</span><span class="p">,</span> <span class="n">defendRoll</span><span class="p">)</span> <span class="o">-&gt;</span>
+                        <span class="kr">if</span> <span class="n">attackRoll</span> <span class="o">&gt;</span> <span class="n">defendRoll</span>
+                        <span class="kr">then</span> <span class="n">newB</span> <span class="p">{</span> <span class="n">defenders</span> <span class="o">=</span> <span class="n">defenders</span> <span class="n">newB</span> <span class="o">-</span> <span class="mi">1</span><span class="p">}</span>
+                        <span class="kr">else</span> <span class="n">newB</span> <span class="p">{</span> <span class="n">attackers</span> <span class="o">=</span> <span class="n">attackers</span> <span class="n">newB</span> <span class="o">-</span> <span class="mi">1</span><span class="p">})</span>
+                    <span class="n">b</span>
+                    <span class="n">rollPairs</span>
+  <span class="kr">where</span>
+    <span class="n">numAttackRolls</span>   <span class="o">=</span> <span class="n">min</span> <span class="mi">3</span> <span class="p">(</span><span class="n">attackers</span> <span class="n">b</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">numDefenderRolls</span> <span class="o">=</span> <span class="n">min</span> <span class="mi">2</span> <span class="p">(</span><span class="n">defenders</span> <span class="n">b</span><span class="p">)</span></code></pre></figure>
+
+<h5 id="exercise-3">Exercise 3</h5>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">invade</span> <span class="o">::</span> <span class="kt">Battlefield</span> <span class="o">-&gt;</span> <span class="kt">Rand</span> <span class="kt">StdGen</span> <span class="kt">Battlefield</span>
+<span class="n">invade</span> <span class="n">bf</span><span class="o">@</span><span class="p">(</span><span class="kt">Battlefield</span> <span class="n">a</span> <span class="n">b</span><span class="p">)</span>
+  <span class="o">|</span> <span class="n">a</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">||</span> <span class="n">b</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">=</span> <span class="n">return</span> <span class="n">bf</span>
+  <span class="o">|</span> <span class="n">otherwise</span> <span class="o">=</span> <span class="n">battle</span> <span class="n">bf</span> <span class="o">&gt;&gt;=</span> <span class="n">invade</span></code></pre></figure>
+
+<h5 id="exercise-4">Exercise 4</h5>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">successProb</span> <span class="o">::</span> <span class="kt">Battlefield</span> <span class="o">-&gt;</span> <span class="kt">Rand</span> <span class="kt">StdGen</span> <span class="kt">Double</span>
+<span class="n">successProb</span> <span class="n">bf</span> <span class="o">=</span> <span class="kr">do</span>
+  <span class="kr">let</span> <span class="n">num</span> <span class="o">=</span> <span class="mi">10000</span>
+  <span class="n">results</span> <span class="o">&lt;-</span> <span class="n">replicateM</span> <span class="n">num</span> <span class="p">(</span><span class="n">invade</span> <span class="n">bf</span><span class="p">)</span>
+  <span class="n">return</span> <span class="o">$</span> <span class="n">fromIntegral</span> <span class="p">(</span><span class="n">wins</span> <span class="n">results</span><span class="p">)</span> <span class="o">/</span> <span class="n">fromIntegral</span> <span class="n">num</span>
+  <span class="kr">where</span> <span class="n">wins</span> <span class="o">=</span> <span class="n">length</span> <span class="o">.</span> <span class="n">filter</span> <span class="p">((</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span> <span class="o">.</span> <span class="n">defenders</span><span class="p">)</span></code></pre></figure>
+
+<p>Test code:</p>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">*</span><span class="kt">Risk</span><span class="o">&gt;</span> <span class="n">evalRandIO</span>  <span class="o">$</span> <span class="n">successProb</span> <span class="o">$</span> <span class="kt">Battlefield</span> <span class="mi">2</span> <span class="mi">3</span>
+<span class="mf">0.1338</span></code></pre></figure>
+
+:ET

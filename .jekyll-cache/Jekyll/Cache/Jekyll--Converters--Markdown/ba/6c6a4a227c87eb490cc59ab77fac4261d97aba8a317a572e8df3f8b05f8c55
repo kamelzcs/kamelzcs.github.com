@@ -1,0 +1,153 @@
+I"%R<h4 id="lecture-contents">Lecture Contents</h4>
+
+<p>To understand the different relations between type classes, <a href="https://wiki.haskell.org/Typeclassopedia">Type class</a> is a great reference.</p>
+
+<p>This is a <a href="https://wiki.haskell.org/wikiupload/d/df/Typeclassopedia-diagram.png">fantastic picture</a>.</p>
+
+<h4 id="home-work">Home Work</h4>
+
+<h5 id="exercise-1">Exercise 1</h5>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="p">(</span><span class="o">+++</span><span class="p">)</span> <span class="o">::</span> <span class="kt">Monoid</span> <span class="n">m</span> <span class="o">=&gt;</span> <span class="kt">JoinList</span> <span class="n">m</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="kt">JoinList</span> <span class="n">m</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="kt">JoinList</span> <span class="n">m</span> <span class="n">a</span>
+<span class="n">l1</span> <span class="o">+++</span> <span class="n">l2</span> <span class="o">=</span> <span class="kt">Append</span> <span class="p">(</span><span class="n">tag</span> <span class="n">l1</span> <span class="p">`</span><span class="n">mappend</span><span class="p">`</span> <span class="n">tag</span> <span class="n">l2</span><span class="p">)</span> <span class="n">l1</span> <span class="n">l2</span></code></pre></figure>
+
+<h5 id="exercise-2">Exercise 2</h5>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="c1">-- 1. Implement the function indexJ to find the JoinList element at</span>
+<span class="c1">-- the specified index; it should satisfy the equivalence:</span>
+<span class="c1">--     (indexJ i jl) == (jlToList jl !!? i)</span>
+
+<span class="n">indexJ</span> <span class="o">::</span> <span class="p">(</span><span class="kt">Sized</span> <span class="n">b</span><span class="p">,</span> <span class="kt">Monoid</span> <span class="n">b</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="kt">Int</span> <span class="o">-&gt;</span> <span class="kt">JoinList</span> <span class="n">b</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="kt">Maybe</span> <span class="n">a</span>
+<span class="n">indexJ</span> <span class="kr">_</span> <span class="kt">Empty</span> <span class="o">=</span> <span class="kt">Nothing</span>
+<span class="n">indexJ</span> <span class="n">i</span> <span class="kr">_</span> <span class="o">|</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">=</span> <span class="kt">Nothing</span>
+<span class="n">indexJ</span> <span class="n">i</span> <span class="p">(</span><span class="kt">Single</span> <span class="kr">_</span> <span class="kr">_</span><span class="p">)</span> <span class="o">|</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">=</span> <span class="kt">Nothing</span>
+<span class="n">indexJ</span> <span class="kr">_</span> <span class="p">(</span><span class="kt">Single</span> <span class="kr">_</span> <span class="n">a</span><span class="p">)</span> <span class="o">=</span> <span class="kt">Just</span> <span class="n">a</span>
+<span class="n">indexJ</span> <span class="n">i</span> <span class="n">p</span><span class="o">@</span><span class="p">(</span><span class="kt">Append</span> <span class="kr">_</span> <span class="n">l</span> <span class="n">r</span><span class="p">)</span>
+  <span class="o">|</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="n">sz</span> <span class="n">p</span> <span class="o">=</span> <span class="kt">Nothing</span>
+  <span class="o">|</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">lsize</span> <span class="o">=</span> <span class="n">indexJ</span> <span class="n">i</span> <span class="n">l</span>
+  <span class="o">|</span> <span class="n">otherwise</span> <span class="o">=</span> <span class="n">indexJ</span> <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="n">lsize</span><span class="p">)</span> <span class="n">r</span>
+  <span class="kr">where</span> <span class="n">lsize</span> <span class="o">=</span> <span class="n">sz</span> <span class="n">l</span>
+
+<span class="c1">-- 2. Implement the function dropJ to drop first n elements of a</span>
+<span class="c1">-- JoinList; it should satisfy the equivalence:</span>
+<span class="c1">--     jlToList (dropJ n jl) = drop n (jlToList jl)</span>
+
+<span class="n">dropJ</span> <span class="o">::</span> <span class="p">(</span><span class="kt">Sized</span> <span class="n">b</span><span class="p">,</span> <span class="kt">Monoid</span> <span class="n">b</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="kt">Int</span> <span class="o">-&gt;</span> <span class="kt">JoinList</span> <span class="n">b</span> <span class="n">a</span> <span class="o">-&gt;</span><span class="kt">JoinList</span> <span class="n">b</span> <span class="n">a</span>
+<span class="n">dropJ</span> <span class="kr">_</span> <span class="kt">Empty</span>        <span class="o">=</span> <span class="kt">Empty</span>
+<span class="n">dropJ</span> <span class="n">n</span> <span class="n">l</span> <span class="o">|</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">=</span> <span class="n">l</span>
+<span class="n">dropJ</span> <span class="kr">_</span> <span class="p">(</span><span class="kt">Single</span> <span class="kr">_</span> <span class="kr">_</span><span class="p">)</span> <span class="o">=</span> <span class="kt">Empty</span>
+<span class="n">dropJ</span> <span class="n">n</span> <span class="p">(</span><span class="kt">Append</span> <span class="kr">_</span> <span class="n">l</span> <span class="n">r</span><span class="p">)</span>
+  <span class="o">|</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">lsize</span> <span class="o">=</span> <span class="p">(</span><span class="n">dropJ</span> <span class="n">n</span> <span class="n">l</span><span class="p">)</span> <span class="o">+++</span> <span class="n">r</span>
+  <span class="o">|</span> <span class="n">otherwise</span> <span class="o">=</span> <span class="n">dropJ</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">lsize</span><span class="p">)</span> <span class="n">r</span>
+  <span class="kr">where</span> <span class="n">lsize</span> <span class="o">=</span> <span class="n">sz</span> <span class="n">l</span>
+
+<span class="c1">-- 3. Implement the function takeJ to return the first n elements of a</span>
+<span class="c1">-- JoinList, dropping all other elements; it should satisfy the equivalence:</span>
+<span class="c1">--     jlToList (takeJ n jl) == take n (jlToList jl)</span>
+
+<span class="n">takeJ</span> <span class="o">::</span> <span class="p">(</span><span class="kt">Sized</span> <span class="n">b</span><span class="p">,</span> <span class="kt">Monoid</span> <span class="n">b</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="kt">Int</span> <span class="o">-&gt;</span> <span class="kt">JoinList</span> <span class="n">b</span> <span class="n">a</span> <span class="o">-&gt;</span><span class="kt">JoinList</span> <span class="n">b</span> <span class="n">a</span>
+<span class="n">takeJ</span> <span class="kr">_</span> <span class="kt">Empty</span>          <span class="o">=</span> <span class="kt">Empty</span>
+<span class="n">takeJ</span> <span class="n">n</span> <span class="kr">_</span>  <span class="o">|</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span>    <span class="o">=</span> <span class="kt">Empty</span>
+<span class="n">takeJ</span> <span class="n">n</span> <span class="n">j</span> <span class="o">|</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&gt;=</span> <span class="n">sz</span> <span class="n">j</span> <span class="o">=</span> <span class="n">j</span>
+<span class="n">takeJ</span> <span class="n">n</span> <span class="p">(</span><span class="kt">Append</span> <span class="kr">_</span> <span class="n">l</span> <span class="n">r</span><span class="p">)</span>
+  <span class="o">|</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">lsize</span> <span class="o">=</span> <span class="n">takeJ</span> <span class="n">n</span> <span class="n">l</span>
+  <span class="o">|</span> <span class="n">otherwise</span> <span class="o">=</span> <span class="n">l</span> <span class="o">+++</span> <span class="n">takeJ</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">lsize</span><span class="p">)</span> <span class="n">r</span>
+  <span class="kr">where</span> <span class="n">lsize</span> <span class="o">=</span> <span class="n">sz</span> <span class="n">l</span></code></pre></figure>
+
+<h5 id="exercise-3">Exercise 3</h5>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="kr">module</span> <span class="nn">Scrabble</span> <span class="kr">where</span>
+
+<span class="kr">import</span> <span class="nn">Data.Monoid</span>
+
+<span class="kr">data</span> <span class="kt">Score</span> <span class="o">=</span> <span class="kt">Score</span> <span class="kt">Int</span>
+             <span class="kr">deriving</span> <span class="p">(</span><span class="kt">Eq</span><span class="p">,</span> <span class="kt">Show</span><span class="p">)</span>
+
+<span class="kr">instance</span> <span class="kt">Monoid</span> <span class="kt">Score</span> <span class="kr">where</span>
+  <span class="n">mempty</span> <span class="o">=</span> <span class="kt">Score</span> <span class="mi">0</span>
+  <span class="kt">Score</span> <span class="n">a</span> <span class="p">`</span><span class="n">mappend</span><span class="p">`</span> <span class="kt">Score</span> <span class="n">b</span> <span class="o">=</span> <span class="kt">Score</span> <span class="p">(</span><span class="n">a</span><span class="o">+</span><span class="n">b</span><span class="p">)</span>
+
+<span class="n">score</span> <span class="o">::</span> <span class="kt">Char</span> <span class="o">-&gt;</span> <span class="kt">Score</span>
+<span class="n">score</span> <span class="n">c</span>
+  <span class="o">|</span> <span class="n">c</span> <span class="p">`</span><span class="n">elem</span><span class="p">`</span> <span class="s">"aeilnorstuAEILNORSTU"</span> <span class="o">=</span> <span class="kt">Score</span> <span class="mi">1</span>
+  <span class="o">|</span> <span class="n">c</span> <span class="p">`</span><span class="n">elem</span><span class="p">`</span> <span class="s">"dgDG"</span>                 <span class="o">=</span> <span class="kt">Score</span> <span class="mi">2</span>
+  <span class="o">|</span> <span class="n">c</span> <span class="p">`</span><span class="n">elem</span><span class="p">`</span> <span class="s">"bcmpBCMP"</span>             <span class="o">=</span> <span class="kt">Score</span> <span class="mi">3</span>
+  <span class="o">|</span> <span class="n">c</span> <span class="p">`</span><span class="n">elem</span><span class="p">`</span> <span class="s">"fhvwyFHVWY"</span>           <span class="o">=</span> <span class="kt">Score</span> <span class="mi">4</span>
+  <span class="o">|</span> <span class="n">c</span> <span class="p">`</span><span class="n">elem</span><span class="p">`</span> <span class="s">"kK"</span>                   <span class="o">=</span> <span class="kt">Score</span> <span class="mi">5</span>
+  <span class="o">|</span> <span class="n">c</span> <span class="p">`</span><span class="n">elem</span><span class="p">`</span> <span class="s">"jxJX"</span>                 <span class="o">=</span> <span class="kt">Score</span> <span class="mi">8</span>
+  <span class="o">|</span> <span class="n">c</span> <span class="p">`</span><span class="n">elem</span><span class="p">`</span> <span class="s">"qzQZ"</span>                 <span class="o">=</span> <span class="kt">Score</span> <span class="mi">10</span>
+  <span class="o">|</span> <span class="n">otherwise</span>                       <span class="o">=</span> <span class="kt">Score</span> <span class="mi">0</span>
+
+<span class="n">scoreString</span> <span class="o">::</span> <span class="kt">String</span> <span class="o">-&gt;</span> <span class="kt">Score</span>
+<span class="n">scoreString</span> <span class="o">=</span> <span class="n">foldr</span> <span class="p">((</span><span class="o">&lt;&gt;</span><span class="p">)</span><span class="o">.</span><span class="n">score</span><span class="p">)</span> <span class="o">$</span> <span class="kt">Score</span> <span class="mi">0</span></code></pre></figure>
+
+<p>Test code:</p>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">*</span><span class="kt">JoinList</span><span class="o">&gt;</span> <span class="n">scoreLine</span> <span class="s">"yay "</span> <span class="o">+++</span> <span class="n">scoreLine</span> <span class="s">"haskell!"</span>
+<span class="kt">Append</span> <span class="p">(</span><span class="kt">Score</span> <span class="mi">23</span><span class="p">)</span> <span class="p">(</span><span class="kt">Single</span> <span class="p">(</span><span class="kt">Score</span> <span class="mi">9</span><span class="p">)</span> <span class="s">"yay "</span><span class="p">)</span> <span class="p">(</span><span class="kt">Single</span> <span class="p">(</span><span class="kt">Score</span> <span class="mi">14</span><span class="p">)</span> <span class="s">"haskell!"</span><span class="p">)</span></code></pre></figure>
+
+<h5 id="exercise-4">Exercise 4</h5>
+
+<p>The magical part is <code class="highlighter-rouge">(Sized b, Monoid b)</code> restriction to <code class="highlighter-rouge">Sized (a,b)</code>.</p>
+
+<p>To make it valid, besides the auto implemented</p>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="kr">instance</span> <span class="p">(</span><span class="kt">Monoid</span> <span class="n">a</span><span class="p">,</span> <span class="kt">Monoid</span> <span class="n">b</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="kt">Monoid</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span> <span class="kr">where</span>
+<span class="n">mempty</span> <span class="o">=</span> <span class="p">(</span><span class="n">mempty</span><span class="p">,</span> <span class="n">mempty</span><span class="p">)</span>
+<span class="n">mappend</span> <span class="p">(</span><span class="n">a1</span><span class="p">,</span><span class="n">b1</span><span class="p">)</span> <span class="p">(</span><span class="n">a2</span><span class="p">,</span><span class="n">b2</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="n">mappend</span> <span class="n">a1</span> <span class="n">a2</span><span class="p">,</span> <span class="n">mappend</span> <span class="n">b1</span> <span class="n">b2</span><span class="p">)</span></code></pre></figure>
+
+<p>The functions in <code class="highlighter-rouge">Sized.hs</code> is also critical.</p>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="kr">instance</span> <span class="kt">Sized</span> <span class="kt">Size</span> <span class="kr">where</span>
+  <span class="n">size</span> <span class="o">=</span> <span class="n">id</span>
+
+<span class="c1">-- This instance means that things like</span>
+<span class="c1">--   (Foo, Size)</span>
+<span class="c1">--   (Foo, (Bar, Size))</span>
+<span class="c1">--   ...</span>
+<span class="c1">-- are all instances of Sized.</span>
+<span class="kr">instance</span> <span class="kt">Sized</span> <span class="n">b</span> <span class="o">=&gt;</span> <span class="kt">Sized</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span> <span class="kr">where</span>
+  <span class="n">size</span> <span class="o">=</span> <span class="n">size</span> <span class="o">.</span> <span class="n">snd</span>
+
+<span class="kr">instance</span> <span class="kt">Monoid</span> <span class="kt">Size</span> <span class="kr">where</span>
+  <span class="n">mempty</span>  <span class="o">=</span> <span class="kt">Size</span> <span class="mi">0</span>
+  <span class="n">mappend</span> <span class="o">=</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span></code></pre></figure>
+
+<p>Thanks to these functions, the previously implemented <code class="highlighter-rouge">indexJ</code>, <code class="highlighter-rouge">dropJ</code>, <code class="highlighter-rouge">takeJ</code> are still valid to the <code class="highlighter-rouge">(Score, Size)</code></p>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="kr">type</span> <span class="kt">JLBuffer</span> <span class="o">=</span> <span class="kt">JoinList</span> <span class="p">(</span><span class="kt">Score</span><span class="p">,</span> <span class="kt">Size</span><span class="p">)</span> <span class="kt">String</span>
+
+<span class="kr">instance</span> <span class="kt">Buffer</span> <span class="kt">JLBuffer</span> <span class="kr">where</span>
+
+  <span class="c1">-- toString :: JLBuffer -&gt; String</span>
+  <span class="n">toString</span> <span class="o">=</span> <span class="n">concat</span> <span class="o">.</span> <span class="n">jlToList</span>
+
+  <span class="c1">-- fromString :: String -&gt; JLBuffer</span>
+  <span class="n">fromString</span> <span class="o">=</span> <span class="n">foldr1</span> <span class="p">(</span><span class="o">+++</span><span class="p">)</span> <span class="o">.</span> <span class="n">map</span><span class="p">(</span><span class="nf">\</span><span class="n">x</span> <span class="o">-&gt;</span> <span class="kt">Single</span> <span class="p">(</span><span class="n">scoreString</span> <span class="n">x</span><span class="p">,</span> <span class="kt">Size</span> <span class="mi">1</span><span class="p">)</span> <span class="n">x</span><span class="p">)</span> <span class="o">.</span> <span class="n">lines</span>
+
+  <span class="c1">-- line :: Int -&gt; JLBuffer -&gt; Maybe String</span>
+  <span class="n">line</span> <span class="o">=</span> <span class="n">indexJ</span>
+
+  <span class="c1">-- replaceLine :: Int -&gt; String -&gt; JLBuffer -&gt; JLBuffer</span>
+  <span class="n">replaceLine</span> <span class="n">n</span> <span class="n">str</span> <span class="n">jlb</span> <span class="o">=</span>
+    <span class="n">takeJ</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="n">jlb</span> <span class="o">+++</span> <span class="kt">Single</span> <span class="p">(</span><span class="n">scoreString</span> <span class="n">str</span><span class="p">,</span> <span class="kt">Size</span> <span class="mi">1</span><span class="p">)</span> <span class="n">str</span> <span class="o">+++</span> <span class="n">dropJ</span> <span class="n">n</span> <span class="n">jlb</span>
+
+  <span class="c1">-- numLines :: JLBuffer -&gt; Int</span>
+  <span class="n">numLines</span> <span class="o">=</span> <span class="n">sz</span>
+
+  <span class="c1">-- value :: JLBuffer -&gt; Int</span>
+  <span class="n">value</span> <span class="o">=</span> <span class="n">scorev</span> <span class="o">.</span> <span class="n">fst</span> <span class="o">.</span> <span class="n">tag</span>
+          <span class="kr">where</span> <span class="n">scorev</span> <span class="p">(</span><span class="kt">Score</span> <span class="n">i</span><span class="p">)</span> <span class="o">=</span> <span class="n">i</span>
+
+<span class="c1">-- JLBuffer based editor</span>
+
+<span class="n">main</span> <span class="o">::</span> <span class="kt">IO</span><span class="nb">()</span>
+<span class="n">main</span> <span class="o">=</span> <span class="n">runEditor</span> <span class="n">editor</span> <span class="n">jlb</span>
+  <span class="kr">where</span> <span class="n">jlb</span> <span class="o">=</span> <span class="n">fromString</span> <span class="o">$</span> <span class="n">unlines</span>
+         <span class="p">[</span> <span class="s">"This buffer is for notes you don't want to save, and for"</span>
+         <span class="p">,</span> <span class="s">"evaluation of steam valve coefficients."</span>
+         <span class="p">,</span> <span class="s">"To load a different file, type the character L followed"</span>
+         <span class="p">,</span> <span class="s">"by the name of the file."</span>
+         <span class="p">]</span> <span class="o">::</span> <span class="kt">JLBuffer</span></code></pre></figure>
+
+:ET

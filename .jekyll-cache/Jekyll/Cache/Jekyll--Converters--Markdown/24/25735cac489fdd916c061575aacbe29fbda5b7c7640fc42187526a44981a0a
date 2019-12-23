@@ -1,0 +1,40 @@
+I"ó<h4 id="451">4.51</h4>
+
+<p>It would always be <code class="highlighter-rouge">(a b 1)</code>.</p>
+
+<h4 id="452">4.52</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">analyze-if-fail</span> <span class="nv">exp</span><span class="p">)</span>
+   <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">first</span> <span class="p">(</span><span class="nf">analyze</span> <span class="p">(</span><span class="nb">cadr</span> <span class="nv">exp</span><span class="p">)))</span>
+         <span class="p">(</span><span class="nf">second</span> <span class="p">(</span><span class="nf">analyze</span> <span class="p">(</span><span class="nb">caddr</span> <span class="nv">exp</span><span class="p">))))</span>
+     <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">env</span> <span class="nv">succeed</span> <span class="nv">fail</span><span class="p">)</span>
+       <span class="p">(</span><span class="nf">first</span> <span class="nv">env</span>
+              <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">value</span> <span class="nv">fail2</span><span class="p">)</span>
+                <span class="p">(</span><span class="nf">succeed</span> <span class="nv">value</span> <span class="nv">fail2</span><span class="p">))</span>
+              <span class="p">(</span><span class="k">lambda</span> <span class="p">()</span>
+                <span class="p">(</span><span class="nf">second</span> <span class="nv">env</span> <span class="nv">succeed</span> <span class="nv">fail</span><span class="p">))))))</span></code></pre></figure>
+
+<h4 id="453">4.53</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">pairs</span> <span class="o">'</span><span class="p">()))</span>
+  <span class="p">(</span><span class="nf">if-fail</span> <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">p</span> <span class="p">(</span><span class="nf">prime-sum-pair</span> <span class="o">'</span><span class="p">(</span><span class="nf">1</span> <span class="mi">3</span> <span class="mi">5</span> <span class="mi">8</span><span class="p">)</span> <span class="o">'</span><span class="p">(</span><span class="nf">20</span> <span class="mi">35</span> <span class="mi">110</span><span class="p">))))</span>
+             <span class="p">(</span><span class="nf">permanent-set!</span> <span class="nv">pairs</span> <span class="p">(</span><span class="nb">cons</span> <span class="nv">p</span> <span class="nv">pairs</span><span class="p">))</span>
+             <span class="p">(</span><span class="nf">amb</span><span class="p">))</span>
+           <span class="nv">pairs</span><span class="p">))</span></code></pre></figure>
+
+<p><code class="highlighter-rouge">pairs</code> would collect all the combinations of the two lists.
+<code class="highlighter-rouge">(amb)</code> would force iterate all the valid pairs which would be returned.</p>
+
+<h4 id="454">4.54</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">analyze-require</span> <span class="nv">exp</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">pproc</span> <span class="p">(</span><span class="nf">analyze</span> <span class="p">(</span><span class="nf">require-predicate</span> <span class="nv">exp</span><span class="p">))))</span>
+    <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">env</span> <span class="nv">succeed</span> <span class="nv">fail</span><span class="p">)</span>
+      <span class="p">(</span><span class="nf">pproc</span> <span class="nv">env</span>
+             <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">pred-value</span> <span class="nv">fail2</span><span class="p">)</span>
+               <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">not</span> <span class="p">(</span><span class="nf">true?</span> <span class="nv">pre-value</span><span class="p">))</span>
+                   <span class="p">(</span><span class="nf">fail2</span><span class="p">)</span>
+                   <span class="p">(</span><span class="nf">succeed</span> <span class="ss">'ok</span> <span class="nv">fail2</span><span class="p">)))</span>
+             <span class="nv">fail</span><span class="p">))))</span></code></pre></figure>
+
+:ET

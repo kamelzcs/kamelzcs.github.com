@@ -1,0 +1,115 @@
+I"2<h4 id="linkedlist-mergesort-in-linux-kernal">Linkedlist mergesort in Linux kernal</h4>
+
+<p>Merge sort on array can be easily done due to it is easy to find the specific data in 
+a any given position index value. While, if it were the case in the linkedlist, it would
+be tough to implemente the mergesort efficienty.</p>
+
+<p>Thanks to the <a href="http://cstheory.stackexchange.com/questions/19759/core-algorithms-deployed/19773#19773">post</a>, 
+I found the following source code in the <a href="https://github.com/mirrors/linux-2.6/blob/master/lib/list_sort.c">Linux 2.6</a></p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="cm">/*
+ * Returns a list organized in an intermediate format suited
+ * to chaining of merge() calls: null-terminated, no reserved or
+ * sentinel head node, "prev" links not maintained.
+ */</span>
+<span class="k">static</span> <span class="k">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="nf">merge</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">priv</span><span class="p">,</span>
+				<span class="kt">int</span> <span class="p">(</span><span class="o">*</span><span class="n">cmp</span><span class="p">)(</span><span class="kt">void</span> <span class="o">*</span><span class="n">priv</span><span class="p">,</span> <span class="k">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span>
+					<span class="k">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="n">b</span><span class="p">),</span>
+				<span class="k">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="k">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="n">b</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">struct</span> <span class="n">list_head</span> <span class="n">head</span><span class="p">,</span> <span class="o">*</span><span class="n">tail</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">head</span><span class="p">;</span>
+
+	<span class="k">while</span> <span class="p">(</span><span class="n">a</span> <span class="o">&amp;&amp;</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+		<span class="cm">/* if equal, take 'a' -- important for sort stability */</span>
+		<span class="k">if</span> <span class="p">((</span><span class="o">*</span><span class="n">cmp</span><span class="p">)(</span><span class="n">priv</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+			<span class="n">tail</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
+			<span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+			<span class="n">tail</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">b</span><span class="p">;</span>
+			<span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+		<span class="p">}</span>
+		<span class="n">tail</span> <span class="o">=</span> <span class="n">tail</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="n">tail</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="n">a</span><span class="o">?:</span><span class="n">b</span><span class="p">;</span>
+	<span class="k">return</span> <span class="n">head</span><span class="p">.</span><span class="n">next</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>The above code will merge two linked list. One extra <code class="highlighter-rouge">struct *tail</code> is being used to help construct the new linked list.</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c"><span class="cm">/**
+ * list_sort - sort a list
+ * @priv: private data, opaque to list_sort(), passed to @cmp
+ * @head: the list to sort
+ * @cmp: the elements comparison function
+ *
+ * This function implements "merge sort", which has O(nlog(n))
+ * complexity.
+ *
+ * The comparison function @cmp must return a negative value if @a
+ * should sort before @b, and a positive value if @a should sort after
+ * @b. If @a and @b are equivalent, and their original relative
+ * ordering is to be preserved, @cmp must return 0.
+ */</span>
+<span class="kt">void</span> <span class="nf">list_sort</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">priv</span><span class="p">,</span> <span class="k">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="n">head</span><span class="p">,</span>
+		<span class="kt">int</span> <span class="p">(</span><span class="o">*</span><span class="n">cmp</span><span class="p">)(</span><span class="kt">void</span> <span class="o">*</span><span class="n">priv</span><span class="p">,</span> <span class="k">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span>
+			<span class="k">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="n">b</span><span class="p">))</span>
+<span class="p">{</span>
+	<span class="k">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="n">part</span><span class="p">[</span><span class="n">MAX_LIST_LENGTH_BITS</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span> <span class="cm">/* sorted partial lists
+						-- last slot is a sentinel */</span>
+	<span class="kt">int</span> <span class="n">lev</span><span class="p">;</span>  <span class="cm">/* index into part[] */</span>
+	<span class="kt">int</span> <span class="n">max_lev</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+	<span class="k">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="n">list</span><span class="p">;</span>
+
+	<span class="k">if</span> <span class="p">(</span><span class="n">list_empty</span><span class="p">(</span><span class="n">head</span><span class="p">))</span>
+		<span class="k">return</span><span class="p">;</span>
+
+	<span class="n">memset</span><span class="p">(</span><span class="n">part</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">part</span><span class="p">));</span>
+
+	<span class="n">head</span><span class="o">-&gt;</span><span class="n">prev</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+	<span class="n">list</span> <span class="o">=</span> <span class="n">head</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+
+	<span class="k">while</span> <span class="p">(</span><span class="n">list</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="n">cur</span> <span class="o">=</span> <span class="n">list</span><span class="p">;</span>
+		<span class="n">list</span> <span class="o">=</span> <span class="n">list</span><span class="o">-&gt;</span><span class="n">next</span><span class="p">;</span>
+		<span class="n">cur</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+
+		<span class="k">for</span> <span class="p">(</span><span class="n">lev</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">part</span><span class="p">[</span><span class="n">lev</span><span class="p">];</span> <span class="n">lev</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+			<span class="n">cur</span> <span class="o">=</span> <span class="n">merge</span><span class="p">(</span><span class="n">priv</span><span class="p">,</span> <span class="n">cmp</span><span class="p">,</span> <span class="n">part</span><span class="p">[</span><span class="n">lev</span><span class="p">],</span> <span class="n">cur</span><span class="p">);</span>
+			<span class="n">part</span><span class="p">[</span><span class="n">lev</span><span class="p">]</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+		<span class="p">}</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">lev</span> <span class="o">&gt;</span> <span class="n">max_lev</span><span class="p">)</span> <span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="n">unlikely</span><span class="p">(</span><span class="n">lev</span> <span class="o">&gt;=</span> <span class="n">ARRAY_SIZE</span><span class="p">(</span><span class="n">part</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="p">{</span>
+				<span class="n">printk_once</span><span class="p">(</span><span class="n">KERN_DEBUG</span> <span class="s">"list passed to"</span>
+					<span class="s">" list_sort() too long for"</span>
+					<span class="s">" efficiency</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+				<span class="n">lev</span><span class="o">--</span><span class="p">;</span>
+			<span class="p">}</span>
+			<span class="n">max_lev</span> <span class="o">=</span> <span class="n">lev</span><span class="p">;</span>
+		<span class="p">}</span>
+		<span class="n">part</span><span class="p">[</span><span class="n">lev</span><span class="p">]</span> <span class="o">=</span> <span class="n">cur</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="k">for</span> <span class="p">(</span><span class="n">lev</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">lev</span> <span class="o">&lt;</span> <span class="n">max_lev</span><span class="p">;</span> <span class="n">lev</span><span class="o">++</span><span class="p">)</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">part</span><span class="p">[</span><span class="n">lev</span><span class="p">])</span>
+			<span class="n">list</span> <span class="o">=</span> <span class="n">merge</span><span class="p">(</span><span class="n">priv</span><span class="p">,</span> <span class="n">cmp</span><span class="p">,</span> <span class="n">part</span><span class="p">[</span><span class="n">lev</span><span class="p">],</span> <span class="n">list</span><span class="p">);</span>
+
+	<span class="n">merge_and_restore_back_links</span><span class="p">(</span><span class="n">priv</span><span class="p">,</span> <span class="n">cmp</span><span class="p">,</span> <span class="n">head</span><span class="p">,</span> <span class="n">part</span><span class="p">[</span><span class="n">max_lev</span><span class="p">],</span> <span class="n">list</span><span class="p">);</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>The above code deals with the merge sort, which is really tricky and amazing.
+The key idea is in the</p>
+
+<figure class="highlight"><pre><code class="language-c" data-lang="c">	<span class="k">struct</span> <span class="n">list_head</span> <span class="o">*</span><span class="n">part</span><span class="p">[</span><span class="n">MAX_LIST_LENGTH_BITS</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span> <span class="cm">/* sorted partial lists
+						-- last slot is a sentinel */</span></code></pre></figure>
+
+<p>This part will store the partial lists, whose lengths whill be 
+<script type="math/tex">2^i</script> where <script type="math/tex">i</script> is the index of the part array.</p>
+
+<p>It uses the <a href="http://en.wikipedia.org/wiki/Fibonacci_number">Fibonacci</a>
+property of the length in the mergesort list. Only the same length list of occur
+in the same specific position, and two same length lists will merge to a single list<br />
+whose length will double while the index in the part array is just the next postion.</p>
+
+<p>At last, just merge all the elements in the part array, then the final list is constructed!</p>
+
+:ET

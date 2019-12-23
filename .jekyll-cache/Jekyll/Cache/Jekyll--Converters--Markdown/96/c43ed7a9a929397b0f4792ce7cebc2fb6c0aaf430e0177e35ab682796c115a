@@ -1,0 +1,23 @@
+I"T<p>It is not so easy to correct configure the solarized for vim and gnome. It should be done in several steps.</p>
+
+<h4 id="install-gnome-solarized-color-theme">Install gnome solarized color theme</h4>
+
+<p>Use Bundle to install the <a href="https://github.com/sigurdga/gnome-terminal-colors-solarized">gnome</a>, after this, the background is ok, but the ls command only displays grey. It should be fixed.</p>
+
+<h4 id="fix-the-ls-command">Fix the ls command</h4>
+
+<p>Use this <a href="http://www.webupd8.org/2011/04/solarized-must-have-color-paletter-for.html">fix</a>.</p>
+
+<h4 id="install-vim-solarized-color-theme">Install vim solarized color theme</h4>
+
+<p>Use Bundle to install <a href="https://github.com/altercation/vim-colors-solarized">vim solarized</a>.</p>
+
+<h3 id="useful-links-for-color-theme">Useful links for color theme</h3>
+
+<p><a href="https://github.com/alghanmi/terminal_color_test">color test</a></p>
+
+<p><a href="http://askubuntu.com/questions/137706/gnome-terminal-and-solarized-theme-coloring-issue">scipt5</a></p>
+
+<p><a href="https://gist.github.com/t-mart/1280177">scipt6</a></p>
+
+:ET

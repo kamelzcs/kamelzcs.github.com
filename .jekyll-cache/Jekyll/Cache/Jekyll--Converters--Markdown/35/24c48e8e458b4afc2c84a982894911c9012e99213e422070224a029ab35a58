@@ -1,0 +1,60 @@
+I"ç<h4 id="35">3.5</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="o">#</span><span class="nv">lang</span> <span class="nv">racket</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">square</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">*</span> <span class="nv">x</span> <span class="nv">x</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">random-in-range</span> <span class="nv">low</span> <span class="nv">high</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">range</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">high</span> <span class="nv">low</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nb">+</span> <span class="nv">low</span> <span class="p">(</span><span class="nb">*</span> <span class="p">(</span><span class="nf">random</span><span class="p">)</span> <span class="nv">range</span><span class="p">))))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">monte-carlo</span> <span class="nv">trials</span> <span class="nv">experiment</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">iter</span> <span class="nv">trials-remaining</span> <span class="nv">trials-passed</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">=</span> <span class="nv">trials-remaining</span> <span class="mi">0</span><span class="p">)</span>
+           <span class="p">(</span><span class="nb">/</span> <span class="nv">trials-passed</span> <span class="nv">trials</span><span class="p">))</span>
+          <span class="p">((</span><span class="nf">experiment</span><span class="p">)</span>
+           <span class="p">(</span><span class="nf">iter</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">trials-remaining</span> <span class="mi">1</span><span class="p">)</span> <span class="p">(</span><span class="nb">+</span> <span class="nv">trials-passed</span> <span class="mi">1</span><span class="p">)))</span>
+          <span class="p">(</span><span class="k">else</span>
+           <span class="p">(</span><span class="nf">iter</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">trials-remaining</span> <span class="mi">1</span><span class="p">)</span> <span class="nv">trials-passed</span><span class="p">))))</span>
+  <span class="p">(</span><span class="nf">iter</span> <span class="nv">trials</span> <span class="mi">0</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">rect-area</span> <span class="nv">x1</span> <span class="nv">x2</span> <span class="nv">y1</span> <span class="nv">y2</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">abs</span> <span class="p">(</span><span class="nb">*</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">x2</span> <span class="nv">x1</span><span class="p">)</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">y2</span> <span class="nv">y1</span><span class="p">))))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">estimate-integral</span> <span class="nv">P</span> <span class="nv">x1</span> <span class="nv">x2</span> <span class="nv">y1</span> <span class="nv">y2</span> <span class="nv">trials</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">test</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">P</span> <span class="p">(</span><span class="nf">random-in-range</span> <span class="nv">x1</span> <span class="nv">x2</span><span class="p">)</span> <span class="p">(</span><span class="nf">random-in-range</span> <span class="nv">y1</span> <span class="nv">y2</span><span class="p">)))</span>
+  <span class="p">(</span><span class="nb">*</span> <span class="p">(</span><span class="nf">monte-carlo</span> <span class="nv">trials</span> <span class="nv">test</span><span class="p">)</span>
+     <span class="p">(</span><span class="nf">rect-area</span> <span class="nv">x1</span> <span class="nv">x2</span> <span class="nv">y1</span> <span class="nv">y2</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">estimate-pi</span> <span class="nv">trials</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">P</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
+    <span class="p">(</span><span class="nb">&lt;</span> <span class="p">(</span><span class="nb">+</span> <span class="p">(</span><span class="nf">square</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nf">square</span> <span class="nv">y</span><span class="p">))</span> <span class="mf">1.0</span><span class="p">))</span>
+  <span class="p">(</span><span class="nf">estimate-integral</span> <span class="nv">P</span> <span class="mf">-1.0</span> <span class="mf">1.0</span> <span class="mf">-1.0</span> <span class="mf">1.0</span> <span class="nv">trials</span><span class="p">))</span>
+
+<span class="p">(</span><span class="nf">estimate-pi</span> <span class="mi">10000000</span><span class="p">)</span></code></pre></figure>
+
+<p>The <code class="highlighter-rouge">random</code> function in <code class="highlighter-rouge">neil/sicp</code> dialect would only return <code class="highlighter-rouge">integer</code>,
+to return a <code class="highlighter-rouge">real</code> number back, I have to rely on the <code class="highlighter-rouge">racket</code> dialect.</p>
+
+<h4 id="37">3.7</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">make-joint</span> <span class="nv">acc</span> <span class="nv">acc-pass</span> <span class="nv">new-pass</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">dispatch</span> <span class="nv">password</span> <span class="nv">m</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">eq?</span> <span class="nv">password</span> <span class="nv">new-pass</span><span class="p">)</span>
+      <span class="p">(</span><span class="nf">acc</span> <span class="nv">acc-pass</span> <span class="nv">m</span><span class="p">)</span>
+      <span class="p">(</span><span class="nf">error</span> <span class="s">"Bad password"</span> <span class="nv">password</span><span class="p">)))</span>
+  <span class="nv">dispatch</span><span class="p">)</span></code></pre></figure>
+
+<h4 id="38">3.8</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="nv">f</span>
+  <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">state</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">x</span><span class="p">)</span>
+      <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">old-state</span> <span class="nv">state</span><span class="p">))</span>
+        <span class="p">(</span><span class="k">set!</span> <span class="nv">state</span> <span class="nv">x</span><span class="p">)</span>
+        <span class="nv">old-state</span><span class="p">))))</span></code></pre></figure>
+
+<p>The key lies in to make a closure and make use of its side effect.</p>
+
+:ET

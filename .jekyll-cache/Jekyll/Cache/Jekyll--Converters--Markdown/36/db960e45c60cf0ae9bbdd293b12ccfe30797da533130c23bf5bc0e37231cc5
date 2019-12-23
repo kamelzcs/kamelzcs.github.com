@@ -1,0 +1,79 @@
+I"Ø$<h4 id="316">3.16</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">count-pairs</span> <span class="nv">x</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">not</span> <span class="p">(</span><span class="nb">pair?</span> <span class="nv">x</span><span class="p">))</span>
+      <span class="mi">0</span>
+      <span class="p">(</span><span class="nb">+</span> <span class="p">(</span><span class="nf">count-pairs</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">x</span><span class="p">))</span>
+         <span class="p">(</span><span class="nf">count-pairs</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">x</span><span class="p">))</span>
+         <span class="mi">1</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="nv">z3</span> <span class="o">'</span><span class="p">(</span><span class="nf">a</span> <span class="nv">b</span> <span class="nv">c</span><span class="p">))</span>
+<span class="p">(</span><span class="nf">count-pairs</span> <span class="nv">z3</span><span class="p">)</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="nv">z1</span> <span class="o">'</span><span class="p">(</span><span class="nf">c</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span> <span class="nv">z4</span>
+  <span class="p">(</span><span class="nb">list</span> <span class="nv">z1</span> <span class="nv">z1</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="nv">z23</span>
+  <span class="p">(</span><span class="nb">cons</span> <span class="nv">z1</span> <span class="nv">z1</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span> <span class="nv">z7</span>
+  <span class="p">(</span><span class="nb">cons</span> <span class="nv">z23</span> <span class="nv">z23</span><span class="p">))</span>
+
+
+<span class="p">(</span><span class="k">define</span> <span class="nv">zi</span> <span class="o">'</span><span class="p">(</span><span class="nf">a</span> <span class="nv">b</span> <span class="nv">c</span><span class="p">))</span>
+<span class="p">(</span><span class="nb">set-cdr!</span> <span class="p">(</span><span class="nb">cddr</span> <span class="nv">zi</span><span class="p">)</span> <span class="nv">zi</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">count-pairs</span> <span class="nv">zi</span><span class="p">)</span></code></pre></figure>
+
+<p>The construct of <code class="highlighter-rouge">zi</code> is hard for me.
+It could be built with the <code class="highlighter-rouge">lazy evaluation</code> as well.</p>
+
+<h4 id="317">3.17</h4>
+
+<blockquote>
+  <p><code class="highlighter-rouge">(eq? x y)</code> tests whether x and y are the same object (that is, whether x and y are equal as pointers)</p>
+</blockquote>
+
+<p>Understanding the pointer is the key to understand sameness and sharing.</p>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">count-pairs</span> <span class="nv">x</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">aux</span> <span class="o">'</span><span class="p">()))</span>
+    <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">uncounted?</span> <span class="nv">x</span><span class="p">)</span>
+      <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">memq</span> <span class="nv">x</span> <span class="nv">aux</span><span class="p">)</span>
+        <span class="mi">0</span>
+        <span class="p">(</span><span class="k">begin</span>
+          <span class="p">(</span><span class="k">set!</span> <span class="nv">aux</span> <span class="p">(</span><span class="nb">cons</span> <span class="nv">x</span> <span class="nv">aux</span><span class="p">))</span>
+          <span class="mi">1</span><span class="p">)))</span>
+    <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">count</span> <span class="nv">x</span><span class="p">)</span>
+      <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">not</span> <span class="p">(</span><span class="nb">pair?</span> <span class="nv">x</span><span class="p">))</span>
+        <span class="mi">0</span>
+        <span class="p">(</span><span class="nb">+</span>
+          <span class="p">(</span><span class="nf">count</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">x</span><span class="p">))</span>
+          <span class="p">(</span><span class="nf">count</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">x</span><span class="p">))</span>
+          <span class="p">(</span><span class="nf">uncounted?</span> <span class="nv">x</span><span class="p">))))</span>
+    <span class="p">(</span><span class="nf">count</span> <span class="nv">x</span><span class="p">)))</span></code></pre></figure>
+
+<h4 id="318">3.18</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">cycle?</span> <span class="nv">l</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">detect</span> <span class="nv">pair</span> <span class="nv">countedList</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">not</span> <span class="p">(</span><span class="nb">pair?</span> <span class="nv">pair</span><span class="p">))</span> <span class="no">#f</span><span class="p">)</span>
+          <span class="p">((</span><span class="nb">memq</span> <span class="nv">pair</span> <span class="nv">countedList</span><span class="p">)</span> <span class="no">#t</span><span class="p">)</span>
+          <span class="p">(</span><span class="k">else</span>
+            <span class="p">(</span><span class="nf">detect</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">pair</span><span class="p">)</span> <span class="p">(</span><span class="nb">cons</span> <span class="nv">pair</span> <span class="nv">countedList</span><span class="p">)))))</span>
+  <span class="p">(</span><span class="nf">detect</span> <span class="nv">l</span> <span class="o">'</span><span class="p">()))</span></code></pre></figure>
+
+<h4 id="319">3.19</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">has_cycle?</span> <span class="nv">l</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">iter</span> <span class="nv">l</span> <span class="nv">r</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">eq?</span> <span class="nv">l</span> <span class="nv">r</span><span class="p">)</span> <span class="no">#t</span><span class="p">)</span>
+          <span class="p">((</span><span class="nb">not</span> <span class="p">(</span><span class="nb">pair?</span> <span class="nv">r</span><span class="p">))</span> <span class="no">#f</span><span class="p">)</span>
+          <span class="p">((</span><span class="nb">not</span> <span class="p">(</span><span class="nb">pair?</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">r</span><span class="p">)))</span> <span class="no">#f</span><span class="p">)</span>
+          <span class="p">(</span><span class="k">else</span> <span class="p">(</span><span class="nf">iter</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">l</span><span class="p">)</span> <span class="p">(</span><span class="nb">cdr</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">r</span><span class="p">))))))</span>
+  <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">not</span> <span class="p">(</span><span class="nb">pair?</span> <span class="nv">l</span><span class="p">))</span> <span class="no">#f</span><span class="p">)</span>
+        <span class="p">((</span><span class="nb">not</span> <span class="p">(</span><span class="nb">pair?</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">l</span><span class="p">)))</span> <span class="no">#f</span><span class="p">)</span>
+        <span class="p">(</span><span class="k">else</span> <span class="p">(</span><span class="nf">iter</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">l</span><span class="p">)</span> <span class="p">(</span><span class="nb">cdr</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">l</span><span class="p">))))))</span></code></pre></figure>
+
+<p>It is a frequently asked question in a interview.
+Special attention should be paied to the corner cases.</p>
+:ET

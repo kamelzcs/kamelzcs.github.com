@@ -1,0 +1,148 @@
+I"F<h4 id="package-used">package used</h4>
+
+<p><a href="http://planet.racket-lang.org/package-source/soegaard/sicp.plt/1/1/doc.txt">Drracket picture language</a> is used.</p>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="o">#</span><span class="nv">lang</span> <span class="nv">racket</span>
+<span class="p">(</span><span class="nf">require</span> <span class="p">(</span><span class="nf">planet</span> <span class="s">"sicp.ss"</span> <span class="p">(</span><span class="s">"soegaard"</span> <span class="s">"sicp.plt"</span> <span class="mi">2</span> <span class="mi">1</span><span class="p">)))</span></code></pre></figure>
+
+<h4 id="244">2.44</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">up-split</span> <span class="nv">painter</span> <span class="nv">n</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">=</span> <span class="nv">n</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="nv">painter</span>
+    <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">smaller</span> <span class="p">(</span><span class="nf">up-split</span> <span class="nv">painter</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">n</span> <span class="mi">1</span><span class="p">))))</span>
+      <span class="p">(</span><span class="nf">below</span> <span class="nv">painter</span> <span class="p">(</span><span class="nf">beside</span> <span class="nv">smaller</span> <span class="nv">smaller</span><span class="p">)))))</span></code></pre></figure>
+
+<h4 id="245">2.45</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">split</span> <span class="nv">op1</span> <span class="nv">op2</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">painter</span> <span class="nv">n</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">=</span> <span class="nv">n</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="nv">painter</span>
+        <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">smaller</span> <span class="p">((</span><span class="nf">split</span> <span class="nv">op1</span> <span class="nv">op2</span><span class="p">)</span> <span class="nv">painter</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">n</span> <span class="mi">1</span><span class="p">))))</span>
+          <span class="p">(</span><span class="nf">op1</span> <span class="nv">painter</span> <span class="p">(</span><span class="nf">op2</span> <span class="nv">smaller</span> <span class="nv">smaller</span><span class="p">))))))</span></code></pre></figure>
+
+<h4 id="246">2.46</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">make-vect</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
+   <span class="p">(</span><span class="nb">cons</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">xcor-vect</span> <span class="nv">v</span><span class="p">)</span>
+   <span class="p">(</span><span class="nb">car</span> <span class="nv">v</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">ycor-vect</span> <span class="nv">v</span><span class="p">)</span>
+   <span class="p">(</span><span class="nb">cdr</span> <span class="nv">v</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">add-vect</span> <span class="nv">u</span> <span class="nv">v</span><span class="p">)</span>
+   <span class="p">(</span><span class="nf">make-vect</span>
+     <span class="p">(</span><span class="nb">+</span> <span class="p">(</span><span class="nf">xcor-vect</span> <span class="nv">u</span><span class="p">)</span> <span class="p">(</span><span class="nf">xcor-vect</span> <span class="nv">v</span><span class="p">))</span>
+     <span class="p">(</span><span class="nb">+</span> <span class="p">(</span><span class="nf">ycor-vect</span> <span class="nv">u</span><span class="p">)</span> <span class="p">(</span><span class="nf">ycor-vect</span> <span class="nv">v</span><span class="p">))))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">sub-vect</span> <span class="nv">u</span> <span class="nv">v</span><span class="p">)</span>
+   <span class="p">(</span><span class="nf">make-vect</span>
+     <span class="p">(</span><span class="nb">-</span> <span class="p">(</span><span class="nf">xcor-vect</span> <span class="nv">u</span><span class="p">)</span> <span class="p">(</span><span class="nf">xcor-vect</span> <span class="nv">v</span><span class="p">))</span>
+     <span class="p">(</span><span class="nb">-</span> <span class="p">(</span><span class="nf">ycor-vect</span> <span class="nv">u</span><span class="p">)</span> <span class="p">(</span><span class="nf">ycor-vect</span> <span class="nv">v</span><span class="p">))))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">scale-vect</span> <span class="nv">s</span> <span class="nv">v</span><span class="p">)</span>
+   <span class="p">(</span><span class="nf">make-vect</span>
+     <span class="p">(</span><span class="nb">*</span> <span class="nv">s</span> <span class="p">(</span><span class="nf">xcor-vect</span> <span class="nv">v</span><span class="p">))</span>
+     <span class="p">(</span><span class="nb">*</span> <span class="nv">s</span> <span class="p">(</span><span class="nf">ycor-vect</span> <span class="nv">v</span><span class="p">))))</span></code></pre></figure>
+
+<h4 id="247">2.47</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">make-frame</span> <span class="nv">origin</span> <span class="nv">edge1</span> <span class="nv">edge2</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">list</span> <span class="nv">origin</span> <span class="nv">edge1</span> <span class="nv">edge2</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">origin-frame</span> <span class="nv">frame</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">car</span> <span class="nv">frame</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">edge1-frame</span> <span class="nv">frame</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">cadr</span> <span class="nv">frame</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">edge2-frame</span> <span class="nv">frame</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">caddr</span> <span class="nv">frame</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">make-frame</span> <span class="nv">origin</span> <span class="nv">edge1</span> <span class="nv">edge2</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">cons</span> <span class="nv">origin</span> <span class="p">(</span><span class="nb">cons</span> <span class="nv">edge1</span> <span class="nv">edge2</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">origin-frame</span> <span class="nv">frame</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">car</span> <span class="nv">frame</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">edge1-frame</span> <span class="nv">frame</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">cadr</span> <span class="nv">frame</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">edge2-frame</span> <span class="nv">frame</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">cddr</span> <span class="nv">frame</span><span class="p">))</span></code></pre></figure>
+
+<h4 id="248">2.48</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">make-segment</span> <span class="nv">u</span> <span class="nv">v</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">cons</span> <span class="nv">u</span> <span class="nv">v</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">start-segment</span> <span class="nv">segment</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">car</span> <span class="nv">segment</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">end-segment</span> <span class="nv">segment</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">cdr</span> <span class="nv">segment</span><span class="p">))</span></code></pre></figure>
+
+<h4 id="249">2.49</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">draw-outline</span> <span class="nv">frame</span><span class="p">)</span>
+  <span class="p">((</span><span class="nf">segments-&gt;painter</span>
+    <span class="p">(</span><span class="nb">list</span> <span class="p">(</span><span class="nf">make-segment</span> <span class="p">(</span><span class="nf">make-vect</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">)</span>
+                        <span class="p">(</span><span class="nf">make-vect</span> <span class="mi">1</span> <span class="mi">0</span><span class="p">))</span>
+          <span class="p">(</span><span class="nf">make-segment</span> <span class="p">(</span><span class="nf">make-vect</span> <span class="mi">1</span> <span class="mi">0</span><span class="p">)</span>
+                        <span class="p">(</span><span class="nf">make-vect</span> <span class="mi">1</span> <span class="mi">1</span><span class="p">))</span>
+          <span class="p">(</span><span class="nf">make-segment</span> <span class="p">(</span><span class="nf">make-vect</span> <span class="mi">1</span> <span class="mi">1</span><span class="p">)</span>
+                        <span class="p">(</span><span class="nf">make-vect</span> <span class="mi">0</span> <span class="mi">1</span><span class="p">))</span>
+          <span class="p">(</span><span class="nf">make-segment</span> <span class="p">(</span><span class="nf">make-vect</span> <span class="mi">0</span> <span class="mi">1</span><span class="p">)</span>
+                        <span class="p">(</span><span class="nf">make-vect</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">)))</span>
+    <span class="nv">frame</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">draw-X</span> <span class="nv">frame</span><span class="p">)</span>
+  <span class="p">((</span><span class="nf">segments-&gt;painter</span>
+    <span class="p">(</span><span class="nb">list</span> <span class="p">(</span><span class="nf">make-segment</span> <span class="p">(</span><span class="nf">make-vect</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">)</span>
+                        <span class="p">(</span><span class="nf">make-vect</span> <span class="mi">1</span> <span class="mi">1</span><span class="p">))</span>
+          <span class="p">(</span><span class="nf">make-segment</span> <span class="p">(</span><span class="nf">make-vect</span> <span class="mi">1</span> <span class="mi">0</span><span class="p">)</span>
+                        <span class="p">(</span><span class="nf">make-vect</span> <span class="mi">0</span> <span class="mi">1</span><span class="p">))))</span>
+   <span class="nv">frame</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">draw-diamond</span> <span class="nv">frame</span><span class="p">)</span>
+  <span class="p">((</span><span class="nf">segments-&gt;painter</span>
+    <span class="p">(</span><span class="nb">list</span> <span class="p">(</span><span class="nf">make-segment</span> <span class="p">(</span><span class="nf">make-vect</span> <span class="mf">0.5</span> <span class="mf">0.0</span><span class="p">)</span>
+                        <span class="p">(</span><span class="nf">make-vect</span> <span class="mf">1.0</span> <span class="mf">0.5</span><span class="p">))</span>
+          <span class="p">(</span><span class="nf">make-segment</span> <span class="p">(</span><span class="nf">make-vect</span> <span class="mf">1.0</span> <span class="mf">0.5</span><span class="p">)</span>
+                        <span class="p">(</span><span class="nf">make-vect</span> <span class="mf">0.5</span> <span class="mf">1.0</span><span class="p">))</span>
+          <span class="p">(</span><span class="nf">make-segment</span> <span class="p">(</span><span class="nf">make-vect</span> <span class="mf">0.5</span> <span class="mf">1.0</span><span class="p">)</span>
+                        <span class="p">(</span><span class="nf">make-vect</span> <span class="mf">0.0</span> <span class="mf">0.5</span><span class="p">))</span>
+          <span class="p">(</span><span class="nf">make-segment</span> <span class="p">(</span><span class="nf">make-vect</span> <span class="mf">0.0</span> <span class="mf">0.5</span><span class="p">)</span>
+                        <span class="p">(</span><span class="nf">make-vect</span> <span class="mf">0.5</span> <span class="mf">0.0</span><span class="p">))))</span></code></pre></figure>
+
+<h4 id="250">2.50</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">flip-horiz</span> <span class="nv">painter</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">transform-painter</span> <span class="nv">painter</span>
+                     <span class="p">(</span><span class="nf">make-vect</span> <span class="mi">1</span> <span class="mi">0</span><span class="p">)</span>
+                     <span class="p">(</span><span class="nf">make-vect</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">)</span>
+                     <span class="p">(</span><span class="nf">make-vect</span> <span class="mi">1</span> <span class="mi">1</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">rotate180</span> <span class="nv">painter</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">transform-painter</span> <span class="nv">painter</span>
+                     <span class="p">(</span><span class="nf">make-vect</span> <span class="mi">1</span> <span class="mi">1</span><span class="p">)</span>
+                     <span class="p">(</span><span class="nf">make-vect</span> <span class="mi">0</span> <span class="mi">1</span><span class="p">)</span>
+                     <span class="p">(</span><span class="nf">make-vect</span> <span class="mi">1</span> <span class="mi">0</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">rotate270</span> <span class="nv">painter</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">transform-painter</span> <span class="nv">painter</span>
+                     <span class="p">(</span><span class="nf">make-vect</span> <span class="mi">0</span> <span class="mi">1</span><span class="p">)</span>
+                     <span class="p">(</span><span class="nf">make-vect</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">)</span>
+                     <span class="p">(</span><span class="nf">make-vect</span> <span class="mi">1</span> <span class="mi">1</span><span class="p">)))</span></code></pre></figure>
+
+<h4 id="251">2.51</h4>
+<p>Hint from the <a href="https://wqzhang.wordpress.com/2009/06/23/sicp-exercise-2-51/">wqzhang</a>, which is very elegant.</p>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">below</span> <span class="nv">painter1</span> <span class="nv">painter2</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">rotate90</span> <span class="p">(</span><span class="nf">beside</span> <span class="p">(</span><span class="nf">rotate270</span> <span class="nv">painter1</span><span class="p">)</span>
+                    <span class="p">(</span><span class="nf">rotate270</span> <span class="nv">painter2</span><span class="p">))))</span></code></pre></figure>
+
+:ET

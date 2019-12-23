@@ -1,0 +1,19 @@
+I"z	<h4 id="254">2.54</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nb">equal?</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="k">and</span> <span class="p">(</span><span class="nb">pair?</span> <span class="nv">a</span><span class="p">)</span> <span class="p">(</span><span class="nb">pair?</span> <span class="nv">b</span><span class="p">))</span>
+         <span class="p">(</span><span class="k">and</span> <span class="p">(</span><span class="nb">equal?</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">a</span><span class="p">)</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">b</span><span class="p">))</span>
+              <span class="p">(</span><span class="nb">equal?</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">a</span><span class="p">)</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">b</span><span class="p">))))</span>
+        <span class="p">((</span><span class="k">and</span> <span class="p">(</span><span class="nb">not</span> <span class="p">(</span><span class="nb">pair?</span> <span class="nv">a</span><span class="p">))</span> <span class="p">(</span><span class="nb">not</span> <span class="p">(</span><span class="nb">pair?</span> <span class="nv">b</span><span class="p">)))</span>
+         <span class="p">(</span><span class="nb">eq?</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">))</span>
+        <span class="p">(</span><span class="k">else</span> <span class="no">#f</span><span class="p">)))</span></code></pre></figure>
+
+<h4 id="255">2.55</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="nb">car</span> <span class="o">'</span><span class="ss">'abracadabra</span><span class="p">)</span>
+<span class="nv">--&gt;</span>
+<span class="p">(</span><span class="nb">car</span> <span class="p">(</span><span class="k">quote</span> <span class="p">(</span><span class="k">quote</span> <span class="nv">abracadabra</span><span class="p">)))</span>
+<span class="nv">--&gt;</span>
+<span class="ss">'quote</span></code></pre></figure>
+
+:ET

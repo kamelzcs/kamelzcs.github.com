@@ -1,0 +1,167 @@
+I":<p>Here is a useful tutorial for Git:<a href="http://marklodato.github.io/visual-git-guide/index-en.html#reset">Visual git guide</a></p>
+
+<ul>
+  <li>
+    <p><code class="highlighter-rouge">git status</code></p>
+
+    <p>Check the status of the files.</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">gitk -all &amp; git diff</code></p>
+
+    <p>show the branch in graphical mode.</p>
+
+    <p>check the difference.</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">git rm</code></p>
+
+    <p>remove files</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">git log</code></p>
+
+    <ul>
+      <li>
+        <p><code class="highlighter-rouge">git log -p -2</code></p>
+
+        <p>show the changing between the past two submitions</p>
+      </li>
+      <li>
+        <p><code class="highlighter-rouge">git log --oneline</code></p>
+
+        <p>Condense each commit to a single line.</p>
+      </li>
+      <li>
+        <p><code class="highlighter-rouge">git log --stat</code></p>
+
+        <p>Along with the ordinary git log information, include which files were altered and the relative number of lines that were added or deleted from each of them.</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">git commit --amend</code></p>
+
+    <p>replace the last submit</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">git reset HEAD</code></p>
+
+    <p>unstage files</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">git add .</code></p>
+
+    <p>add all the files in the subdirectory.</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">git checkout \&lt;file\&gt;-</code></p>
+
+    <p>unmodifying a modified file, revert it back to what it looked like when last committed.</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">git remote -v</code></p>
+
+    <p>shows the URL for the shorname to be expaned to</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">git remote show origin</code></p>
+
+    <p>list the more infomation of the remote</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">git push origin local-branch-name:remote-branch-name</code></p>
+
+    <p>push to specilized banch</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">git push origin :newfeature</code></p>
+
+    <p>delete remote branch newfeature</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">git merge --squash bugfix</code>&amp;<code class="highlighter-rouge">git commit -m 'fix bug'</code></p>
+
+    <p>Take all the commits from the <code class="highlighter-rouge">bugfix</code> branch, squash them into 1 commit and then merge it with the  <code class="highlighter-rouge">master</code> branch</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">git fetch origin &amp; git checkout -b test origin/test</code></p>
+
+    <p>fetch all the remote branches and checkout the specific branch</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">git branch -a</code></p>
+
+    <p>show the branch info in remote and local</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">git checkout --track</code></p>
+
+    <p>set the track branch</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">git rebase</code></p>
+
+    <p>take all the changes that were commited on one branch and replay on another one.</p>
+
+    <ul>
+      <li>
+        <p><code class="highlighter-rouge">git rebase -i \&lt;the SHA-1 of unchanged commit\&gt;</code></p>
+
+        <p>merge multiple commits
+ pick = use the commit
+ squash = use commit, but merge into previous commit</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">git cherrypick &lt;the SHA-1 of unchanged commit&gt;</code></p>
+
+    <p>pick the specified commit to the current branch</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">git diff \&lt;branch\&gt; \&lt;branch\&gt;</code></p>
+
+    <p>compare the difference between two branches</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">git stash save 'comment'</code></p>
+
+    <p>save the changes temporary</p>
+
+    <ul>
+      <li>
+        <p><code class="highlighter-rouge">git stash list</code></p>
+
+        <p>view the stash list</p>
+      </li>
+      <li>
+        <p><code class="highlighter-rouge">git stash apply stash@{2}</code></p>
+
+        <p>apply the specified stash.</p>
+      </li>
+      <li>
+        <p><code class="highlighter-rouge">git stash apply --index</code></p>
+
+        <p>reapply the staged changes</p>
+      </li>
+      <li>
+        <p><code class="highlighter-rouge">git stash drop</code></p>
+
+        <p>remote from the stash list</p>
+      </li>
+      <li>
+        <p><code class="highlighter-rouge">git stash pop</code></p>
+
+        <p>apply the stash and immediately drop it from the stack. Be causious.</p>
+      </li>
+      <li>
+        <p><code class="highlighter-rouge">git stash branch</code></p>
+
+        <p>creating a branch from a stash</p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+:ET

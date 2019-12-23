@@ -1,0 +1,123 @@
+I"�"<h3 id="storing-data">Storing Data</h3>
+
+<p>The app engine provides several ways to store data for the application:</p>
+
+<ol>
+  <li>App Engine Datastore: A schemaless object datastore with automatic caching, query engine, and atomic transactions.</li>
+  <li>Google Cloud SQL: A relationship SQL based on the MySQL database.</li>
+  <li>Google Cloud Storage: size can be up to terabytes.</li>
+</ol>
+
+<h3 id="python-datastore-api">Python Datastore API</h3>
+
+<p>An entity has one or more properties. Each entity is identified by its kind, which categorizes the entity for the purpose of queries, and a key that uniquely identifies it within its kind.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">google.appengine.ext</span> <span class="kn">import</span> <span class="n">db</span>
+<span class="kn">from</span> <span class="nn">google.appengine.api</span> <span class="kn">import</span> <span class="n">users</span>
+
+
+<span class="k">class</span> <span class="nc">Employee</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+  <span class="n">name</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">StringProperty</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+  <span class="n">role</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">StringProperty</span><span class="p">(</span><span class="n">required</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                           <span class="n">choices</span><span class="o">=</span><span class="nb">set</span><span class="p">([</span><span class="s">"executive"</span><span class="p">,</span> <span class="s">"manager"</span><span class="p">,</span> <span class="s">"producer"</span><span class="p">]))</span>
+  <span class="n">hire_date</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">DateProperty</span><span class="p">()</span>
+  <span class="n">new_hire_training_completed</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">BooleanProperty</span><span class="p">(</span><span class="n">indexed</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+  <span class="n">email</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">StringProperty</span><span class="p">()</span>
+
+
+<span class="n">e</span> <span class="o">=</span> <span class="n">Employee</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">"John"</span><span class="p">,</span>
+             <span class="n">role</span><span class="o">=</span><span class="s">"manager"</span><span class="p">,</span>
+             <span class="n">email</span><span class="o">=</span><span class="n">users</span><span class="o">.</span><span class="n">get_current_user</span><span class="p">()</span><span class="o">.</span><span class="n">email</span><span class="p">())</span>
+<span class="n">e</span><span class="o">.</span><span class="n">hire_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
+<span class="n">e</span><span class="o">.</span><span class="n">put</span><span class="p">()</span></code></pre></figure>
+
+<p>Query Examples:</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">training_registration_list</span> <span class="o">=</span> <span class="p">[</span><span class="s">"Alfred.Smith@example.com"</span><span class="p">,</span>
+                              <span class="s">"jharrison@example.com"</span><span class="p">,</span>
+                              <span class="s">"budnelson@example.com"</span><span class="p">]</span>
+<span class="n">employees_trained</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">GqlQuery</span><span class="p">(</span><span class="s">"SELECT * FROM Employee WHERE email IN :1"</span><span class="p">,</span>
+                                <span class="n">training_registration_list</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">employees_trained</span><span class="p">:</span>
+  <span class="n">e</span><span class="o">.</span><span class="n">new_hire_training_completed</span> <span class="o">=</span> <span class="bp">True</span>
+  <span class="n">db</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">e</span><span class="p">)</span></code></pre></figure>
+
+<h3 id="comparison-with-traditional-databases">Comparison with traditional databases</h3>
+
+<p>It differs from them in the way it describes relationships between data objects. Entities of the same kind can have different properties, and different entities can have properties with the same name but different value types.</p>
+
+<h3 id="entities">Entities</h3>
+
+<p>Objects in the Datastore are entities.</p>
+
+<h4 id="kindskeys-and-identifiers">Kinds,keys, and identifiers</h4>
+
+<p>Each entity is a particular kinds, which categorizes the entity for the purpose of queries. In addition, each entity has its own key, which uniquely identifies it. The key consists of the following components:</p>
+
+<ol>
+  <li>The entity’s kind</li>
+  <li>identifier, which can be either
+    <ul>
+      <li>a key name string</li>
+      <li>an integer ID</li>
+    </ul>
+  </li>
+  <li>An optional ancestor path locating the entity within the Datastore hierarchy</li>
+</ol>
+
+<h4 id="ancestor-paths">Ancestor paths</h4>
+
+<p>Entities in the Datastore form a hierarchically structured space similar to the directory structure of a file system.</p>
+
+<blockquote>
+
+  <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[Person:GreatGrandpa, Person:Grandpa, Person:Dad, Person:Me]
+</code></pre></div>  </div>
+</blockquote>
+
+<h3 id="queries-and-indexes">Queries and indexes</h3>
+
+<p>A typical query includes the following:</p>
+
+<ul>
+  <li>An entity kind to which the query applies</li>
+  <li>Zero or more filters based on the entities’ property values, keys, and ancestors</li>
+  <li>Zero or more sort orders to sequence the results</li>
+</ul>
+
+<p>App Engine predefines a simple index on each property of an entity. An App Engine application can define further custom indexes in an index configuration file named index.yaml.</p>
+
+<h3 id="transactions">Transactions</h3>
+
+<p>Every attempt to insert, update, or delete an entity takes place in the context of a transaction. A single transaction can include any number of such operations. To maintain the consistency of the data, the transaction ensures that all of the operations it contains are applied to the Datastore as a unit or, if any of the operations fails, that none of them are applied.</p>
+
+<p>You can perform multiple actions on an entity within a single transaction.</p>
+
+<h4 id="transactions-and-entity-groups">Transactions and entity groups</h4>
+
+<p>Only ancestor queries are allowed within a transaction: that is, each transactional query must be limited to a single entity group. The transaction itself can apply to multiple entities, which can belong either to a single entity group or (in the case of a cross-group transaction) to as many as five different entity groups.</p>
+
+<h4 id="cross-group-transactions">Cross-group transactions</h4>
+
+<p>The transaction can be applied across a maximum of five entity groups, and will succeed as long as no concurrent transaction touches any of the entity groups to which it applies.</p>
+
+<p>As in a single-group transaction, you cannot perform a non-ancestor query in an XG transaction. You can, however, perform ancestor queries on separate entity groups.</p>
+
+<h3 id="datastore-writes-and-data-visibility">Datastore writes and data visibility</h3>
+
+<p>Data is written to the Datastore in two phases:</p>
+
+<ol>
+  <li>In the Commit phase, the entity data is recorded in a log.</li>
+  <li>The Apply phase consists of two actions performed in parallel:
+    <ul>
+      <li>The entity data is written.</li>
+      <li>The index rows for the entity are written. (Note that this can take longer than writing the data itself.)</li>
+    </ul>
+  </li>
+</ol>
+
+<p>The write operation returns immediately after the Commit phase and the Apply phase then takes place asynchronously.</p>
+
+:ET

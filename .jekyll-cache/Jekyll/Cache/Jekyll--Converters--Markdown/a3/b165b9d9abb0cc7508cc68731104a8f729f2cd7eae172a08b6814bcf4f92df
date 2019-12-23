@@ -1,0 +1,67 @@
+I"�<h4 id="13">1.3</h4>
+
+<p>In order to find out the bigger ones, compare them pairwisely.</p>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="o">#</span><span class="nv">lang</span> <span class="nv">planet</span> <span class="nv">neil/sicp</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">square</span> <span class="nv">x</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">*</span> <span class="nv">x</span> <span class="nv">x</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">sum-of-squares</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
+    <span class="p">(</span><span class="nb">+</span> <span class="p">(</span><span class="nf">square</span> <span class="nv">x</span><span class="p">)</span>
+       <span class="p">(</span><span class="nf">square</span> <span class="nv">y</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">bigger</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">&gt;</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">smaller</span>  <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">&lt;</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">bigger-sum-of-square</span> <span class="nv">x</span> <span class="nv">y</span> <span class="nv">z</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">sum-of-squares</span> <span class="p">(</span><span class="nf">bigger</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
+                 <span class="p">(</span><span class="nf">bigger</span> <span class="p">(</span><span class="nf">smaller</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
+                         <span class="nv">z</span><span class="p">)))</span></code></pre></figure>
+
+<h4 id="14">1.4</h4>
+
+<p>This is the first order useage of the function, which is <code class="highlighter-rouge">+</code></p>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="o">#</span><span class="nv">lang</span> <span class="nv">planet</span> <span class="nv">neil/sicp</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">a-plus-abs-b</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)</span>
+  <span class="p">((</span><span class="k">if</span> <span class="p">(</span><span class="nb">&gt;</span> <span class="nv">b</span> <span class="mi">0</span><span class="p">)</span> <span class="nv">+</span> <span class="nv">-</span><span class="p">)</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">))</span>
+  </code></pre></figure>
+
+<h4 id="15">1.5</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="o">#</span><span class="nv">lang</span> <span class="nv">planet</span> <span class="nv">neil/sicp</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">p</span><span class="p">)</span> <span class="p">(</span><span class="nf">p</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">test</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
+<span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">=</span> <span class="nv">x</span> <span class="mi">0</span><span class="p">)</span> <span class="mi">0</span> <span class="nv">y</span><span class="p">))</span></code></pre></figure>
+
+<p>If it is evaluated in applicative order, then the evaluation of the <code class="highlighter-rouge">(p)</code> would lead to infinite loop.
+While, if it is evaluated in normal order, then <code class="highlighter-rouge">0</code> would return before it is evaluated.</p>
+
+<h4 id="16">1.6</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">if</span> <span class="err">⟨</span> <span class="nv">predicate</span> <span class="err">⟩</span> <span class="err">⟨</span> <span class="nv">consequent</span> <span class="err">⟩</span> <span class="err">⟨</span> <span class="nv">alternative</span> <span class="err">⟩</span><span class="p">)</span></code></pre></figure>
+
+<p><code class="highlighter-rouge">If</code> is special form becuase it is not a regular expression, which will have its arguments being evaluted at first.</p>
+
+<p>Only<code class="highlighter-rouge">consequent</code> OR <code class="highlighter-rouge">alternative</code> will be evaluted, but never both at the same time.</p>
+
+<p>The <code class="highlighter-rouge">new-if</code> statement will lead to infinite loop.</p>
+
+<h4 id="17">1.7</h4>
+
+<p>For small numbers, such as <code class="highlighter-rouge">(sqrt 0.00000000000002)</code>, the accuracy itself is too inaccurate.</p>
+
+<p>For large numbers, such as <code class="highlighter-rouge">(sqrt 20000000000000)</code> will be trapped in infinite loop.
+The guess would be a fixed point which equals <code class="highlighter-rouge">4472135.954995</code>.
+But <code class="highlighter-rouge">20000000000000/4472135.954995 =4472135.955</code> which is not equal to <code class="highlighter-rouge">4472135.954995</code> exactly.</p>
+
+<p>The reason is for float number, when the exp bits gets larger, its coificent bits would loose some accuracy.
+Accurary lost meet with big exponent number, then this float number becomes inaccurate.</p>
+
+:ET

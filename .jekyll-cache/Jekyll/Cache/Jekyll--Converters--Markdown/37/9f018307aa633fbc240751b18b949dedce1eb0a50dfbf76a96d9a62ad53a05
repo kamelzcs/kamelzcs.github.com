@@ -1,0 +1,18 @@
+I"™<h4 id="19">1.9</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nb">+</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)</span>
+<span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">=</span> <span class="nv">a</span> <span class="mi">0</span><span class="p">)</span> <span class="nv">b</span> <span class="p">(</span><span class="nf">inc</span> <span class="p">(</span><span class="nb">+</span> <span class="p">(</span><span class="nf">dec</span> <span class="nv">a</span><span class="p">)</span> <span class="nv">b</span><span class="p">))))</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nb">+</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)</span>
+<span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">=</span> <span class="nv">a</span> <span class="mi">0</span><span class="p">)</span> <span class="nv">b</span> <span class="p">(</span><span class="nb">+</span> <span class="p">(</span><span class="nf">dec</span> <span class="nv">a</span><span class="p">)</span> <span class="p">(</span><span class="nf">inc</span> <span class="nv">b</span><span class="p">))))</span></code></pre></figure>
+
+<p>The first version is recursive and the second one is iterative.
+For the compilers such as Lisp,  which implemented tail call optimiztion, they make no difference.
+But for other compilers such as C, Python, it would make big difference on memory usage and speed.</p>
+
+<h4 id="110">1.10</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="nf">A</span> <span class="mi">0</span> <span class="nv">n</span><span class="p">)</span> <span class="nv">=</span> <span class="mi">2</span><span class="nv">n</span>
+<span class="p">(</span><span class="nf">A</span> <span class="mi">1</span> <span class="nv">n</span><span class="p">)</span> <span class="nv">=</span> <span class="p">(</span><span class="nf">A</span> <span class="mi">0</span> <span class="p">(</span><span class="nf">A</span> <span class="mi">1</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">n</span> <span class="mi">1</span><span class="p">)))</span> <span class="nv">=</span> <span class="mi">2</span> <span class="nv">*</span> <span class="p">(</span><span class="nf">A</span> <span class="mi">1</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">n</span> <span class="mi">1</span><span class="p">))</span> <span class="nv">=</span> <span class="mi">2</span> <span class="nv">^</span> <span class="nv">n</span>
+<span class="p">(</span><span class="nf">A</span> <span class="mi">2</span> <span class="nv">n</span><span class="p">)</span> <span class="nv">=</span> <span class="p">(</span><span class="nf">A</span> <span class="mi">1</span> <span class="p">(</span><span class="nf">A</span> <span class="mi">2</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">n</span> <span class="mi">1</span><span class="p">)))</span> <span class="nv">=</span> <span class="mi">2</span> <span class="nv">^</span> <span class="p">(</span><span class="nf">A</span> <span class="mi">2</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">n</span> <span class="mi">1</span><span class="p">))</span> <span class="nv">=</span> <span class="mi">2</span> <span class="nv">^</span> <span class="p">(</span><span class="nf">2</span> <span class="nv">^</span> <span class="nv">n</span><span class="p">)</span></code></pre></figure>
+
+:ET

@@ -1,0 +1,110 @@
+I"4/<h4 id="lecture-contents">Lecture Contents</h4>
+
+<p>The induction from <code class="highlighter-rouge">Functor</code> to <code class="highlighter-rouge">Applicative</code> is quite beautiful.</p>
+
+<p>Recalled that there exists <code class="highlighter-rouge">fmap :: (a -&gt; b) -&gt; (f a -&gt; f b)</code> in <code class="highlighter-rouge">Functor</code>, it would be great if this mapping
+function is still valid if the input consists of more than one variable, namely <code class="highlighter-rouge">(a -&gt; b -&gt; c) -&gt; (f a -&gt; f b -&gt; f c)</code></p>
+
+<p>We have</p>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">h</span>  <span class="o">::</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="n">b</span> <span class="o">-&gt;</span> <span class="n">c</span>
+<span class="n">fa</span> <span class="o">::</span> <span class="n">f</span> <span class="n">a</span>
+<span class="n">fb</span> <span class="o">::</span> <span class="n">f</span> <span class="n">b</span>
+<span class="n">fc</span> <span class="o">::</span> <span class="n">f</span> <span class="n">c</span></code></pre></figure>
+
+<p>Use <code class="highlighter-rouge">fmap</code> to lift functions,</p>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">h</span>         <span class="o">::</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">b</span> <span class="o">-&gt;</span> <span class="n">c</span><span class="p">)</span>
+<span class="n">fmap</span> <span class="n">h</span>    <span class="o">::</span> <span class="n">f</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="n">f</span> <span class="p">(</span><span class="n">b</span> <span class="o">-&gt;</span> <span class="n">c</span><span class="p">)</span>
+<span class="n">fmap</span> <span class="n">h</span> <span class="n">fa</span> <span class="o">::</span> <span class="n">f</span> <span class="p">(</span><span class="n">b</span> <span class="o">-&gt;</span> <span class="n">c</span><span class="p">)</span></code></pre></figure>
+
+<p>But there is no way to make</p>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">f</span> <span class="p">(</span><span class="n">b</span> <span class="o">-&gt;</span> <span class="n">c</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">fb</span> <span class="o">-&gt;</span> <span class="n">fc</span></code></pre></figure>
+
+<p><code class="highlighter-rouge">Applicative</code> has the <code class="highlighter-rouge">(&lt;*&gt;)</code> to implement it, namely</p>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="p">(</span><span class="o">&lt;*&gt;</span><span class="p">)</span> <span class="o">::</span> <span class="n">f</span> <span class="p">(</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">f</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="n">f</span> <span class="n">b</span></code></pre></figure>
+
+<p>The final induction is</p>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">liftA2</span> <span class="o">::</span> <span class="kt">Applicative</span> <span class="n">f</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="n">b</span> <span class="o">-&gt;</span> <span class="n">c</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">f</span> <span class="n">a</span> <span class="o">-&gt;</span> <span class="n">f</span> <span class="n">b</span> <span class="o">-&gt;</span> <span class="n">f</span> <span class="n">c</span>
+<span class="n">liftA2</span> <span class="o">=</span> <span class="n">h</span> <span class="o">&lt;$&gt;</span> <span class="n">fa</span> <span class="o">&lt;*&gt;</span> <span class="n">fb</span></code></pre></figure>
+
+<h4 id="home-work">Home Work</h4>
+
+<h5 id="exercise-1">Exercise 1</h5>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="c1">-- Ex. 1 - implement a Functor instance for Parser</span>
+<span class="c1">--</span>
+<span class="c1">-- You may find it useful to implement:</span>
+<span class="c1">-- first :: (a -&gt; b) -&gt; (a,c) -&gt; (b,c)</span>
+
+<span class="n">first</span> <span class="o">::</span> <span class="p">(</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+<span class="n">first</span> <span class="n">f</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="n">f</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="kr">instance</span> <span class="kt">Functor</span> <span class="kt">Parser</span> <span class="kr">where</span>
+  <span class="n">fmap</span> <span class="n">f</span> <span class="n">parser</span> <span class="o">=</span> <span class="kt">Parser</span> <span class="o">$</span> <span class="nf">\</span><span class="n">s</span> <span class="o">-&gt;</span> <span class="n">first</span> <span class="n">f</span> <span class="o">&lt;$&gt;</span> <span class="n">runParser</span> <span class="n">parser</span> <span class="n">s</span></code></pre></figure>
+
+<h5 id="exercise-2">Exercise 2</h5>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="c1">-- Ex. 2 - implement an Applicative instance for Parser</span>
+<span class="c1">--</span>
+<span class="kr">instance</span> <span class="kt">Applicative</span> <span class="kt">Parser</span> <span class="kr">where</span>
+  <span class="n">pure</span> <span class="n">a</span> <span class="o">=</span> <span class="kt">Parser</span> <span class="p">(</span><span class="nf">\</span><span class="n">s</span> <span class="o">-&gt;</span> <span class="kt">Just</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">s</span><span class="p">))</span>
+
+  <span class="n">p1</span> <span class="o">&lt;*&gt;</span> <span class="n">p2</span> <span class="o">=</span> <span class="kt">Parser</span> <span class="n">parse</span>
+    <span class="kr">where</span> <span class="n">parse</span> <span class="n">s</span> <span class="o">=</span> <span class="kr">do</span>
+          <span class="n">r1</span> <span class="o">&lt;-</span> <span class="n">runParser</span> <span class="n">p1</span> <span class="n">s</span>
+          <span class="n">r2</span> <span class="o">&lt;-</span> <span class="n">runParser</span> <span class="n">p2</span> <span class="p">(</span><span class="n">snd</span> <span class="n">r1</span><span class="p">)</span>
+          <span class="n">return</span> <span class="p">(</span><span class="n">fst</span> <span class="n">r1</span> <span class="o">$</span> <span class="n">fst</span> <span class="n">r2</span><span class="p">,</span> <span class="n">snd</span> <span class="n">r2</span><span class="p">)</span></code></pre></figure>
+
+<h5 id="exercise-3">Exercise 3</h5>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="c1">-- Ex. 3a - Create a parser:</span>
+<span class="c1">--</span>
+<span class="c1">--   abParser :: Parser (Char, Char)</span>
+<span class="c1">--</span>
+<span class="c1">-- which expects to see the characters ’a’ and ’b’ and returns them as a pair</span>
+
+<span class="n">abParser</span> <span class="o">::</span> <span class="kt">Parser</span> <span class="p">(</span><span class="kt">Char</span><span class="p">,</span> <span class="kt">Char</span><span class="p">)</span>
+<span class="n">abParser</span> <span class="o">=</span> <span class="p">(,)</span> <span class="o">&lt;$&gt;</span> <span class="n">char</span> <span class="sc">'a'</span> <span class="o">&lt;*&gt;</span> <span class="n">char</span> <span class="sc">'b'</span>
+
+
+<span class="c1">-- Ex. 3b - Create a parser:</span>
+<span class="c1">--</span>
+<span class="c1">--   abParser_ :: Parser ()</span>
+<span class="c1">--</span>
+<span class="c1">-- which acts in the same way as abParser but returns () instead of 'a' and 'b'</span>
+
+<span class="n">abParser_</span> <span class="o">::</span> <span class="kt">Parser</span> <span class="nb">()</span>
+<span class="n">abParser_</span> <span class="o">=</span> <span class="n">const</span> <span class="o">.</span> <span class="n">const</span> <span class="nb">()</span> <span class="o">&lt;$&gt;</span> <span class="n">char</span> <span class="sc">'a'</span> <span class="o">&lt;*&gt;</span> <span class="n">char</span> <span class="sc">'b'</span>
+
+<span class="c1">-- Ex. 3c - Create a parser:</span>
+<span class="c1">--</span>
+<span class="c1">--   intPair </span>
+<span class="c1">--</span>
+<span class="c1">-- which reads two integer values separated by a space and returns the integer </span>
+<span class="c1">-- values in a list. You should use the provided posInt to parse the integer values.</span>
+
+<span class="n">intPair</span> <span class="o">::</span> <span class="kt">Parser</span> <span class="p">[</span><span class="kt">Integer</span><span class="p">]</span>
+<span class="n">intPair</span> <span class="o">=</span> <span class="p">(</span><span class="nf">\</span><span class="n">x</span>  <span class="n">y</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">])</span> <span class="o">&lt;$&gt;</span> <span class="n">posInt</span> <span class="o">&lt;*</span> <span class="n">char</span> <span class="sc">' '</span> <span class="o">&lt;*&gt;</span> <span class="n">posInt</span></code></pre></figure>
+
+<h5 id="exercise-4">Exercise 4</h5>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="kr">instance</span> <span class="kt">Alternative</span> <span class="kt">Parser</span> <span class="kr">where</span>
+  <span class="n">empty</span> <span class="o">=</span> <span class="kt">Parser</span> <span class="o">$</span> <span class="n">const</span> <span class="kt">Nothing</span>
+  <span class="kt">Parser</span> <span class="n">p1</span> <span class="o">&lt;|&gt;</span> <span class="kt">Parser</span> <span class="n">p2</span> <span class="o">=</span> <span class="kt">Parser</span> <span class="o">$</span> <span class="n">liftA2</span> <span class="p">(</span><span class="o">&lt;|&gt;</span><span class="p">)</span> <span class="n">p1</span> <span class="n">p2</span></code></pre></figure>
+
+<h5 id="exercise-5">Exercise 5</h5>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="c1">-- Ex. 5 - Implement a parser:</span>
+<span class="c1">--</span>
+<span class="c1">--  intOrUppercase :: Parser ()</span>
+<span class="c1">-- </span>
+<span class="c1">-- which parses either an integer value or an uppercase character, and fails otherwise.</span>
+
+<span class="n">intOrUppercase</span> <span class="o">::</span> <span class="kt">Parser</span> <span class="nb">()</span>
+<span class="n">intOrUppercase</span> <span class="o">=</span> <span class="n">const</span> <span class="nb">()</span> <span class="o">&lt;$&gt;</span> <span class="n">posInt</span> <span class="o">&lt;|&gt;</span> <span class="n">const</span> <span class="nb">()</span> <span class="o">&lt;$&gt;</span> <span class="n">satisfy</span> <span class="n">isUpper</span></code></pre></figure>
+
+:ET

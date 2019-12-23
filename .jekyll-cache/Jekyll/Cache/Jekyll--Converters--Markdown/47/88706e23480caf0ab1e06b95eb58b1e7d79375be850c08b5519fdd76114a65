@@ -1,0 +1,92 @@
+I"9<h4 id="129">1.29</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">sum</span> <span class="nv">term</span> <span class="nv">a</span> <span class="nv">next</span> <span class="nv">b</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">&gt;</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)</span>
+      <span class="mi">0</span>
+      <span class="p">(</span><span class="nb">+</span> <span class="p">(</span><span class="nf">term</span> <span class="nv">a</span><span class="p">)</span>
+         <span class="p">(</span><span class="nf">sum</span> <span class="nv">term</span> <span class="p">(</span><span class="nf">next</span> <span class="nv">a</span><span class="p">)</span> <span class="nv">next</span> <span class="nv">b</span><span class="p">))))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">integral</span> <span class="nv">f</span> <span class="nv">a</span> <span class="nv">b</span> <span class="nv">dx</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">add-dx</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">+</span> <span class="nv">x</span> <span class="nv">dx</span><span class="p">))</span>
+  <span class="p">(</span><span class="nb">*</span> <span class="p">(</span><span class="nf">sum</span> <span class="nv">f</span> <span class="p">(</span><span class="nb">+</span> <span class="nv">a</span> <span class="p">(</span><span class="nb">/</span> <span class="nv">dx</span> <span class="mf">2.0</span><span class="p">))</span> <span class="nv">add-dx</span> <span class="nv">b</span><span class="p">)</span>
+     <span class="nv">dx</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">cube</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">*</span> <span class="nv">x</span> <span class="nv">x</span> <span class="nv">x</span><span class="p">))</span>
+
+<span class="p">(</span><span class="nf">integral</span> <span class="nv">cube</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mf">0.01</span><span class="p">)</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">simpson-integral</span> <span class="nv">f</span> <span class="nv">a</span> <span class="nv">b</span> <span class="nv">n</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define</span> <span class="nv">h</span> <span class="p">(</span><span class="nb">/</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">b</span> <span class="nv">a</span><span class="p">)</span> <span class="nv">n</span><span class="p">))</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">next</span> <span class="nv">a</span><span class="p">)</span> <span class="p">(</span><span class="nb">+</span> <span class="nv">a</span> <span class="mi">1</span><span class="p">))</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">current</span> <span class="nv">k</span><span class="p">)</span> <span class="p">(</span><span class="nb">+</span> <span class="nv">a</span>
+                         <span class="p">(</span><span class="nb">*</span> <span class="nv">k</span> <span class="nv">h</span><span class="p">)))</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">simpson-term</span> <span class="nv">x</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">define</span> <span class="nv">point</span> <span class="p">(</span><span class="nf">current</span> <span class="nv">x</span><span class="p">))</span>
+    <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="k">or</span> <span class="p">(</span><span class="nb">=</span> <span class="nv">x</span> <span class="mi">0</span><span class="p">)</span> <span class="p">(</span><span class="nb">=</span> <span class="nv">x</span> <span class="nv">n</span><span class="p">))</span> <span class="p">(</span><span class="nf">f</span> <span class="nv">point</span><span class="p">))</span>
+          <span class="p">((</span><span class="nb">even?</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">*</span> <span class="mi">2</span>
+                        <span class="p">(</span><span class="nf">f</span> <span class="nv">point</span><span class="p">)))</span>
+          <span class="p">(</span><span class="k">else</span> <span class="p">(</span><span class="nb">*</span> <span class="mi">4</span>
+                   <span class="p">(</span><span class="nf">f</span> <span class="nv">point</span><span class="p">)))))</span>
+  <span class="p">(</span><span class="nb">*</span> <span class="nv">h</span>
+     <span class="p">(</span><span class="nb">/</span> <span class="p">(</span><span class="nf">sum</span> <span class="nv">simpson-term</span> <span class="mi">0</span> <span class="nv">next</span> <span class="nv">n</span><span class="p">)</span>
+        <span class="mi">3</span><span class="p">)))</span></code></pre></figure>
+
+<h4 id="130">1.30</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">sum-iter</span> <span class="nv">term</span> <span class="nv">a</span> <span class="nv">next</span> <span class="nv">b</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">iter</span> <span class="nv">a</span> <span class="nv">result</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">&gt;</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)</span>
+      <span class="nv">result</span>
+      <span class="p">(</span><span class="nf">iter</span> <span class="p">(</span><span class="nf">next</span> <span class="nv">a</span><span class="p">)</span> <span class="p">(</span><span class="nb">+</span> <span class="nv">result</span> <span class="p">(</span><span class="nf">term</span> <span class="nv">a</span><span class="p">)))))</span>
+  <span class="p">(</span><span class="nf">iter</span> <span class="nv">a</span> <span class="mi">0</span><span class="p">))</span></code></pre></figure>
+
+<h4 id="131">1.31</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">pi-term</span> <span class="nv">a</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define</span> <span class="nv">norm</span> <span class="p">(</span><span class="nb">+</span> <span class="mi">1</span>
+                  <span class="p">(</span><span class="nb">*</span> <span class="mi">2</span> <span class="nv">a</span><span class="p">)))</span>
+  <span class="p">(</span><span class="nb">*</span>
+    <span class="p">(</span><span class="nb">/</span> <span class="p">(</span><span class="nb">-</span>
+         <span class="p">(</span><span class="nf">square</span> <span class="nv">norm</span><span class="p">)</span>
+         <span class="mi">1</span><span class="p">)</span>
+       <span class="p">(</span><span class="nf">square</span> <span class="nv">norm</span><span class="p">))))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">wallis-pi</span> <span class="nv">n</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">*</span> <span class="mf">4.0</span>
+     <span class="p">(</span><span class="nf">product</span> <span class="nv">pi-term</span> <span class="mi">1</span> <span class="nv">inc</span> <span class="nv">n</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">product-iter</span> <span class="nv">term</span> <span class="nv">a</span> <span class="nv">next</span> <span class="nv">b</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">iter</span> <span class="nv">a</span> <span class="nv">result</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">&gt;</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)</span>
+      <span class="nv">result</span>
+      <span class="p">(</span><span class="nf">iter</span> <span class="p">(</span><span class="nf">next</span> <span class="nv">a</span><span class="p">)</span> <span class="p">(</span><span class="nb">*</span> <span class="nv">result</span> <span class="p">(</span><span class="nf">term</span> <span class="nv">a</span><span class="p">)))))</span>
+  <span class="p">(</span><span class="nf">iter</span> <span class="nv">a</span> <span class="mi">1</span><span class="p">))</span></code></pre></figure>
+
+<h4 id="132">1.32</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">accumulate</span> <span class="nv">combiner</span> <span class="nv">null-value</span> <span class="nv">term</span> <span class="nv">a</span> <span class="nv">next</span> <span class="nv">b</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">&gt;</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)</span> <span class="nv">null-value</span>
+    <span class="p">(</span><span class="nf">combiner</span> <span class="p">(</span><span class="nf">term</span> <span class="nv">a</span><span class="p">)</span>
+              <span class="p">(</span><span class="nf">accumulate</span> <span class="nv">combiner</span> <span class="nv">null-value</span> <span class="nv">term</span> <span class="p">(</span><span class="nf">next</span> <span class="nv">a</span><span class="p">)</span> <span class="nv">next</span> <span class="nv">b</span><span class="p">))))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">sum</span> <span class="nv">term</span> <span class="nv">a</span> <span class="nv">next</span> <span class="nv">b</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">accumulate</span> <span class="nv">+</span> <span class="mi">0</span> <span class="nv">term</span> <span class="nv">a</span> <span class="nv">next</span> <span class="nv">b</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">product</span> <span class="nv">term</span> <span class="nv">a</span> <span class="nv">next</span> <span class="nv">b</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">accumulate</span> <span class="nv">*</span> <span class="mi">1</span> <span class="nv">term</span> <span class="nv">a</span> <span class="nv">next</span> <span class="nv">b</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">accumulate</span> <span class="nv">combiner</span> <span class="nv">null-value</span> <span class="nv">term</span> <span class="nv">a</span> <span class="nv">next</span> <span class="nv">b</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">iter</span> <span class="nv">a</span> <span class="nv">result</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">&gt;</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)</span> <span class="nv">result</span>
+      <span class="p">(</span><span class="nf">iter</span> <span class="p">(</span><span class="nf">next</span> <span class="nv">a</span><span class="p">)</span> <span class="p">(</span><span class="nf">combiner</span> <span class="nv">result</span> <span class="p">(</span><span class="nf">term</span> <span class="nv">a</span><span class="p">)))))</span>
+  <span class="p">(</span><span class="nf">iter</span> <span class="nv">a</span> <span class="nv">null-value</span><span class="p">))</span></code></pre></figure>
+
+<h4 id="133">1.33</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">filtered-accumulate</span> <span class="nv">combiner</span> <span class="nv">null-value</span> <span class="nv">term</span> <span class="nv">a</span> <span class="nv">next</span> <span class="nv">b</span> <span class="nv">filter</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">&gt;</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)</span> <span class="nv">null-value</span>
+    <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nf">filter</span> <span class="nv">a</span><span class="p">)</span>
+      <span class="p">(</span><span class="nf">combiner</span> <span class="p">(</span><span class="nf">term</span> <span class="nv">a</span><span class="p">)</span> <span class="p">(</span><span class="nf">filtered-accumulate</span> <span class="nv">combiner</span> <span class="nv">null-value</span> <span class="nv">term</span> <span class="p">(</span><span class="nf">next</span> <span class="nv">a</span><span class="p">)</span> <span class="nv">next</span> <span class="nv">b</span> <span class="nv">filter</span><span class="p">))</span>
+      <span class="p">(</span><span class="nf">filtered-accumulate</span> <span class="nv">combiner</span> <span class="nv">null-value</span> <span class="nv">term</span> <span class="p">(</span><span class="nf">next</span> <span class="nv">a</span><span class="p">)</span> <span class="nv">next</span> <span class="nv">b</span> <span class="nv">filter</span><span class="p">))))</span></code></pre></figure>
+
+:ET

@@ -1,0 +1,65 @@
+I"m)<h4 id="321">3.21</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">front-ptr</span> <span class="nv">queue</span><span class="p">)</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">queue</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">rear-ptr</span> <span class="nv">queue</span><span class="p">)</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">queue</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">set-front-ptr!</span> <span class="nv">queue</span> <span class="nv">item</span><span class="p">)</span> <span class="p">(</span><span class="nb">set-car!</span> <span class="nv">queue</span> <span class="nv">item</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">set-rear-ptr!</span> <span class="nv">queue</span> <span class="nv">item</span><span class="p">)</span> <span class="p">(</span><span class="nb">set-cdr!</span> <span class="nv">queue</span> <span class="nv">item</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">empty-queue?</span> <span class="nv">queue</span><span class="p">)</span> <span class="p">(</span><span class="nb">null?</span> <span class="p">(</span><span class="nf">front-ptr</span> <span class="nv">queue</span><span class="p">)))</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">make-queue</span><span class="p">)</span> <span class="p">(</span><span class="nb">cons</span> <span class="o">'</span><span class="p">()</span> <span class="o">'</span><span class="p">()))</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">front-queue</span> <span class="nv">queue</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nf">empty-queue?</span> <span class="nv">queue</span><span class="p">)</span>
+      <span class="p">(</span><span class="nf">error</span> <span class="s">"FRONT called with an empty queue"</span> <span class="nv">queue</span><span class="p">)</span>
+      <span class="p">(</span><span class="nb">car</span> <span class="p">(</span><span class="nf">front-ptr</span> <span class="nv">queue</span><span class="p">))))</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">insert-queue!</span> <span class="nv">queue</span> <span class="nv">item</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">new-pair</span> <span class="p">(</span><span class="nb">cons</span> <span class="nv">item</span> <span class="o">'</span><span class="p">())))</span>
+    <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nf">empty-queue?</span> <span class="nv">queue</span><span class="p">)</span>
+           <span class="p">(</span><span class="nf">set-front-ptr!</span> <span class="nv">queue</span> <span class="nv">new-pair</span><span class="p">)</span>
+           <span class="p">(</span><span class="nf">set-rear-ptr!</span> <span class="nv">queue</span> <span class="nv">new-pair</span><span class="p">)</span>
+           <span class="nv">queue</span><span class="p">)</span>
+          <span class="p">(</span><span class="k">else</span>
+           <span class="p">(</span><span class="nb">set-cdr!</span> <span class="p">(</span><span class="nf">rear-ptr</span> <span class="nv">queue</span><span class="p">)</span> <span class="nv">new-pair</span><span class="p">)</span>
+           <span class="p">(</span><span class="nf">set-rear-ptr!</span> <span class="nv">queue</span> <span class="nv">new-pair</span><span class="p">)</span>
+           <span class="nv">queue</span><span class="p">))))</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">delete-queue!</span> <span class="nv">queue</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nf">empty-queue?</span> <span class="nv">queue</span><span class="p">)</span>
+         <span class="p">(</span><span class="nf">error</span> <span class="s">"DELETE! called with an empty queue"</span> <span class="nv">queue</span><span class="p">))</span>
+        <span class="p">(</span><span class="k">else</span>
+         <span class="p">(</span><span class="nf">set-front-ptr!</span> <span class="nv">queue</span> <span class="p">(</span><span class="nb">cdr</span> <span class="p">(</span><span class="nf">front-ptr</span> <span class="nv">queue</span><span class="p">)))</span>
+         <span class="nv">queue</span><span class="p">)))</span></code></pre></figure>
+
+<h4 id="322">3.22</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="nv">make-queue</span>
+  <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">front-ptr</span> <span class="o">'</span><span class="p">())</span>
+        <span class="p">(</span><span class="nf">rear-ptr</span> <span class="o">'</span><span class="p">()))</span>
+    <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">empty-queue?</span><span class="p">)</span> <span class="p">(</span><span class="nb">null?</span> <span class="nv">front-ptr</span><span class="p">))</span>
+    <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">set-front-ptr!</span> <span class="nv">item</span><span class="p">)</span> <span class="p">(</span><span class="k">set!</span> <span class="nv">front-ptr</span> <span class="nv">item</span><span class="p">))</span>
+    <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">set-rear-ptr!</span> <span class="nv">item</span><span class="p">)</span> <span class="p">(</span><span class="k">set!</span> <span class="nv">rear-ptr</span> <span class="nv">item</span><span class="p">))</span>
+    <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">front-queue</span><span class="p">)</span>
+      <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nf">empty-queue?</span><span class="p">)</span>
+        <span class="p">(</span><span class="nf">error</span> <span class="s">"FRONT called with an empty queue"</span><span class="p">)</span>
+        <span class="p">(</span><span class="nb">car</span> <span class="nv">front-ptr</span><span class="p">)))</span>
+    <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">insert-queue!</span> <span class="nv">item</span><span class="p">)</span>
+      <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">new-pair</span> <span class="p">(</span><span class="nb">cons</span> <span class="nv">item</span> <span class="o">'</span><span class="p">())))</span>
+        <span class="p">(</span><span class="k">cond</span> <span class="p">(</span><span class="nf">empty-queue?</span>
+               <span class="p">(</span><span class="nf">set-front-ptr!</span> <span class="nv">new-pair</span><span class="p">)</span>
+               <span class="p">(</span><span class="nf">set-rear-ptr!</span> <span class="nv">new-pair</span><span class="p">))</span>
+              <span class="p">(</span><span class="k">else</span>
+                <span class="p">(</span><span class="nb">set-cdr!</span> <span class="nv">rear-ptr</span> <span class="nv">new-pair</span><span class="p">)</span>
+                <span class="p">(</span><span class="nf">set-rear-ptr!</span> <span class="nv">new-pair</span><span class="p">)))))</span>
+    <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">delete-queue!</span><span class="p">)</span>
+      <span class="p">(</span><span class="k">cond</span> <span class="p">(</span><span class="nf">empty-queue?</span>
+             <span class="p">(</span><span class="nf">error</span> <span class="s">"DELETE! called with an empty queue"</span><span class="p">))</span>
+            <span class="p">(</span><span class="k">else</span>
+              <span class="p">(</span><span class="nf">set-front-ptr!</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">front-ptr</span><span class="p">)))))</span>
+    <span class="p">(</span><span class="k">define</span> <span class="nv">print-queue</span> <span class="nv">front-ptr</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">dispatch</span> <span class="nv">m</span><span class="p">)</span> 
+      <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">eq?</span> <span class="nv">m</span> <span class="ss">'empty-queue</span><span class="p">)</span> <span class="nv">empty-queue?</span><span class="p">)</span> 
+            <span class="p">((</span><span class="nb">eq?</span> <span class="nv">m</span> <span class="ss">'front-queue</span><span class="p">)</span> <span class="nv">front-queue</span><span class="p">)</span> 
+            <span class="p">((</span><span class="nb">eq?</span> <span class="nv">m</span> <span class="ss">'insert-queue!</span><span class="p">)</span> <span class="nv">insert-queue!</span><span class="p">)</span> 
+            <span class="p">((</span><span class="nb">eq?</span> <span class="nv">m</span> <span class="ss">'delete-queue!</span><span class="p">)</span> <span class="nv">delete-queue!</span><span class="p">)</span> 
+            <span class="p">((</span><span class="nb">eq?</span> <span class="nv">m</span> <span class="ss">'print-queue</span><span class="p">)</span> <span class="nv">print-queue</span><span class="p">)</span> 
+            <span class="p">(</span><span class="k">else</span> <span class="p">(</span><span class="nf">error</span> <span class="s">"undefined operation -- QUEUE"</span> <span class="nv">m</span><span class="p">))))</span>
+     <span class="nv">dispatch</span><span class="p">))</span></code></pre></figure>
+
+:ET

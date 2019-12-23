@@ -1,0 +1,170 @@
+I"RW<h4 id="224">2.24</h4>
+
+<p>The interpreter would show <code class="highlighter-rouge">(1 (2 (3 4)))</code>.</p>
+
+<h4 id="225">2.25</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="nb">cadr</span> <span class="p">(</span><span class="nb">caddr</span> <span class="o">'</span><span class="p">(</span><span class="nf">1</span> <span class="mi">3</span> <span class="p">(</span><span class="nf">5</span> <span class="mi">7</span><span class="p">)</span> <span class="mi">9</span><span class="p">)))</span>
+<span class="p">(</span><span class="nb">caar</span> <span class="o">'</span><span class="p">((</span><span class="nf">7</span><span class="p">)))</span>
+<span class="p">(</span><span class="nb">cadr</span> <span class="p">(</span><span class="nb">cadr</span> <span class="p">(</span><span class="nb">cadr</span> <span class="p">(</span><span class="nb">cadr</span> <span class="p">(</span><span class="nb">cadr</span> <span class="p">(</span><span class="nb">cadr</span> <span class="o">'</span><span class="p">(</span><span class="nf">1</span> <span class="p">(</span><span class="nf">2</span> <span class="p">(</span><span class="nf">3</span> <span class="p">(</span><span class="nf">4</span> <span class="p">(</span><span class="nf">5</span> <span class="p">(</span><span class="nf">6</span> <span class="mi">7</span><span class="p">))))))))))))</span></code></pre></figure>
+
+<h4 id="226">2.26</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="nv">x</span> <span class="p">(</span><span class="nb">list</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span> <span class="nv">y</span> <span class="p">(</span><span class="nb">list</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="p">(</span><span class="nb">append</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
+<span class="nv">-&gt;</span>
+<span class="p">(</span><span class="nf">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nb">cons</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
+<span class="nv">-&gt;</span>
+<span class="p">((</span><span class="nf">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">)</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nb">list</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
+<span class="nv">-&gt;</span>
+<span class="p">((</span><span class="nf">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">)</span> <span class="p">(</span><span class="nf">4</span> <span class="mi">5</span> <span class="mi">6</span><span class="p">))</span></code></pre></figure>
+
+<h4 id="227">2.27</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">deep-reverse</span> <span class="nv">items</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">pair?</span> <span class="nv">items</span><span class="p">)</span>
+         <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">pair?</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">items</span><span class="p">))</span>
+           <span class="p">(</span><span class="nb">append</span>
+             <span class="p">(</span><span class="nf">deep-reverse</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">items</span><span class="p">))</span>
+             <span class="p">(</span><span class="nb">list</span> <span class="p">(</span><span class="nf">deep-reverse</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">items</span><span class="p">))))</span>
+           <span class="p">(</span><span class="nb">append</span> <span class="p">(</span><span class="nf">deep-reverse</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">items</span><span class="p">))</span>
+                   <span class="p">(</span><span class="nf">deep-reverse</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">items</span><span class="p">)))))</span>
+        <span class="p">(</span><span class="k">else</span>
+          <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">null?</span> <span class="nv">items</span><span class="p">)</span>
+            <span class="nv">null</span>
+            <span class="p">(</span><span class="nb">list</span> <span class="nv">items</span><span class="p">)))))</span></code></pre></figure>
+
+<h4 id="228">2.28</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">deep-reverse</span> <span class="nv">items</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">pair?</span> <span class="nv">items</span><span class="p">)</span>
+         <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">pair?</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">items</span><span class="p">))</span>
+           <span class="p">(</span><span class="nb">append</span>
+             <span class="p">(</span><span class="nf">deep-reverse</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">items</span><span class="p">))</span>
+             <span class="p">(</span><span class="nb">list</span> <span class="p">(</span><span class="nf">deep-reverse</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">items</span><span class="p">))))</span>
+           <span class="p">(</span><span class="nb">append</span> <span class="p">(</span><span class="nf">deep-reverse</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">items</span><span class="p">))</span>
+                   <span class="p">(</span><span class="nf">deep-reverse</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">items</span><span class="p">)))))</span>
+        <span class="p">(</span><span class="k">else</span>
+          <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">null?</span> <span class="nv">items</span><span class="p">)</span>
+            <span class="nv">null</span>
+            <span class="p">(</span><span class="nb">list</span> <span class="nv">items</span><span class="p">)))))</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">fringe</span> <span class="nv">tree</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">pair?</span> <span class="nv">tree</span><span class="p">)</span>
+         <span class="p">(</span><span class="nb">append</span> <span class="p">(</span><span class="nf">fringe</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">tree</span><span class="p">))</span>
+                 <span class="p">(</span><span class="nf">fringe</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">tree</span><span class="p">))))</span>
+        <span class="p">(</span><span class="k">else</span>
+          <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">null?</span> <span class="nv">tree</span><span class="p">)</span>
+            <span class="nv">null</span>
+            <span class="p">(</span><span class="nb">list</span> <span class="nv">tree</span><span class="p">)))))</span></code></pre></figure>
+
+<h4 id="229">2.29</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">make-mobile</span> <span class="nv">left</span> <span class="nv">right</span><span class="p">)</span>
+   <span class="p">(</span><span class="nb">list</span> <span class="nv">left</span> <span class="nv">right</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">make-branch</span> <span class="nv">length</span> <span class="nv">structure</span><span class="p">)</span>
+   <span class="p">(</span><span class="nb">list</span> <span class="nv">length</span> <span class="nv">structure</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">left-branch</span> <span class="nv">mobile</span><span class="p">)</span>
+   <span class="p">(</span><span class="nb">car</span> <span class="nv">mobile</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">right-branch</span> <span class="nv">mobile</span><span class="p">)</span>
+   <span class="p">(</span><span class="nb">cadr</span> <span class="nv">mobile</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">branch-length</span> <span class="nv">branch</span><span class="p">)</span>
+   <span class="p">(</span><span class="nb">car</span> <span class="nv">branch</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">branch-structure</span> <span class="nv">branch</span><span class="p">)</span>
+   <span class="p">(</span><span class="nb">cadr</span> <span class="nv">branch</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">total-weight</span> <span class="nv">mobile</span><span class="p">)</span>
+   <span class="p">(</span><span class="nb">+</span> <span class="p">(</span><span class="nf">branch-weight</span> <span class="p">(</span><span class="nf">left-branch</span> <span class="nv">mobile</span><span class="p">))</span>
+      <span class="p">(</span><span class="nf">branch-weight</span> <span class="p">(</span><span class="nf">right-branch</span> <span class="nv">mobile</span><span class="p">))))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">branch-weight</span> <span class="nv">branch</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">let</span> <span class="p">([</span><span class="nf">structure</span> <span class="p">(</span><span class="nf">branch-structure</span> <span class="nv">branch</span><span class="p">)])</span>
+    <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">pair?</span> <span class="nv">structure</span><span class="p">)</span>
+      <span class="p">(</span><span class="nf">total-weight</span> <span class="nv">structure</span><span class="p">)</span>
+      <span class="nv">structure</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">balanced?</span> <span class="nv">mobile</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">pair?</span> <span class="nv">mobile</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">let*</span> <span class="p">([</span><span class="nf">left</span> <span class="p">(</span><span class="nf">left-branch</span> <span class="nv">mobile</span><span class="p">)]</span>
+          <span class="p">[</span><span class="nf">right</span> <span class="p">(</span><span class="nf">right-branch</span> <span class="nv">mobile</span><span class="p">)]</span>
+          <span class="p">[</span><span class="nf">left-mobile</span> <span class="p">(</span><span class="nf">branch-structure</span> <span class="nv">left</span><span class="p">)]</span>
+          <span class="p">[</span><span class="nf">right-mobile</span> <span class="p">(</span><span class="nf">branch-structure</span> <span class="nv">right</span><span class="p">)])</span>
+      <span class="p">(</span><span class="k">and</span>
+        <span class="p">(</span><span class="nb">=</span> <span class="p">(</span><span class="nb">*</span>
+             <span class="p">(</span><span class="nf">branch-length</span> <span class="nv">left</span><span class="p">)</span>
+             <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">pair?</span> <span class="nv">left-mobile</span><span class="p">)</span>
+               <span class="p">(</span><span class="nf">total-weight</span> <span class="nv">left-mobile</span><span class="p">)</span>
+               <span class="nv">left-mobile</span><span class="p">))</span>
+           <span class="p">(</span><span class="nb">*</span>
+             <span class="p">(</span><span class="nf">branch-length</span> <span class="nv">right</span><span class="p">)</span>
+             <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">pair?</span> <span class="nv">right-mobile</span><span class="p">)</span>
+              <span class="p">(</span><span class="nf">total-weight</span> <span class="nv">right-mobile</span><span class="p">)</span>
+              <span class="nv">right-mobile</span><span class="p">)))</span>
+        <span class="p">(</span><span class="nf">balanced?</span> <span class="nv">left-mobile</span><span class="p">)</span>
+        <span class="p">(</span><span class="nf">balanced?</span> <span class="nv">right-mobile</span><span class="p">)))</span>
+    <span class="no">#t</span><span class="p">))</span></code></pre></figure>
+
+<h4 id="230">2.30</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">scale-tree</span> <span class="nv">tree</span> <span class="nv">factor</span><span class="p">)</span>
+   <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">null?</span> <span class="nv">tree</span><span class="p">)</span> <span class="nv">null</span><span class="p">)</span>
+         <span class="p">((</span><span class="nb">not</span> <span class="p">(</span><span class="nb">pair?</span> <span class="nv">tree</span><span class="p">))</span> <span class="p">(</span><span class="nb">*</span> <span class="nv">tree</span> <span class="nv">factor</span><span class="p">))</span>
+         <span class="p">(</span><span class="k">else</span> <span class="p">(</span><span class="nb">cons</span> <span class="p">(</span><span class="nf">scale-tree</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">tree</span><span class="p">)</span> <span class="nv">factor</span><span class="p">)</span>
+                     <span class="p">(</span><span class="nf">scale-tree</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">tree</span><span class="p">)</span> <span class="nv">factor</span><span class="p">)))))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">scale-tree</span> <span class="nv">tree</span> <span class="nv">factor</span><span class="p">)</span>
+   <span class="p">(</span><span class="nb">map</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">sub-tree</span><span class="p">)</span>
+          <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">pair?</span> <span class="nv">sub-tree</span><span class="p">)</span>
+              <span class="p">(</span><span class="nf">scale-tree</span> <span class="nv">sub-tree</span> <span class="nv">factor</span><span class="p">)</span>
+              <span class="p">(</span><span class="nb">*</span> <span class="nv">sub-tree</span> <span class="nv">factor</span><span class="p">)))</span>
+        <span class="nv">tree</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">square-tree</span> <span class="nv">tree</span><span class="p">)</span>
+   <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">null?</span> <span class="nv">tree</span><span class="p">)</span> <span class="nv">null</span><span class="p">)</span>
+         <span class="p">((</span><span class="nb">not</span> <span class="p">(</span><span class="nb">pair?</span> <span class="nv">tree</span><span class="p">))</span> <span class="p">(</span><span class="nb">*</span> <span class="nv">tree</span> <span class="nv">tree</span><span class="p">))</span>
+         <span class="p">(</span><span class="k">else</span> <span class="p">(</span><span class="nb">cons</span> <span class="p">(</span><span class="nf">square-tree</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">tree</span><span class="p">))</span>
+                     <span class="p">(</span><span class="nf">square-tree</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">tree</span><span class="p">))))))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">square-tree</span> <span class="nv">tree</span><span class="p">)</span>
+   <span class="p">(</span><span class="nb">map</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">sub-tree</span><span class="p">)</span>
+          <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">pair?</span> <span class="nv">sub-tree</span><span class="p">)</span>
+              <span class="p">(</span><span class="nf">square-tree</span> <span class="nv">sub-tree</span><span class="p">)</span>
+              <span class="p">(</span><span class="nb">*</span> <span class="nv">sub-tree</span> <span class="nv">sub-tree</span><span class="p">)))</span>
+        <span class="nv">tree</span><span class="p">))</span></code></pre></figure>
+
+<h4 id="231">2.31</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">tree-map</span> <span class="nv">f</span> <span class="nv">tree</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">null?</span> <span class="nv">tree</span><span class="p">)</span> <span class="nv">null</span><span class="p">)</span>
+        <span class="p">((</span><span class="nb">not</span> <span class="p">(</span><span class="nb">pair?</span> <span class="nv">tree</span><span class="p">))</span> <span class="p">(</span><span class="nf">f</span> <span class="nv">tree</span><span class="p">))</span>
+        <span class="p">(</span><span class="k">else</span> <span class="p">(</span><span class="nb">cons</span> <span class="p">(</span><span class="nf">tree-map</span> <span class="nv">f</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">tree</span><span class="p">))</span>
+                    <span class="p">(</span><span class="nf">tree-map</span> <span class="nv">f</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">tree</span><span class="p">))))))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">tree-map</span> <span class="nv">f</span> <span class="nv">tree</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">map</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">sub-tree</span><span class="p">)</span>
+         <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">pair?</span> <span class="nv">sub-tree</span><span class="p">)</span> <span class="p">(</span><span class="nf">tree-map</span> <span class="nv">f</span> <span class="nv">sub-tree</span><span class="p">)</span> <span class="p">(</span><span class="nf">f</span> <span class="nv">sub-tree</span><span class="p">)))</span>
+       <span class="nv">tree</span><span class="p">))</span></code></pre></figure>
+
+<h4 id="232">2.32</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">subsets</span> <span class="nv">s</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">null?</span> <span class="nv">s</span><span class="p">)</span>
+      <span class="p">(</span><span class="nb">list</span> <span class="nv">null</span><span class="p">)</span>
+      <span class="p">(</span><span class="k">let</span> <span class="p">([</span><span class="nf">rest</span> <span class="p">(</span><span class="nf">subsets</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">s</span><span class="p">))])</span>
+        <span class="p">(</span><span class="nb">append</span> <span class="nv">rest</span>
+                <span class="p">(</span><span class="nb">map</span>
+                  <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">x</span><span class="p">)</span>
+                    <span class="p">(</span><span class="nb">append</span> <span class="p">(</span><span class="nb">list</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">s</span><span class="p">))</span> <span class="nv">x</span><span class="p">))</span>
+                  <span class="nv">rest</span><span class="p">)))))</span></code></pre></figure>
+
+:ET

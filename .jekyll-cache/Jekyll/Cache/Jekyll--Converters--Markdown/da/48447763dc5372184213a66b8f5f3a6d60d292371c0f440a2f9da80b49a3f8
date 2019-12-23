@@ -1,0 +1,135 @@
+I"D<h4 id="21">2.1</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">number</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">x</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">denom</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">x</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">make-rat</span> <span class="nv">n</span> <span class="nv">d</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">g</span> <span class="p">(</span><span class="nb">gcd</span> <span class="nv">n</span> <span class="nv">d</span><span class="p">)))</span>
+    <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">&gt;</span> <span class="nv">d</span> <span class="mi">0</span><span class="p">)</span>
+      <span class="p">(</span><span class="nb">cons</span> <span class="p">(</span><span class="nb">/</span> <span class="nv">n</span> <span class="nv">g</span><span class="p">)</span> <span class="p">(</span><span class="nb">/</span> <span class="nv">d</span> <span class="nv">g</span><span class="p">))</span>
+      <span class="p">(</span><span class="nb">cons</span> <span class="p">(</span><span class="nb">/</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">n</span><span class="p">)</span> <span class="nv">g</span><span class="p">)</span> <span class="p">(</span><span class="nb">/</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">d</span><span class="p">)</span> <span class="nv">g</span><span class="p">)))))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">print-rat</span> <span class="nv">x</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">newline</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">display</span> <span class="p">(</span><span class="nf">number</span> <span class="nv">x</span><span class="p">))</span>
+  <span class="p">(</span><span class="nb">display</span> <span class="s">"/"</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">display</span> <span class="p">(</span><span class="nf">denom</span> <span class="nv">x</span><span class="p">)))</span></code></pre></figure>
+
+<h4 id="22">2.2</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">print-point</span> <span class="nv">p</span><span class="p">)</span>
+   <span class="p">(</span><span class="nb">newline</span><span class="p">)</span>
+   <span class="p">(</span><span class="nb">display</span> <span class="s">"("</span><span class="p">)</span>
+   <span class="p">(</span><span class="nb">display</span> <span class="p">(</span><span class="nf">x-point</span> <span class="nv">p</span><span class="p">))</span>
+   <span class="p">(</span><span class="nb">display</span> <span class="s">","</span><span class="p">)</span>
+   <span class="p">(</span><span class="nb">display</span> <span class="p">(</span><span class="nf">y-point</span> <span class="nv">p</span><span class="p">))</span>
+   <span class="p">(</span><span class="nb">display</span> <span class="s">")"</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">make-segment</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)</span> <span class="p">(</span><span class="nb">cons</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">start-segment</span> <span class="nv">s</span><span class="p">)</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">s</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">end-segment</span> <span class="nv">s</span><span class="p">)</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">s</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">make-point</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span> <span class="p">(</span><span class="nb">cons</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">x-point</span> <span class="nv">p</span><span class="p">)</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">p</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">y-point</span> <span class="nv">p</span><span class="p">)</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">p</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">midpoint-segment</span> <span class="nv">s</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">make-point</span>
+    <span class="p">(</span><span class="nb">/</span>
+      <span class="p">(</span><span class="nb">+</span>
+        <span class="p">(</span><span class="nf">x-point</span> <span class="p">(</span><span class="nf">start-segment</span> <span class="nv">s</span><span class="p">))</span>
+        <span class="p">(</span><span class="nf">x-point</span> <span class="p">(</span><span class="nf">end-segment</span> <span class="nv">s</span><span class="p">)))</span>
+      <span class="mi">2</span><span class="p">)</span>
+    <span class="p">(</span><span class="nb">/</span>
+      <span class="p">(</span><span class="nb">+</span>
+        <span class="p">(</span><span class="nf">y-point</span> <span class="p">(</span><span class="nf">start-segment</span> <span class="nv">s</span><span class="p">))</span>
+        <span class="p">(</span><span class="nf">y-point</span> <span class="p">(</span><span class="nf">end-segment</span> <span class="nv">s</span><span class="p">)))</span>
+      <span class="mi">2</span><span class="p">)))</span></code></pre></figure>
+
+<h4 id="23">2.3</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="c1">;define rectangle using two points</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">make-rec</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)</span> <span class="p">(</span><span class="nb">cons</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">rect-width</span> <span class="nv">r</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">abs</span> <span class="p">(</span><span class="nb">-</span>
+         <span class="p">(</span><span class="nf">x-point</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">r</span><span class="p">))</span>
+         <span class="p">(</span><span class="nf">x-point</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">r</span><span class="p">)))))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">rect-height</span> <span class="nv">r</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">abs</span> <span class="p">(</span><span class="nb">-</span>
+         <span class="p">(</span><span class="nf">y-point</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">r</span><span class="p">))</span>
+         <span class="p">(</span><span class="nf">y-point</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">r</span><span class="p">)))))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">rect-perimeter</span> <span class="nv">r</span><span class="p">)</span>
+   <span class="p">(</span><span class="nb">*</span> <span class="mi">2</span> <span class="p">(</span><span class="nb">+</span> <span class="p">(</span><span class="nf">rect-width</span> <span class="nv">r</span><span class="p">)</span> <span class="p">(</span><span class="nf">rect-height</span> <span class="nv">r</span><span class="p">))))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">rect-area</span> <span class="nv">r</span><span class="p">)</span>
+   <span class="p">(</span><span class="nb">*</span> <span class="p">(</span><span class="nf">rect-width</span> <span class="nv">r</span><span class="p">)</span> <span class="p">(</span><span class="nf">rect-height</span> <span class="nv">r</span><span class="p">)))</span>
+
+<span class="c1">;define rectangle using base point, width and height</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">make-rect</span> <span class="nv">p</span> <span class="nv">w</span> <span class="nv">h</span><span class="p">)</span> <span class="p">(</span><span class="nb">cons</span> <span class="nv">p</span> <span class="p">(</span><span class="nb">cons</span> <span class="nv">w</span> <span class="nv">h</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">rect-width</span> <span class="nv">r</span><span class="p">)</span>
+   <span class="p">(</span><span class="nb">car</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">r</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">rect-height</span> <span class="nv">r</span><span class="p">)</span>
+   <span class="p">(</span><span class="nb">cdr</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">r</span><span class="p">)))</span></code></pre></figure>
+
+<h4 id="24">2.4</h4>
+
+<p><code class="highlighter-rouge">Lambda</code> is the ultimate way to represent everyting.</p>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">proc-cons</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">m</span><span class="p">)</span> <span class="p">(</span><span class="nf">m</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">proc-car</span> <span class="nv">z</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">z</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">p</span> <span class="nv">q</span><span class="p">)</span> <span class="nv">p</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">proc-cdr</span> <span class="nv">z</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">z</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">p</span> <span class="nv">q</span><span class="p">)</span> <span class="nv">q</span><span class="p">)))</span></code></pre></figure>
+
+<h4 id="25">2.5</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">math-cons</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">*</span> <span class="p">(</span><span class="nb">expt</span> <span class="mi">2</span> <span class="nv">a</span><span class="p">)</span>
+     <span class="p">(</span><span class="nb">expt</span> <span class="mi">3</span> <span class="nv">b</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">math-car</span> <span class="nv">s</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">get-degree</span> <span class="nv">s</span> <span class="mi">2</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">math-cdr</span> <span class="nv">s</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">get-degree</span> <span class="nv">s</span> <span class="mi">3</span><span class="p">))</span></code></pre></figure>
+
+<h4 id="26">2.6</h4>
+
+<p>Quote from <a href="http://en.wikipedia.org/w/index.php?title=Church_encoding&amp;redirect=no">wiki</a>:</p>
+
+<blockquote>
+  <p>Church numerals are the representations of <code class="highlighter-rouge">natural numbers</code> under Church encoding.
+The higher-order function that represents natural number <code class="highlighter-rouge">n</code> is a function that maps any function <code class="highlighter-rouge">f</code> to its <code class="highlighter-rouge">n-fold</code> composition.</p>
+</blockquote>
+
+<p>To make it more interesting, <code class="highlighter-rouge">church-multi</code> method is added in as well.</p>
+
+<p><code class="highlighter-rouge">Lambda calculas</code> is really powerful.</p>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="nv">zero</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">f</span><span class="p">)</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">x</span><span class="p">)</span> <span class="nv">x</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">add-1</span> <span class="nv">n</span><span class="p">)</span>
+   <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">f</span><span class="p">)</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">x</span><span class="p">)</span> <span class="p">(</span><span class="nf">f</span> <span class="p">((</span><span class="nf">n</span> <span class="nv">f</span><span class="p">)</span> <span class="nv">x</span><span class="p">)))))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="nv">one</span>
+   <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">f</span><span class="p">)</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">x</span><span class="p">)</span> <span class="p">(</span><span class="nf">f</span> <span class="nv">x</span><span class="p">))))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="nv">two</span>
+   <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">f</span><span class="p">)</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">x</span><span class="p">)</span> <span class="p">(</span><span class="nf">f</span> <span class="p">(</span><span class="nf">f</span> <span class="nv">x</span><span class="p">)))))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">church-add</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">f</span><span class="p">)</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">x</span><span class="p">)</span> <span class="p">((</span><span class="nf">a</span> <span class="nv">f</span><span class="p">)</span> <span class="p">((</span><span class="nf">b</span> <span class="nv">f</span><span class="p">)</span> <span class="nv">x</span><span class="p">)))))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">church-multi</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">f</span><span class="p">)</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">x</span><span class="p">)</span> <span class="p">((</span><span class="nf">a</span> <span class="p">(</span><span class="nf">b</span> <span class="nv">f</span><span class="p">))</span> <span class="nv">x</span><span class="p">))))</span></code></pre></figure>
+
+:ET

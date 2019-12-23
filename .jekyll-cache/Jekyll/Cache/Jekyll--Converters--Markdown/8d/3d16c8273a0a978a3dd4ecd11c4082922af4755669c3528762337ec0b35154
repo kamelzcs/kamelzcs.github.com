@@ -1,0 +1,35 @@
+I"1<p>Time and space complexity is kind of difficult for me.</p>
+
+<h4 id="114">1.14</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"> <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">count-change</span> <span class="nv">amount</span><span class="p">)</span> 
+   <span class="p">(</span><span class="nf">cc</span> <span class="nv">amount</span> <span class="mi">5</span><span class="p">))</span> 
+ <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">cc</span> <span class="nv">amount</span> <span class="nv">kinds-of-coins</span><span class="p">)</span> 
+   <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">=</span> <span class="nv">amount</span> <span class="mi">0</span><span class="p">)</span> <span class="mi">1</span><span class="p">)</span> 
+         <span class="p">((</span><span class="k">or</span> <span class="p">(</span><span class="nb">&lt;</span> <span class="nv">amount</span> <span class="mi">0</span><span class="p">)</span> <span class="p">(</span><span class="nb">=</span> <span class="nv">kinds-of-coins</span> <span class="mi">0</span><span class="p">))</span> <span class="mi">0</span><span class="p">)</span> 
+         <span class="p">(</span><span class="k">else</span> <span class="p">(</span><span class="nb">+</span> <span class="p">(</span><span class="nf">cc</span> <span class="nv">amount</span> 
+                      <span class="p">(</span><span class="nb">-</span> <span class="nv">kinds-of-coins</span> <span class="mi">1</span><span class="p">))</span> 
+                  <span class="p">(</span><span class="nf">cc</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">amount</span> 
+                         <span class="p">(</span><span class="nf">first-denomination</span> <span class="nv">kinds-of-coins</span><span class="p">))</span> 
+                      <span class="nv">kinds-of-coins</span><span class="p">)))))</span> 
+ <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">first-denomination</span> <span class="nv">kinds-of-coins</span><span class="p">)</span> 
+   <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">=</span> <span class="nv">kinds-of-coins</span> <span class="mi">1</span><span class="p">)</span> <span class="mi">50</span><span class="p">)</span> 
+         <span class="p">((</span><span class="nb">=</span> <span class="nv">kinds-of-coins</span> <span class="mi">2</span><span class="p">)</span> <span class="mi">25</span><span class="p">)</span> 
+         <span class="p">((</span><span class="nb">=</span> <span class="nv">kinds-of-coins</span> <span class="mi">3</span><span class="p">)</span> <span class="mi">10</span><span class="p">)</span> 
+         <span class="p">((</span><span class="nb">=</span> <span class="nv">kinds-of-coins</span> <span class="mi">4</span><span class="p">)</span> <span class="mi">5</span><span class="p">)</span> 
+         <span class="p">((</span><span class="nb">=</span> <span class="nv">kinds-of-coins</span> <span class="mi">5</span><span class="p">)</span> <span class="mi">1</span><span class="p">)))</span> </code></pre></figure>
+
+<p>To analyze the time complexity of $cc(n, k)$, it is more easy to start from $k=1$</p>
+
+<p>if $k=1$, then $cc(n, 1)=O(n)$</p>
+
+<p>if $k=2$, then $cc(n, 2) = cc(n - 5, 2) + cc(n, 1) = O(n^2)$</p>
+
+<p>…</p>
+
+<p>By induction, $cc(n, 5)=O(n^5)$</p>
+
+<h4 id="115">1.15</h4>
+
+<p>Time complexity is about $log_3(n)$.</p>
+:ET

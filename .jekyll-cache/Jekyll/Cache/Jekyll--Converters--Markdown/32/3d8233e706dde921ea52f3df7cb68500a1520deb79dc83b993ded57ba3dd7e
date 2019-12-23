@@ -1,0 +1,215 @@
+I"œr<h4 id="233">2.33</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">accumulate</span> <span class="nv">op</span> <span class="nv">initial</span> <span class="nv">sequence</span><span class="p">)</span>
+   <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">null?</span> <span class="nv">sequence</span><span class="p">)</span>
+       <span class="nv">initial</span>
+       <span class="p">(</span><span class="nf">op</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">sequence</span><span class="p">)</span>
+           <span class="p">(</span><span class="nf">accumulate</span> <span class="nv">op</span> <span class="nv">initial</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">sequence</span><span class="p">)))))</span>
+
+<span class="p">(</span><span class="nf">accumulate</span> <span class="nv">+</span> <span class="mi">0</span> <span class="p">(</span><span class="nb">list</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nb">map</span> <span class="nv">p</span> <span class="nv">sequence</span><span class="p">)</span>
+   <span class="p">(</span><span class="nf">accumulate</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">x</span> <span class="nv">y</span><span class="p">)</span> <span class="p">(</span><span class="nb">cons</span> <span class="p">(</span><span class="nf">p</span> <span class="nv">x</span><span class="p">)</span> <span class="nv">y</span><span class="p">))</span> <span class="nv">null</span> <span class="nv">sequence</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">square</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">*</span> <span class="nv">x</span> <span class="nv">x</span><span class="p">))</span>
+
+<span class="p">(</span><span class="nb">map</span> <span class="nv">square</span> <span class="o">'</span><span class="p">(</span><span class="nf">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nb">append</span> <span class="nv">seq1</span> <span class="nv">seq2</span><span class="p">)</span>
+   <span class="p">(</span><span class="nf">accumulate</span> <span class="nv">cons</span> <span class="nv">seq2</span> <span class="nv">seq1</span><span class="p">))</span>
+
+<span class="p">(</span><span class="nb">append</span> <span class="p">(</span><span class="nb">list</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">)</span> <span class="p">(</span><span class="nb">list</span> <span class="mi">4</span> <span class="mi">5</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nb">length</span> <span class="nv">sequence</span><span class="p">)</span>
+   <span class="p">(</span><span class="nf">accumulate</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">x</span> <span class="nv">y</span><span class="p">)</span> <span class="p">(</span><span class="nb">+</span> <span class="mi">1</span> <span class="nv">y</span><span class="p">))</span> <span class="mi">0</span> <span class="nv">sequence</span><span class="p">))</span>
+
+<span class="p">(</span><span class="nb">length</span> <span class="o">'</span><span class="p">(</span><span class="nf">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">))</span></code></pre></figure>
+
+<p>The <code class="highlighter-rouge">append</code> is kind of tricky to me at first glance.
+Just remaind me this equition: <code class="highlighter-rouge">cons 1 (list 2 3) = (list 1 2 3)</code></p>
+
+<h4 id="234">2.34</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">horner-eval</span> <span class="nv">x</span> <span class="nv">coefficient-sequence</span><span class="p">)</span>
+   <span class="p">(</span><span class="nf">accumulate</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">this-coeff</span> <span class="nv">higher-terms</span><span class="p">)</span>
+                 <span class="p">(</span><span class="nb">+</span> <span class="nv">this-coeff</span>
+                    <span class="p">(</span><span class="nb">*</span> <span class="nv">x</span> <span class="nv">higher-terms</span><span class="p">)))</span>
+               <span class="mi">0</span>
+               <span class="nv">coefficient-sequence</span><span class="p">))</span>
+
+<span class="p">(</span><span class="nf">horner-eval</span> <span class="mi">2</span> <span class="p">(</span><span class="nb">list</span> <span class="mi">1</span> <span class="mi">3</span> <span class="mi">0</span> <span class="mi">5</span> <span class="mi">0</span> <span class="mi">1</span><span class="p">))</span></code></pre></figure>
+
+<h4 id="235">2.35</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">count-leaves</span> <span class="nv">t</span><span class="p">)</span>
+   <span class="p">(</span><span class="nf">accumulate</span> <span class="nv">+</span> <span class="mi">0</span> <span class="p">(</span><span class="nb">map</span>
+                     <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">x</span><span class="p">)</span>
+                       <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">not</span> <span class="p">(</span><span class="nb">pair?</span> <span class="nv">x</span><span class="p">))</span>
+                         <span class="mi">1</span>
+                         <span class="p">(</span><span class="nf">count-leaves</span> <span class="nv">x</span><span class="p">)))</span>
+                     <span class="nv">t</span><span class="p">)))</span></code></pre></figure>
+
+<p>This is the most elegant way, which flats the tree structure recursively.</p>
+
+<h4 id="236">2.36</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">accumulate-n</span> <span class="nv">op</span> <span class="nv">init</span> <span class="nv">seqs</span><span class="p">)</span>
+   <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">null?</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">seqs</span><span class="p">))</span>
+       <span class="nv">null</span>
+       <span class="p">(</span><span class="nb">cons</span> <span class="p">(</span><span class="nf">accumulate</span> <span class="nv">op</span> <span class="nv">init</span>
+                         <span class="p">(</span><span class="nb">map</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">x</span><span class="p">)</span>
+                                <span class="p">(</span><span class="nb">car</span> <span class="nv">x</span><span class="p">))</span>
+                              <span class="nv">seqs</span><span class="p">))</span>
+             <span class="p">(</span><span class="nf">accumulate-n</span> <span class="nv">op</span> <span class="nv">init</span>
+                           <span class="p">(</span><span class="nb">map</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">x</span><span class="p">)</span>
+                                  <span class="p">(</span><span class="nb">cdr</span> <span class="nv">x</span><span class="p">))</span>
+                                <span class="nv">seqs</span><span class="p">)))))</span>
+
+<span class="p">(</span><span class="nf">accumulate-n</span> <span class="nv">+</span> <span class="mi">0</span> <span class="o">'</span><span class="p">((</span><span class="nf">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">)</span> <span class="p">(</span><span class="nf">4</span> <span class="mi">5</span> <span class="mi">6</span><span class="p">)</span> <span class="p">(</span><span class="nf">7</span> <span class="mi">8</span> <span class="mi">9</span><span class="p">)</span> <span class="p">(</span><span class="nf">10</span> <span class="mi">11</span> <span class="mi">12</span><span class="p">)))</span></code></pre></figure>
+
+<h4 id="237">2.37</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">dot-product</span> <span class="nv">v</span> <span class="nv">w</span><span class="p">)</span>
+   <span class="p">(</span><span class="nf">accumulate</span> <span class="nv">+</span> <span class="mi">0</span> <span class="p">(</span><span class="nb">map</span> <span class="nv">*</span> <span class="nv">v</span> <span class="nv">w</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">matrix-*-vector</span> <span class="nv">m</span> <span class="nv">v</span><span class="p">)</span>
+   <span class="p">(</span><span class="nb">map</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">row</span><span class="p">)</span>
+          <span class="p">(</span><span class="nf">dot-product</span> <span class="nv">v</span> <span class="nv">row</span><span class="p">))</span> <span class="nv">m</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="nv">m0</span> <span class="o">'</span><span class="p">((</span><span class="nf">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">)</span> <span class="p">(</span><span class="nf">4</span> <span class="mi">5</span> <span class="mi">6</span> <span class="mi">6</span><span class="p">)</span> <span class="p">(</span><span class="nf">6</span> <span class="mi">7</span> <span class="mi">8</span> <span class="mi">9</span><span class="p">)))</span>
+<span class="p">(</span><span class="nf">matrix-*-vector</span> <span class="nv">m0</span> <span class="o">'</span><span class="p">(</span> <span class="mi">2</span> <span class="mi">1</span> <span class="mi">4</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">transpose</span> <span class="nv">mat</span><span class="p">)</span>
+   <span class="p">(</span><span class="nf">accumulate-n</span> <span class="nv">cons</span> <span class="nv">null</span>  <span class="nv">mat</span><span class="p">))</span>
+
+<span class="p">(</span><span class="nf">transpose</span> <span class="nv">m0</span><span class="p">)</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">matrix-*-matrix</span> <span class="nv">m</span> <span class="nv">n</span><span class="p">)</span>
+   <span class="p">(</span><span class="k">let</span> <span class="p">([</span><span class="nf">cols</span> <span class="p">(</span><span class="nf">transpose</span> <span class="nv">n</span><span class="p">)])</span>
+      <span class="p">(</span><span class="nb">map</span> <span class="p">(</span><span class="k">lambda</span><span class="p">(</span><span class="nf">v</span><span class="p">)</span> <span class="p">(</span><span class="nf">matrix-*-vector</span> <span class="nv">cols</span> <span class="nv">v</span><span class="p">))</span> <span class="nv">m</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="nf">matrix-*-matrix</span> <span class="nv">m0</span> <span class="p">(</span><span class="nf">transpose</span> <span class="nv">m0</span><span class="p">))</span></code></pre></figure>
+
+<h4 id="238">2.38</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">fold-right</span> <span class="nv">op</span> <span class="nv">initial</span> <span class="nv">sequence</span><span class="p">)</span>
+   <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">null?</span> <span class="nv">sequence</span><span class="p">)</span>
+       <span class="nv">initial</span>
+       <span class="p">(</span><span class="nf">op</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">sequence</span><span class="p">)</span>
+           <span class="p">(</span><span class="nf">fold-right</span> <span class="nv">op</span> <span class="nv">initial</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">sequence</span><span class="p">)))))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">fold-left</span> <span class="nv">op</span> <span class="nv">initial</span> <span class="nv">sequence</span><span class="p">)</span>
+   <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">iter</span> <span class="nv">result</span> <span class="nv">rest</span><span class="p">)</span>
+     <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">null?</span> <span class="nv">rest</span><span class="p">)</span>
+         <span class="nv">result</span>
+         <span class="p">(</span><span class="nf">iter</span> <span class="p">(</span><span class="nf">op</span> <span class="nv">result</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">rest</span><span class="p">))</span>
+               <span class="p">(</span><span class="nb">cdr</span> <span class="nv">rest</span><span class="p">))))</span>
+   <span class="p">(</span><span class="nf">iter</span> <span class="nv">initial</span> <span class="nv">sequence</span><span class="p">))</span>
+
+<span class="p">(</span><span class="nf">fold-right</span> <span class="nv">/</span> <span class="mi">1</span> <span class="p">(</span><span class="nb">list</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">))</span>
+<span class="mi">3</span><span class="nv">/2</span>
+<span class="p">(</span><span class="nf">fold-left</span> <span class="nv">/</span> <span class="mi">1</span> <span class="p">(</span><span class="nb">list</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">))</span>
+<span class="mi">1</span><span class="nv">/6</span>
+<span class="p">(</span><span class="nf">fold-right</span> <span class="nv">list</span> <span class="nv">null</span> <span class="p">(</span><span class="nb">list</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">))</span>
+<span class="p">(</span><span class="nf">1</span> <span class="p">(</span><span class="nf">2</span> <span class="p">(</span><span class="nf">3</span> <span class="p">())))</span>
+<span class="p">(</span><span class="nf">fold-left</span> <span class="nv">list</span> <span class="nv">null</span> <span class="p">(</span><span class="nb">list</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span><span class="p">))</span>
+<span class="p">(((()</span> <span class="mi">1</span><span class="p">)</span> <span class="mi">2</span><span class="p">)</span> <span class="mi">3</span><span class="p">)</span></code></pre></figure>
+
+<p>Both associativity and commutativity.
+That is</p>
+
+<p><code class="highlighter-rouge">(op a b) = (op b a)</code> and <code class="highlighter-rouge">(op (op a b) c) = (op a (op b c))</code></p>
+
+<h4 id="239">2.39</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nb">reverse</span> <span class="nv">sequence</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">fold-right</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">x</span> <span class="nv">y</span><span class="p">)</span>
+                <span class="p">(</span><span class="nb">append</span> <span class="nv">y</span> <span class="p">(</span><span class="nb">list</span> <span class="nv">x</span><span class="p">)))</span>
+              <span class="nv">null</span>
+              <span class="nv">sequence</span><span class="p">))</span>
+
+<span class="p">(</span><span class="nb">reverse</span> <span class="p">(</span><span class="nb">list</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nb">reverse</span> <span class="nv">sequence</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">fold-left</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">x</span> <span class="nv">y</span><span class="p">)</span>
+                <span class="p">(</span><span class="nb">cons</span> <span class="nv">y</span>  <span class="nv">x</span><span class="p">))</span>
+              <span class="nv">null</span>
+              <span class="nv">sequence</span><span class="p">))</span>
+
+<span class="p">(</span><span class="nb">reverse</span> <span class="p">(</span><span class="nb">list</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">))</span></code></pre></figure>
+
+<h4 id="240">2.40</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">unique-pairs</span> <span class="nv">n</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">flatmap</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">i</span><span class="p">)</span>
+             <span class="p">(</span><span class="nb">map</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">j</span><span class="p">)</span> <span class="p">(</span><span class="nb">list</span> <span class="nv">i</span> <span class="nv">j</span><span class="p">))</span>
+                  <span class="p">(</span><span class="nf">enumerate-interval</span> <span class="mi">1</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">i</span> <span class="mi">1</span><span class="p">))))</span>
+           <span class="p">(</span><span class="nf">enumerate-interval</span> <span class="mi">1</span> <span class="nv">n</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">prime-sum-pairs</span> <span class="nv">n</span><span class="p">)</span>
+   <span class="p">(</span><span class="nb">map</span> <span class="nv">make-pair-sum</span>
+        <span class="p">(</span><span class="nf">filter</span> <span class="nv">prime-sum?</span>
+                <span class="p">(</span><span class="nf">unique-pairs</span> <span class="nv">n</span><span class="p">))))</span></code></pre></figure>
+
+<h4 id="241">2.41</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">unique-triples</span> <span class="nv">n</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">flatmap</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">i</span><span class="p">)</span>
+             <span class="p">(</span><span class="nf">flatmap</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">j</span><span class="p">)</span>
+                        <span class="p">(</span><span class="nb">map</span>
+                          <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">k</span><span class="p">)</span> <span class="p">(</span><span class="nb">list</span> <span class="nv">i</span> <span class="nv">j</span> <span class="nv">k</span><span class="p">))</span>
+                          <span class="p">(</span><span class="nf">enumerate-interval</span> <span class="mi">1</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">j</span> <span class="mi">1</span><span class="p">))))</span>
+                      <span class="p">(</span><span class="nf">enumerate-interval</span> <span class="mi">1</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">i</span> <span class="mi">1</span><span class="p">))))</span>
+           <span class="p">(</span><span class="nf">enumerate-interval</span> <span class="mi">1</span> <span class="nv">n</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">equal-sum?</span> <span class="nv">s</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">lst</span><span class="p">)</span>
+    <span class="p">(</span><span class="nb">=</span> <span class="nv">s</span> <span class="p">(</span><span class="nf">accumulate</span> <span class="nv">+</span> <span class="mi">0</span> <span class="nv">lst</span><span class="p">))))</span></code></pre></figure>
+
+<h4 id="242">2.42</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">queens</span> <span class="nv">board-size</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">queen-cols</span> <span class="nv">k</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">=</span> <span class="nv">k</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">(</span><span class="nb">list</span> <span class="nv">empty-board</span><span class="p">)</span>
+        <span class="p">(</span><span class="nf">filter</span>
+         <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">positions</span><span class="p">)</span> <span class="p">(</span><span class="nf">safe?</span> <span class="nv">k</span> <span class="nv">positions</span><span class="p">))</span>
+         <span class="p">(</span><span class="nf">flatmap</span>
+          <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">rest-of-queens</span><span class="p">)</span>
+            <span class="p">(</span><span class="nb">map</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">new-row</span><span class="p">)</span>
+                   <span class="p">(</span><span class="nf">adjoin-position</span> <span class="nv">new-row</span> <span class="nv">k</span> <span class="nv">rest-of-queens</span><span class="p">))</span>
+                 <span class="p">(</span><span class="nf">enumerate-interval</span> <span class="mi">1</span> <span class="nv">board-size</span><span class="p">)))</span>
+          <span class="p">(</span><span class="nf">queen-cols</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">k</span> <span class="mi">1</span><span class="p">))))))</span>
+  <span class="p">(</span><span class="nf">queen-cols</span> <span class="nv">board-size</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="nv">empty-board</span> <span class="o">'</span><span class="p">())</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">adjoin-position</span> <span class="nv">row</span> <span class="nv">k</span> <span class="nv">rest-of-queens</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">append</span> <span class="nv">rest-of-queens</span> <span class="p">(</span><span class="nb">list</span> <span class="p">(</span><span class="nb">list</span> <span class="nv">row</span> <span class="nv">k</span><span class="p">))))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">last</span> <span class="nv">l</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">null?</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">l</span><span class="p">))</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">l</span><span class="p">))</span>
+          <span class="p">(</span><span class="k">else</span> <span class="p">(</span><span class="nf">last</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">l</span><span class="p">)))))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">safe?</span> <span class="nv">k</span> <span class="nv">positions</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">attack?</span> <span class="nv">q1</span> <span class="nv">q2</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">and</span> <span class="p">(</span><span class="nb">not</span> <span class="p">(</span><span class="nb">=</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">q1</span><span class="p">)</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">q2</span><span class="p">)))</span>
+         <span class="p">(</span><span class="nb">not</span> <span class="p">(</span><span class="nb">=</span> <span class="p">(</span><span class="nb">abs</span> <span class="p">(</span><span class="nb">-</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">q1</span><span class="p">)</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">q2</span><span class="p">)))</span>
+                 <span class="p">(</span><span class="nb">abs</span> <span class="p">(</span><span class="nb">-</span>  <span class="p">(</span><span class="nb">cadr</span> <span class="nv">q1</span><span class="p">)(</span><span class="nb">cadr</span> <span class="nv">q2</span><span class="p">)))))))</span>
+
+  <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">new-queen</span> <span class="p">(</span><span class="nf">last</span> <span class="nv">positions</span><span class="p">)))</span>
+    <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">check</span> <span class="nv">i</span> <span class="nv">positions</span><span class="p">)</span>
+      <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">=</span> <span class="nv">i</span> <span class="nv">k</span><span class="p">)</span> <span class="nv">true</span><span class="p">)</span>
+            <span class="p">((</span><span class="nf">attack?</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">positions</span><span class="p">)</span> <span class="nv">new-queen</span><span class="p">)</span>
+             <span class="p">(</span><span class="nf">check</span> <span class="p">(</span><span class="nb">+</span> <span class="nv">i</span> <span class="mi">1</span><span class="p">)</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">positions</span><span class="p">)))</span>
+            <span class="p">(</span><span class="k">else</span> <span class="nv">false</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nf">check</span> <span class="mi">1</span> <span class="nv">positions</span><span class="p">)))</span></code></pre></figure>
+
+<h4 id="summary">summary</h4>
+
+<p>The key idea to understand <code class="highlighter-rouge">map</code>, <code class="highlighter-rouge">flatmap</code> is to relate it with <a href="http://en.wikibooks.org/wiki/Haskell/Category_theory">Category Theory</a>.
+To think about something more abstractly would help a lot in understanding
+concrete concepts. Knowing <code class="highlighter-rouge">HOW</code> is the key to finish something, but <code class="highlighter-rouge">WHY</code>
+is the key to master something.</p>
+
+:ET

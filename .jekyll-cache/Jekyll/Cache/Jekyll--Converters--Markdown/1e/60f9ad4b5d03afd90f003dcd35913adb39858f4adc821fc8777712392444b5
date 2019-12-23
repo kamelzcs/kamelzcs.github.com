@@ -1,0 +1,100 @@
+I"D-<blockquote>
+  <p>In general, programming languages impose restrictions on the ways in which computational elements can be manipulated. Elements with the fewest restrictions are said to have first-class status. Some of the ``rights and privileges’’ of first-class elements are:</p>
+
+  <ul>
+    <li>They may be named by variables.</li>
+    <li>They may be passed as arguments to procedures.</li>
+    <li>They may be returned as the results of procedures.</li>
+    <li>They may be included in data structures.</li>
+  </ul>
+</blockquote>
+
+<h4 id="140">1.40</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="nv">tolerance</span> <span class="mf">0.00001</span><span class="p">)</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">fixed-point</span> <span class="nv">f</span> <span class="nv">first-guess</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">close-enough?</span> <span class="nv">v1</span> <span class="nv">v2</span><span class="p">)</span>
+    <span class="p">(</span><span class="nb">&lt;</span> <span class="p">(</span><span class="nb">abs</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">v1</span> <span class="nv">v2</span><span class="p">))</span> <span class="nv">tolerance</span><span class="p">))</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">try</span> <span class="nv">guess</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">next</span> <span class="p">(</span><span class="nf">f</span> <span class="nv">guess</span><span class="p">)))</span>
+      <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nf">close-enough?</span> <span class="nv">guess</span> <span class="nv">next</span><span class="p">)</span>
+          <span class="nv">next</span>
+          <span class="p">(</span><span class="nf">try</span> <span class="nv">next</span><span class="p">))))</span>
+  <span class="p">(</span><span class="nf">try</span> <span class="nv">first-guess</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="nv">dx</span> <span class="mf">0.00001</span><span class="p">)</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">deriv</span> <span class="nv">g</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">x</span><span class="p">)</span>
+    <span class="p">(</span><span class="nb">/</span> <span class="p">(</span><span class="nb">-</span> <span class="p">(</span><span class="nf">g</span> <span class="p">(</span><span class="nb">+</span> <span class="nv">x</span> <span class="nv">dx</span><span class="p">))</span> <span class="p">(</span><span class="nf">g</span> <span class="nv">x</span><span class="p">))</span>
+       <span class="nv">dx</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">newton-transform</span> <span class="nv">g</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">x</span><span class="p">)</span>
+    <span class="p">(</span><span class="nb">-</span> <span class="nv">x</span> <span class="p">(</span><span class="nb">/</span> <span class="p">(</span><span class="nf">g</span> <span class="nv">x</span><span class="p">)</span> <span class="p">((</span><span class="nf">deriv</span> <span class="nv">g</span><span class="p">)</span> <span class="nv">x</span><span class="p">)))))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">newtons-method</span> <span class="nv">g</span> <span class="nv">guess</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">fixed-point</span> <span class="p">(</span><span class="nf">newton-transform</span> <span class="nv">g</span><span class="p">)</span> <span class="nv">guess</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">square</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">*</span> <span class="nv">x</span> <span class="nv">x</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">cube</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">*</span> <span class="nv">x</span> <span class="nv">x</span> <span class="nv">x</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">cubic</span> <span class="nv">a</span> <span class="nv">b</span> <span class="nv">c</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">x</span><span class="p">)</span>
+    <span class="p">(</span><span class="nb">+</span> <span class="p">(</span><span class="nf">cube</span> <span class="nv">x</span><span class="p">)</span>
+       <span class="p">(</span><span class="nb">*</span> <span class="nv">a</span> <span class="p">(</span><span class="nf">square</span> <span class="nv">x</span><span class="p">))</span>
+       <span class="p">(</span><span class="nb">*</span> <span class="nv">b</span> <span class="nv">x</span><span class="p">)</span>
+       <span class="nv">c</span><span class="p">)))</span>
+
+<span class="nv">-&gt;</span> <span class="p">(</span><span class="nf">newtons-method</span> <span class="p">(</span><span class="nf">cubic</span> <span class="mi">8</span> <span class="mi">16</span> <span class="mi">10</span><span class="p">)</span> <span class="mi">1</span><span class="p">)</span>
+<span class="mf">-5.3652300134140924</span></code></pre></figure>
+
+<h4 id="141">1.41</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">double</span> <span class="nv">f</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">x</span><span class="p">)</span> <span class="p">(</span><span class="nf">f</span> <span class="p">(</span><span class="nf">f</span> <span class="nv">x</span><span class="p">))))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">inc</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">+</span> <span class="nv">x</span> <span class="mi">1</span><span class="p">))</span>
+
+<span class="nv">-&gt;</span> <span class="p">((</span><span class="nf">double</span> <span class="nv">inc</span><span class="p">)</span> <span class="mi">1</span><span class="p">)</span>
+<span class="mi">3</span>
+
+<span class="nv">-&gt;</span> <span class="p">(((</span><span class="nf">double</span> <span class="p">(</span><span class="nf">double</span> <span class="nv">double</span><span class="p">))</span> <span class="nv">inc</span><span class="p">)</span> <span class="mi">5</span><span class="p">)</span>
+<span class="mi">21</span>
+
+<span class="nv">It</span> <span class="nv">increases</span> <span class="nv">$2^2^2$</span><span class="o">.</span></code></pre></figure>
+
+<h4 id="142">1.42</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">compose</span> <span class="nv">f</span> <span class="nv">g</span><span class="p">)</span>
+ <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">x</span><span class="p">)</span> <span class="p">(</span><span class="nf">f</span> <span class="p">(</span><span class="nf">g</span> <span class="nv">x</span><span class="p">))))</span></code></pre></figure>
+
+<h4 id="143">1.43</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">repeated</span> <span class="nv">f</span> <span class="nv">x</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">=</span> <span class="nv">x</span> <span class="mi">1</span><span class="p">)</span>
+      <span class="nv">f</span>
+      <span class="p">(</span><span class="nf">compose</span> <span class="nv">f</span> <span class="p">(</span><span class="nf">repeated</span> <span class="nv">f</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">x</span> <span class="mi">1</span><span class="p">)))))</span></code></pre></figure>
+
+<h4 id="144">1.44</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">smooth</span> <span class="nv">f</span> <span class="nv">dx</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">x</span><span class="p">)</span>
+    <span class="p">(</span><span class="nb">/</span> <span class="p">(</span><span class="nb">+</span> <span class="p">(</span><span class="nf">f</span> <span class="nv">x</span><span class="p">)</span>
+          <span class="p">(</span><span class="nf">f</span> <span class="p">(</span><span class="nb">+</span> <span class="nv">x</span> <span class="nv">dx</span><span class="p">))</span>
+          <span class="p">(</span><span class="nf">f</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">x</span> <span class="nv">dx</span><span class="p">)))</span>
+       <span class="mi">3</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">n-fold-smooth</span> <span class="nv">f</span> <span class="nv">dx</span> <span class="nv">n</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">repeated</span> <span class="p">(</span><span class="nf">smooth</span> <span class="nv">f</span> <span class="nv">dx</span><span class="p">)</span> <span class="nv">n</span><span class="p">))</span></code></pre></figure>
+
+<h4 id="146">1.46</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">iterative-improve</span> <span class="nv">good-enough?</span> <span class="nv">improve</span><span class="p">)</span>
+   <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">iter</span> <span class="nv">guess</span><span class="p">)</span>
+     <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nf">good-enough?</span> <span class="nv">guess</span><span class="p">)</span>
+         <span class="nv">guess</span>
+         <span class="p">(</span><span class="nf">iter</span> <span class="p">(</span><span class="nf">improve</span> <span class="nv">guess</span><span class="p">))))</span>
+   <span class="nv">iter</span><span class="p">)</span></code></pre></figure>
+
+:ET

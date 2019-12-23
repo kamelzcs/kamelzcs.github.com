@@ -1,0 +1,18 @@
+I"A<h4 id="background">Background</h4>
+<p>In A/B Testing, there is a group of data <script type="math/tex">X = (X_1, X_2, ..., X_n)</script> and <script type="math/tex">Y = (Y_1, Y-2, ..., Y_m)</script>, the metrics we interested in are the difference between these two groups and related confidence.</p>
+
+<h4 id="a-quick-introduction-to-jackknife">A Quick Introduction to Jackknife</h4>
+<p><a href="https://www.math.wustl.edu/~sawyer/handouts/Jackknife.pdf">Jackknife</a> is a method of resample, which tries to estimate the bias and variability of an estimator <script type="math/tex">\phi_n(X_1, X_2, ..., X_n)</script> by using values of <script type="math/tex">\phi_n(X)</script> on subsamples from <script type="math/tex">X_1, X_2, ..., X_n</script>.</p>
+
+<p>The <script type="math/tex">i^{th}</script> pseudovalue of <script type="math/tex">\phi_n(X)</script> is
+<script type="math/tex">ps_i(X) = n\phi_n(X_1, X_2, ..., X_n) - (n - 1)\phi_{n - 1}((X_1, X_2, ..., X_n)_{[i]})</script>, where <script type="math/tex">X_{i}</script> means the sample <script type="math/tex">X_1, X_2, ..., X_n</script> with <script type="math/tex">i^{th}</script> value <script type="math/tex">X_i</script> deleted from the sample.</p>
+
+<p>Treat the pseudovalue <script type="math/tex">ps_i(X)</script> as if they were independent random variables with mean <script type="math/tex">\theta</script>, then the confidence interval could be obtained using Central Limit Theorem. Specifically, let</p>
+
+<p><script type="math/tex">ps(X) = \frac{1}{n}\sum_{i=1}^{n}ps_i(X)</script> and <script type="math/tex">V_{ps}(X) = \frac{1}{n - 1}sum_{i=1}^{n - 1}(ps_i(X) - ps(X))^2</script></p>
+
+<p>be the mean and sample variance of the pseudovalues. The jackknife 95% confidence interval is</p>
+
+<script type="math/tex; mode=display">(ps(X) - 1.96\sqrt{\frac{1}{n}V_{ps}(X)})</script>
+
+:ET

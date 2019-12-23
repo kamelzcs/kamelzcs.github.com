@@ -1,0 +1,196 @@
+I"�r<h4 id="324">3.24</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">make-table</span> <span class="nv">same-key?</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">local-table</span> <span class="p">(</span><span class="nb">list</span> <span class="ss">'*table*</span><span class="p">)))</span>
+    <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nb">assoc</span> <span class="nv">key</span> <span class="nv">records</span><span class="p">)</span>
+      <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">null?</span> <span class="nv">records</span><span class="p">)</span> <span class="no">#f</span><span class="p">)</span>
+            <span class="p">((</span><span class="nf">same-key?</span> <span class="nv">key</span> <span class="p">(</span><span class="nb">caar</span> <span class="nv">records</span><span class="p">))</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">records</span><span class="p">))</span>
+            <span class="p">(</span><span class="k">else</span> <span class="p">(</span><span class="nb">assoc</span> <span class="nv">key</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">records</span><span class="p">)))))</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">lookup</span> <span class="nv">key-1</span> <span class="nv">key-2</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">subtable</span> <span class="p">(</span><span class="nb">assoc</span> <span class="nv">key-1</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">local-table</span><span class="p">))))</span>
+      <span class="p">(</span><span class="k">if</span> <span class="nv">subtable</span>
+        <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">record</span> <span class="p">(</span><span class="nb">assoc</span> <span class="nv">key-2</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">subtable</span><span class="p">))))</span>
+          <span class="p">(</span><span class="k">if</span> <span class="nv">record</span>
+            <span class="p">(</span><span class="nb">cdr</span> <span class="nv">record</span><span class="p">)</span>
+            <span class="no">#f</span>
+            <span class="p">))</span>
+        <span class="no">#f</span><span class="p">)))</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">insert!</span> <span class="nv">key-1</span> <span class="nv">key-2</span> <span class="nv">value</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">subtable</span> <span class="p">(</span><span class="nb">assoc</span> <span class="nv">key-1</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">local-table</span><span class="p">))))</span>
+      <span class="p">(</span><span class="k">if</span> <span class="nv">subtable</span>
+        <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">record</span> <span class="p">(</span><span class="nb">assoc</span> <span class="nv">key-2</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">subtable</span><span class="p">))))</span>
+          <span class="p">(</span><span class="k">if</span> <span class="nv">record</span>
+            <span class="p">(</span><span class="nb">set-cdr!</span> <span class="nv">record</span> <span class="nv">value</span><span class="p">)</span>
+            <span class="p">(</span><span class="nb">set-cdr!</span> <span class="nv">subtable</span> <span class="p">(</span><span class="nb">cons</span>
+                                 <span class="p">(</span><span class="nb">cons</span> <span class="nv">key-2</span> <span class="nv">value</span><span class="p">)</span>
+                                 <span class="p">(</span><span class="nb">cdr</span> <span class="nv">subtable</span><span class="p">)))))</span>
+        <span class="p">(</span><span class="nb">set-cdr!</span> <span class="nv">local-table</span> <span class="p">(</span><span class="nb">cons</span>
+                                <span class="p">(</span><span class="nb">list</span> <span class="nv">key-1</span>
+                                      <span class="p">(</span><span class="nb">cons</span> <span class="nv">key-2</span> <span class="nv">value</span><span class="p">))</span>
+                                <span class="p">(</span><span class="nb">cdr</span> <span class="nv">local-table</span><span class="p">))))))</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">dispatch</span> <span class="nv">m</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">eq?</span> <span class="nv">m</span> <span class="ss">'lookup-proc</span><span class="p">)</span> <span class="nv">lookup</span><span class="p">)</span>
+          <span class="p">((</span><span class="nb">eq?</span> <span class="nv">m</span> <span class="ss">'insert-proc!</span><span class="p">)</span> <span class="nv">insert!</span><span class="p">)</span>
+          <span class="p">(</span><span class="k">else</span> <span class="p">(</span><span class="nf">error</span> <span class="s">"Unkown operation -- TABLE"</span> <span class="nv">m</span><span class="p">))))</span>
+  <span class="nv">dispatch</span><span class="p">))</span></code></pre></figure>
+
+<h4 id="325">3.25</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">fold-left</span> <span class="nv">op</span> <span class="nv">init</span> <span class="nv">seq</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">iter</span> <span class="nv">ans</span> <span class="nv">res</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">null?</span> <span class="nv">res</span><span class="p">)</span>
+      <span class="nv">ans</span>
+      <span class="p">(</span><span class="nf">iter</span> <span class="p">(</span><span class="nf">op</span> <span class="nv">ans</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">res</span><span class="p">))</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">res</span><span class="p">))))</span>
+  <span class="p">(</span><span class="nf">iter</span> <span class="nv">init</span> <span class="nv">seq</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">make-table</span> <span class="nv">same-key?</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">associate</span> <span class="nv">key</span> <span class="nv">records</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">null?</span> <span class="nv">records</span><span class="p">)</span> <span class="no">#f</span><span class="p">)</span>
+          <span class="p">((</span><span class="nf">same-key?</span> <span class="nv">key</span> <span class="p">(</span><span class="nb">caar</span> <span class="nv">records</span><span class="p">))</span>
+           <span class="p">(</span><span class="nb">car</span> <span class="nv">records</span><span class="p">))</span>
+           <span class="p">(</span><span class="k">else</span>
+             <span class="p">(</span><span class="nf">associate</span> <span class="nv">key</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">records</span><span class="p">)))))</span>
+  <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">the-table</span> <span class="p">(</span><span class="nb">list</span> <span class="ss">'*table*</span><span class="p">)))</span>
+    <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">lookup</span> <span class="nv">keys</span><span class="p">)</span>
+      <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">lookup-record</span> <span class="nv">record-list</span> <span class="nv">key</span><span class="p">)</span>
+        <span class="p">(</span><span class="k">if</span> <span class="nv">record-list</span>
+          <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">record</span> <span class="p">(</span><span class="nf">associate</span> <span class="nv">key</span> <span class="nv">record-list</span><span class="p">)))</span>
+            <span class="p">(</span><span class="k">if</span> <span class="nv">record</span>
+              <span class="p">(</span><span class="nb">cdr</span> <span class="nv">record</span><span class="p">)</span>
+              <span class="no">#f</span><span class="p">))</span>
+          <span class="no">#f</span><span class="p">))</span>
+    <span class="p">(</span><span class="nf">fold-left</span> <span class="nv">lookup-record</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">the-table</span><span class="p">)</span> <span class="nv">keys</span><span class="p">))</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">insert!</span> <span class="nv">keys</span> <span class="nv">value</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">descend</span> <span class="nv">table</span> <span class="nv">key</span><span class="p">)</span>
+      <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">record</span> <span class="p">(</span><span class="nf">associate</span> <span class="nv">key</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">table</span><span class="p">))))</span>
+        <span class="p">(</span><span class="k">if</span> <span class="nv">record</span>
+          <span class="nv">record</span>
+          <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">new</span> <span class="p">(</span><span class="nb">cons</span> <span class="p">(</span><span class="nb">list</span> <span class="nv">key</span><span class="p">)</span>
+                           <span class="p">(</span><span class="nb">cdr</span> <span class="nv">table</span><span class="p">))))</span>
+            <span class="p">(</span><span class="nb">set-cdr!</span> <span class="nv">table</span> <span class="nv">new</span><span class="p">)</span>
+            <span class="p">(</span><span class="nb">car</span> <span class="nv">new</span><span class="p">)))))</span>
+    <span class="p">(</span><span class="nb">set-cdr!</span> <span class="p">(</span><span class="nf">fold-left</span> <span class="nv">descend</span> <span class="nv">the-table</span> <span class="nv">keys</span><span class="p">)</span>
+              <span class="nv">value</span><span class="p">))</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">dispatch</span> <span class="nv">m</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">eq?</span> <span class="nv">m</span> <span class="ss">'lookup</span><span class="p">)</span> <span class="nv">lookup</span><span class="p">)</span>
+          <span class="p">((</span><span class="nb">eq?</span> <span class="nv">m</span> <span class="ss">'insert!</span><span class="p">)</span> <span class="nv">insert!</span><span class="p">)</span>
+          <span class="p">(</span><span class="k">else</span> <span class="p">(</span><span class="nf">error</span> <span class="s">"Undefined method"</span> <span class="nv">m</span><span class="p">))))</span>
+    <span class="nv">dispatch</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="nv">op-table</span> <span class="p">(</span><span class="nf">make-table</span> <span class="nv">eq?</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span> <span class="nv">put</span> <span class="p">(</span><span class="nf">op-table</span> <span class="ss">'insert!</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span> <span class="nv">get</span> <span class="p">(</span><span class="nf">op-table</span> <span class="ss">'lookup</span><span class="p">))</span>
+<span class="p">(</span><span class="nf">put</span> <span class="o">'</span><span class="p">(</span><span class="nf">letters</span> <span class="nv">a</span><span class="p">)</span> <span class="mi">97</span><span class="p">)</span>  <span class="c1">; Two dimensions</span>
+<span class="p">(</span><span class="nf">put</span> <span class="o">'</span><span class="p">(</span><span class="nf">letters</span> <span class="nv">b</span><span class="p">)</span> <span class="mi">98</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">put</span> <span class="o">'</span><span class="p">(</span><span class="nf">math</span> <span class="nv">+</span><span class="p">)</span> <span class="mi">43</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">put</span> <span class="o">'</span><span class="p">(</span><span class="nf">math</span> <span class="nv">-</span><span class="p">)</span> <span class="mi">45</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">put</span> <span class="o">'</span><span class="p">(</span><span class="nf">math</span> <span class="nv">*</span><span class="p">)</span> <span class="mi">42</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">put</span> <span class="o">'</span><span class="p">(</span><span class="nf">greek</span> <span class="nv">majiscule</span> <span class="err">Λ</span><span class="p">)</span> <span class="mi">923</span><span class="p">)</span>  <span class="c1">; Three dimensions</span>
+<span class="p">(</span><span class="nf">put</span> <span class="o">'</span><span class="p">(</span><span class="nf">greek</span> <span class="nv">miniscule</span> <span class="err">λ</span><span class="p">)</span> <span class="mi">955</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">put</span> <span class="o">'</span><span class="p">(</span><span class="nb">min</span><span class="p">)</span> <span class="mi">42</span><span class="p">)</span>  <span class="c1">; One dimension</span>
+<span class="p">(</span><span class="nf">put</span> <span class="o">'</span><span class="p">(</span><span class="nb">max</span><span class="p">)</span> <span class="mi">955</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">get</span> <span class="o">'</span><span class="p">(</span><span class="nb">min</span><span class="p">))</span>
+<span class="p">(</span><span class="nf">get</span> <span class="o">'</span><span class="p">(</span><span class="nf">letters</span> <span class="nv">b</span><span class="p">))</span>
+<span class="p">(</span><span class="nf">put</span> <span class="o">'</span><span class="p">(</span><span class="nb">min</span><span class="p">)</span> <span class="mi">43</span><span class="p">)</span>  <span class="c1">; update</span>
+<span class="p">(</span><span class="nf">get</span> <span class="o">'</span><span class="p">(</span><span class="nb">min</span><span class="p">))</span></code></pre></figure>
+
+<p>This is a hard problem for me, as recursive problem is always hard for me to understand.
+<a href="http://community.schemewiki.org/?sicp-ex-3.25">schemewiki</a> provides a great base for this problem, especially the <code class="highlighter-rouge">fold-left</code> is used,
+which simplifies the logic a lot.</p>
+
+<p>Recursive relies on split the problem into smaller consistently defined subproblems.</p>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">((</span><span class="nf">k11</span>
+   <span class="p">(</span><span class="nf">k12</span>
+     <span class="p">(</span><span class="nf">k13</span> <span class="nv">v1</span><span class="p">)))</span>
+<span class="p">(</span><span class="nf">k21</span>
+   <span class="p">(</span><span class="nf">k22</span>
+     <span class="p">(</span><span class="nf">k23</span> <span class="nv">v2</span><span class="p">)))</span>
+<span class="p">(</span><span class="nf">k31</span>
+   <span class="p">(</span><span class="nf">k32</span> <span class="nv">v3</span><span class="p">)))</span></code></pre></figure>
+
+<p>Multi-dimention table looks like this.</p>
+
+<h4 id="326">3.26</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">entry</span> <span class="nv">tree</span><span class="p">)</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">tree</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">entry-key</span> <span class="nv">tree</span><span class="p">)</span> <span class="p">(</span><span class="nb">caar</span> <span class="nv">tree</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">entry-value</span> <span class="nv">tree</span><span class="p">)</span> <span class="p">(</span><span class="nb">cdar</span> <span class="nv">tree</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">left-branch</span> <span class="nv">tree</span><span class="p">)</span> <span class="p">(</span><span class="nb">cadr</span> <span class="nv">tree</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">right-branch</span> <span class="nv">tree</span><span class="p">)</span> <span class="p">(</span><span class="nb">caddr</span> <span class="nv">tree</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">make-tree</span> <span class="nv">entry</span> <span class="nv">left</span> <span class="nv">right</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">list</span> <span class="nv">entry</span> <span class="nv">left</span> <span class="nv">right</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">adjoin-set</span> <span class="nv">x</span> <span class="nv">set</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">null?</span> <span class="nv">set</span><span class="p">)</span>
+         <span class="p">(</span><span class="nf">make-tree</span> <span class="nv">x</span> <span class="o">'</span><span class="p">()</span> <span class="o">'</span><span class="p">()))</span>
+        <span class="p">((</span><span class="nb">=</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nf">entry-key</span> <span class="nv">set</span><span class="p">))</span>
+         <span class="p">(</span><span class="nb">set-cdr!</span> <span class="p">(</span><span class="nf">entry</span> <span class="nv">set</span><span class="p">)</span> <span class="nv">x</span><span class="p">))</span>
+        <span class="p">((</span><span class="nb">&lt;</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nf">entry-key</span> <span class="nv">set</span><span class="p">))</span>
+         <span class="p">(</span><span class="nf">make-tree</span> <span class="p">(</span><span class="nf">entry</span> <span class="nv">set</span><span class="p">)</span>
+                    <span class="p">(</span><span class="nf">adjoin-set</span> <span class="nv">x</span> <span class="p">(</span><span class="nf">left-branch</span> <span class="nv">set</span><span class="p">))</span>
+                    <span class="p">(</span><span class="nf">right-branch</span> <span class="nv">set</span><span class="p">)))</span>
+        <span class="p">(</span><span class="k">else</span>
+          <span class="p">(</span><span class="nf">make-tree</span> <span class="p">(</span><span class="nf">entry</span> <span class="nv">set</span><span class="p">)</span>
+                     <span class="p">(</span><span class="nf">left-branch</span> <span class="nv">set</span><span class="p">)</span>
+                     <span class="p">(</span><span class="nf">adjoin-set</span> <span class="nv">x</span> <span class="p">(</span><span class="nf">right-branch</span> <span class="nv">set</span><span class="p">))</span>
+                     <span class="p">))))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">make-table</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">local-table</span> <span class="o">'</span><span class="p">()))</span>
+    <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">associate</span> <span class="nv">key</span><span class="p">)</span>
+      <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">iter</span> <span class="nv">tree</span><span class="p">)</span>
+        <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">null?</span> <span class="nv">tree</span><span class="p">)</span> <span class="no">#f</span><span class="p">)</span>
+              <span class="p">((</span><span class="nb">=</span> <span class="nv">key</span> <span class="p">(</span><span class="nf">entry-key</span> <span class="nv">tree</span><span class="p">))</span>
+               <span class="p">(</span><span class="nf">entry</span> <span class="nv">tree</span><span class="p">))</span>
+              <span class="p">((</span><span class="nb">&lt;</span> <span class="nv">key</span> <span class="p">(</span><span class="nf">entry-key</span> <span class="nv">tree</span><span class="p">))</span>
+               <span class="p">(</span><span class="nf">iter</span> <span class="p">(</span><span class="nf">left-branch</span> <span class="nv">tree</span><span class="p">)))</span>
+              <span class="p">(</span><span class="k">else</span>
+                <span class="p">(</span><span class="nf">iter</span> <span class="p">(</span><span class="nf">right-branch</span> <span class="nv">tree</span><span class="p">)))))</span>
+      <span class="p">(</span><span class="nf">iter</span> <span class="nv">local-table</span><span class="p">))</span>
+    <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">insert!</span> <span class="nv">key</span> <span class="nv">value</span><span class="p">)</span>
+      <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">record</span> <span class="p">(</span><span class="nf">associate</span> <span class="nv">key</span><span class="p">)))</span>
+        <span class="p">(</span><span class="k">if</span> <span class="nv">record</span>
+          <span class="p">(</span><span class="nb">set-cdr!</span> <span class="nv">record</span> <span class="nv">value</span><span class="p">)</span>
+          <span class="p">(</span><span class="k">set!</span> <span class="nv">local-table</span>
+            <span class="p">(</span><span class="nf">adjoin-set</span> <span class="p">(</span><span class="nb">cons</span> <span class="nv">key</span> <span class="nv">value</span><span class="p">)</span> <span class="nv">local-table</span><span class="p">)</span>
+            <span class="p">))))</span>
+     <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">dispatch</span> <span class="nv">m</span><span class="p">)</span>
+       <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">eq?</span> <span class="nv">m</span> <span class="ss">'get-proc</span><span class="p">)</span> <span class="nv">associate</span><span class="p">)</span>
+             <span class="p">((</span><span class="nb">eq?</span> <span class="nv">m</span> <span class="ss">'insert-proc</span><span class="p">)</span> <span class="nv">insert!</span><span class="p">)))</span>
+     <span class="nv">dispatch</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="nv">table</span> <span class="p">(</span><span class="nf">make-table</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span> <span class="nv">get</span> <span class="p">(</span><span class="nf">table</span> <span class="ss">'get-proc</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span> <span class="nv">put</span> <span class="p">(</span><span class="nf">table</span> <span class="ss">'insert-proc</span><span class="p">))</span>
+
+<span class="p">(</span><span class="nf">put</span> <span class="mi">43</span> <span class="ss">'a</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">put</span> <span class="mi">42</span> <span class="ss">'b</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">get</span> <span class="mi">43</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">get</span> <span class="mi">42</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nf">put</span> <span class="mi">43</span> <span class="ss">'e</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">get</span> <span class="mi">43</span><span class="p">)</span></code></pre></figure>
+
+<h4 id="327">3.27</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">memoize</span> <span class="nv">f</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">table</span> <span class="p">(</span><span class="nf">make-table</span><span class="p">)))</span>
+    <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">x</span><span class="p">)</span>
+      <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">previously-computed-result</span> <span class="p">(</span><span class="nf">lookup</span> <span class="nv">x</span> <span class="nv">table</span><span class="p">)))</span>
+        <span class="p">(</span><span class="k">or</span> <span class="nv">previously-computed-result</span>
+            <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">result</span> <span class="p">(</span><span class="nf">f</span> <span class="nv">x</span><span class="p">)))</span>
+              <span class="p">(</span><span class="nf">insert!</span> <span class="nv">x</span> <span class="nv">result</span> <span class="nv">table</span><span class="p">)</span>
+              <span class="nv">result</span><span class="p">))))))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="nv">memo-fib</span>
+  <span class="p">(</span><span class="nf">memoize</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">n</span><span class="p">)</span>
+             <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">=</span> <span class="nv">n</span> <span class="mi">0</span><span class="p">)</span> <span class="mi">0</span><span class="p">)</span>
+                   <span class="p">((</span><span class="nb">=</span> <span class="nv">n</span> <span class="mi">1</span><span class="p">)</span> <span class="mi">1</span><span class="p">)</span>
+                   <span class="p">(</span><span class="k">else</span> <span class="p">(</span><span class="nb">+</span> <span class="p">(</span><span class="nf">memo-fib</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">n</span> <span class="mi">1</span><span class="p">))</span>
+                            <span class="p">(</span><span class="nf">memo-fib</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">n</span> <span class="mi">2</span><span class="p">))))))))</span></code></pre></figure>
+
+<p>The key lies in the <code class="highlighter-rouge">memo-fib</code> will share the table cache.</p>
+
+:ET

@@ -1,0 +1,21 @@
+I"�<h3 id="problem-h--humble-captains"><a href="http://ipsc.ksp.sk/2015/real/problems/h.html">Problem H – Humble Captains</a></h3>
+
+<p>The problem is given an undirected graph (Vertices&lt;=300), and need to color its vertices into red and blue in such a way that the total number of edges between the red vertices is as close as possible to the total number of edges between the blue vertices.</p>
+
+<p>The key point lies in the way to count valid edges.</p>
+
+<p>For each edge $e$ with two vertices $v1$, $v2$,
+define <script type="math/tex">f(e)=1/2 \times ([v1==red] + [v2==red]) + (-1/2 \times ([v1==blue] + [v2==blue]))</script>, then
+<script type="math/tex">count =  \sum_{\forall e \in E}f(e)</script></p>
+
+<p>Now try to find $count$ from vertices.</p>
+
+<script type="math/tex; mode=display">count = \frac{1}{2} \left( \sum_{\forall v \in Red}d_v -  \sum_{\forall v \in Blue}d_v \right)</script>
+
+<p>Then the final problem can be rephrased to look for a partition which minimizes the absolute difference between
+the sums of the numbers in each part, which could solved with dynamic programming easily.</p>
+
+<p>This is really a nice problem, which requires to decouple the relations, and approach it in different metrics.
+The problem is found from <a href="http://petr-mitrichev.blogspot.com/2015/06/a-week-with-h2.html">Petr’s blog</a>, <a href="http://ipsc.ksp.sk/2015/real/solutions/booklet.pdf">official analysis</a>.</p>
+
+:ET

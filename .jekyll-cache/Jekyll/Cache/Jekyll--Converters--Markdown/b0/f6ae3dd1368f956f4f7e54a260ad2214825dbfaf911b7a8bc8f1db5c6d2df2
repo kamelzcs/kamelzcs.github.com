@@ -1,0 +1,40 @@
+I"�<h3 id="an-insert">An Insert</h3>
+
+<p>When we call put or makePersistent, several things happen behind the scenes before the call returns and sets the entity’s key:</p>
+
+<ol>
+  <li>The my_todo object is converted into a protocol buffer.</li>
+  <li>The appserver makes an RPC call to the datastore server, sending the entity data in a protocol buffer.</li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>If a key name is not provided, a unique ID is determined for this entity’s key. The entity key is composed of app ID</td>
+          <td>ancestor keys</td>
+          <td>kind name</td>
+          <td>key name or ID</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>The datastore server processes the request in two phases that are executed in order: commit, then apply. In each phase, the datastore server identifies the Bigtable tablet servers that should receive the data.</li>
+</ol>
+
+<h3 id="the-commit-phase">The Commit Phase</h3>
+
+<p>The datastore performs two actions in the commit phase:</p>
+
+<ol>
+  <li>It writes the data for the entities to the entity group’s log.</li>
+  <li>It marks the new log entry as committed.</li>
+</ol>
+
+<h3 id="the-apply-phase">The Apply Phase</h3>
+
+<p>In the apply phase, the entity’s data and the index rows are written to disk in parallel.</p>
+
+<h3 id="the-return-value">The Return Value</h3>
+
+<p>Using HRD, the Datastore returns after the commit and does the apply asynchronously.</p>
+
+:ET

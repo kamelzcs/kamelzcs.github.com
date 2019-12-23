@@ -1,0 +1,68 @@
+I"�.<h4 id="lecture-contents">Lecture Contents</h4>
+<blockquote>
+  <p>There is an art to deciding the order of arguments to a function to make partial applications of it as useful as possible: the arguments should be ordered from from “least to greatest variation”, that is, arguments which will often be the same should be listed first, and arguments which will often be different should come last.</p>
+</blockquote>
+
+<p>The only reason why this ordering makes sense is the last one could be made point free when it is in need.</p>
+
+<p>One thing confuses me a lot is the difference between <code class="highlighter-rouge">$</code> and <code class="highlighter-rouge">.</code> when doing the function composition.</p>
+
+<p><a href="http://stackoverflow.com/questions/940382/haskell-difference-between-dot-and-dollar-sign">stackoverflow</a> gives a great answer. To summarize,</p>
+
+<ul>
+  <li><code class="highlighter-rouge">$</code> operator is for avoiding parenthesis.Anything appearing after it will take precedence over anything that comes before.</li>
+  <li><code class="highlighter-rouge">.</code> operator is for chaining functions. It works like the pipeline, the output on the right goes to the input of the left.</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">putStrLn</span> <span class="p">(</span><span class="n">show</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">==</span> <span class="n">putStrLn</span> <span class="o">$</span> <span class="n">show</span> <span class="o">$</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="n">putStrLn</span> <span class="o">.</span> <span class="n">show</span> <span class="o">$</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span></code></pre></figure>
+
+<h4 id="exercise">Exercise</h4>
+
+<h5 id="exercise-1-wholemeal-programming">Exercise 1 Wholemeal programming</h5>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">fun1</span> <span class="o">::</span> <span class="p">[</span><span class="kt">Integer</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="kt">Integer</span>
+<span class="n">fun1</span> <span class="o">=</span> <span class="n">foldr</span> <span class="p">(</span><span class="nf">\</span><span class="n">x</span> <span class="n">y</span> <span class="o">-&gt;</span> <span class="kr">if</span> <span class="n">even</span> <span class="n">x</span> <span class="kr">then</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span> <span class="kr">else</span> <span class="n">y</span><span class="p">)</span> <span class="mi">1</span>
+
+<span class="n">fun2</span><span class="o">::</span> <span class="kt">Integer</span> <span class="o">-&gt;</span> <span class="kt">Integer</span>
+<span class="n">fun2</span> <span class="o">=</span> <span class="n">sum</span> <span class="o">.</span> <span class="n">filter</span> <span class="n">even</span> <span class="o">.</span> <span class="n">takeWhile</span> <span class="p">(</span><span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">.</span> <span class="n">iterate</span> <span class="p">(</span><span class="nf">\</span><span class="n">n</span> <span class="o">-&gt;</span> <span class="kr">if</span> <span class="n">even</span> <span class="n">n</span> <span class="kr">then</span> <span class="n">n</span> <span class="p">`</span><span class="n">div</span><span class="p">`</span> <span class="mi">2</span> <span class="kr">else</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span></code></pre></figure>
+
+<h5 id="exercise-2-folding-with-trees">Exercise 2 Folding with trees</h5>
+
+<p>Always try to insert into the left subtree while keep it is balanced.</p>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="kr">data</span> <span class="kt">Tree</span> <span class="n">a</span> <span class="o">=</span> <span class="kt">Leaf</span> <span class="o">|</span> <span class="kt">Node</span> <span class="kt">Integer</span> <span class="p">(</span><span class="kt">Tree</span> <span class="n">a</span><span class="p">)</span> <span class="n">a</span> <span class="p">(</span><span class="kt">Tree</span> <span class="n">a</span><span class="p">)</span>
+            <span class="kr">deriving</span> <span class="kt">Show</span>
+
+<span class="n">foldTree</span> <span class="o">::</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="kt">Tree</span> <span class="n">a</span>
+<span class="n">foldTree</span> <span class="n">xs</span> <span class="o">=</span> <span class="n">foldr</span> <span class="n">insert</span> <span class="kt">Leaf</span> <span class="n">xs</span>
+    <span class="kr">where</span>
+        <span class="n">height</span> <span class="kt">Leaf</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="n">height</span> <span class="p">(</span><span class="kt">Node</span> <span class="n">h</span> <span class="kr">_</span> <span class="kr">_</span> <span class="kr">_</span><span class="p">)</span> <span class="o">=</span> <span class="n">h</span>
+        <span class="n">count</span> <span class="kt">Leaf</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">count</span> <span class="p">(</span><span class="kt">Node</span> <span class="kr">_</span> <span class="n">l</span> <span class="kr">_</span> <span class="n">r</span><span class="p">)</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">count</span> <span class="n">l</span> <span class="o">+</span> <span class="n">count</span> <span class="n">r</span>
+        <span class="n">insert</span> <span class="n">x</span> <span class="kt">Leaf</span> <span class="o">=</span> <span class="kt">Node</span> <span class="mi">0</span> <span class="kt">Leaf</span> <span class="n">x</span> <span class="kt">Leaf</span>
+        <span class="n">insert</span> <span class="n">x</span> <span class="p">(</span><span class="kt">Node</span> <span class="n">h</span> <span class="n">l</span> <span class="n">d</span> <span class="n">r</span><span class="p">)</span>
+            <span class="o">|</span> <span class="n">height</span> <span class="n">l</span> <span class="o">&gt;</span> <span class="n">height</span> <span class="n">r</span> <span class="o">=</span> <span class="kt">Node</span> <span class="n">h</span> <span class="n">l</span> <span class="n">d</span> <span class="o">$</span> <span class="n">insert</span> <span class="n">x</span> <span class="n">r</span>
+            <span class="o">|</span> <span class="n">count</span> <span class="n">l</span> <span class="o">&gt;</span> <span class="n">count</span> <span class="n">r</span>   <span class="o">=</span> <span class="kt">Node</span> <span class="n">h</span> <span class="n">l</span> <span class="n">d</span> <span class="p">(</span><span class="n">insert</span> <span class="n">x</span> <span class="n">r</span><span class="p">)</span>
+            <span class="o">|</span> <span class="n">otherwise</span>           <span class="o">=</span> <span class="kr">let</span> <span class="n">newl</span> <span class="o">=</span> <span class="n">insert</span> <span class="n">x</span> <span class="n">l</span>
+                                        <span class="n">newHeight</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">height</span> <span class="n">newl</span><span class="p">))</span>
+                                        <span class="kr">in</span> <span class="kt">Node</span> <span class="n">newHeight</span> <span class="n">newl</span> <span class="n">d</span> <span class="n">r</span></code></pre></figure>
+
+<h5 id="exercise-3-more-folds">Exercise 3 More folds</h5>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">xor</span> <span class="o">::</span> <span class="p">[</span><span class="kt">Bool</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="kt">Bool</span>
+<span class="n">xor</span> <span class="o">=</span> <span class="n">foldr</span> <span class="p">(</span><span class="nf">\</span><span class="n">x</span> <span class="n">accum</span> <span class="o">-&gt;</span> <span class="kr">if</span> <span class="n">x</span> <span class="kr">then</span> <span class="n">not</span> <span class="n">accum</span> <span class="kr">else</span> <span class="n">accum</span><span class="p">)</span> <span class="kt">False</span>
+
+<span class="n">map'</span> <span class="o">::</span> <span class="p">(</span><span class="n">a</span> <span class="o">-&gt;</span> <span class="n">b</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">b</span><span class="p">]</span>
+<span class="n">map'</span> <span class="n">f</span> <span class="o">=</span> <span class="n">foldr</span> <span class="p">(</span><span class="nf">\</span><span class="n">x</span> <span class="n">accum</span> <span class="o">-&gt;</span> <span class="n">f</span> <span class="n">x</span> <span class="o">:</span> <span class="n">accum</span><span class="p">)</span> <span class="kt">[]</span></code></pre></figure>
+
+<h5 id="exercise-4-finding-primes">Exercise 4 Finding primes</h5>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">sSundDelete</span> <span class="o">::</span> <span class="kt">Int</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">Int</span><span class="p">]</span>
+<span class="n">sSundDelete</span> <span class="n">n</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="n">j</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">i</span><span class="o">*</span><span class="n">j</span><span class="o">|</span><span class="n">i</span><span class="o">&lt;-</span><span class="p">[</span><span class="mi">1</span><span class="o">..</span><span class="n">n</span><span class="p">],</span> <span class="n">j</span><span class="o">&lt;-</span><span class="p">[</span><span class="n">i</span><span class="o">..</span><span class="n">n</span><span class="p">]]</span>
+
+<span class="n">sieveSundaram</span> <span class="o">::</span> <span class="kt">Int</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">Int</span><span class="p">]</span>
+<span class="n">sieveSundaram</span> <span class="n">n</span> <span class="o">=</span> <span class="kr">let</span> <span class="n">del</span> <span class="o">=</span> <span class="n">sSundDelete</span> <span class="n">n</span> <span class="kr">in</span>
+     <span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="o">+</span><span class="mi">1</span> <span class="o">|</span> <span class="n">x</span> <span class="o">&lt;-</span> <span class="p">[</span><span class="mi">1</span><span class="o">..</span><span class="n">n</span><span class="p">],</span> <span class="n">not</span> <span class="p">(</span><span class="n">x</span> <span class="p">`</span><span class="n">elem</span><span class="p">`</span> <span class="n">del</span><span class="p">)]</span></code></pre></figure>
+
+:ET

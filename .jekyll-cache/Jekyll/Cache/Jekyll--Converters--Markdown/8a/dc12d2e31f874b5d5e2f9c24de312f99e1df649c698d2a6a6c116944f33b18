@@ -1,0 +1,94 @@
+I"Î#<h4 id="339">3.39</h4>
+
+<ol>
+  <li>101: P1 , P2</li>
+  <li>121: P2, P1</li>
+  <li>100: P1 computes <code class="highlighter-rouge">(* x x)</code>, then P2 completes and sets x to 101, then P1 executes the assignment.</li>
+</ol>
+
+<h4 id="341">3.41</h4>
+
+<p>As <code class="highlighter-rouge">withdraw</code> and <code class="highlighter-rouge">diposit</code> are both single modification operations,
+it is not necessary to protect the <code class="highlighter-rouge">balance</code> value, as it would always be valid.</p>
+
+<h4 id="342">3.42</h4>
+
+<p>It seems both of them would work.</p>
+
+<h4 id="343">3.43</h4>
+
+<p>The sum would be kept just because each account is consistent individually.</p>
+
+<h4 id="344">3.44</h4>
+
+<p>Ben is correct.
+Exchange requires consitent states for both accounts, while transfer
+would be fine as long as the sum of two accounts is correct.</p>
+
+<h4 id="345">3.45</h4>
+
+<p><code class="highlighter-rouge">serialized-exchange</code> has locked both accounts, which makes it impossible to
+run <code class="highlighter-rouge">deposit</code> or <code class="highlighter-rouge">withdraw</code>.</p>
+
+<h4 id="346">3.46</h4>
+
+<p>If atomic is not guaranteed, then multiple process can gain the same mutex at the same time which
+would result in wrong result.</p>
+
+<h4 id="347">3.47</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">make-semaphore</span> <span class="nv">n</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">the-mutex</span> <span class="p">(</span><span class="nf">make-mutex</span><span class="p">))</span>
+        <span class="p">(</span><span class="nf">count</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">the-semaphore</span> <span class="nv">m</span><span class="p">)</span>
+      <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">eq?</span> <span class="nv">m</span> <span class="ss">'acquire</span><span class="p">)</span>
+             <span class="p">(</span><span class="nf">the-mutex</span> <span class="ss">'acquire</span><span class="p">)</span>
+             <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">=</span> <span class="nv">count</span> <span class="nv">n</span><span class="p">)</span> <span class="c1">; full, have to wait</span>
+               <span class="p">(</span><span class="k">begin</span>
+                 <span class="p">(</span><span class="nf">the-mutex</span> <span class="ss">'release</span><span class="p">)</span>
+                 <span class="p">(</span><span class="nf">the-semaphore</span> <span class="ss">'acquire</span><span class="p">))</span>
+               <span class="p">(</span><span class="k">begin</span>
+                 <span class="p">(</span><span class="k">set!</span> <span class="nv">count</span> <span class="p">(</span><span class="nb">+</span> <span class="nv">count</span> <span class="mi">1</span><span class="p">))</span>
+                 <span class="p">(</span><span class="nf">the-mutex</span> <span class="ss">'release</span><span class="p">))))</span>
+            <span class="p">((</span><span class="nb">eq?</span> <span class="nv">m</span> <span class="ss">'release</span><span class="p">)</span>
+             <span class="p">(</span><span class="nf">the-mux</span> <span class="ss">'require</span><span class="p">)</span>
+             <span class="p">(</span><span class="k">set!</span> <span class="nv">count</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">count</span> <span class="mi">1</span><span class="p">))</span>
+             <span class="p">(</span><span class="nf">the-mux</span> <span class="ss">'release</span><span class="p">))))</span>
+    <span class="nv">the-semaphore</span><span class="p">))</span></code></pre></figure>
+
+<h4 id="348">3.48</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">make-account-and-serializer</span> <span class="nv">balance</span> <span class="nv">id</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">withdraw</span> <span class="nv">amount</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">&gt;=</span> <span class="nv">balance</span> <span class="nv">amount</span><span class="p">)</span>
+        <span class="p">(</span><span class="k">begin</span> <span class="p">(</span><span class="k">set!</span> <span class="nv">balance</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">balance</span> <span class="nv">amount</span><span class="p">))</span>
+               <span class="nv">balance</span><span class="p">)</span>
+        <span class="s">"Insufficient funds"</span><span class="p">))</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">deposit</span> <span class="nv">amount</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">set!</span> <span class="nv">balance</span> <span class="p">(</span><span class="nb">+</span> <span class="nv">balance</span> <span class="nv">amount</span><span class="p">))</span>
+    <span class="nv">balance</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">balance-serializer</span> <span class="p">(</span><span class="nf">make-serializer</span><span class="p">)))</span>
+    <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">dispatch</span> <span class="nv">m</span><span class="p">)</span>
+      <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">eq?</span> <span class="nv">m</span> <span class="ss">'withdraw</span><span class="p">)</span> <span class="nv">withdraw</span><span class="p">)</span>
+            <span class="p">((</span><span class="nb">eq?</span> <span class="nv">m</span> <span class="ss">'deposit</span><span class="p">)</span> <span class="nv">deposit</span><span class="p">)</span>
+            <span class="p">((</span><span class="nb">eq?</span> <span class="nv">m</span> <span class="ss">'balance</span><span class="p">)</span> <span class="nv">balance</span><span class="p">)</span>
+            <span class="p">((</span><span class="nb">eq?</span> <span class="nv">m</span> <span class="ss">'id</span><span class="p">)</span> <span class="nv">id</span><span class="p">)</span>
+            <span class="p">((</span><span class="nb">eq?</span> <span class="nv">m</span> <span class="ss">'serializer</span><span class="p">)</span> <span class="nv">balance-serializer</span><span class="p">)</span>
+            <span class="p">(</span><span class="k">else</span> <span class="p">(</span><span class="nf">error</span> <span class="s">"Unknown request -- MAKE-ACCOUNT"</span>
+                         <span class="nv">m</span><span class="p">))))</span>
+    <span class="nv">dispatch</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">serialized-exchange</span> <span class="nv">account1</span> <span class="nv">account2</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">serializer1</span> <span class="p">(</span><span class="nf">account1</span> <span class="ss">'serializer</span><span class="p">))</span>
+        <span class="p">(</span><span class="nf">serializer2</span> <span class="p">(</span><span class="nf">account2</span> <span class="ss">'serializer</span><span class="p">))</span>
+        <span class="p">(</span><span class="nf">id1</span> <span class="p">((</span><span class="nf">account1</span> <span class="ss">'id1</span><span class="p">)))</span>
+        <span class="p">(</span><span class="nf">id2</span> <span class="p">((</span><span class="nf">account1</span> <span class="ss">'id2</span><span class="p">))))</span>
+    <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">&lt;</span> <span class="nv">id1</span> <span class="nv">id2</span><span class="p">))</span>
+    <span class="p">((</span><span class="nf">serializer2</span> <span class="p">(</span><span class="nf">serializer1</span> <span class="nv">exchange</span><span class="p">))</span>
+     <span class="nv">account1</span>
+     <span class="nv">account2</span><span class="p">)</span>
+    <span class="p">((</span><span class="nf">serializer1</span> <span class="p">(</span><span class="nf">serializer2</span> <span class="nv">exchange</span><span class="p">))</span>
+     <span class="nv">account1</span>
+     <span class="nv">account2</span><span class="p">)))</span></code></pre></figure>
+
+:ET

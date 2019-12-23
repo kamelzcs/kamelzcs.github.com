@@ -1,0 +1,98 @@
+I"‡/<h4 id="217">2.17</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">last-pair</span> <span class="nv">lst</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">let</span> <span class="p">([</span><span class="nf">second</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">lst</span><span class="p">)])</span>
+    <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">null?</span> <span class="nv">second</span><span class="p">)</span>
+      <span class="p">(</span><span class="nb">car</span> <span class="nv">lst</span><span class="p">)</span>
+      <span class="p">(</span><span class="nf">last-pair</span> <span class="nv">second</span><span class="p">))))</span></code></pre></figure>
+
+<h4 id="218">2.18</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nb">append</span> <span class="nv">list1</span> <span class="nv">list2</span><span class="p">)</span>
+   <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">null?</span> <span class="nv">list1</span><span class="p">)</span>
+       <span class="nv">list2</span>
+       <span class="p">(</span><span class="nb">cons</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">list1</span><span class="p">)</span> <span class="p">(</span><span class="nb">append</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">list1</span><span class="p">)</span> <span class="nv">list2</span><span class="p">))))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nb">reverse</span> <span class="nv">lst</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">null?</span> <span class="nv">lst</span><span class="p">)</span>
+    <span class="nv">lst</span>
+    <span class="p">(</span><span class="nb">append</span>
+      <span class="p">(</span><span class="nb">reverse</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">lst</span><span class="p">))</span>
+      <span class="p">(</span><span class="nb">list</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">lst</span><span class="p">)))))</span></code></pre></figure>
+
+<h4 id="219">2.19</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="nv">us-coins</span> <span class="p">(</span><span class="nb">list</span> <span class="mi">50</span> <span class="mi">25</span> <span class="mi">10</span> <span class="mi">5</span> <span class="mi">1</span><span class="p">))</span>
+<span class="p">(</span><span class="k">define</span> <span class="nv">uk-coins</span> <span class="p">(</span><span class="nb">list</span> <span class="mi">100</span> <span class="mi">50</span> <span class="mi">20</span> <span class="mi">10</span> <span class="mi">5</span> <span class="mi">2</span> <span class="mi">1</span> <span class="mf">0.5</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">cc</span> <span class="nv">amount</span> <span class="nv">coin-values</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">=</span> <span class="nv">amount</span> <span class="mi">0</span><span class="p">)</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="p">((</span><span class="k">or</span> <span class="p">(</span><span class="nb">&lt;</span> <span class="nv">amount</span> <span class="mi">0</span><span class="p">)</span> <span class="p">(</span><span class="nf">no-more?</span> <span class="nv">coin-values</span><span class="p">))</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">(</span><span class="k">else</span>
+         <span class="p">(</span><span class="nb">+</span> <span class="p">(</span><span class="nf">cc</span> <span class="nv">amount</span>
+                <span class="p">(</span><span class="nf">except-first-denomination</span> <span class="nv">coin-values</span><span class="p">))</span>
+            <span class="p">(</span><span class="nf">cc</span> <span class="p">(</span><span class="nb">-</span> <span class="nv">amount</span>
+                   <span class="p">(</span><span class="nf">first-denomination</span> <span class="nv">coin-values</span><span class="p">))</span>
+                <span class="nv">coin-values</span><span class="p">)))))</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">no-more?</span> <span class="nv">coin-values</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">null?</span> <span class="nv">coin-values</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">except-first-denomination</span> <span class="nv">coin-values</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">cdr</span> <span class="nv">coin-values</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">first-denomination</span> <span class="nv">coin-values</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb">car</span> <span class="nv">coin-values</span><span class="p">))</span></code></pre></figure>
+
+<p>As this procedure does not rely not on the order, it would not affect the final answer.</p>
+
+<h4 id="220">2.20</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">same-parity</span> <span class="nv">a</span> <span class="o">.</span> <span class="nv">z</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">iter</span> <span class="nv">f</span> <span class="nv">left</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">null?</span> <span class="nv">left</span><span class="p">)</span>
+      <span class="nv">left</span>
+      <span class="p">(</span><span class="k">let*</span> <span class="p">([</span><span class="nf">first</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">left</span><span class="p">)]</span>
+            <span class="p">[</span><span class="nf">second</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">left</span><span class="p">)]</span>
+            <span class="p">[</span><span class="nf">temp</span> <span class="p">(</span><span class="nf">iter</span> <span class="nv">f</span> <span class="nv">second</span><span class="p">)])</span>
+        <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nf">f</span> <span class="nv">first</span><span class="p">)</span>
+          <span class="p">(</span><span class="nb">cons</span> <span class="nv">first</span> <span class="nv">temp</span><span class="p">)</span>
+          <span class="nv">temp</span><span class="p">))))</span>
+  <span class="p">(</span><span class="nf">iter</span>
+    <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">=</span> <span class="p">(</span><span class="nb">remainder</span> <span class="nv">a</span> <span class="mi">2</span><span class="p">)</span> <span class="p">(</span><span class="nb">remainder</span> <span class="nv">x</span> <span class="mi">2</span><span class="p">)))</span>
+    <span class="p">(</span><span class="nb">cons</span> <span class="nv">a</span> <span class="nv">z</span><span class="p">)))</span></code></pre></figure>
+
+<h4 id="221">2.21</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">square</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">*</span> <span class="nv">x</span> <span class="nv">x</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">square-list</span> <span class="nv">items</span><span class="p">)</span>
+   <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">null?</span> <span class="nv">items</span><span class="p">)</span>
+       <span class="nv">null</span>
+       <span class="p">(</span><span class="nb">cons</span> <span class="p">(</span><span class="nf">square</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">items</span><span class="p">))</span>
+             <span class="p">(</span><span class="nf">square-list</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">items</span><span class="p">)))))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">square-list</span> <span class="nv">items</span><span class="p">)</span>
+   <span class="p">(</span><span class="nb">map</span> <span class="nv">square</span> <span class="nv">items</span><span class="p">))</span></code></pre></figure>
+
+<h4 id="222">2.22</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">square-list</span> <span class="nv">items</span><span class="p">)</span>
+   <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">iter</span> <span class="nv">things</span> <span class="nv">answer</span><span class="p">)</span>
+     <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">null?</span> <span class="nv">things</span><span class="p">)</span>
+         <span class="nv">answer</span>
+         <span class="p">(</span><span class="nf">iter</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">things</span><span class="p">)</span>
+               <span class="p">(</span><span class="nb">append</span> <span class="nv">answer</span>
+                       <span class="p">(</span><span class="nb">list</span> <span class="p">(</span><span class="nf">square</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">things</span><span class="p">)))))))</span>
+   <span class="p">(</span><span class="nf">iter</span> <span class="nv">items</span> <span class="nv">null</span><span class="p">))</span></code></pre></figure>
+
+<p>The correct way is to use <code class="highlighter-rouge">append</code> to add it into the last posision of the nested <code class="highlighter-rouge">cons</code>.</p>
+
+<h4 id="223">2.23</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nb">for-each</span> <span class="nv">proc</span> <span class="nv">items</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">cond</span>
+    <span class="p">((</span><span class="nb">null?</span> <span class="nv">items</span><span class="p">)</span> <span class="no">#t</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">else</span> <span class="p">(</span><span class="nf">proc</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">items</span><span class="p">))</span>
+          <span class="p">(</span><span class="nb">for-each</span> <span class="nv">proc</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">items</span><span class="p">)))))</span></code></pre></figure>
+
+:ET

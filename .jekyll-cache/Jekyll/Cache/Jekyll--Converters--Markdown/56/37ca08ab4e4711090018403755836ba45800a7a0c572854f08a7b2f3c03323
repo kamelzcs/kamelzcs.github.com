@@ -1,0 +1,63 @@
+I"j<h3 id="why-functional-programming">Why Functional Programming</h3>
+
+<p>In the current world, tons of programming languages exist now, and tons of new ones
+are being created.</p>
+
+<h4 id="imperative-programming">Imperative Programming</h4>
+
+<p>I am more confident in <code class="highlighter-rouge">C</code>, <code class="highlighter-rouge">Python</code>, only familliar with <code class="highlighter-rouge">C++</code> and <code class="highlighter-rouge">Java</code> in some sense.</p>
+
+<ul>
+  <li>
+    <p><code class="highlighter-rouge">C</code> is consise and small, but lacks a lot of libraries in its standard. It is used to
+  implement critical componenet such as <a href="https://github.com/torvalds/linux">Kernel</a>, <a href="https://github.com/postgres/postgres">PostgreSQL</a>, <a href="https://github.com/antirez/redis">Redis</a>, etc.
+  It worths when the system efficiency overweights the developing speed.</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">C++</code> is powerful but much too complex. The compiler does a lot of things behind the scene.
+  It really costs to learn the specific conditions in the compiler, such as <a href="https://msdn.microsoft.com/en-us/library/5dhe1hce.aspx">function overloading</a>,
+  <a href="http://en.cppreference.com/w/cpp/language/implicit_cast#Numeric_promotions">Numeric promotions</a>, <a href="https://en.wikipedia.org/wiki/Rule_of_three_%28C%2B%2B_programming%29">Rule of three</a>, etc.</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">Java</code> is much simpler than <code class="highlighter-rouge">C++</code>, which is highly portable on JVM and truly object oriented.
+  It consists of tons of frameworks and libraries, but is really verbose. It is used to build
+  large softwares and is still popuar in big companies which provide web services.</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">Python</code> is really simple glue language. Due to its simplicity, people around the world not only
+  the professional programmers are contributing all kinds of libraries. As it is <a href="http://stackoverflow.com/questions/11328920/is-python-strongly-typed">dynamic typing</a>,
+  it is hard to build large system.</p>
+  </li>
+</ul>
+
+<p>In my view, the key of Imperative Programming lies in controlling <a href="https://en.wikipedia.org/wiki/Side_effect_%28computer_science%29">side effects</a> which make the
+programme hard to reason about and buggy.</p>
+
+<h4 id="how-functional-programming-shines">How Functional Programming shines</h4>
+
+<p>In <code class="highlighter-rouge">Python</code>, <code class="highlighter-rouge">function</code> is the first class, and it supports some basic FP features such as <code class="highlighter-rouge">map</code>, <code class="highlighter-rouge">reduce</code>, <code class="highlighter-rouge">list comprehention</code>, etc.
+I find it really cool to have the following features,</p>
+
+<ul>
+  <li>Suitable for <a href="http://stackoverflow.com/questions/6957270/what-is-wholemeal-in-functional-programming">wholemeal programming</a></li>
+  <li>Easy to reason about as it has no side effects</li>
+  <li>Easy to parallelize</li>
+</ul>
+
+<h4 id="why-haskell">Why Haskell</h4>
+
+<ul>
+  <li>Completely <a href="http://www.haskell.org/haskellwiki/Referential_transparency">referentially transparent</a></li>
+  <li>Powerful type system</li>
+  <li><a href="https://wiki.haskell.org/Haskell_in_industry">Industrial use</a></li>
+  <li>Concise</li>
+</ul>
+
+<h4 id="how-to-learn-haskell">How to learn Haskell</h4>
+
+<p>As exercise plays an important role in learning, I would like to follow the suggestions in
+<a href="https://github.com/bitemyapp/learnhaskell">learn haskell</a>, first finish <a href="http://www.seas.upenn.edu/%7Ecis194/spring13/lectures.html">CIS194</a>, then try <a href="https://github.com/NICTA/course">NICITA</a>.</p>
+
+<p><a href="https://github.com/kamelzcs/cis-194">Here</a> is the source code for CIS194.</p>
+
+:ET

@@ -1,0 +1,45 @@
+I"ô<h4 id="27">2.7</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">add-interval</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
+   <span class="p">(</span><span class="nf">make-interval</span> <span class="p">(</span><span class="nb">+</span> <span class="p">(</span><span class="nf">lower-bound</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nf">lower-bound</span> <span class="nv">y</span><span class="p">))</span>
+                  <span class="p">(</span><span class="nb">+</span> <span class="p">(</span><span class="nf">upper-bound</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nf">upper-bound</span> <span class="nv">y</span><span class="p">))))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">mul-interval</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
+   <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nf">p1</span> <span class="p">(</span><span class="nb">*</span> <span class="p">(</span><span class="nf">lower-bound</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nf">lower-bound</span> <span class="nv">y</span><span class="p">)))</span>
+         <span class="p">(</span><span class="nf">p2</span> <span class="p">(</span><span class="nb">*</span> <span class="p">(</span><span class="nf">lower-bound</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nf">upper-bound</span> <span class="nv">y</span><span class="p">)))</span>
+         <span class="p">(</span><span class="nf">p3</span> <span class="p">(</span><span class="nb">*</span> <span class="p">(</span><span class="nf">upper-bound</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nf">lower-bound</span> <span class="nv">y</span><span class="p">)))</span>
+         <span class="p">(</span><span class="nf">p4</span> <span class="p">(</span><span class="nb">*</span> <span class="p">(</span><span class="nf">upper-bound</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nf">upper-bound</span> <span class="nv">y</span><span class="p">))))</span>
+     <span class="p">(</span><span class="nf">make-interval</span> <span class="p">(</span><span class="nb">min</span> <span class="nv">p1</span> <span class="nv">p2</span> <span class="nv">p3</span> <span class="nv">p4</span><span class="p">)</span>
+                    <span class="p">(</span><span class="nb">max</span> <span class="nv">p1</span> <span class="nv">p2</span> <span class="nv">p3</span> <span class="nv">p4</span><span class="p">))))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">div-interval</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
+   <span class="p">(</span><span class="nf">mul-interval</span> <span class="nv">x</span>
+                 <span class="p">(</span><span class="nf">make-interval</span> <span class="p">(</span><span class="nb">/</span> <span class="mf">1.0</span> <span class="p">(</span><span class="nf">upper-bound</span> <span class="nv">y</span><span class="p">))</span>
+                                <span class="p">(</span><span class="nb">/</span> <span class="mf">1.0</span> <span class="p">(</span><span class="nf">lower-bound</span> <span class="nv">y</span><span class="p">)))))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">make-interval</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)</span> <span class="p">(</span><span class="nb">cons</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="nv">upper-bound</span> <span class="nv">cdr</span><span class="p">)</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="nv">lower-bound</span> <span class="nv">car</span><span class="p">)</span></code></pre></figure>
+
+<h4 id="28">2.8</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">sub-interval</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
+   <span class="p">(</span><span class="nf">make-interval</span> <span class="p">(</span><span class="nb">-</span> <span class="p">(</span><span class="nf">lower-bound</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nf">lower-bound</span> <span class="nv">y</span><span class="p">))</span>
+                  <span class="p">(</span><span class="nb">-</span> <span class="p">(</span><span class="nf">upper-bound</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nf">upper-bound</span> <span class="nv">y</span><span class="p">))))</span></code></pre></figure>
+
+<h4 id="210">2.10</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">span-zero?</span> <span class="nv">interval</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">and</span> <span class="p">(</span><span class="nb">&gt;=</span> <span class="p">(</span><span class="nf">upper-bound</span> <span class="nv">interval</span><span class="p">)</span> <span class="mi">0</span><span class="p">)</span>
+           <span class="p">(</span><span class="nb">&lt;=</span> <span class="p">(</span><span class="nf">lower-bound</span> <span class="nv">interval</span><span class="p">)</span> <span class="mi">0</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">div-interval</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nf">span-zero?</span> <span class="nv">y</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">error</span> <span class="s">"divides zero"</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">mul-interval</span> <span class="nv">x</span>
+                 <span class="p">(</span><span class="nf">make-interval</span> <span class="p">(</span><span class="nb">/</span> <span class="mf">1.0</span> <span class="p">(</span><span class="nf">upper-bound</span> <span class="nv">y</span><span class="p">))</span>
+                                <span class="p">(</span><span class="nb">/</span> <span class="mf">1.0</span> <span class="p">(</span><span class="nf">lower-bound</span> <span class="nv">y</span><span class="p">))))))</span></code></pre></figure>
+
+:ET

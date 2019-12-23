@@ -1,0 +1,66 @@
+I"Ê!<h4 id="lecture-content">Lecture Content</h4>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>In fact, experienced Haskell programmers hardly ever write recursive functions!
+</code></pre></div></div>
+
+<p>This is quite unbelieable for me at first glance. Even though <code class="highlighter-rouge">recursive function</code> is not
+the best practice in languages which does not provide <a href="http://stackoverflow.com/questions/310974/what-is-tail-call-optimization">tail call optimization</a>.</p>
+
+<p><code class="highlighter-rouge">Recursive function</code> provide more abstract way than <code class="highlighter-rouge">iterative function</code>, while there exists
+more abstract way than <code class="highlighter-rouge">Recursive function</code>, which leave the low-level details of actually doing recursion
+to these functions.</p>
+
+<h5 id="infix-function">Infix Function</h5>
+
+<p>Backticks can turn any standard function with two argumetns in an infix operator which is called <a href="http://www.haskell.org/onlinereport/haskell2010/haskellch3.html#x8-300003.5">section syntax</a>:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(op e)  =   \ x -&gt; x op e
+(e op)  =   \ x -&gt; e op x
+</code></pre></div></div>
+
+<p>For example,</p>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">elem</span> <span class="mi">2</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="p">(</span><span class="mi">2</span> <span class="p">`</span><span class="n">elem</span><span class="p">`)</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="p">((`</span><span class="n">elem</span><span class="p">`</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span> <span class="mi">2</span><span class="p">)</span></code></pre></figure>
+
+<h4 id="exercise-1-hopscotch">Exercise 1 Hopscotch</h4>
+
+<p><code class="highlighter-rouge">zip</code> or <code class="highlighter-rouge">zipwith</code> are convenient to do filter in list.</p>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">skips</span> <span class="o">::</span> <span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="p">[[</span><span class="n">a</span><span class="p">]]</span>
+<span class="n">skips</span> <span class="n">xs</span> <span class="o">=</span>
+        <span class="kr">let</span> <span class="n">ns</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="o">..</span><span class="n">length</span> <span class="n">xs</span><span class="p">]</span>
+            <span class="n">extractEvery</span> <span class="n">m</span> <span class="o">=</span> <span class="n">map</span> <span class="n">snd</span> <span class="o">.</span> <span class="n">filter</span> <span class="p">(</span><span class="nf">\</span><span class="n">x</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">fst</span> <span class="n">x</span> <span class="p">`</span><span class="n">mod</span><span class="p">`</span> <span class="n">m</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">.</span> <span class="n">zip</span> <span class="n">ns</span>
+            <span class="kr">in</span> <span class="n">map</span> <span class="p">(`</span><span class="n">extractEvery</span><span class="p">`</span> <span class="n">xs</span><span class="p">)</span> <span class="n">ns</span></code></pre></figure>
+
+<h4 id="exercise-2-local-maxima">Exercise 2 Local maxima</h4>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">localMaxima</span> <span class="o">::</span> <span class="p">[</span><span class="kt">Integer</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">Integer</span><span class="p">]</span>
+<span class="n">localMaxima</span> <span class="p">(</span><span class="n">a</span><span class="o">:</span><span class="n">b</span><span class="o">:</span><span class="n">c</span><span class="o">:</span><span class="n">xs</span><span class="p">)</span>
+    <span class="o">|</span> <span class="n">b</span> <span class="o">&gt;</span> <span class="n">a</span> <span class="o">&amp;&amp;</span> <span class="n">b</span> <span class="o">&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="n">b</span><span class="o">:</span> <span class="n">p</span>
+    <span class="o">|</span> <span class="n">otherwise</span> <span class="o">=</span> <span class="n">p</span>
+    <span class="kr">where</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">localMaxima</span><span class="p">(</span><span class="n">b</span><span class="o">:</span><span class="n">c</span><span class="o">:</span><span class="n">xs</span><span class="p">)</span>
+<span class="n">localMaxima</span> <span class="kr">_</span> <span class="o">=</span> <span class="kt">[]</span></code></pre></figure>
+
+<h4 id="exercise-3-histogram">Exercise 3 Histogram</h4>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="n">histogram</span><span class="o">::</span> <span class="p">[</span><span class="kt">Integer</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="kt">String</span>
+<span class="n">histogram</span> <span class="n">xs</span> <span class="o">=</span>
+        <span class="kr">let</span> <span class="n">count</span> <span class="o">=</span> <span class="n">map</span> <span class="p">(</span><span class="nf">\</span><span class="n">n</span> <span class="o">-&gt;</span> <span class="n">length</span> <span class="o">$</span> <span class="n">filter</span> <span class="p">(</span><span class="o">==</span> <span class="n">n</span><span class="p">)</span> <span class="n">xs</span><span class="p">)</span> <span class="p">[</span><span class="mi">0</span><span class="o">..</span><span class="mi">9</span><span class="p">]</span>
+            <span class="n">maxi</span> <span class="o">=</span> <span class="n">maximum</span> <span class="n">count</span>
+            <span class="n">histo</span> <span class="n">m</span> <span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="o">=</span> <span class="n">show</span> <span class="n">base</span> <span class="o">++</span> <span class="s">"="</span> <span class="o">++</span>
+                <span class="n">replicate</span> <span class="n">c</span> <span class="sc">'*'</span> <span class="o">++</span>
+                <span class="n">replicate</span> <span class="p">(</span><span class="n">m</span> <span class="o">-</span> <span class="n">c</span><span class="p">)</span> <span class="sc">' '</span>
+        <span class="kr">in</span>
+           <span class="n">unlines</span> <span class="o">.</span> <span class="n">reverse</span> <span class="o">.</span> <span class="n">transpose</span> <span class="o">.</span> <span class="n">map</span> <span class="p">(</span><span class="n">histo</span> <span class="n">maxi</span><span class="p">)</span> <span class="o">$</span> <span class="n">zip</span> <span class="p">[</span><span class="mi">0</span><span class="o">..</span><span class="mi">9</span><span class="p">]</span> <span class="n">count</span></code></pre></figure>
+
+<p>Test code,</p>
+
+<figure class="highlight"><pre><code class="language-haskell" data-lang="haskell"><span class="o">*</span><span class="kt">Golf</span><span class="o">&gt;</span> <span class="n">putStr</span> <span class="o">$</span> <span class="n">histogram</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span>
+ <span class="o">*</span>        
+ <span class="o">*</span>        
+ <span class="o">*</span>   <span class="o">*</span>    
+<span class="o">==========</span>
+<span class="mi">0123456789</span></code></pre></figure>
+
+:ET

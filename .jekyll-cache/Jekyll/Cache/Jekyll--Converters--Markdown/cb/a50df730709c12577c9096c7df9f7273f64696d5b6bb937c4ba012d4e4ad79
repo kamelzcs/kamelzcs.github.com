@@ -1,0 +1,41 @@
+I"v<h3 id="variables">Variables</h3>
+
+<p>{{ foo.bar }}</p>
+
+<p>{{ foo[‘bar’] }}</p>
+
+<h4 id="implementation">Implementation</h4>
+<p>Sake foo.bar in Jinja2 does the following thing on the Python layer:</p>
+
+<ul>
+  <li>check if there is an attribute called bar on foo.</li>
+  <li>if there is not, check if there is an item ‘bar’ in foo.</li>
+  <li>if there is not, return an undefined object.</li>
+</ul>
+
+<p>foo[‘bar’] works mostly the same with a difference in the order:</p>
+
+<ul>
+  <li>check if there is an item ‘bar’ in foo.</li>
+  <li>if there is not, check if there is an attribute called bar on foo.</li>
+  <li>if there is not, return an undefined object.</li>
+</ul>
+
+<p>###Filers###
+Variables can be modified by filters.<br />
+{{ name|striptags|title }}  will remove all HTML Tags from the name and title-cases it.</p>
+
+<p>###Tests###
+Tests can be used to test a variable against a common expression.</p>
+
+<p>{% if loop.index is divisibleby 3 %}</p>
+
+<p>###Comments###</p>
+
+<p>{# note: disabled template because we no longer use this<br />
+    {% for user in users %}<br />
+        …<br />
+    {% endfor %}<br />
+#}</p>
+
+:ET

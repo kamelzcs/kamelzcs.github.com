@@ -1,0 +1,100 @@
+I"’<h3 id="similar-code-different-behaviour">Similar code, different behaviour</h3>
+
+<p>Quesion in <a href="http://stackoverflow.com/questions/30883519/function-overriding-in-java-vs-c">stackoverflow</a>:</p>
+
+<h4 id="java-version">Java version:</h4>
+
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">class</span> <span class="nc">base</span><span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">func1</span><span class="o">(){</span>
+        <span class="n">func2</span><span class="o">();</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">func2</span><span class="o">(){</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">" I am in base:func2() \n"</span><span class="o">);</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">derived</span> <span class="kd">extends</span> <span class="n">base</span><span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">func1</span><span class="o">(){</span>
+        <span class="kd">super</span><span class="o">.</span><span class="na">func1</span><span class="o">();</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">func2</span><span class="o">(){</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">" I am in derived:func2() \n"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">};</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span>
+<span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){</span>
+        <span class="n">derived</span> <span class="n">d</span> <span class="o">=</span> <span class="k">new</span> <span class="n">derived</span><span class="o">();</span>
+        <span class="n">d</span><span class="o">.</span><span class="na">func1</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span></code></pre></figure>
+
+<p>Output:</p>
+<blockquote>
+  <p>I am in derived:func2()</p>
+</blockquote>
+
+<h4 id="c-version">C++ version</h4>
+
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="cp">#include &lt;stdio.h&gt;
+</span>
+<span class="k">class</span> <span class="nc">base</span>
+<span class="p">{</span>
+    <span class="nl">public:</span>
+        <span class="kt">void</span> <span class="n">func1</span><span class="p">(){</span>
+            <span class="n">func2</span><span class="p">();</span>
+        <span class="p">}</span>
+        <span class="kt">void</span> <span class="n">func2</span><span class="p">(){</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">" I am in base:func2() </span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+        <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">derived</span> <span class="o">:</span> <span class="k">public</span> <span class="n">base</span>
+<span class="p">{</span>
+    <span class="nl">public:</span>
+        <span class="kt">void</span> <span class="n">func1</span><span class="p">(){</span>
+            <span class="n">base</span><span class="o">::</span><span class="n">func1</span><span class="p">();</span>
+        <span class="p">}</span>
+        <span class="kt">void</span> <span class="n">func2</span><span class="p">(){</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">" I am in derived:func2() </span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+        <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">derived</span> <span class="o">*</span><span class="n">d</span> <span class="o">=</span> <span class="k">new</span> <span class="n">derived</span><span class="p">();</span>
+    <span class="n">d</span><span class="o">-&gt;</span><span class="n">func1</span><span class="p">();</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Output:</p>
+<blockquote>
+  <p>I am in base:func2()</p>
+</blockquote>
+
+<h3 id="why">Why</h3>
+
+<p>Firstly, I thought the behaviour of <code class="highlighter-rouge">C++</code> is reasonable, <code class="highlighter-rouge">Java</code> version is hard to understand, as I am more used to <code class="highlighter-rouge">static binding</code>.</p>
+
+<p>For both languages, variable binding is <code class="highlighter-rouge">static</code>, no matter it is member variable or not.</p>
+
+<p>But for <code class="highlighter-rouge">method binding</code>, two languages behaviour differently.</p>
+
+<p>In C++, unless this method is virtual, otherwise it is bind staticlly default.</p>
+
+<p>but in Java, all method bindings use late binding unless it is <code class="highlighter-rouge">static</code> or <code class="highlighter-rouge">final</code>(<code class="highlighter-rouge">private</code> is implicly final).</p>
+
+<p>Java version behaves as if you had declared <code class="highlighter-rouge">base::func2</code> as</p>
+
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="k">virtual</span> <span class="kt">void</span> <span class="nf">func2</span><span class="p">(){</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">" I am in base:func2() </span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+<span class="p">}</span></code></pre></figure>
+
+<h3 id="static-binding-vs-late-binding">Static Binding vs Late Binding</h3>
+
+<p><code class="highlighter-rouge">static binding</code> means references are resovled at <code class="highlighter-rouge">compile time</code>, namely it is possible to resolve it by its <code class="highlighter-rouge">position</code>.</p>
+
+<p><code class="highlighter-rouge">late binding</code> means references are resolved at <code class="highlighter-rouge">run time</code>, which is implemented through <code class="highlighter-rouge">Vtable</code> in C++.</p>
+
+:ET

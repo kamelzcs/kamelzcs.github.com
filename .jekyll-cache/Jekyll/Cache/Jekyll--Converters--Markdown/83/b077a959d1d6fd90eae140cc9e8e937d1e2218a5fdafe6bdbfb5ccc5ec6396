@@ -1,0 +1,59 @@
+I"ú"<h4 id="277">2.77</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="nf">apply-generic</span> <span class="ss">'magnitude</span> <span class="o">'</span><span class="p">(</span><span class="nf">complex</span> <span class="nv">rectangular</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">))</span>
+<span class="nv">--&gt;</span>
+<span class="p">((</span><span class="nf">get</span> <span class="ss">'magnitude</span> <span class="o">'</span><span class="p">(</span><span class="nf">complex</span><span class="p">))</span> <span class="o">'</span><span class="p">(</span><span class="nf">rectangular</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">))</span>
+<span class="nv">--&gt;</span>
+<span class="p">(</span><span class="nb">magnitude</span> <span class="o">'</span><span class="p">(</span><span class="nf">rectangular</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">))</span>
+<span class="nv">--&gt;</span>
+<span class="p">(</span><span class="nf">apply-generic</span> <span class="ss">'magnitude</span> <span class="o">'</span><span class="p">(</span><span class="nf">rectangular</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">))</span>
+<span class="nv">--&gt;</span>
+<span class="p">((</span><span class="nf">get</span> <span class="ss">'magnitude</span> <span class="o">'</span><span class="p">(</span><span class="nf">rectangular</span><span class="p">))</span> <span class="p">(</span><span class="nf">3</span> <span class="mi">4</span><span class="p">))</span>
+<span class="nv">--&gt;</span>
+<span class="p">(</span><span class="nb">magnitude</span> <span class="p">(</span><span class="nf">3</span> <span class="mi">4</span><span class="p">))</span></code></pre></figure>
+
+<h4 id="278">2.78</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">attach-tag</span> <span class="nv">type-tag</span> <span class="nv">contents</span><span class="p">)</span>
+   <span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="nb">number?</span> <span class="nv">contents</span><span class="p">)</span>
+       <span class="nv">contents</span>
+       <span class="p">(</span><span class="nb">cons</span> <span class="nv">type-tag</span> <span class="nv">contents</span><span class="p">)))</span>
+
+ <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">type-tag</span> <span class="nv">datum</span><span class="p">)</span>
+   <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">number?</span> <span class="nv">datum</span><span class="p">)</span> <span class="ss">'scheme-number</span><span class="p">)</span>
+         <span class="p">((</span><span class="nb">pair?</span> <span class="nv">datum</span><span class="p">)</span> <span class="p">(</span><span class="nb">car</span> <span class="nv">datum</span><span class="p">))</span>
+         <span class="p">(</span><span class="k">else</span> <span class="p">(</span><span class="nf">error</span> <span class="s">"Bad taged datum -- TYPE-TAG"</span> <span class="nv">datum</span><span class="p">))))</span>
+
+ <span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">contents</span> <span class="nv">datum</span><span class="p">)</span>
+   <span class="p">(</span><span class="k">cond</span> <span class="p">((</span><span class="nb">number?</span> <span class="nv">datum</span><span class="p">)</span> <span class="nv">datum</span><span class="p">)</span>
+         <span class="p">((</span><span class="nb">pair?</span> <span class="nv">datum</span><span class="p">)</span> <span class="p">(</span><span class="nb">cdr</span> <span class="nv">datum</span><span class="p">))</span>
+         <span class="p">(</span><span class="k">else</span> <span class="p">(</span><span class="nf">error</span> <span class="s">"Bad taged datum -- CONTENTS"</span> <span class="nv">datum</span><span class="p">))))</span></code></pre></figure>
+
+<h4 id="279">2.79</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">equ?</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">apply-generic</span> <span class="ss">'equ</span> <span class="nv">?</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">))</span>
+
+<span class="p">(</span><span class="nf">put</span> <span class="ss">'equ?</span> <span class="o">'</span><span class="p">(</span><span class="nf">scheme-number</span> <span class="nv">scheme-number</span><span class="p">)</span> <span class="nv">=</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">put</span> <span class="ss">'equ?</span> <span class="o">'</span><span class="p">(</span><span class="nf">rational</span> <span class="nv">rational</span><span class="p">)</span> <span class="nv">equ-rat?</span><span class="p">)</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">equ-rat?</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">and</span> <span class="p">(</span><span class="nb">=</span> <span class="p">(</span><span class="nf">numer</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nf">numer</span> <span class="nv">y</span><span class="p">))</span>
+       <span class="p">(</span><span class="nb">=</span> <span class="p">(</span><span class="nf">denom</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nf">denom</span> <span class="nv">y</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="nf">put</span> <span class="ss">'equ?</span> <span class="o">'</span><span class="p">(</span><span class="nf">complex</span> <span class="nv">complex</span><span class="p">)</span> <span class="nv">equ-complex?</span><span class="p">)</span>
+<span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">equ-complex?</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">and</span> <span class="p">(</span><span class="nb">=</span> <span class="p">(</span><span class="nb">real-part</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">real-part</span> <span class="nv">y</span><span class="p">))</span>
+       <span class="p">(</span><span class="nb">=</span> <span class="p">(</span><span class="nb">imag-part</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">imag-part</span> <span class="nv">y</span><span class="p">))))</span></code></pre></figure>
+
+<p>The tag of the number should be managed separately in the procedures.</p>
+
+<h4 id="280">2.80</h4>
+
+<figure class="highlight"><pre><code class="language-scheme" data-lang="scheme"><span class="p">(</span><span class="k">define</span> <span class="p">(</span><span class="nf">=zero?</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nf">apply-generic</span> <span class="ss">'=zero?</span> <span class="nv">x</span><span class="p">))</span>
+<span class="p">(</span><span class="nf">put</span> <span class="ss">'=zero?</span> <span class="ss">'scheme-number</span> <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">=</span> <span class="nv">x</span> <span class="mi">0</span><span class="p">)))</span>
+<span class="p">(</span><span class="nf">put</span> <span class="ss">'=zero?</span> <span class="ss">'rational-number</span>
+        <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">=</span> <span class="p">(</span><span class="nf">number</span> <span class="nv">x</span><span class="p">)</span> <span class="mi">0</span><span class="p">)))</span>
+<span class="p">(</span><span class="nf">put</span> <span class="ss">'=zero?</span> <span class="ss">'complex-number</span>
+        <span class="p">(</span><span class="k">lambda</span> <span class="p">(</span><span class="nf">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">=</span> <span class="p">(</span><span class="nb">magnitude</span> <span class="nv">x</span><span class="p">)</span> <span class="mi">0</span><span class="p">)))</span></code></pre></figure>
+
+:ET

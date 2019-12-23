@@ -1,0 +1,138 @@
+I"#?<h3 id="one-to-many">One to Many</h3>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">Contact</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="c1"># Basic info.
+</span>    <span class="n">name</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">StringProperty</span><span class="p">()</span>
+    <span class="n">birth_day</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">DateProperty</span><span class="p">()</span>
+
+    <span class="c1"># Address info.
+</span>    <span class="n">address</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">PostalAddressProperty</span><span class="p">()</span>
+
+    <span class="c1"># The original phone_number property has been replaced by
+</span>    <span class="c1"># an implicitly created property called 'phone_numbers'.
+</span>
+    <span class="c1"># Company info.
+</span>    <span class="n">company_title</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">StringProperty</span><span class="p">()</span>
+    <span class="n">company_name</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">StringProperty</span><span class="p">()</span>
+    <span class="n">company_description</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">StringProperty</span><span class="p">()</span>
+    <span class="n">company_address</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">PostalAddressProperty</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">PhoneNumber</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">contact</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">ReferenceProperty</span><span class="p">(</span><span class="n">Contact</span><span class="p">,</span>
+                                   <span class="n">collection_name</span><span class="o">=</span><span class="s">'phone_numbers'</span><span class="p">)</span>
+    <span class="n">phone_type</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">StringProperty</span><span class="p">(</span>
+        <span class="n">choices</span><span class="o">=</span><span class="p">(</span><span class="s">'home'</span><span class="p">,</span> <span class="s">'work'</span><span class="p">,</span> <span class="s">'fax'</span><span class="p">,</span> <span class="s">'mobile'</span><span class="p">,</span> <span class="s">'other'</span><span class="p">))</span>
+    <span class="n">number</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">PhoneNumberProperty</span><span class="p">()</span></code></pre></figure>
+
+<p>Everytime a reference property is created, an implicit collection property on the referenced class is created. The default name can be over-rode using collection_name.</p>
+
+<p>Now the relationship can be created in the following way.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="n">scott</span> <span class="o">=</span> <span class="n">Contact</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'Scott'</span><span class="p">)</span>
+<span class="n">scott</span><span class="o">.</span><span class="n">put</span><span class="p">()</span>
+<span class="n">PhoneNumber</span><span class="p">(</span><span class="n">contact</span><span class="o">=</span><span class="n">scott</span><span class="p">,</span>
+            <span class="n">phone_type</span><span class="o">=</span><span class="s">'home'</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="s">'(650) 555 - 2200'</span><span class="p">)</span><span class="o">.</span><span class="n">put</span><span class="p">()</span>
+<span class="n">PhoneNumber</span><span class="p">(</span><span class="n">contact</span><span class="o">=</span><span class="n">scott</span><span class="p">,</span>
+            <span class="n">phone_type</span><span class="o">=</span><span class="s">'mobile'</span><span class="p">,</span>
+            <span class="n">number</span><span class="o">=</span><span class="s">'(650) 555 - 2201'</span><span class="p">)</span><span class="o">.</span><span class="n">put</span><span class="p">()</span></code></pre></figure>
+
+<p>Now  the phone numbers for a give person can be retrieved in this way.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">print</span> <span class="s">'Content-Type: text/html'</span>
+<span class="k">print</span>
+<span class="k">for</span> <span class="n">phone</span> <span class="ow">in</span> <span class="n">scott</span><span class="o">.</span><span class="n">phone_numbers</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">'</span><span class="si">%</span><span class="s">s: </span><span class="si">%</span><span class="s">s'</span> <span class="o">%</span> <span class="p">(</span><span class="n">phone</span><span class="o">.</span><span class="n">phone_type</span><span class="p">,</span> <span class="n">phone</span><span class="o">.</span><span class="n">number</span><span class="p">)</span></code></pre></figure>
+
+<h3 id="many-to-many">Many to many</h3>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">Group</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+
+  <span class="n">name</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">StringProperty</span><span class="p">()</span>
+  <span class="n">description</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">TextProperty</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">Contact</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+  <span class="c1"># ID of user that owns this entry.
+</span>  <span class="n">owner</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">StringProperty</span><span class="p">()</span>
+
+  <span class="c1"># Basic info.
+</span>  <span class="n">name</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">StringProperty</span><span class="p">()</span>
+  <span class="n">birth_day</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">DateProperty</span><span class="p">()</span>
+
+  <span class="c1"># Address info.
+</span>  <span class="n">address</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">PostalAddressProperty</span><span class="p">()</span>
+
+  <span class="c1"># Company info.
+</span>  <span class="n">company_title</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">StringProperty</span><span class="p">()</span>
+  <span class="n">company_name</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">StringProperty</span><span class="p">()</span>
+  <span class="n">company_description</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">StringProperty</span><span class="p">()</span>
+  <span class="n">company_address</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">PostalAddressProperty</span><span class="p">()</span>
+
+  <span class="c1"># Group affiliation
+</span>  <span class="n">groups</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">ListProperty</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Key</span><span class="p">)</span>
+
+<span class="n">friends</span> <span class="o">=</span> <span class="n">Group</span><span class="o">.</span><span class="n">gql</span><span class="p">(</span><span class="s">"WHERE name = 'friends'"</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="n">mary</span> <span class="o">=</span> <span class="n">Contact</span><span class="o">.</span><span class="n">gql</span><span class="p">(</span><span class="s">"WHERE name = 'Mary'"</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">friends</span><span class="o">.</span><span class="n">key</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">mary</span><span class="o">.</span><span class="n">groups</span><span class="p">:</span>
+   <span class="n">mary</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">friends</span><span class="o">.</span><span class="n">key</span><span class="p">())</span>
+   <span class="n">mary</span><span class="o">.</span><span class="n">put</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">Group</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+   <span class="n">name</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">StringProperty</span><span class="p">()</span>
+   <span class="n">description</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">TextProperty</span><span class="p">()</span>
+
+   <span class="o">@</span><span class="nb">property</span>
+   <span class="k">def</span> <span class="nf">members</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">return</span> <span class="n">Contact</span><span class="o">.</span><span class="n">gql</span><span class="p">(</span><span class="s">"WHERE groups = :1"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">())</span></code></pre></figure>
+
+<p>The limitations:</p>
+
+<ol>
+  <li>Must explicitly retrieve the values on the side of the collection where the list is stored since all you have available are Key objects</li>
+  <li>Avoid storing overly large lists of keys in a ListProperty</li>
+</ol>
+
+<h3 id="relationship-model">Relationship Model</h3>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">Contact</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="c1"># ID of user that owns this entry.
+</span>    <span class="n">owner</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">StringProperty</span><span class="p">()</span>
+
+    <span class="c1"># Basic info.
+</span>    <span class="n">name</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">StringProperty</span><span class="p">()</span>
+    <span class="n">birth_day</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">DateProperty</span><span class="p">()</span>
+
+    <span class="c1"># Address info.
+</span>    <span class="n">address</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">PostalAddressProperty</span><span class="p">()</span>
+
+    <span class="c1"># The original organization properties have been replaced by
+</span>    <span class="c1"># an implicitly created property called 'companies'. 
+</span>
+    <span class="c1"># Group affiliation
+</span>    <span class="n">groups</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">ListProperty</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Key</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Company</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">StringProperty</span><span class="p">()</span>
+    <span class="n">description</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">StringProperty</span><span class="p">()</span>
+    <span class="n">company_address</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">PostalAddressProperty</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">ContactCompany</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">contact</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">ReferenceProperty</span><span class="p">(</span><span class="n">Contact</span><span class="p">,</span>
+                                   <span class="n">required</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                                   <span class="n">collection_name</span><span class="o">=</span><span class="s">'companies'</span><span class="p">)</span>
+    <span class="n">company</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">ReferenceProperty</span><span class="p">(</span><span class="n">Company</span><span class="p">,</span>
+                                   <span class="n">required</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                                   <span class="n">collection_name</span><span class="o">=</span><span class="s">'contacts'</span><span class="p">)</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">StringProperty</span><span class="p">()</span>
+
+<span class="n">mary</span> <span class="o">=</span> <span class="n">Contact</span><span class="o">.</span><span class="n">gql</span><span class="p">(</span><span class="s">"name = 'Mary'"</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="n">google</span> <span class="o">=</span> <span class="n">Company</span><span class="o">.</span><span class="n">gql</span><span class="p">(</span><span class="s">"name = 'Google'"</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="n">ContactCompany</span><span class="p">(</span><span class="n">contact</span><span class="o">=</span><span class="n">mary</span><span class="p">,</span>
+               <span class="n">company</span><span class="o">=</span><span class="n">google</span><span class="p">,</span>
+               <span class="n">title</span><span class="o">=</span><span class="s">'Engineer'</span><span class="p">)</span><span class="o">.</span><span class="n">put</span><span class="p">()</span></code></pre></figure>
+
+<p>The advantage compared with list-of-keys is can have large collections on either side of the relationship. However, the traversing the connectionso of a collection will require more calls to teh databases.</p>
+
+:ET
