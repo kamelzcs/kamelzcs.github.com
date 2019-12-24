@@ -1,7 +1,0 @@
-I".<h4 id="background">Background</h4>
-<p>In A/B Testing, there is a group of data <script type="math/tex">X = (X_1, X_2, ..., X_n)</script> and <script type="math/tex">Y = (Y_1, Y-2, ..., Y_m)</script>, the metrics we interested in are the difference between these two groups and related confidence.</p>
-
-<h4 id="a-quick-introduction-to-jackknife">A Quick Introduction to Jackknife</h4>
-<p>[Jackknife][1] is a method of resample, which tries to estimate the bias and variability of an estimator <script type="math/tex">\phi_n(X_1, X_2, ..., X_n)</script></p>
-
-:ET

@@ -1,4 +1,0 @@
-I"-<h4 id="background">Background</h4>
-<p>In A/B Testing, there is a group of data <script type="math/tex">X = (X_1, X_2, ..., X_n)</script> and <script type="math/tex">Y = (Y_1, Y-2, ..., Y_n)</script>, the metrics we interested in are the difference between these two groups and confidence of it.</p>
-
-:ET
