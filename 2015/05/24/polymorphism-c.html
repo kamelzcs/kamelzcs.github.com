@@ -169,7 +169,7 @@ h3,h4 {
 <div class="post" id="main-content">
 	<h1>One C++ polymorphism quesion</h1>
 	<h4 class="large-bottom">
-		Posted on 2015-05-24 10:58:27 +0000
+		Posted on 2015-05-24 19:58:27 +0900
 		 in <a href="/categories/C/C++">C/C++</a> 
 
 		<span class="tag-list">
@@ -186,27 +186,27 @@ h3,h4 {
 
 <p>When I first began to learn the polymorphism of C++, the <code class="highlighter-rouge">Subtype Polymorphism</code> similar to the following confused me a lot.</p>
 
-<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="c1">//file cats.h
-</span><span class="k">class</span> <span class="nc">Felid</span> <span class="p">{</span>
-<span class="k">public</span><span class="o">:</span>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="c1">//file cats.h</span>
+<span class="k">class</span> <span class="nc">Felid</span> <span class="p">{</span>
+<span class="nl">public:</span>
  <span class="k">virtual</span> <span class="kt">void</span> <span class="n">meow</span><span class="p">()</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
  <span class="kt">void</span> <span class="n">getName</span><span class="p">(){</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"This is the Felid</span><span class="se">\n\n</span><span class="s">"</span><span class="p">;</span> <span class="p">}</span>
 <span class="p">};</span>
 
 <span class="k">class</span> <span class="nc">Cat</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Felid</span> <span class="p">{</span>
-<span class="k">public</span><span class="o">:</span>
+<span class="nl">public:</span>
  <span class="kt">void</span> <span class="n">meow</span><span class="p">()</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Meowing like a regular cat! meow!</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span> <span class="p">}</span>
  <span class="kt">void</span> <span class="n">getName</span><span class="p">(){</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"This is the Cat</span><span class="se">\n\n</span><span class="s">"</span><span class="p">;</span> <span class="p">}</span>
 <span class="p">};</span>
 
 <span class="k">class</span> <span class="nc">Tiger</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Felid</span> <span class="p">{</span>
-<span class="k">public</span><span class="o">:</span>
+<span class="nl">public:</span>
  <span class="kt">void</span> <span class="n">meow</span><span class="p">()</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Meowing like a tiger! MREOWWW!</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span> <span class="p">}</span>
  <span class="kt">void</span> <span class="n">getName</span><span class="p">(){</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"This is the Tiger</span><span class="se">\n\n</span><span class="s">"</span><span class="p">;</span> <span class="p">}</span>
 <span class="p">};</span>
 
 <span class="k">class</span> <span class="nc">Ocelot</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Felid</span> <span class="p">{</span>
-<span class="k">public</span><span class="o">:</span>
+<span class="nl">public:</span>
  <span class="kt">void</span> <span class="n">meow</span><span class="p">()</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Meowing like an ocelot! mews!</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span> <span class="p">}</span>
  <span class="kt">void</span> <span class="n">getName</span><span class="p">(){</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"This is the Ocelot</span><span class="se">\n\n</span><span class="s">"</span><span class="p">;</span> <span class="p">}</span>
 <span class="p">};</span></code></pre></figure>
@@ -233,7 +233,7 @@ h3,h4 {
 
 <p>The output is:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>Meowing like a regular cat! meow!
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Meowing like a regular cat! meow!
 This is the Felid
 
 Meowing like a tiger! MREOWWW!
@@ -241,8 +241,7 @@ This is the Felid
 
 Meowing like an ocelot! mews!
 This is the Felid
-</code></pre>
-</div>
+</code></pre></div></div>
 
 <p>So, only the <code class="highlighter-rouge">virtual function</code> is polymorphism, but why and how?</p>
 
@@ -367,6 +366,10 @@ So normal member function is only determined by its declared type, not polymorph
 	<div class="sidebar-module">
 		<div class="title"><a href='/tags'>Tags</a></div>
 		
+            <span style="font-size: 75%">
+              <a href="/tags/ab-testing/" title="1 post">A/B Testing</a>
+            </span>
+          
             <span style="font-size: 95%">
               <a href="/tags/app-engine/" title="5 posts">App Engine</a>
             </span>
@@ -408,6 +411,10 @@ So normal member function is only determined by its declared type, not polymorph
             </span>
           
             <span style="font-size: 75%">
+              <a href="/tags/jackknife/" title="1 post">Jackknife</a>
+            </span>
+          
+            <span style="font-size: 75%">
               <a href="/tags/java/" title="1 post">Java</a>
             </span>
           
@@ -425,6 +432,10 @@ So normal member function is only determined by its declared type, not polymorph
           
             <span style="font-size: 280%">
               <a href="/tags/lisp/" title="42 posts">Lisp</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/math/" title="1 post">Math</a>
             </span>
           
             <span style="font-size: 75%">
@@ -511,12 +522,12 @@ So normal member function is only determined by its declared type, not polymorph
 
 	<div class="sidebar-module">
 		<div class="title"><a href='/categories'>Categories</a></div>
-		<a href="/categories/jekyll"><strong>jekyll</strong></a> (1)<br /><a href="/categories/生活"><strong>生活</strong></a> (4)<br /><a href="/categories/语音"><strong>语音</strong></a> (1)<br /><a href="/categories/讲座"><strong>讲座</strong></a> (1)<br /><a href="/categories/technique"><strong>Technique</strong></a> (5)<br /><a href="/categories/technique"><strong>technique</strong></a> (1)<br /><a href="/categories/technology"><strong>Technology</strong></a> (4)<br /><a href="/categories/vim"><strong>Vim</strong></a> (1)<br /><a href="/categories/诗词"><strong>诗词</strong></a> (1)<br /><a href="/categories/life"><strong>Life</strong></a> (2)<br /><a href="/categories/computer"><strong>Computer</strong></a> (1)<br /><a href="/categories/linux"><strong>Linux</strong></a> (1)<br /><a href="/categories/data-structure"><strong>Data structure</strong></a> (1)<br /><a href="/categories/life"><strong>life</strong></a> (1)<br /><a href="/categories/sicp"><strong>SICP</strong></a> (42)<br /><a href="/categories/cc++"><strong>C/C++</strong></a> (1)<br /><a href="/categories/contest"><strong>Contest</strong></a> (2)<br /><a href="/categories/programming"><strong>Programming</strong></a> (1)<br /><a href="/categories/algorithm"><strong>Algorithm</strong></a> (1)<br /><a href="/categories/functional-programming"><strong>Functional Programming</strong></a> (12)<br />
+		<a href="/categories/jekyll"><strong>jekyll</strong></a> (1)<br /><a href="/categories/生活"><strong>生活</strong></a> (4)<br /><a href="/categories/语音"><strong>语音</strong></a> (1)<br /><a href="/categories/讲座"><strong>讲座</strong></a> (1)<br /><a href="/categories/technique"><strong>Technique</strong></a> (5)<br /><a href="/categories/technique"><strong>technique</strong></a> (1)<br /><a href="/categories/technology"><strong>Technology</strong></a> (4)<br /><a href="/categories/vim"><strong>Vim</strong></a> (1)<br /><a href="/categories/诗词"><strong>诗词</strong></a> (1)<br /><a href="/categories/life"><strong>Life</strong></a> (2)<br /><a href="/categories/computer"><strong>Computer</strong></a> (1)<br /><a href="/categories/linux"><strong>Linux</strong></a> (1)<br /><a href="/categories/data-structure"><strong>Data structure</strong></a> (1)<br /><a href="/categories/life"><strong>life</strong></a> (1)<br /><a href="/categories/sicp"><strong>SICP</strong></a> (42)<br /><a href="/categories/cc++"><strong>C/C++</strong></a> (1)<br /><a href="/categories/contest"><strong>Contest</strong></a> (2)<br /><a href="/categories/programming"><strong>Programming</strong></a> (1)<br /><a href="/categories/algorithm"><strong>Algorithm</strong></a> (1)<br /><a href="/categories/functional-programming"><strong>Functional Programming</strong></a> (12)<br /><a href="/categories/data-science"><strong>Data Science</strong></a> (1)<br />
 	</div>
 	
 	<div class="sidebar-module">
 		<div class="title"><a href='/archives'>Archives</a></div>
-		<a href="/2015/08"><strong>August 2015</strong></a> (12)<br /><a href="/2015/07"><strong>July 2015</strong></a> (2)<br /><a href="/2015/06"><strong>June 2015</strong></a> (2)<br /><a href="/2015/05"><strong>May 2015</strong></a> (1)<br /><a href="/2015/03"><strong>March 2015</strong></a> (13)<br /><a href="/2015/02"><strong>February 2015</strong></a> (30)<br /><a href="/2014/02"><strong>February 2014</strong></a> (1)<br /><a href="/2014/01"><strong>January 2014</strong></a> (4)<br /><a href="/2013/12"><strong>December 2013</strong></a> (2)<br /><a href="/2013/11"><strong>November 2013</strong></a> (8)<br /><a href="/2013/10"><strong>October 2013</strong></a> (2)<br /><a href="/2013/03"><strong>March 2013</strong></a> (3)<br /><a href="/2013/02"><strong>February 2013</strong></a> (2)<br /><a href="/2013/01"><strong>January 2013</strong></a> (1)<br /><a href="/2012/12"><strong>December 2012</strong></a> (1)<br />
+		<a href="/2019/12"><strong>December 2019</strong></a> (1)<br /><a href="/2015/08"><strong>August 2015</strong></a> (12)<br /><a href="/2015/07"><strong>July 2015</strong></a> (2)<br /><a href="/2015/06"><strong>June 2015</strong></a> (2)<br /><a href="/2015/05"><strong>May 2015</strong></a> (1)<br /><a href="/2015/03"><strong>March 2015</strong></a> (13)<br /><a href="/2015/02"><strong>February 2015</strong></a> (30)<br /><a href="/2014/02"><strong>February 2014</strong></a> (1)<br /><a href="/2014/01"><strong>January 2014</strong></a> (4)<br /><a href="/2013/12"><strong>December 2013</strong></a> (2)<br /><a href="/2013/11"><strong>November 2013</strong></a> (8)<br /><a href="/2013/10"><strong>October 2013</strong></a> (2)<br /><a href="/2013/03"><strong>March 2013</strong></a> (3)<br /><a href="/2013/02"><strong>February 2013</strong></a> (2)<br /><a href="/2013/01"><strong>January 2013</strong></a> (1)<br /><a href="/2012/12"><strong>December 2012</strong></a> (1)<br />
 	</div>
 </div>
 
@@ -524,7 +535,7 @@ So normal member function is only determined by its declared type, not polymorph
 		
 		<div id="footer" class="span-24"> 
 <span  title="Content licenced under Creative Commons by-nc-sa 3.0">版权所有<a title="Content licenced under Creative Commons by-nc-sa 3.0" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.zh">&copy;</a> 
-	2012-2017 kamelzcs。
+	2012-2019 kamelzcs。
 </span> 
 &nbsp;&nbsp;&nbsp;&nbsp; <a href="https://github.com/kamelzcs">GitHub</a>
 &nbsp;&nbsp;&nbsp;&nbsp; <a href="http://weibo.com/u/2534942150">新浪微博</a>

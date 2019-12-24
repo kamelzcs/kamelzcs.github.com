@@ -155,28 +155,9 @@ google.setOnLoadCallback(function() {
 	   
 	
 <div class="post-listing">
-	<h2><a href="/2015/02/26/sicp-3-3-2" class="dark-link">sicp-3-3-2</a></h2>
-	<div class="low-top">
-		<span class="low-top ">Posted on  2015-02-26 15:17:13 +0000 in <a href="/categories/SICP">SICP</a></span>
-		<span class="tag-list">
-			
-			<a href="/tags/Lisp">Lisp</a>
-			
-		</span>
-	</div>
-
-
-	
-	<p>3.21 (define (front-ptr queue) (car queue)) (define (rear-ptr queue) (cdr queue)) (define (set-front-ptr! queue item) (set-car! queue item)) (define (set-rear-ptr! queue item) (set-cdr! queue item)) (define (empty-queue? queue) (null? (front-ptr queue))) (define (make-queue) (cons '() '())) (define (front-queue queue) (if (empty-queue? queue) (error "FRONT called with an empty queue" queue)...</p>
-	
-	
-	<p class><a href="/2015/02/26/sicp-3-3-2">Read more...</a></p>
-</div>
-
-<div class="post-listing">
 	<h2><a href="/2015/02/26/sicp-3-3-1" class="dark-link">sicp-3-3-1</a></h2>
 	<div class="low-top">
-		<span class="low-top ">Posted on  2015-02-26 11:23:25 +0000 in <a href="/categories/SICP">SICP</a></span>
+		<span class="low-top ">Posted on  2015-02-26 20:23:25 +0900 in <a href="/categories/SICP">SICP</a></span>
 		<span class="tag-list">
 			
 			<a href="/tags/Lisp">Lisp</a>
@@ -190,6 +171,44 @@ google.setOnLoadCallback(function() {
 	
 	
 	<p class><a href="/2015/02/26/sicp-3-3-1">Read more...</a></p>
+</div>
+
+<div class="post-listing">
+	<h2><a href="/2015/02/26/sicp-3-2" class="dark-link">sicp-3-2</a></h2>
+	<div class="low-top">
+		<span class="low-top ">Posted on  2015-02-26 07:59:06 +0900 in <a href="/categories/SICP">SICP</a></span>
+		<span class="tag-list">
+			
+			<a href="/tags/Lisp">Lisp</a>
+			
+		</span>
+	</div>
+
+
+	
+	<p>In the environment model of evaluation, a procedure is always a pair consisting of some code and a pointer to an environment. Procedures are created in one way only: by evaluating a lambda expression. This produces a procedure whose code is obtained from the text of the lambda expression and...</p>
+	
+	
+	<p class><a href="/2015/02/26/sicp-3-2">Read more...</a></p>
+</div>
+
+<div class="post-listing">
+	<h2><a href="/2015/02/26/sicp-3-1-2-3-1-3" class="dark-link">sicp-3-1-2-3-1-3</a></h2>
+	<div class="low-top">
+		<span class="low-top ">Posted on  2015-02-26 01:59:04 +0900 in <a href="/categories/SICP">SICP</a></span>
+		<span class="tag-list">
+			
+			<a href="/tags/Lisp">Lisp</a>
+			
+		</span>
+	</div>
+
+
+	
+	<p>3.5 #lang racket (define (square x) (* x x)) (define (random-in-range low high) (let ((range (- high low))) (+ low (* (random) range)))) (define (monte-carlo trials experiment) (define (iter trials-remaining trials-passed) (cond ((= trials-remaining 0) (/ trials-passed trials)) ((experiment) (iter (- trials-remaining 1) (+ trials-passed 1))) (else (iter (- trials-remaining...</p>
+	
+	
+	<p class><a href="/2015/02/26/sicp-3-1-2-3-1-3">Read more...</a></p>
 </div>
 	
 </div>
@@ -210,6 +229,10 @@ google.setOnLoadCallback(function() {
 	<div class="sidebar-module">
 		<div class="title"><a href='/tags'>Tags</a></div>
 		
+            <span style="font-size: 75%">
+              <a href="/tags/ab-testing/" title="1 post">A/B Testing</a>
+            </span>
+          
             <span style="font-size: 95%">
               <a href="/tags/app-engine/" title="5 posts">App Engine</a>
             </span>
@@ -251,6 +274,10 @@ google.setOnLoadCallback(function() {
             </span>
           
             <span style="font-size: 75%">
+              <a href="/tags/jackknife/" title="1 post">Jackknife</a>
+            </span>
+          
+            <span style="font-size: 75%">
               <a href="/tags/java/" title="1 post">Java</a>
             </span>
           
@@ -268,6 +295,10 @@ google.setOnLoadCallback(function() {
           
             <span style="font-size: 280%">
               <a href="/tags/lisp/" title="42 posts">Lisp</a>
+            </span>
+          
+            <span style="font-size: 75%">
+              <a href="/tags/math/" title="1 post">Math</a>
             </span>
           
             <span style="font-size: 75%">
@@ -354,12 +385,12 @@ google.setOnLoadCallback(function() {
 
 	<div class="sidebar-module">
 		<div class="title"><a href='/categories'>Categories</a></div>
-		<a href="/categories/jekyll"><strong>jekyll</strong></a> (1)<br /><a href="/categories/生活"><strong>生活</strong></a> (4)<br /><a href="/categories/语音"><strong>语音</strong></a> (1)<br /><a href="/categories/讲座"><strong>讲座</strong></a> (1)<br /><a href="/categories/technique"><strong>Technique</strong></a> (5)<br /><a href="/categories/technique"><strong>technique</strong></a> (1)<br /><a href="/categories/technology"><strong>Technology</strong></a> (4)<br /><a href="/categories/vim"><strong>Vim</strong></a> (1)<br /><a href="/categories/诗词"><strong>诗词</strong></a> (1)<br /><a href="/categories/life"><strong>Life</strong></a> (2)<br /><a href="/categories/computer"><strong>Computer</strong></a> (1)<br /><a href="/categories/linux"><strong>Linux</strong></a> (1)<br /><a href="/categories/data-structure"><strong>Data structure</strong></a> (1)<br /><a href="/categories/life"><strong>life</strong></a> (1)<br /><a href="/categories/sicp"><strong>SICP</strong></a> (42)<br /><a href="/categories/cc++"><strong>C/C++</strong></a> (1)<br /><a href="/categories/contest"><strong>Contest</strong></a> (2)<br /><a href="/categories/programming"><strong>Programming</strong></a> (1)<br /><a href="/categories/algorithm"><strong>Algorithm</strong></a> (1)<br /><a href="/categories/functional-programming"><strong>Functional Programming</strong></a> (12)<br />
+		<a href="/categories/jekyll"><strong>jekyll</strong></a> (1)<br /><a href="/categories/生活"><strong>生活</strong></a> (4)<br /><a href="/categories/语音"><strong>语音</strong></a> (1)<br /><a href="/categories/讲座"><strong>讲座</strong></a> (1)<br /><a href="/categories/technique"><strong>Technique</strong></a> (5)<br /><a href="/categories/technique"><strong>technique</strong></a> (1)<br /><a href="/categories/technology"><strong>Technology</strong></a> (4)<br /><a href="/categories/vim"><strong>Vim</strong></a> (1)<br /><a href="/categories/诗词"><strong>诗词</strong></a> (1)<br /><a href="/categories/life"><strong>Life</strong></a> (2)<br /><a href="/categories/computer"><strong>Computer</strong></a> (1)<br /><a href="/categories/linux"><strong>Linux</strong></a> (1)<br /><a href="/categories/data-structure"><strong>Data structure</strong></a> (1)<br /><a href="/categories/life"><strong>life</strong></a> (1)<br /><a href="/categories/sicp"><strong>SICP</strong></a> (42)<br /><a href="/categories/cc++"><strong>C/C++</strong></a> (1)<br /><a href="/categories/contest"><strong>Contest</strong></a> (2)<br /><a href="/categories/programming"><strong>Programming</strong></a> (1)<br /><a href="/categories/algorithm"><strong>Algorithm</strong></a> (1)<br /><a href="/categories/functional-programming"><strong>Functional Programming</strong></a> (12)<br /><a href="/categories/data-science"><strong>Data Science</strong></a> (1)<br />
 	</div>
 	
 	<div class="sidebar-module">
 		<div class="title"><a href='/archives'>Archives</a></div>
-		<a href="/2015/08"><strong>August 2015</strong></a> (12)<br /><a href="/2015/07"><strong>July 2015</strong></a> (2)<br /><a href="/2015/06"><strong>June 2015</strong></a> (2)<br /><a href="/2015/05"><strong>May 2015</strong></a> (1)<br /><a href="/2015/03"><strong>March 2015</strong></a> (13)<br /><a href="/2015/02"><strong>February 2015</strong></a> (30)<br /><a href="/2014/02"><strong>February 2014</strong></a> (1)<br /><a href="/2014/01"><strong>January 2014</strong></a> (4)<br /><a href="/2013/12"><strong>December 2013</strong></a> (2)<br /><a href="/2013/11"><strong>November 2013</strong></a> (8)<br /><a href="/2013/10"><strong>October 2013</strong></a> (2)<br /><a href="/2013/03"><strong>March 2013</strong></a> (3)<br /><a href="/2013/02"><strong>February 2013</strong></a> (2)<br /><a href="/2013/01"><strong>January 2013</strong></a> (1)<br /><a href="/2012/12"><strong>December 2012</strong></a> (1)<br />
+		<a href="/2019/12"><strong>December 2019</strong></a> (1)<br /><a href="/2015/08"><strong>August 2015</strong></a> (12)<br /><a href="/2015/07"><strong>July 2015</strong></a> (2)<br /><a href="/2015/06"><strong>June 2015</strong></a> (2)<br /><a href="/2015/05"><strong>May 2015</strong></a> (1)<br /><a href="/2015/03"><strong>March 2015</strong></a> (13)<br /><a href="/2015/02"><strong>February 2015</strong></a> (30)<br /><a href="/2014/02"><strong>February 2014</strong></a> (1)<br /><a href="/2014/01"><strong>January 2014</strong></a> (4)<br /><a href="/2013/12"><strong>December 2013</strong></a> (2)<br /><a href="/2013/11"><strong>November 2013</strong></a> (8)<br /><a href="/2013/10"><strong>October 2013</strong></a> (2)<br /><a href="/2013/03"><strong>March 2013</strong></a> (3)<br /><a href="/2013/02"><strong>February 2013</strong></a> (2)<br /><a href="/2013/01"><strong>January 2013</strong></a> (1)<br /><a href="/2012/12"><strong>December 2012</strong></a> (1)<br />
 	</div>
 </div>
 
@@ -367,7 +398,7 @@ google.setOnLoadCallback(function() {
 		
 		<div id="footer" class="span-24"> 
 <span  title="Content licenced under Creative Commons by-nc-sa 3.0">版权所有<a title="Content licenced under Creative Commons by-nc-sa 3.0" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.zh">&copy;</a> 
-	2012-2017 kamelzcs。
+	2012-2019 kamelzcs。
 </span> 
 &nbsp;&nbsp;&nbsp;&nbsp; <a href="https://github.com/kamelzcs">GitHub</a>
 &nbsp;&nbsp;&nbsp;&nbsp; <a href="http://weibo.com/u/2534942150">新浪微博</a>
