@@ -32,7 +32,6 @@ $$ps(X) - 1.96\sqrt{\frac{1}{n}V_{ps}(X)}, ps(X) + 1.96\sqrt{\frac{1}{n}V_{ps}(X
 
 [1]: https://www.math.wustl.edu/~sawyer/handouts/Jackknife.pdf
 
-
 ```python
 import numpy as np
 import pandas as pd
@@ -63,20 +62,33 @@ def jackknife_sder(s):
     ps = a - b 
     
     mean, var = ps.mean(), (ps.var(ddof = 1.0) / groups) ** 0.5
-    return var
+    return mean, var
 
-s_vars = [jackknife_sder(np.random.normal(mu, sigma, sample_count)) for i in range(100)]
+data = [np.random.normal(mu, sigma, sample_count) for i in range(100)]
+s_vars = [jackknife_sder(d) for d in data]
 s_mean, s_var =  mu, sigma / (sample_count ** 0.5)
+```
+
+
+```python
 plt.hist(s_vars, bins=10)
+plt.axvline(x=s_var, color='r', label=f'expected {s_var:.4f}')
+plt.legend()
 plt.show()
+```
 
-# confidence = 1.96
-# l, r = (mean - confidence *  var, mean + confidence *  var)
 
+![png](/images/posts/output_2_0.png)
+
+
+
+```python
+confidence = 1.96
+l, r = (s_mean - confidence *  s_vars, s_mean + confidence *  s_vars)
+print(f'left: {l:.4f}, right: {r:.4f}')
 
 
 ```
 
-
-![png](/images/posts/output_1_0.png)
+    left: 499.7084, right: 500.2740
 

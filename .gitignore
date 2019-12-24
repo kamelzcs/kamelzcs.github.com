@@ -2,6 +2,7 @@
 *.swp
 *.xcuserstate
 *.xcbkptlist
+*.jekyll-cache
 _site/*
 _compiled
 _compiled/*
