@@ -380,21 +380,30 @@ h3,h4 {
     <span class="n">ps</span> <span class="o">=</span> <span class="n">a</span> <span class="o">-</span> <span class="n">b</span> 
     
     <span class="n">mean</span><span class="p">,</span> <span class="n">var</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="p">(</span><span class="n">ps</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">ddof</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">/</span> <span class="n">groups</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
-    <span class="k">return</span> <span class="n">var</span>
+    <span class="k">return</span> <span class="n">mean</span><span class="p">,</span> <span class="n">var</span>
 
-<span class="n">s_vars</span> <span class="o">=</span> <span class="p">[</span><span class="n">jackknife_sder</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">sample_count</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)]</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">sample_count</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)]</span>
+<span class="n">s_vars</span> <span class="o">=</span> <span class="p">[</span><span class="n">jackknife_sder</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
 <span class="n">s_mean</span><span class="p">,</span> <span class="n">s_var</span> <span class="o">=</span>  <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">/</span> <span class="p">(</span><span class="n">sample_count</span> <span class="o">**</span> <span class="mf">0.5</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">s_vars</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
 
-<span class="c1"># confidence = 1.96
-# l, r = (mean - confidence *  var, mean + confidence *  var)
-</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">s_vars</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">s_var</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'r'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">f</span><span class="s">'expected {s_var:.4f}'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><img src="/images/posts/output_2_0.png" alt="png" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">confidence</span> <span class="o">=</span> <span class="mf">1.96</span>
+<span class="n">l</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="p">(</span><span class="n">s_mean</span> <span class="o">-</span> <span class="n">confidence</span> <span class="o">*</span>  <span class="n">s_vars</span><span class="p">,</span> <span class="n">s_mean</span> <span class="o">+</span> <span class="n">confidence</span> <span class="o">*</span>  <span class="n">s_vars</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">'left: {l:.4f}, right: {r:.4f}'</span><span class="p">)</span>
 
 
 </code></pre></div></div>
 
-<p><img src="/images/posts/output_1_0.png" alt="png" /></p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>left: 499.7084, right: 500.2740
+</code></pre></div></div>
 
 
 	</div>
@@ -24088,21 +24097,30 @@ h3,h4 {
     <span class="n">ps</span> <span class="o">=</span> <span class="n">a</span> <span class="o">-</span> <span class="n">b</span> 
     
     <span class="n">mean</span><span class="p">,</span> <span class="n">var</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="p">(</span><span class="n">ps</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">ddof</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">/</span> <span class="n">groups</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
-    <span class="k">return</span> <span class="n">var</span>
+    <span class="k">return</span> <span class="n">mean</span><span class="p">,</span> <span class="n">var</span>
 
-<span class="n">s_vars</span> <span class="o">=</span> <span class="p">[</span><span class="n">jackknife_sder</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">sample_count</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)]</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">sample_count</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)]</span>
+<span class="n">s_vars</span> <span class="o">=</span> <span class="p">[</span><span class="n">jackknife_sder</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
 <span class="n">s_mean</span><span class="p">,</span> <span class="n">s_var</span> <span class="o">=</span>  <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">/</span> <span class="p">(</span><span class="n">sample_count</span> <span class="o">**</span> <span class="mf">0.5</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">s_vars</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
 
-<span class="c1"># confidence = 1.96
-# l, r = (mean - confidence *  var, mean + confidence *  var)
-</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">s_vars</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">s_var</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'r'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">f</span><span class="s">'expected {s_var:.4f}'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><img src="/images/posts/output_2_0.png" alt="png" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">confidence</span> <span class="o">=</span> <span class="mf">1.96</span>
+<span class="n">l</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="p">(</span><span class="n">s_mean</span> <span class="o">-</span> <span class="n">confidence</span> <span class="o">*</span>  <span class="n">s_vars</span><span class="p">,</span> <span class="n">s_mean</span> <span class="o">+</span> <span class="n">confidence</span> <span class="o">*</span>  <span class="n">s_vars</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">'left: {l:.4f}, right: {r:.4f}'</span><span class="p">)</span>
 
 
 </code></pre></div></div>
 
-<p><img src="/images/posts/output_1_0.png" alt="png" /></p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>left: 499.7084, right: 500.2740
+</code></pre></div></div>
 
 
 	</div>
@@ -49916,21 +49934,30 @@ h3,h4 {
     <span class="n">ps</span> <span class="o">=</span> <span class="n">a</span> <span class="o">-</span> <span class="n">b</span> 
     
     <span class="n">mean</span><span class="p">,</span> <span class="n">var</span> <span class="o">=</span> <span class="n">ps</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="p">(</span><span class="n">ps</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">ddof</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">/</span> <span class="n">groups</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
-    <span class="k">return</span> <span class="n">var</span>
+    <span class="k">return</span> <span class="n">mean</span><span class="p">,</span> <span class="n">var</span>
 
-<span class="n">s_vars</span> <span class="o">=</span> <span class="p">[</span><span class="n">jackknife_sder</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">sample_count</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)]</span>
+<span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">sample_count</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">)]</span>
+<span class="n">s_vars</span> <span class="o">=</span> <span class="p">[</span><span class="n">jackknife_sder</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
 <span class="n">s_mean</span><span class="p">,</span> <span class="n">s_var</span> <span class="o">=</span>  <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">/</span> <span class="p">(</span><span class="n">sample_count</span> <span class="o">**</span> <span class="mf">0.5</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">s_vars</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
 
-<span class="c1"># confidence = 1.96
-# l, r = (mean - confidence *  var, mean + confidence *  var)
-</span>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">s_vars</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">s_var</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s">'r'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">f</span><span class="s">'expected {s_var:.4f}'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><img src="/images/posts/output_2_0.png" alt="png" /></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">confidence</span> <span class="o">=</span> <span class="mf">1.96</span>
+<span class="n">l</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="p">(</span><span class="n">s_mean</span> <span class="o">-</span> <span class="n">confidence</span> <span class="o">*</span>  <span class="n">s_vars</span><span class="p">,</span> <span class="n">s_mean</span> <span class="o">+</span> <span class="n">confidence</span> <span class="o">*</span>  <span class="n">s_vars</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s">'left: {l:.4f}, right: {r:.4f}'</span><span class="p">)</span>
 
 
 </code></pre></div></div>
 
-<p><img src="/images/posts/output_1_0.png" alt="png" /></p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>left: 499.7084, right: 500.2740
+</code></pre></div></div>
 
 
 	</div>
